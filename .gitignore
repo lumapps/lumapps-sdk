@@ -1,0 +1,5 @@
+lumapps_api_client/libs/
+documentation/build/
+.pytest_cache
+*egg*
+*.pyc
