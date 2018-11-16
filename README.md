@@ -15,7 +15,9 @@ Make sure of the version you are using (Git tags & relases)
 ### Installation
 
 to install as a library:
-pip install lumapps_sdk
+```
+python setup.py install
+```
 
 ### Getting started
 
