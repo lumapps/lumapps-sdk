@@ -1,20 +1,25 @@
-Lumapps SDK is a set of tools to manipulate the [LumappsAPI](http://api.lumapps.com) 
+
+*Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break changethe behaviour of some helpers*
+
+*Make sure of the version you are using (Git tags & relases)*
+
+----
+
+Lumapps SDK is a set of tools to manipulate the [LumappsAPI](http://api.lumapps.com)
 This includes a client that support all the routes of the API (located in folder lumapps_api_client)
 and a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)
 
-Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break changethe behaviour of some helpers
-Make sure of the version you are using (Git tags & relases)
 
 ## Quick start
 
 <!---2 quick start options are available:
  [Download the latest release](../../release). -->
-- Clone the repo: `git clone https://github.com/lumapps/lumapps-sdk.git`.
 
 ### Installation
 
-to install as a library:
 ```
+git clone https://github.com/lumapps/lumapps-sdk.git
+cd lumapps-sdk
 python setup.py install
 ```
 
@@ -33,7 +38,7 @@ instance = instance[instance.length-2];
 fetch(window.location.origin+"/service/init?customerHost="+window.location.host+"&instanceSlug="+instance+"&slug=").then(data=>{return data.json()}).then(res => {console.log(res.token)})
 ```
 
-This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps 
+This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps
 
 #### Authentification
 
@@ -64,7 +69,7 @@ print("Hello {}".format(usr.get("fullName", "")))
 The SDK documentation is available in the [the wiki](../../wiki)
 The folder "examples" also provides some basic examples to manipulate the sdk
 
-### Running documentation locally
+<!-- ### Running documentation locally
 
 You can build and compile the source documentation using Sphinx. This documents the methods of the SDK
 First install the dev dependencies (reqirements_dev.txt) and run
@@ -74,10 +79,11 @@ First install the dev dependencies (reqirements_dev.txt) and run
 sphinx-build -b html documentation/source documentation/build
 
 ```
+-->
 
 ### Code convention
 
-Docstring in PEP 484 type annotations format adapted to python 2.7 using comments
+Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.
 
 
 ## Copyright and license
