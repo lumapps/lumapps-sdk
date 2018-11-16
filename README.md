@@ -7,9 +7,8 @@ Make sure of the version you are using (Git tags & relases)
 
 ## Quick start
 
-2 quick start options are available:
-
-- [Download the latest release](../../release).
+<!---2 quick start options are available:
+ [Download the latest release](../../release). -->
 - Clone the repo: `git clone https://github.com/lumapps/lumapps-sdk.git`.
 
 ### Installation
