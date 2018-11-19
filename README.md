@@ -1,7 +1,7 @@
 
 *Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break changethe behaviour of some helpers*
 
-*Make sure of the version you are using (Git tags & relases)*
+*Make sure of the version you are using (Git tags & releases)*
 
 ----
 
