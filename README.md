@@ -20,7 +20,7 @@ and a set of helper classes to easily manipulate Lumapps elements as Python Obje
 ```
 git clone https://github.com/lumapps/lumapps-sdk.git
 cd lumapps-sdk
-python setup.py install
+pip install -e .
 ```
 
 ### Getting started
