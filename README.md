@@ -46,7 +46,7 @@ This will generate your personal Lumapps token that will be active for 60 minute
 
 from lumapps_api_client.lib import ApiClient
 
-token = "[MY TOKEN]"
+token = "MY TOKEN"
 api = ApiClient(token=token)
 
 ```
@@ -57,7 +57,7 @@ Let's display the full name of a registered user in lumapps
 
 ```python
 
-user_email = "[A LUMAPPS USER EMAIL]"
+user_email = "YOUR EMAIL"
 usr = api.get_call("user", "get", email=user_email)
 print("Hello {}".format(usr.get("fullName", "")))
 
