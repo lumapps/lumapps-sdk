@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
 
-      -run:
+      - run:
           name: Setting up venv
           command: virtualenv env && source env/bin/activate
 
@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
 
-      -run:
+      - run:
           name: Setting up venv
           command: virtualenv env && source env/bin/activate
 
