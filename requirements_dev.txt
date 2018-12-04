@@ -1,3 +1,5 @@
 pytest
 flask
 sphinx
+sphinx-rtd-theme
+sphinxcontrib-napoleon

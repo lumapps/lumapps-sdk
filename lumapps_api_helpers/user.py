@@ -7,11 +7,12 @@ from googleapiclient.errors import HttpError
 def authorization_decorator(func):
     def func_wrapper(api, user, **kwargs):
         # type: (ApiClient, User) -> boolean | dict
-        """
-        instantiate an empty group
+        """Instantiate an empty group
+
         Args:
             api: the ApiClient instance to use for requests
             user: theUser instance to process
+
         """
         customer = user.get_attribute("customer")
 
@@ -101,10 +102,10 @@ class User(object):
         """
 
         Args:
-            attr: feed attribute key to save
-            value: feed attribute value to save
-            force: whether to force the storage of the attribute
-        Returns: None
+            attr (str, str): feed attribute key to save
+            value (int): feed attribute value to save
+            force (boolean): whether to force the storage of the attribute
+
         """
         if attr == "status":
             value = User.STATUS.get(value, value)
@@ -139,9 +140,9 @@ class User(object):
         Update the attribute of the class from a Lumapps User resource: https://api.lumapps.com/docs/output/_schemas/user
 
         Args:
-            result: Lumapps User resource dictionnary
-            force: save all the attributes from this dictionary
-        Returns: None
+            result (dict[str]): Lumapps User resource dictionnary
+            force (boolean): save all the attributes from this dictionary
+
         """
 
         self._uid = result.get("uid")
@@ -152,10 +153,7 @@ class User(object):
 
     def get(self):
         # type: () -> object
-        """
-        :return:
-
-        fetch current user from lumapps using its email or uid
+        """fetch current user from lumapps using its email or uid
         """
         user = None
         result = get(self.api, self._email, self._uid)
@@ -364,10 +362,12 @@ def get(api, email="", uid="", fields=None):
 def save_or_update(api, user):
     # type: (ApiClient, User) ->  dict[str]
     """
-    Arguments:
+    Args:
         api: the ApiClient instance to use for requests
         user: the user to save
-    Returns: Saved user as Lumapps Resource or raise Exception if it fails
+
+    Returns:
+        Saved user as Lumapps Resource or raise Exception if it fails
     """
     if not user.get_attribute("email"):
         raise BadRequestException("User requires an email")
@@ -386,12 +386,14 @@ def save_or_update(api, user):
 
 def deactivate(api, user):
     # type: (ApiClient) -> Iterator(User)
-    """
-    A generator for User instances from raw Lumapps user Iterator
-    Arguments:
+    """A generator for User instances from raw Lumapps user Iterator
+
+    Args:
         api: the ApiClient instance to use for requests
         users: list of Lumapps User resource dictionnary
-    Yields: a User attribute
+
+    Yields:
+        a User attribute
 
     """
     user.set_attribute("status", User.STATUS.get("DISABLE"))
@@ -400,12 +402,14 @@ def deactivate(api, user):
 
 def list_sync(api, **params):
     # type: (ApiClient) -> List(User)
-    """
-    fetch users
-    Arguments:
+    """Fetch users
+
+    Args:
         api: the ApiClient instance to use for requests
-        **params: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
-    Return: a User object
+        ``**params``: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
+
+    Returns:
+        a User object
 
     """
     users = api.get_call("user", "list", **params)
@@ -415,12 +419,14 @@ def list_sync(api, **params):
 
 def list(api, **params):
     # type: (ApiClient) -> Iterator(User)
-    """
-    fetch users
-    Arguments:
+    """Fetch users
+
+    Args:
         api: the ApiClient instance to use for requests
-        **params: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
-    Return: a UserGenerator object
+        ``**params``: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
+
+    Returns:
+        a UserGenerator object
 
     """
     users_iter = api.iter_call("user", "list", **params)
@@ -430,13 +436,15 @@ def list(api, **params):
 
 def build_batch(api, users):
     # type: (ApiClient, Iterator(dict[str])) -> User
-    """
-    A generator for User instances from raw Lumapps user Iterator
-    Arguments:
+    """A generator for User instances from raw Lumapps user Iterator
+
+    Args:
         api: the ApiClient instance to use for requests
         users: list of Lumapps User dictionnary
         association: a dictionnary to translate the user dictionnary to User instance
-    Yields: a User attribute
+
+    Yields:
+        a User attribute
 
     """
     logging.info("building batch %s", users)
@@ -446,14 +454,15 @@ def build_batch(api, users):
 
 def get_by_email(api, email):
     # type (ApiClient, str, str) -> dict(str)
-    """
-     a user by email
+    """Get a user by email
 
     Args:
         api: the ApiClient instance to use for requests
         email: name to search
         instance: the instance id
-    Returns: a Lumapps Feed instance
+
+    Returns:
+        a Lumapps Feed instance
     """
     logging.info("getting user by email %s", email)
     result = api.get_call("user", "get", email=email)
@@ -462,13 +471,14 @@ def get_by_email(api, email):
 
 def get_by_uid(api, uid):
     # type (ApiClient, str) -> dict(str)
-    """
-     a user by uid
+    """Get a user by uid
 
     Args:
         api: the ApiClient instance to use for requests
         uid: uid to fetch
-    Returns: a Lumapps Feed instance
+
+    Returns:
+        a Lumapps Feed instance
     """
     logging.info("getting user by uid %s", uid)
     result = api.get_call("user", "get", uid=uid)
