@@ -11,7 +11,13 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
-      - run: python3 --version
+      - run:
+        name: Build
+        command: pip install -e . && pip install -r requirements_dev.txt  
+
+      - run: 
+        name: Test
+        command: pytest
   
   build-test-27:
     docker: 
@@ -20,7 +26,13 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
-      - run: python --version
+      - run:
+        name: Build
+        command: pip install -e . && pip install -r requirements_dev.txt  
+        
+      - run: 
+        name: Test
+        command: pytest
 
 
 workflows:
