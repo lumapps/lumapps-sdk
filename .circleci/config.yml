@@ -12,12 +12,12 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Build
-        command: pip install -e . && pip install -r requirements_dev.txt  
+          name: Build
+          command: pip install -e . && pip install -r requirements_dev.txt  
 
       - run: 
-        name: Test
-        command: pytest
+          name: Test
+          command: pytest
   
   build-test-27:
     docker: 
@@ -27,12 +27,12 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Build
-        command: pip install -e . && pip install -r requirements_dev.txt  
+          name: Build
+          command: pip install -e . && pip install -r requirements_dev.txt  
         
       - run: 
-        name: Test
-        command: pytest
+          name: Test
+          command: pytest
 
 
 workflows:
