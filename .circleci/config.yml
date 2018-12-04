@@ -13,7 +13,7 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: pip install -e . && pip install -r requirements_dev.txt  
+          command: pip install --user -e . && pip install -r requirements_dev.txt  
 
       - run: 
           name: Test
@@ -21,14 +21,14 @@ jobs:
   
   build-test-27:
     docker: 
-      - image: circleci/python2.7
+      - image: circleci/python:2.7
 
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
       - run:
           name: Build
-          command: pip install -e . && pip install -r requirements_dev.txt  
+          command: pip install --user -e . && pip install -r requirements_dev.txt  
         
       - run: 
           name: Test
