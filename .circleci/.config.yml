@@ -1,0 +1,36 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build-test-36:
+    docker: 
+      - image: circleci/python:3.6
+    
+    working_directory: ~/lumapps-sdk
+    steps:
+      - checkout
+      - run: python3 --version
+  
+  build-test-27:
+    docker: 
+      - image: circleci/python2.7
+
+    working_directory: ~/lumapps-sdk
+    steps:
+      - checkout
+      - run: python --version
+
+
+workflows:
+  version: 2
+
+  build-test:
+    jobs:
+      - build-test-36
+      - build-test-27
+
+
+
+          
