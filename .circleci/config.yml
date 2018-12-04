@@ -13,7 +13,7 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: pip install --user -e . && pip install -r requirements_dev.txt  
+          command: pip install --user -e . && pip install --user  -r requirements_dev.txt  
 
       - run: 
           name: Test
@@ -28,7 +28,7 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: pip install --user -e . && pip install -r requirements_dev.txt  
+          command: pip install --user -e . && pip install --user  -r requirements_dev.txt  
         
       - run: 
           name: Test
