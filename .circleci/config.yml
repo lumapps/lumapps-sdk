@@ -11,10 +11,8 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
-
-      - run:
-          name: Setting up venv
-          command: virtualenv env && echo "source env/bin/activate" >> $BASH_ENV
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
 
       - run:
           name: Build
@@ -38,10 +36,8 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
-
-      - run:
-          name: Setting up venv
-          command: virtualenv env && echo "source env/bin/activate" >> $BASH_ENV
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
 
       - run:
           name: Build
