@@ -23,6 +23,13 @@ jobs:
       - run: 
           name: Test
           command: pytest
+
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1
+
   
   build-test-27:
     docker: 
