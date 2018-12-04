@@ -11,9 +11,14 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
+
+      -run:
+          name: Setting up venv
+          command: virtualenv env && source env/bin/activate
+
       - run:
           name: Build
-          command: pip install --user -e . && pip install --user  -r requirements_dev.txt  
+          command: pip install -e . && pip install -r requirements_dev.txt  
 
       - run: 
           name: Test
@@ -26,9 +31,14 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
+
+      -run:
+          name: Setting up venv
+          command: virtualenv env && source env/bin/activate
+
       - run:
           name: Build
-          command: pip install --user -e . && pip install --user  -r requirements_dev.txt  
+          command: pip install -e . && pip install -r requirements_dev.txt  
         
       - run: 
           name: Test
