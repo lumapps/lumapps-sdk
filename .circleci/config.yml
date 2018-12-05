@@ -24,8 +24,8 @@ version: 2
           coverage report
           coverage html -d test-reports/coverage
           coverage xml -o test-reports/coverage.xml
-          echo $CIRCLE_JOB
-          bash <(curl -s https://codecov.io/bash) -F $CIRCLE_JOB 
+          echo $CIRCLE_NODE_INDEX
+          bash <(curl -s https://codecov.io/bash) -F 'Build - $CIRCLE_NODE_INDEX'
     
     # Doc
     - run:
