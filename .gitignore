@@ -3,6 +3,7 @@ lumapps_api_client/libs/
 *egg*
 *.pyc
 env
+env36
 
 documentation/build/
 .idea
