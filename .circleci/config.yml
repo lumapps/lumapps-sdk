@@ -28,6 +28,7 @@ version: 2
         command: |
           coverage run -m pytest
           coverage xml -o test-reports/coverage.xml
+          bash <(curl -s https://codecov.io/bash)
     
     - store_test_results:
         path: test-reports
