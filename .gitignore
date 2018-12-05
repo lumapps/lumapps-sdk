@@ -4,6 +4,7 @@ lumapps_api_client/libs/
 *.pyc
 coverage*
 htmlcov
+.coverage
 
 env
 env36
