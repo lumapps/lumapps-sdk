@@ -39,7 +39,7 @@ class User(object):
     USERS = []  # type: list[User]
 
     STATUS = {"LIVE": "enabled", "DISABLE": "disabled"}
-    STATUS_INV = {v: k for k, v in iter(STATUS.item())}
+    STATUS_INV = {v: k for k, v in iter(STATUS.items())}
 
     def __init__(self, api, customer="", email="", uid="", representation=None):
         # type: (ApiClient, str, str, str, dict) -> None
