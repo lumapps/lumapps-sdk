@@ -11,6 +11,7 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
+      - run: mkdir test-results
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
 
