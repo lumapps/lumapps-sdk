@@ -4,7 +4,7 @@
 #
 version: 2
 
-"-": &dockerbuild
+dockerbuild:
   steps:
     - checkout
     - run: sudo chown -R circleci:circleci /usr/local/bin
@@ -36,6 +36,32 @@ version: 2
         name: Doc test
         command: cd documentation && make clean doctest # generate output.txt file in documentation/build/doctest
 
+#deploy:
+    # Pypi deploy
+    # - run:
+    #     name: do
+    #     command: python setup.py verify
+
+    # - run:
+    #     name: init .pypirc
+    #     command: |
+    #       echo -e "[pypi]" >> ~/.pypirc
+    #       echo -e "username = aurelien" >> ~/.pypirc
+    #       echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+    
+    # - run:
+    #     name: create packages
+    #     command: |
+    #       python setup.py sdist
+    #       python setup.py bdist_wheel
+
+    # - run:
+    #     name: upload to pypi
+    #     command: |
+    #       . venv/bin/activate
+    #       twine upload dist/*
+      
+
 jobs:
   build-test-36:
     <<: *dockerbuild
@@ -55,6 +81,8 @@ workflows:
     jobs:
       - build-test-36
       - build-test-27
+      # -deploy:
+      #   requires: dockerbuild
 
 
 
