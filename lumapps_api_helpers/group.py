@@ -1,9 +1,6 @@
 import logging
 
-try:
-    from exceptions import NotAuthorizedException, BadRequestException, NotFoundException
-except ImportError:
-    from builtins import NotAuthorizedException, BadRequestException, NotFoundException
+from .exceptions import NotAuthorizedException, BadRequestException, NotFoundException
 from lumapps_api_client.lib import ApiClient
 from googleapiclient.errors import HttpError
 
