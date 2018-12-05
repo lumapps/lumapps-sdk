@@ -51,5 +51,3 @@ def test_reuse_api():
     assert api.get_call('user', 'get')['email'] == 'ivo@managemybudget.net'
 
 
-def test_fail():
-    assert False

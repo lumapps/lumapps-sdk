@@ -1,4 +1,6 @@
 pytest
+coverage
+pytest-cov
 flask
 sphinx
 sphinx-rtd-theme
