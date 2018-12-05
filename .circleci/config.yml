@@ -15,16 +15,26 @@ version: 2
         name: Build
         command: pip install -e . && pip install -r requirements_dev.txt  
     
-    # Test and coverage
+    # Tests
     - run: 
         name: Test and coverage
         command: |
           mkdir test-reports
-          coverage run pytest --junitxml=test-reports/junit.xml
+          coverage run -m pytest --junitxml=test-reports/junit.xml
           coverage report
           coverage html -o test-reports/coverage.html
           echo $CIRCLE_JOB
           bash <(curl -s https://codecov.io/bash) -F $CIRCLE_JOB 
+
+    # Coverage
+    - run:
+        name: Code coverage
+        command: |
+          coverage run -m pytest
+          coverage report
+          coverage xml -o test-reports/coverage.xml
+          echo $CIRCLE_JOB
+          bash <(curl -s https://codecov.io/bash) -F $CIRCLE_JOB # Upload to codecov.io (remove if not setup)
     
     # Doc
     - run:
