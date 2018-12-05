@@ -25,7 +25,7 @@ version: 2
           coverage html -d test-reports/coverage
           coverage xml -o test-reports/coverage.xml
           echo $CIRCLE_BUILD_NUM
-          bash <(curl -s https://codecov.io/bash) -cF 'Build - ${CIRCLE_BUILD_NUM}'
+          bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
     
     # Doc
     - run:
