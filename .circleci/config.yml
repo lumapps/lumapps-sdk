@@ -8,6 +8,7 @@ version: 2
   steps:
     - checkout
     - run: sudo chown -R circleci:circleci /usr/local/bin
+    - run: ls /usr/local/lib
 
     - run:
         name: Build
