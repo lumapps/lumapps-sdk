@@ -28,7 +28,7 @@ version: 2
     - store_artifacts:
         path: test-reports 
 
-s
+
 
     
     # Doc
