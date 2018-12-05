@@ -20,7 +20,7 @@ def setup_logger():
 
 
 def test_get_bearer_token():
-    with Path(AUTH_INFO_FILE).open() as fh:
+    with open(AUTH_INFO_FILE) as fh:
         auth_info = json.load(fh)
     api_client = ApiClient(auth_info)
     assert api_client.bearer_token is not None
