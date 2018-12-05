@@ -29,11 +29,3 @@ Welcome to Lumapps SDK's documentation!
    :caption: Contributing
 
    contributing
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search

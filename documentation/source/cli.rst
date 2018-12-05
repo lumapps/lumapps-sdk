@@ -15,8 +15,7 @@ Required parameters
       {
         "type": "service_account",
         "project_id": "gbl-imt-ve-lifepulse-dev",
-        "private_key_id": ...,
-        ...
+        "private_key_id": "..."
       }
 
 * Web auth

@@ -49,14 +49,14 @@ class Group(object):
         """Instantiate an empty group
 
         Args:
-            api: the ApiClient instance to use for requests
-            customer: the customer id of the group, used for autorization
-            instance: the instance id, if not defined the group is a customer group (platform level)
-            name: the group name
-            uid: the lumapps unique id of the group, generated automatically at the first save
-            remote_group:the remote email of the group (google group email for instance)
-            type: feed type id
-            representation: a dictionary of all group attributes from lumapps
+            api (object): the :class:`lumapps_api_client.lib.ApiClient` instance to use for requests
+            customer (str): the customer id of the group, used for autorization
+            instance (str): the instance id, if not defined the group is a customer group (platform level)
+            name (str): the group name
+            uid (str): the lumapps unique id of the group, generated automatically at the first save
+            remote_group (str): the remote email of the group (google group email for instance)
+            type (str): feed type id
+            representation (dict): a dictionary of all group attributes from lumapps
         """
 
         self._customer = customer if customer else api.customer
@@ -92,9 +92,6 @@ class Group(object):
         Args:
             attr: feed attribute key to save
             value: feed attribute value to save
-
-        Returns:
-            None
         """
 
         authorized_update_fields = (
@@ -120,7 +117,6 @@ class Group(object):
         Args:
             result: Lumapps Feed resource
             force: whether or no to override writable fields protection
-
         """
         for k, v in result.iteritems():
             self.set_attribute(k, v, force)
@@ -241,7 +237,7 @@ def save(api, group):
     """Save or update a group (= Feed in Lumapps wording)
 
     Args:
-        api: the ApiClient instance to use for requests
+        api: the :class:`lumapps_api_client.lib.ApiClient` instance to use for requests
         group: the group to save, requires at least a customer and name values
 
     Returns:
@@ -272,7 +268,7 @@ def delete(api, group):
     """Delete a group by uid
 
     Args:
-        api: the ApiClient instance to use for requests
+        api (:str:): the :class:`lumapps_api_client.lib.ApiClient` instance to use for requests
         group: the group to save, requires at least a customer and uuid values
 
     Returns:
@@ -445,7 +441,7 @@ def build_batch(api, groups):
     """A generator for User instances from raw Lumapps user Iterator
 
     Args:
-        api: the ApiClient instance to use for requests
+        api: the :class:`~ApiClient` instance to use for requests
         groups: list of dictionary
 
     Yields:
@@ -468,7 +464,7 @@ def list_types_sync(api, instance="", **params):
         ``**params``: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feedtype/list
 
     Returns:
-        list of Lumapps Feed resource
+        list of Lumapps Feed resourcess
     """
     if not params:
         params = dict()
