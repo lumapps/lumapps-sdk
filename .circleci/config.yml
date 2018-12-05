@@ -27,14 +27,8 @@ version: 2
         name: Code coverage
         command: |
           coverage run -m pytest
-          coverage xml -o test-reports/coverage.xml
-          bash <(curl -s https://codecov.io/bash)
-    
-    - store_test_results:
-        path: test-reports
-
-    - store_artifacts:
-        path: test-reports 
+          coverage report
+          bash <(curl -s https://codecov.io/bash) 
     
     # Doc
     - run:
