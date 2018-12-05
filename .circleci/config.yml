@@ -20,7 +20,7 @@ version: 2
 
     - run:
         name: Doc
-        command: documentation/make clean html
+        command: cd documentation && make clean html
 jobs:
   build-test-36:
     <<: *dockerbuild
