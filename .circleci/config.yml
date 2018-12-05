@@ -38,7 +38,7 @@ version: 2
 
     - run:
         name: Doc test
-        command: cd documentation && make doctest # generate output.txt file in documentation/build/doctest
+        command: cd documentation && make clean doctest # generate output.txt file in documentation/build/doctest
 
 jobs:
   build-test-36:
