@@ -1,6 +1,6 @@
 
 [run]
- omit =
+omit =
     env/*
     env36/*
     /usr/local/
