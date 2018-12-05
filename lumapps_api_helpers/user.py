@@ -39,7 +39,7 @@ class User(object):
     USERS = []  # type: list[User]
 
     STATUS = {"LIVE": "enabled", "DISABLE": "disabled"}
-    STATUS_INV = {v: k for k, v in STATUS.iteritems()}
+    STATUS_INV = {v: k for k, v in iter(STATUS.item())}
 
     def __init__(self, api, customer="", email="", uid="", representation=None):
         # type: (ApiClient, str, str, str, dict) -> None
@@ -148,7 +148,7 @@ class User(object):
         self._uid = result.get("uid")
         self._id = result.get("id")
 
-        for k, v in result.iteritems():
+        for k, v in iter(result.items()):
             self.set_attribute(k, v, force)
 
     def get(self):
@@ -303,7 +303,7 @@ class User(object):
 
         user = dict(
             (k[1:], v)
-            for k, v in vars(self).iteritems()
+            for k, v in iter(vars(self).items())
             if k[0] == "_" and k[1:] not in ignore_fields and v is not None
         )
 
