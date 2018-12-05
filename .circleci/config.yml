@@ -27,8 +27,9 @@ version: 2
         name: Code coverage
         command: |
           coverage run -m pytest
-          coverage report
-          bash <(curl -s https://codecov.io/bash) 
+          coverage report-reports/coverage.xml
+          coverage xml -o test
+          bash <(curl -s https://codecov.io/bash) -cF $CIRCLE_BUILD_NUM # Upload to codecov.io (remove if not setup)
     
     # Doc
     - run:
