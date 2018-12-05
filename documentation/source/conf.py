@@ -42,9 +42,15 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinxcontrib.napoleon'
+    'sphinxcontrib.napoleon',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.doctest'
 ]
 
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'python': ('https://docs.python.org/2.7', None),
+}
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -160,3 +166,6 @@ texinfo_documents = [
 
 
 # -- Extension configuration -------------------------------------------------
+
+nitpicky = True
+nitpick_ignore=[('py:class', 'type'), ('py:class', 'list'), ('py:class', 'Dict')]

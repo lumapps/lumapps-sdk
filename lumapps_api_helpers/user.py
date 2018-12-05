@@ -102,9 +102,9 @@ class User(object):
         """
 
         Args:
-            attr (str, str): feed attribute key to save
+            attr (str,str): feed attribute key to save
             value (int): feed attribute value to save
-            force (boolean): whether to force the storage of the attribute
+            force (bool): whether to force the storage of the attribute
 
         """
         if attr == "status":

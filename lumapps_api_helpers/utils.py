@@ -47,7 +47,7 @@ def nested_findall(key, dict_or_list):
 
     Args:
         key (str): The key to search
-        dict_or_list (list[Dict[str|Dict|list]]): The dictionary/list of dictionaries to look into
+        dict_or_list (list[Dict[str or Dict or list]]): The dictionary/list of dictionaries to look into
 
     Yields:
         a generator where elements are elements of the dict with the searched key

@@ -49,7 +49,7 @@ class Group(object):
         """Instantiate an empty group
 
         Args:
-            api (object): the :class:`lumapps_api_client.lib.ApiClient` instance to use for requests
+            api (object): the ApiClient instance to use for requests
             customer (str): the customer id of the group, used for autorization
             instance (str): the instance id, if not defined the group is a customer group (platform level)
             name (str): the group name
@@ -237,7 +237,7 @@ def save(api, group):
     """Save or update a group (= Feed in Lumapps wording)
 
     Args:
-        api: the :class:`lumapps_api_client.lib.ApiClient` instance to use for requests
+        api: the ApiClient instance to use for requests
         group: the group to save, requires at least a customer and name values
 
     Returns:
@@ -268,7 +268,7 @@ def delete(api, group):
     """Delete a group by uid
 
     Args:
-        api (:str:): the :class:`lumapps_api_client.lib.ApiClient` instance to use for requests
+        api (str): the ApiClient instance to use for requests
         group: the group to save, requires at least a customer and uuid values
 
     Returns:
@@ -441,7 +441,7 @@ def build_batch(api, groups):
     """A generator for User instances from raw Lumapps user Iterator
 
     Args:
-        api: the :class:`~ApiClient` instance to use for requests
+        api: the ApiClient instance to use for requests
         groups: list of dictionary
 
     Yields:
