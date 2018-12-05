@@ -33,7 +33,13 @@ version: 2
         name: Code coverage
         command: |
           coverage run -m pytest
-          coverage report
+          coverage xml -d test-reports/coverage.xml
+    
+    - store_test_results:
+        path: test-reports
+
+    - store_artifacts:
+        path: test-reports 
     
     # Doc
     - run:
