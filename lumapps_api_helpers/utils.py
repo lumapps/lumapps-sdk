@@ -4,11 +4,7 @@ import os
 
 from functools import partial
 from operator import itemgetter
-from itertools import groupby
-try:
-    from itertools import ifilter
-except ImportError:
-    from builtins import filter as ifilter
+from itertools import groupby, ifilter
 
 try:
     import unicodecsv as csv

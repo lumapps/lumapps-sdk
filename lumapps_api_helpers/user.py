@@ -1,6 +1,6 @@
 import logging
 from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.exceptions import NotAuthorizedException, BadRequestException
+from exceptions import NotAuthorizedException, BadRequestException
 from googleapiclient.errors import HttpError
 
 
@@ -39,7 +39,7 @@ class User(object):
     USERS = []  # type: list[User]
 
     STATUS = {"LIVE": "enabled", "DISABLE": "disabled"}
-    STATUS_INV = {v: k for k, v in STATUS.items()}
+    STATUS_INV = {v: k for k, v in STATUS.iteritems()}
 
     def __init__(self, api, customer="", email="", uid="", representation=None):
         # type: (ApiClient, str, str, str, dict) -> None
