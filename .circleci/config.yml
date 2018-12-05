@@ -3,49 +3,29 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
 version: 2
+
+"-": &dockerbuild
+  steps:
+    - checkout
+    - run: sudo chown -R circleci:circleci /usr/local/bin
+
+    - run:
+        name: Build
+        command: pip install -e . && pip install -r requirements_dev.txt  
+
+    - run: 
+        name: Test
+        command: pytest
 jobs:
   build-test-36:
-    docker: 
+    <<: *dockerbuild
+    docker:
       - image: circleci/python:3.6
-    
-    working_directory: ~/lumapps-sdk
-    steps:
-      - checkout
-      - run: mkdir test-results
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
 
-      - run:
-          name: Build
-          command: pip install -e . && pip install -r requirements_dev.txt  
-
-      - run: 
-          name: Test
-          command: pytest --junitxml=test-results/junit.xml
-
-      - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results
-
-  
   build-test-27:
-    docker: 
+    <<: *dockerbuild
+    docker:
       - image: circleci/python:2.7
-
-    working_directory: ~/lumapps-sdk
-    steps:
-      - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
-
-      - run:
-          name: Build
-          command: pip install -e . && pip install -r requirements_dev.txt  
-        
-      - run: 
-          name: Test
-          command: pytest
 
 
 workflows:
