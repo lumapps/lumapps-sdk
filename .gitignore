@@ -2,7 +2,6 @@ lumapps_api_client/libs/
 .pytest_cache
 *egg*
 *.pyc
-.coverage*
 coverage*
 htmlcov
 
