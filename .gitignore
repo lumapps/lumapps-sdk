@@ -2,12 +2,19 @@ lumapps_api_client/libs/
 .pytest_cache
 *egg*
 *.pyc
+
+# Vscode
+.vscode
+
+# Coverage
 coverage*
 htmlcov
 .coverage
 
+# Venv
 env
 env36
 
+# Doc
 documentation/build/
 .idea

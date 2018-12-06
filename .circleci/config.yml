@@ -4,7 +4,7 @@
 #
 version: 2
 
-dockerbuild:
+"-": &dockerbuild
   steps:
     - checkout
     - run: sudo chown -R circleci:circleci /usr/local/bin
@@ -36,7 +36,7 @@ dockerbuild:
         name: Doc test
         command: cd documentation && make clean doctest # generate output.txt file in documentation/build/doctest
 
-#deploy:
+#"-": &deploy
     # Pypi deploy
     # - run:
     #     name: do
@@ -82,7 +82,7 @@ workflows:
       - build-test-36
       - build-test-27
       # -deploy:
-      #   requires: dockerbuild
+      #   requires: build-test-36
 
 
 
