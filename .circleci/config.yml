@@ -1,41 +1,36 @@
-yaml
 version: 2.1
 executors:
-  python:
+  xenial:
     parameters:
-      tag:
+      some-value:
         type: string
-        default: latest
+        default: foo
+    environment:
+      SOME_VAR: << parameters.some-value >>
     docker:
-      - image: circleci/python:<< parameters.tag >>
+      - image: ubuntu:xenial
+  bionic:
+    docker:
+      - image: ubuntu:bionic
 
 jobs:
-  build:
+  test:
     parameters:
       e:
         type: executor
     executor: << parameters.e >>
     steps:
-      # - restore_cache:
-      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
-      - run: pip install -e .
-      # - save_cache:
-      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
-      #     paths:
-      #       - "~/.cache/pip"
-      #       - "/usr/local/lib/python<< parameters.tag >>/site-packges"
-      #       - "/usr/local/lib/site-python"
+      - run: echo "Hello"
+      - run: echo $SOMEVAR
+
+workflows:
+  workflow:
+    jobs:
+      - test:
+          e: bionic
+      - test:
+          e:
+            name: xenial
+            some-value: foobar
 
 
-  workflows:
-    version: 2.1
-    
-    workflow:
-      jobs:
-        - build:
-            e:
-              name: python
-              tag: 2.7
-
-
-          
