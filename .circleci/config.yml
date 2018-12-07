@@ -14,7 +14,7 @@ jobs:
       e:
         type: executor
     executor: << parameters.e >>
-    working_directory: /root/lumapps-sdk
+    working_directory: ~/lumapps-sdk
     steps:
       - checkout
       # - restore_cache:
