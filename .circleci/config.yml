@@ -32,13 +32,23 @@ jobs:
             - "/usr/local/lib/python<< parameters.version >>/site-packges"
             - "/usr/local/lib/site-python"
 
+  # test:
+
+  # doc:
+
 
 workflows:
   version: 2.1
   
-  workflow:
+  workflow-python27:
     jobs:
       - build:
           version: "2.7"
+
+    
+  workflow-python36:
+    jobs:
+      - build:
+          version: "3.6"
 
 
