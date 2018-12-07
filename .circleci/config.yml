@@ -59,13 +59,13 @@ workflows:
 
   python27-workflow:
     jobs:
-      - build
+      - build-27
       # - test
       # - doc
 
   python36-workflow:
     jobs:
-      - build
+      - build-36
       # - code-formatting
       # - test
       # - doc
