@@ -124,7 +124,7 @@ workflows:
           name: "Building documentation"
           version: "2.7"
           requires:
-            - "Test and coverage"
+            - "Test and coverage 2.7"
 
       - build:
           name: "Build 3.6"
