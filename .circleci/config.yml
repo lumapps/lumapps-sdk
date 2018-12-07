@@ -14,26 +14,35 @@ jobs:
       e:
         type: executor
     executor: << parameters.e >>
+    working_directory: /root/lumapps-sdk
     steps:
-      # - restore_cache:
-      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
+      - checkout
+      - restore_cache:
+          key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
       - run: pip install -e .
-      # - save_cache:
-      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
-      #     paths:
-      #       - "~/.cache/pip"
-      #       - "/usr/local/lib/python<< parameters.tag >>/site-packges"
-      #       - "/usr/local/lib/site-python"
+      - save_cache:
+          key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
+          paths:
+            - "~/.cache/pip"
+            - "/usr/local/lib/python<< parameters.tag >>/site-packges"
+            - "/usr/local/lib/site-python"
 
 
 workflows:
   version: 2.1
   
-  workflow:
+  workflow-python27:
     jobs:
       - build:
           e:
             name: python
             tag: "2.7"
+
+  workflow-python36:
+    jobs:
+      - build:
+          e:
+            name: python
+            tag: "3.6"
 
 
