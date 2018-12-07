@@ -64,9 +64,6 @@ jobs:
           command: coverage run -m pytest
   
   code-formatting:
-    parameters:
-      version:
-        type: string
     executor:
       name: python
       version: "3.6"
