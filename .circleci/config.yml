@@ -2,7 +2,7 @@
 aliases:
   - &test
     - checkout
-    - run python --version
+    - run: python --version
 
 dockerbuild: &dockerbuild
   steps:
