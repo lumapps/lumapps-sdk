@@ -25,7 +25,7 @@ commands:
         type: string
     steps:
       - setup:
-        version: << parameters.version >>
+          version: << parameters.version >>
       - restore_cache:
           key: python<< parameters.version >>-requirements-{{ checksum "requirements.txt" }}
       - run: pip install -e .
