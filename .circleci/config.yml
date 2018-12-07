@@ -69,7 +69,7 @@ jobs:
       - run:
           name: Run tests
           command: coverage run -m pytest && coverage report
-      -run:
+      - run:
           name: Upload to codecov
           command: bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
   
