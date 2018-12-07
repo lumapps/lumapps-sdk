@@ -86,8 +86,8 @@ workflows:
     jobs:
       - build-36 
       - doc:
-        requires: 
-          - build-36
+          requires: 
+            - build-36
       # - code-formatting
       # - test
       # - doc
