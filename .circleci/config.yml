@@ -6,7 +6,7 @@ executors:
         type: string
         default: lastest
     docker:
-      - image: python:<< parameters.version >>
+      - image: circleci/python:<< parameters.version >>
 
 jobs:
   build:
