@@ -69,6 +69,8 @@ jobs:
       version: "3.6"
     working_directory: ~/lumapps-sdk
     steps:
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6
       - run:
           name: Install black
           command: pip install black
@@ -76,6 +78,23 @@ jobs:
           name: Formatting
           command: black .
 
+    documentation:
+      parameters:
+        version:
+          type: string
+      executor:
+        name: python
+        version: << parameters.version >>
+      working_directory: ~/lumapps-sdk
+      steps:
+        - run: sudo chown -R circleci:circleci /usr/local/bin
+        - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6
+        - run:
+            name: Install dependencies
+            command: pip install -r requirements_dev.txt
+        - run:
+            name: build documentation
+            run: cd documentation && make clean html
 
 workflows:
   version: 2.1
@@ -109,5 +128,11 @@ workflows:
           name: "Code formatting"
           requires:
               - "Test and coverage"
+      
+      - documentation:
+          name: "Building documentation"
+          version: "3.6"
+          requires:
+            - "Code formatting"
 
 
