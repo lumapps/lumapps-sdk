@@ -33,7 +33,7 @@ jobs:
         - build:
             e:
               name: python
-              tag: "2.7"
+              tag: 2.7
 
 
           
