@@ -18,7 +18,7 @@ version: 2
     # Code formatting
     - run:
         name: Code formatting
-        command: python3 --version
+        command: python3 --version && python --version
     
     # Tests
     - run: 
