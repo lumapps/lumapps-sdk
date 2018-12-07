@@ -1,36 +1,39 @@
 version: 2.1
 executors:
-  xenial:
+  python:
     parameters:
-      some-value:
+      tag:
         type: string
-        default: foo
-    environment:
-      SOME_VAR: << parameters.some-value >>
+        default: latest
     docker:
-      - image: ubuntu:xenial
-  bionic:
-    docker:
-      - image: ubuntu:bionic
+      - image: circleci/python:<< parameters.tag >>
 
 jobs:
-  test:
+  build:
     parameters:
       e:
         type: executor
     executor: << parameters.e >>
     steps:
-      - run: echo "Hello"
-      - run: echo $SOMEVAR
+      # - restore_cache:
+      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
+      - run: pip install -e .
+      # - save_cache:
+      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
+      #     paths:
+      #       - "~/.cache/pip"
+      #       - "/usr/local/lib/python<< parameters.tag >>/site-packges"
+      #       - "/usr/local/lib/site-python"
+
 
 workflows:
+  version: 2.1
+  
   workflow:
     jobs:
-      - test:
-          e: bionic
-      - test:
+      - build:
           e:
-            name: xenial
-            some-value: foobar
+            name: python
+            tag: 2.7
 
 
