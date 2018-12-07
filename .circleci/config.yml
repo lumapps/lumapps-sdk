@@ -43,8 +43,7 @@ dockerbuild: &dockerbuild
 
 jobs:
   build-test-36:
-    <<: *dockerbuild
-    <<: *test
+    <<: [*dockerbuild, *test]
     docker:
       - image: circleci/python:3.6
 
