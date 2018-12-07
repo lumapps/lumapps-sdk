@@ -29,7 +29,7 @@ jobs:
           key: python<< parameters.version >>-requirements-{{ checksum "requirements.txt" }}
           paths:
             - "~/.cache/pip"
-            - "/usr/local/lib/python<< parameters.tag >>/site-packges"
+            - "/usr/local/lib/python<< parameters.version >>/site-packges"
             - "/usr/local/lib/site-python"
 
 
