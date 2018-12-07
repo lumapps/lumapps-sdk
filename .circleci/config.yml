@@ -99,7 +99,7 @@ workflows:
   workflow-python36:
     jobs:
       - build:
-          name: "Build 3.6"
+          name: "Build"
           version: "3.6"
       
       - test-and-coverage:
