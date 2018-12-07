@@ -94,7 +94,7 @@ jobs:
           command: pip install -r requirements_dev.txt
       - run:
           name: build documentation
-          run: cd documentation && make clean html
+          command: cd documentation && make clean html
 
 workflows:
   version: 2.1
