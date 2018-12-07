@@ -53,15 +53,15 @@ jobs:
         name: python
         version: << parameters.version >>
       working_directory: ~/lumapps-sdk
-      steps:
-        - checkout-and-install:
-            version: << parameters.version >>
-        - run: 
-            name: Install test and coverage librairies
-            command: pip install pytest coverage
-        - run:
-            name: Run tests
-            command: coverage run -m pytest
+    steps:
+      - checkout-and-install:
+          version: << parameters.version >>
+      - run: 
+          name: Install test and coverage librairies
+          command: pip install pytest coverage
+      - run:
+          name: Run tests
+          command: coverage run -m pytest
   # doc:
 
 
