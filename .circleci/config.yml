@@ -1,12 +1,24 @@
 
 aliases:
-  - &build
+  - &build-tests
     - checkout
     - run: sudo chown -R circleci:circleci /usr/local/bin
     - run: sudo chown -R circleci:circleci /usr/local/lib/python*
     - run:
         name: Build
-        command: pip install -e . && pip install -r requirements_dev.txt  
+        command: pip install -e . && pip install -r requirements_dev.txt
+
+    # # Tests
+    # - run: 
+    #     name: Test and coverage
+    #     command: |
+    #       mkdir test-reports
+    #       coverage run -m pytest --junitxml=test-reports/junit.xml
+    #       coverage report
+    #       coverage html -d test-reports/coverage
+    #       coverage xml -o test-reports/coverage.xml
+    #       echo $CIRCLE_BUILD_NUM
+    #       bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
 
 #   - &code-formatting
 
@@ -53,6 +65,12 @@ jobs:
       - image: circleci/python:2.7
     steps: *build
 
+  doc:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - run: ls -lt
+
 
 workflows:
   version: 2
@@ -60,12 +78,14 @@ workflows:
   python27-workflow:
     jobs:
       - build-27
+      - doc
       # - test
       # - doc
 
   python36-workflow:
     jobs:
-      - build-36
+      - build-36 doc
+      - doc
       # - code-formatting
       # - test
       # - doc
