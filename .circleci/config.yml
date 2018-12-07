@@ -3,7 +3,7 @@ version: 2
 
 jobs:
 
-  code-fomatting:
+  code-formatting:
     steps:
       - run: pip install black
       - run: black .
