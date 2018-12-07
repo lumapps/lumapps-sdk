@@ -3,10 +3,11 @@
 Common exceptions used server-side
 """
 import logging
+
 try:
     import httplib
 except ImportError:
-    import http.client as httplib 
+    import http.client as httplib
 
 
 class CustomException(Exception):

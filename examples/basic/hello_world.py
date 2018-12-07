@@ -1,10 +1,10 @@
 from lumapps_api_client.lib import ApiClient
 from __init__ import BEARER
 
+
 def run_hello_world():
     user_email = "salah@managemybudget.net"
     api = ApiClient(token=BEARER)
-
 
     if api.token:
         print("Your api token is {}".format(api.token))
@@ -12,7 +12,6 @@ def run_hello_world():
 
         print("Hello {}".format(usr.get("fullName", "")))
 
+
 if __name__ == "__main__":
     run_hello_world()
-
-

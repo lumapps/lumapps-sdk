@@ -1,4 +1,3 @@
-
 """
 You can obtain your token by logging to your Lumapps account.
 Go to https://sites.lumapps.com and authentificate.
