@@ -18,7 +18,7 @@ version: 2
     # Code formatting
     - run:
         name: Code formatting
-        command: apt-get update && apt-get install python3.6 && python3 --version && python --version
+        command: sudo apt-get update && sudo apt-get install python3.6 && python3 --version && python --version
     
     # Tests
     - run: 
