@@ -62,7 +62,22 @@ jobs:
       - run:
           name: Run tests
           command: coverage run -m pytest
-  # doc:
+  
+  code-formatting:
+    parameters:
+      version:
+        type: string
+    executor:
+      name: python
+      version: "3.6"
+    working_directory: ~/lumapps-sdk
+    steps:
+      - run:
+          name: Install black
+          command: pip install black
+      - run:
+          name: Formatting
+          command: black .
 
 
 workflows:
@@ -71,14 +86,14 @@ workflows:
   workflow-python27:
     jobs:
       - build:
-          name: "Build 2.7"
+          name: "Build"
           version: "2.7"
       
       - test-and-coverage:
-          name: "Test-Coverage 2.7"
+          name: "Test-Coverage"
           version: "2.7"
           requires:
-            - "Build 2.7"
+            - "Build"
  
     
   workflow-python36:
@@ -86,5 +101,16 @@ workflows:
       - build:
           name: "Build 3.6"
           version: "3.6"
+      
+      - test-and-coverage:
+          name: "Test and coverage"
+          version: "3.6"
+          requires:
+            - "Build"
+
+      - code-formatting:
+          name: "Code formatting"
+          requires:
+              - "Test and coverage"
 
 
