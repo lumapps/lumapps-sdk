@@ -1,6 +1,7 @@
 
 test: &test
-  - run: python --version
+  run: python --version
+  run: echo "fin"
 
 dockerbuild: &dockerbuild
   steps:
