@@ -1,7 +1,4 @@
 
-references:
-
-
 
 dockerbuild: &dockerbuild
   - checkout
@@ -40,18 +37,20 @@ dockerbuild: &dockerbuild
       name: Doc build
       command: cd documentation && make clean html 
 
-jobs:
-  build-test-36:
-    docker:
-      - image: circleci/python:3.6
-    steps:
-        <<: *dockerbuild
+
+build-test-36:
+  <<: *dockerbuild
+  docker:
+    - image: circleci/python:3.6
+  steps:
+    - run: python --version
 
 
-  build-test-27:
-    <<: *dockerbuild
-    docker:
-      - image: circleci/python:2.7
+
+build-test-27:
+  <<: *dockerbuild
+  docker:
+    - image: circleci/python:2.7
 
 
 workflows:
