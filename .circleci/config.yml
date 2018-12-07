@@ -86,7 +86,7 @@ jobs:
           command: pip install black
       - run:
           name: Formatting
-          command: black .
+          command: black --check .
 
   documentation:
     parameters:
