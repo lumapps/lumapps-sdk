@@ -77,7 +77,9 @@ workflows:
       - test-and-coverage:
           name: "Test-Coverage 2.7"
           version: "2.7"
-
+          requires:
+            - build
+ 
     
   workflow-python36:
     jobs:
