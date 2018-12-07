@@ -6,8 +6,6 @@ jobs:
       tag:
         type: string
         default: latest
-      myspecialvar:
-        type: string
     docker:
       - image: circleci/python:<< parameters.tag >>
     steps:
@@ -23,9 +21,7 @@ jobs:
 
 
   workflows:
-    version: 2.1
-
-    truc:
+    build:
       jobs:
         - python:
             tag: "2.7"
