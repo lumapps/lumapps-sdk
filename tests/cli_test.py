@@ -4,54 +4,26 @@ import pytest
 
 
 def test_pop_matches():
-    d = {
-        'a': 1,
-        'b': {
-            'c': 2,
-            'd': {
-                'e': 3
-            }
-        },
-        'z': 33
-    }
+    d = {"a": 1, "b": {"c": 2, "d": {"e": 3}}, "z": 33}
 
     d2 = deepcopy(d)
-    pth = 'b/d/e'
+    pth = "b/d/e"
     pop_matches(pth, d2)
-    assert d2 == {
-        'a': 1,
-        'b': {
-            'c': 2,
-            'd': {}
-        },
-        'z': 33
-    }
+    assert d2 == {"a": 1, "b": {"c": 2, "d": {}}, "z": 33}
 
     d2 = deepcopy(d)
-    pth = 'b'
+    pth = "b"
     pop_matches(pth, d2)
-    assert d2 == {
-        'a': 1,
-        'z': 33
-    }
+    assert d2 == {"a": 1, "z": 33}
 
     d2 = deepcopy(d)
-    pth = ''
+    pth = ""
     pop_matches(pth, d2)
-    assert d2 == {
-        'a': 1,
-        'b': {
-            'c': 2,
-            'd': {
-                'e': 3
-            }
-        },
-        'z': 33
-    }
+    assert d2 == {"a": 1, "b": {"c": 2, "d": {"e": 3}}, "z": 33}
 
 
 def test_load_config():
     with pytest.raises(SystemExit):
         api_info, auth_info, user = load_config(
-            None, None, 'ivo@managemybudget.net', 'mmb')
-    
+            None, None, "ivo@managemybudget.net", "mmb"
+        )
