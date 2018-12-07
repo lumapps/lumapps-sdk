@@ -1,13 +1,20 @@
 version: 2.1
 
-jobs:
+executors:
   python:
     parameters:
       tag:
         type: string
         default: latest
-    docker: true
+    docker:
       - image: circleci/python:<< parameters.tag >>
+
+jobs:
+  build:
+    parameters:
+      e:
+        type: executor
+    executor: << parameters.e >>
     steps:
       - restore_cache:
           key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
@@ -21,10 +28,12 @@ jobs:
 
 
   workflows:
-    build:
+    workflow-python27:
       jobs:
-        - python:
-            tag: "2.7"
+        - build:
+            e:
+              name: python
+              tag: "2.7"
 
 
           
