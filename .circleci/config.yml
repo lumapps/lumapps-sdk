@@ -112,7 +112,7 @@ workflows:
           version: "2.7"
       
       - test-and-coverage:
-          name: "Test-Coverage"
+          name: "Test and coverage"
           version: "2.7"
           requires:
             - "Build"
@@ -121,7 +121,7 @@ workflows:
           name: "Building documentation"
           version: "2.7"
           requires:
-            - "Code formatting"
+            - "Test and coverage"
  
     
   workflow-python36:
