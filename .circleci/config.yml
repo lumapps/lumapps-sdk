@@ -20,6 +20,7 @@ jobs:
       # - restore_cache:
       #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
       - run: pip install -e .
+      - run: "echo << parameters.e >>""
       # - save_cache:
       #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
       #     paths:
