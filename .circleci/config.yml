@@ -5,14 +5,14 @@ jobs:
 
   build-python27:
     docker:
-      - image: circleci/python2.7
+      - image: circleci/python:2.7
     steps:
       - checkout
       - run: python --version
 
   build-python36:
     docker:
-      - image: circleci/python3.6
+      - image: circleci/python:3.6
     steps:
       - checkout
       - run: python --version
