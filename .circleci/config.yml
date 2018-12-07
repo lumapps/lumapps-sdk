@@ -93,7 +93,7 @@ jobs:
       name: python
       version: << parameters.version >>
     steps:
-      - setup:
+      - install-and-cache:
           version: << parameters.version >>
       - run:
           name: Install dependencies
@@ -116,6 +116,12 @@ workflows:
           version: "2.7"
           requires:
             - "Build"
+      
+      - documentation:
+          name: "Building documentation"
+          version: "2.7"
+          requires:
+            - "Code formatting"
  
     
   workflow-python36:
