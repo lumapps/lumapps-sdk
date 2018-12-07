@@ -126,6 +126,7 @@ workflows:
           requires:
             - "Test and coverage 2.7"
 
+      # Python 3.6
       - build:
           name: "Build 3.6"
           version: "3.6"
@@ -135,6 +136,17 @@ workflows:
           version: "3.6"
           requires:
             - "Build 3.6"
+
+      - code-formatting:
+          name: "Code formatting"
+          requires:
+              - "Test and coverage 3.6"
+      
+      - documentation:
+          name: "Building documentation"
+          version: "3.6"
+          requires:
+            - "Test and coverage 3.6"
  
     
   workflow-python36:
