@@ -3,6 +3,11 @@ version: 2
 
 jobs:
 
+  code-fomatting:
+    steps:
+      - run: pip install black
+      - run: black .
+
   build-python27:
     docker:
       - image: circleci/python:2.7
@@ -15,7 +20,9 @@ jobs:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: python --version
+      -     - run:
+        name: Build
+        command: pip install -e . && pip install -r requirements_dev.txt  
 
 
 workflows:
@@ -28,6 +35,7 @@ workflows:
   python36:
     jobs:
       - build-python36
+      - code-formatting
 
 
 
