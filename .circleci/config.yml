@@ -1,99 +1,42 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
+
 version: 2
 
-"-": &dockerbuild
-  steps:
-    - checkout
-    - run: sudo chown -R circleci:circleci /usr/local/bin
-    - run: sudo chown -R circleci:circleci /usr/local/lib/python*
-
-    # Build
-    - run:
-        name: Build
-        command: pip install -e . && pip install -r requirements_dev.txt  
-
-    # Code formatting
-    - run:
-        name: Code formatting
-        command: |
-          sudo apt-get install -y software-properties-common
-          sudo add-apt-repository -y ppa:deadsnakes/ppa 
-          sudo apt-get update
-          sudo apt-get -y install python3.6 
-          python3 --version && python --version
-    
-    # Tests
-    - run: 
-        name: Test and coverage
-        command: |
-          mkdir test-reports
-          coverage run -m pytest --junitxml=test-reports/junit.xml
-          coverage report
-          coverage html -d test-reports/coverage
-          coverage xml -o test-reports/coverage.xml
-          echo $CIRCLE_BUILD_NUM
-          bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
-    
-    # Doc
-    - run:
-        name: Doc build
-        command: cd documentation && make clean html 
-
-    - run:
-        name: Doc test
-        command: cd documentation && make clean doctest # generate output.txt file in documentation/build/doctest
-
-#"-": &deploy
-    # Pypi deploy
-    # - run:
-    #     name: do
-    #     command: python setup.py verify
-
-    # - run:
-    #     name: init .pypirc
-    #     command: |
-    #       echo -e "[pypi]" >> ~/.pypirc
-    #       echo -e "username = aurelien" >> ~/.pypirc
-    #       echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-    
-    # - run:
-    #     name: create packages
-    #     command: |
-    #       python setup.py sdist
-    #       python setup.py bdist_wheel
-
-    # - run:
-    #     name: upload to pypi
-    #     command: |
-    #       . venv/bin/activate
-    #       twine upload dist/*
-      
-
 jobs:
-  build-test-36:
-    <<: *dockerbuild
-    docker:
-      - image: circleci/python:3.6
 
-  build-test-27:
-    <<: *dockerbuild
+  build-python27:
     docker:
-      - image: circleci/python:2.7
+      - image: circleci/python2.7
+    steps:
+      - checkout
+      - run: python --version
+
+  build-python36:
+    docker:
+      - image: circleci/python3.6
+    steps:
+      - checkout
+      - run: python --version
 
 
 workflows:
   version: 2
 
-  build-test:
+  python27:
     jobs:
-      - build-test-36
-      - build-test-27
-      # -deploy:
-      #   requires: build-test-36
+      - build-python27
+
+  python36:
+    jobs:
+      - build-python36
 
 
 
-          
+
+
+
+
+
+
+
+
+
