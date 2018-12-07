@@ -13,14 +13,15 @@ jobs:
     parameters:
       e:
         type: executor
-    executor: << parameters.e >>
+    executor: 
+      - name: << parameters.name >>
+      - tag: << parameters.tag >>
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
       # - restore_cache:
       #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
-      - run: pip install -e .
-      - run: "echo << parameters.e >>""
+      #- run: pip install -e .
       # - save_cache:
       #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
       #     paths:
@@ -35,8 +36,7 @@ workflows:
   workflow:
     jobs:
       - build:
-          e:
-            name: python
-            tag: "2.7"
+          name: python
+          tag: "2.7"
 
 
