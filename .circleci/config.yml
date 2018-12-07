@@ -43,6 +43,7 @@ workflows:
   workflow-python27:
     jobs:
       - build:
+          name: "truc"
           version: "2.7"
 
     
