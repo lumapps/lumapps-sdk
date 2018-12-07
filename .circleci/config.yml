@@ -20,7 +20,7 @@ jobs:
       - image: circleci/python:3.6
     steps:
       - checkout
-      -     - run:
+      - run:
         name: Build
         command: pip install -e . && pip install -r requirements_dev.txt  
 
