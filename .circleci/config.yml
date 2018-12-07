@@ -51,7 +51,7 @@ jobs:
         type: string
       executor:
         name: python
-        version: <<parameters.version >>
+        version: << parameters.version >>
       working_directory: ~/lumapps-sdk
       steps:
         - checkout-and-install:
@@ -72,6 +72,10 @@ workflows:
     jobs:
       - build:
           name: "Build 2.7"
+          version: "2.7"
+      
+      - test-and-coverage:
+          name: "Test-Coverage 2.7"
           version: "2.7"
 
     
