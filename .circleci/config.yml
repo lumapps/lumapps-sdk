@@ -19,16 +19,18 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
-      # - restore_cache:
-      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
-      #- run: pip install -e .
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python<< parameters.version >>
+      - restore_cache:
+          key: python<< parameters.version >>-requirements-{{ checksum "requirements.txt" }}
+      - run: pip install -e .
       - run: python --version
-      # - save_cache:
-      #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
-      #     paths:
-      #       - "~/.cache/pip"
-      #       - "/usr/local/lib/python<< parameters.tag >>/site-packges"
-      #       - "/usr/local/lib/site-python"
+      - save_cache:
+          key: python<< parameters.version >>-requirements-{{ checksum "requirements.txt" }}
+          paths:
+            - "~/.cache/pip"
+            - "/usr/local/lib/python<< parameters.tag >>/site-packges"
+            - "/usr/local/lib/site-python"
 
 
 workflows:
