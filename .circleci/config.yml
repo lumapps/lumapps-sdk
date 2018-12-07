@@ -1,96 +1,34 @@
-
-aliases:
-  - &build
-    - checkout
-    - run: sudo chown -R circleci:circleci /usr/local/bin
-    - run: sudo chown -R circleci:circleci /usr/local/lib/python*
-    - run:
-        name: Build
-        command: pip install -e . && pip install -r requirements_dev.txt
-
-    # # Tests
-    # - run: 
-    #     name: Test and coverage
-    #     command: |
-    #       mkdir test-reports
-    #       coverage run -m pytest --junitxml=test-reports/junit.xml
-    #       coverage report
-    #       coverage html -d test-reports/coverage
-    #       coverage xml -o test-reports/coverage.xml
-    #       echo $CIRCLE_BUILD_NUM
-    #       bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
-
-#   - &code-formatting
-
-#   - &Tests
-
-#   - 
-
-# dockerbuild: &dockerbuild
-#   steps:
-#     - checkout
-#     - run: sudo chown -R circleci:circleci /usr/local/bin
-#     - run: sudo chown -R circleci:circleci /usr/local/lib/python*
-
-#     # Build
-#     - run:
-#         name: Build
-#         command: pip install -e . && pip install -r requirements_dev.txt  
-    
-#     # Tests
-#     - run: 
-#         name: Test and coverage
-#         command: |
-#           mkdir test-reports
-#           coverage run -m pytest --junitxml=test-reports/junit.xml
-#           coverage report
-#           coverage html -d test-reports/coverage
-#           coverage xml -o test-reports/coverage.xml
-#           echo $CIRCLE_BUILD_NUM
-#           bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
-    
-#     # Doc
-#     - run:
-#         name: Doc build
-#         command: cd documentation && make clean html 
+version: 2.1
 
 jobs:
-  build-36:
+  python:
+    parameters:
+      tag:
+        type: string
+        default: latest
+      myspecialvar:
+        type: string
     docker:
-      - image: circleci/python:3.6
-    steps: *build
-
-  build-27:
-    docker:
-      - image: circleci/python:2.7
-    steps: *build
-
-  doc:
-    docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:<< parameters.tag >>
     steps:
-      - run: ls -lt
+      - restore_cache:
+          key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
+      - run: pip install -e .
+      - save_cache:
+          key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
+          paths:
+            - "~/.cache/pip"
+            - "/usr/local/lib/python<< parameters.tag >>"/site-packges"
+            - "/usr/local/lib/site-python"
 
 
-workflows:
-  version: 2
+  workflows:
+    version: 2.1
 
-  python27-workflow:
-    jobs:
-      - build-27
-      - doc
-      # - test
-      # - doc
-
-  python36-workflow:
-    jobs:
-      - build-36 
-      - doc:
-          requires: 
-            - build-36
-      # - code-formatting
-      # - test
-      # - doc
+    truc:
+      jobs:
+        - python:
+            tag: "2.7"
 
 
           
