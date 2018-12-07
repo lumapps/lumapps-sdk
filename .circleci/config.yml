@@ -1,7 +1,6 @@
 
 test: &test
-  steps:
-    - run: python --version
+  run: python --version
 
 dockerbuild: &dockerbuild
   steps:
@@ -13,7 +12,8 @@ dockerbuild: &dockerbuild
     - run:
         name: Build
         command: pip install -e . && pip install -r requirements_dev.txt  
-
+    
+    <<: *test
     # # Code formatting
     # - run:
     #     name: Code formatting
@@ -43,7 +43,7 @@ dockerbuild: &dockerbuild
 
 jobs:
   build-test-36:
-    <<: [*dockerbuild, *test]
+    <<: *dockerbuild
     docker:
       - image: circleci/python:3.6
 
