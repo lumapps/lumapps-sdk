@@ -78,7 +78,7 @@ workflows:
           name: "Test-Coverage 2.7"
           version: "2.7"
           requires:
-            - build
+            - "Build 2.7"
  
     
   workflow-python36:
