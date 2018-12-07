@@ -2,25 +2,27 @@ version: 2.1
 executors:
   python:
     parameters:
-      tag:
+      version:
         type: string
-        default: latest
+        default: lastest
     docker:
-      - image: circleci/python:<< parameters.tag >>
+      - image: python:<< parameters.version >>
 
 jobs:
   build:
     parameters:
-      e:
-        type: executor
-    executor: << parameters.e >>
+      version:
+        type: string
+    executor:
+      name: python
+      version: << parameters.version >>
     working_directory: ~/lumapps-sdk
     steps:
       - checkout
       # - restore_cache:
       #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
       #- run: pip install -e .
-      - run: echo << parameters.e.tag >>
+      - run: echo << parameters.version >>
       # - save_cache:
       #     key: python<< parameters.tag >>-requirements-{{ checksum "requirements.txt" }}
       #     paths:
@@ -35,8 +37,6 @@ workflows:
   workflow:
     jobs:
       - build:
-          e:
-            name: python
-            tag: "2.7"
+          version: "2.7"
 
 
