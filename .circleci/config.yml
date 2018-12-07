@@ -9,15 +9,23 @@ executors:
       - image: circleci/python:<< parameters.version >>
 
 commands:
-  checkout-and-install:
-    description: "Checkout and install dependencies"
-    parameters:
+  setup:
+    parameter:
       version:
         type: string
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python<< parameters.version >>
+
+  install-and-cache:
+    description: "Install dependencies"
+    parameters:
+      version:
+        type: string
+    steps:
+      - setup:
+        version: << parameters.version >>
       - restore_cache:
           key: python<< parameters.version >>-requirements-{{ checksum "requirements.txt" }}
       - run: pip install -e .
@@ -69,6 +77,7 @@ jobs:
       version: "3.6"
     working_directory: ~/lumapps-sdk
     steps:
+      - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6
       - run:
