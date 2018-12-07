@@ -76,8 +76,9 @@ jobs:
       version: "3.6"
     working_directory: ~/lumapps-sdk
     steps:
-      - setup:
-          version: << parameters.version >>
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6
       - run:
           name: Install black
           command: pip install black
@@ -93,8 +94,8 @@ jobs:
       name: python
       version: << parameters.version >>
     steps:
-      - setup:
-          version: << parameters.version >>
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6
       - run:
           name: Install dependencies
           command: pip install -r requirements_dev.txt
