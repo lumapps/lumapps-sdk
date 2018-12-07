@@ -10,7 +10,7 @@ executors:
 
 commands:
   setup:
-    parameter:
+    parameters:
       version:
         type: string
     steps:
