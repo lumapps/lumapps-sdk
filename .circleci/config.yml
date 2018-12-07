@@ -85,8 +85,9 @@ workflows:
   python36-workflow:
     jobs:
       - build-36 
-      - doc
-        requires: build-36
+      - doc:
+        requires: 
+          - build-36
       # - code-formatting
       # - test
       # - doc
