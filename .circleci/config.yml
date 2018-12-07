@@ -6,7 +6,7 @@ jobs:
       tag:
         type: string
         default: latest
-    docker:
+    docker: true
       - image: circleci/python:<< parameters.tag >>
     steps:
       - restore_cache:
