@@ -8,15 +8,12 @@ executors:
     docker:
       - image: circleci/python:<< parameters.version >>
 
-jobs:
-  build:
+commands:
+  checkout-and-install:
+    description: "Checkout and install dependencies"
     parameters:
       version:
         type: string
-    executor:
-      name: python
-      version: << parameters.version >>
-    working_directory: ~/lumapps-sdk
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
@@ -32,7 +29,30 @@ jobs:
             - "/usr/local/lib/python<< parameters.version >>/site-packges"
             - "/usr/local/lib/site-python"
 
+
+
+jobs:
+  build:
+    parameters:
+      version:
+        type: string
+    executor:
+      name: python
+      version: << parameters.version >>
+    working_directory: ~/lumapps-sdk
+    steps:
+      - checkout-and-install:
+          version: << parameters.version >>
+
+
   # test:
+    # parameters:
+    #   version:
+    #     type: string
+    #   executor:
+    #     name: python
+    #     version: <<parameters.version >>
+    #   working_directory: ~/lumapps-sdk
 
   # doc:
 
@@ -43,13 +63,14 @@ workflows:
   workflow-python27:
     jobs:
       - build:
-          name: "truc"
+          name: "Build 2.7"
           version: "2.7"
 
     
   workflow-python36:
     jobs:
       - build:
+          name: "Build 3.6"
           version: "3.6"
 
 
