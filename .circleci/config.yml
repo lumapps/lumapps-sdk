@@ -49,10 +49,10 @@ jobs:
     parameters:
       version:
         type: string
-      executor:
-        name: python
-        version: << parameters.version >>
-      working_directory: ~/lumapps-sdk
+    executor:
+      name: python
+      version: << parameters.version >>
+    working_directory: ~/lumapps-sdk
     steps:
       - checkout-and-install:
           version: << parameters.version >>
