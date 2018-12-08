@@ -110,6 +110,9 @@ workflows:
   
   workflow-python27:
     jobs:
+
+      # TO REVIEW
+      # Python 2.7
       - build:
           name: "Build 2.7"
           version: "2.7"
