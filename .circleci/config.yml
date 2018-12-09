@@ -128,6 +128,9 @@ workflows:
           requires:
             - "Test and coverage 3.6"
             - "Test and coverage 2.7"
+          filters:
+            branches:
+              only: master
 
       - code-formatting:
           name: "Code formatting"
