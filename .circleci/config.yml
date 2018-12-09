@@ -140,12 +140,12 @@ workflows:
           version: "3.6"
           requires:
             - "Test and coverage 3.6"
+            - "Test and coverage 2.7"
 
       - code-formatting:
           name: "Code formatting"
           requires:
               - "Documentation 3.6"
-              - "Documentation 2.7"
  
     
   workflow-python36:
