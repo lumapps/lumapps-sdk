@@ -111,19 +111,6 @@ workflows:
   workflow-python27:
     jobs:
 
-      # TO REVIEW
-      # Python 2.7
-      - build:
-          name: "Build 2.7"
-          version: "2.7"
-      
-      - test-and-coverage:
-          name: "Test and coverage 2.7"
-          version: "2.7"
-          requires:
-            - "Build 2.7"
-    
-
       # Python 3.6
       - build:
           name: "Build 3.6"
@@ -146,6 +133,20 @@ workflows:
           name: "Code formatting"
           requires:
               - "Documentation 3.6"
+
+      # TO REVIEW
+      # Python 2.7
+      - build:
+          name: "Build 2.7"
+          version: "2.7"
+      
+      - test-and-coverage:
+          name: "Test and coverage 2.7"
+          version: "2.7"
+          requires:
+            - "Build 2.7"
+    
+
  
     
   workflow-python36:
