@@ -1,8 +1,7 @@
 import logging
 
 from lumapps_api_sdk.exceptions import BadRequestException
-from lumapps_api_client.lib import ApiClient
-
+# from lumapps_api_client.lib import ApiClient
 from server.modules.sdk.user import User
 
 

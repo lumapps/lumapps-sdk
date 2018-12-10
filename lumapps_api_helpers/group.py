@@ -5,7 +5,7 @@ from lumapps_api_helpers.exceptions import (
     BadRequestException,
     NotFoundException,
 )
-from lumapps_api_client.lib import ApiClient
+# from lumapps_api_client.lib import ApiClient
 from googleapiclient.errors import HttpError
 
 
@@ -279,7 +279,7 @@ def delete(api, group):
         whether the operation succeeded
     """
 
-    if group.uid == None or group.uid == "":
+    if group.uid is None or group.uid == "":
         raise BadRequestException("Group requires a field uid to delete")
 
     return api.get_call("feed", "delete", uid=group.uid) == ""

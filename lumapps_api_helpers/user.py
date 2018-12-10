@@ -1,5 +1,5 @@
 import logging
-from lumapps_api_client.lib import ApiClient
+# from lumapps_api_client.lib import ApiClient
 from lumapps_api_helpers.exceptions import NotAuthorizedException, BadRequestException
 from googleapiclient.errors import HttpError
 
@@ -158,7 +158,7 @@ class User(object):
         user = None
         result = get(self.api, self._email, self._uid)
 
-        if result != None:
+        if result is not None:
             if not self._customer or result.get("customer") == self._customer:
                 logging.info("user %s found %s", self._email, result)
                 self._set_representation(result, force=True)
