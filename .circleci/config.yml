@@ -145,7 +145,7 @@ workflows:
           name: "Linting"
           version: "2.7"
           requires:
-            - "Build"
+            - "Build 2.7"
       
       - test-and-coverage:
           name: "Test and coverage 2.7"
