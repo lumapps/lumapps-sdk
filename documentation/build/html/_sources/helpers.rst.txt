@@ -1,0 +1,23 @@
+API helpers
+===========
+
+
+Group
+-----
+
+.. automodule:: lumapps_api_helpers.group
+    :members:
+
+User
+----
+
+.. automodule:: lumapps_api_helpers.user
+    :members:
+
+Utils
+-----
+
+.. autosummary:: 
+
+    
+    lumapps_api_helpers.utils.create_lumapps_uuid

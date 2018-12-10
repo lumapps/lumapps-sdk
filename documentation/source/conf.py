@@ -46,7 +46,7 @@ extensions = [
     'sphinxcontrib.napoleon',
     'sphinx.ext.intersphinx',
     'sphinx.ext.doctest',
-    #'sphinx_autodoc_typehints'
+    'sphinx.ext.autosummary'
 ]
 
 intersphinx_mapping = {
