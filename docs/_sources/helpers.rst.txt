@@ -17,7 +17,5 @@ User
 Utils
 -----
 
-.. autosummary:: 
-
-    
-    lumapps_api_helpers.utils.create_lumapps_uuid
+.. automodule:: lumapps_api_helpers.utils
+    :members:

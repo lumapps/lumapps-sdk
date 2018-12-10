@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lumapps_api_helpers.utils &mdash; Lumapps SDK 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/lumapps.webp" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with the Lumapps SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI</a></li>
+</ul>
+<p class="caption"><span class="caption-text">developer reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html">API helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">How to contribute</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Reporting bugs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html#suggesting-enhancements">Suggesting enhancements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html#contributing-to-code">Contributing to code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Lumapps SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lumapps_api_helpers.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lumapps_api_helpers.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">groupby</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">ifilter</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">filter</span> <span class="k">as</span> <span class="n">ifilter</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">unicodecsv</span> <span class="k">as</span> <span class="nn">csv</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">csv</span>
+
+<span class="n">to_json</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="n">CSV_OPTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="create_lumapps_uuid"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.utils.create_lumapps_uuid">[docs]</a><span class="k">def</span> <span class="nf">create_lumapps_uuid</span><span class="p">():</span>  <span class="c1"># type: () -&gt; str</span>
+    <span class="sd">&quot;&quot;&quot;Generate a uid in the same format as lumapps</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A string valueof the unique id</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="set_new_lumapps_uuids"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.utils.set_new_lumapps_uuids">[docs]</a><span class="k">def</span> <span class="nf">set_new_lumapps_uuids</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="c1"># type: (list[Dict[str]]) -&gt; None</span>
+    <span class="sd">&quot;&quot;&quot;Generate a new unique id for every element in the list</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        content (list[Dict[str]]): the list of dict elements where to replace ids</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">with_uuid</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nested_findall</span><span class="p">(</span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">with_uuid</span><span class="p">:</span>
+        <span class="n">o</span><span class="p">[</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_lumapps_uuid</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="nested_findall"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.utils.nested_findall">[docs]</a><span class="k">def</span> <span class="nf">nested_findall</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dict_or_list</span><span class="p">):</span>
+    <span class="c1"># type: (str, list[Dict[str | Dict | list]]) -&gt; Generator[Dict[str]]</span>
+
+    <span class="sd">&quot;&quot;&quot;Find all elements by key recursively in lists or dictionnaries</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        key (str): The key to search</span>
+<span class="sd">        dict_or_list (list[Dict[str or Dict or list]]): The dictionary/list of dictionaries to look into</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        a generator where elements are elements of the dict with the searched key</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_or_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dict_or_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">nested_findall</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">element</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_or_list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict_or_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">dict_or_list</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">nested_findall</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">element</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">nested_findall</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">element</span></div>
+
+
+<div class="viewcode-block" id="nested_find_one"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.utils.nested_find_one">[docs]</a><span class="k">def</span> <span class="nf">nested_find_one</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dict_or_list</span><span class="p">):</span>
+    <span class="c1"># type: (str, str,  list[Dict[str]]) -&gt; (str,str)</span>
+    <span class="sd">&quot;&quot;&quot;Find the first element by key recursively in lists or dictionnaries</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        key (str): The key to search</span>
+<span class="sd">        value (str): the value to search</span>
+<span class="sd">        dict_or_list (list[Dict[str]]): The dictionary/list of dictionaries to look into</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        the first element found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nested_findall_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dict_or_list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="nested_findall_value"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.utils.nested_findall_value">[docs]</a><span class="k">def</span> <span class="nf">nested_findall_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dict_or_list</span><span class="p">):</span>
+    <span class="c1"># type: (str, str,  list[Dict[str]]) -&gt; Generator[Dict[str]]</span>
+    <span class="sd">&quot;&quot;&quot;Find the first element by key and elements recursively in lists or dictionnaries</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        key (str): The key to search.</span>
+<span class="sd">        value (str): the value to search.</span>
+<span class="sd">        dict_or_list (list[Dict[str]]): The dictionary/list of dictionaries to look into.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        a generator where elements of the dict with the searched key and value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_or_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dict_or_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">nested_findall_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">element</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_or_list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict_or_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">k</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">dict_or_list</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">nested_findall_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">element</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">nested_findall_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">element</span></div>
+
+
+<div class="viewcode-block" id="read_csv_data"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.utils.read_csv_data">[docs]</a><span class="k">def</span> <span class="nf">read_csv_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">group_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># type: (str, str, Tuple[str,str]) -&gt; Generator[Dict[str]]</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">        path (str): the path of the file to read</span>
+<span class="sd">        group_by (str): the key to use to group the parsed csv</span>
+<span class="sd">        filter_by (str, str): (key, value) filter only rows where key=value</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        the rows parsed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="o">**</span><span class="n">CSV_OPTIONS</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filter_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">=</span> <span class="n">filter_by</span>
+            <span class="k">yield</span> <span class="n">ifilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">group_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="n">group_by</span><span class="p">)):</span>
+                <span class="k">yield</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

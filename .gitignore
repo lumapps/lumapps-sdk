@@ -12,4 +12,5 @@ htmlcov
 .coverage
 
 # Doc
+docs/build
 .idea

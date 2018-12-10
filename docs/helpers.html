@@ -95,7 +95,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API helpers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.group">Group</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.utils">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -616,19 +616,157 @@
 </dd></dl>
 
 </div>
-<div class="section" id="utils">
-<h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+<div class="section" id="module-lumapps_api_helpers.utils">
+<span id="utils"></span><h2>Utils<a class="headerlink" href="#module-lumapps_api_helpers.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.create_lumapps_uuid">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">create_lumapps_uuid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#create_lumapps_uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.create_lumapps_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a uid in the same format as lumapps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">lumapps_api_helpers.utils.create_lumapps_uuid</span></code>()</td>
-<td>Generate a uid in the same format as lumapps</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string valueof the unique id</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.nested_find_one">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">nested_find_one</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#nested_find_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.nested_find_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the first element by key recursively in lists or dictionnaries</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The key to search</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the value to search</li>
+<li><strong>dict_or_list</strong> (<em>list</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em><em>]</em>) – The dictionary/list of dictionaries to look into</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first last">the first element found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.nested_findall">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">nested_findall</code><span class="sig-paren">(</span><em>key</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#nested_findall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.nested_findall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all elements by key recursively in lists or dictionnaries</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The key to search</li>
+<li><strong>dict_or_list</strong> (<em>list</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><em>Dict</em><em> or </em><em>list</em><em>]</em><em>]</em>) – The dictionary/list of dictionaries to look into</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first last">a generator where elements are elements of the dict with the searched key</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.nested_findall_value">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">nested_findall_value</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#nested_findall_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.nested_findall_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the first element by key and elements recursively in lists or dictionnaries</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The key to search.</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the value to search.</li>
+<li><strong>dict_or_list</strong> (<em>list</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em><em>]</em>) – The dictionary/list of dictionaries to look into.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first last">a generator where elements of the dict with the searched key and value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.read_csv_data">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">read_csv_data</code><span class="sig-paren">(</span><em>path</em>, <em>group_by=None</em>, <em>filter_by=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#read_csv_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.read_csv_data" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd>path (str): the path of the file to read
+group_by (str): the key to use to group the parsed csv
+filter_by (str, str): (key, value) filter only rows where key=value</dd>
+</dl>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Yields:</th><td class="field-body">the rows parsed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.set_new_lumapps_uuids">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">set_new_lumapps_uuids</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#set_new_lumapps_uuids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.set_new_lumapps_uuids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new unique id for every element in the list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>content</strong> (<em>list</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em><em>]</em>) – the list of dict elements where to replace ids</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.utils.to_json">
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">to_json</code><span class="sig-paren">(</span><em>obj</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>cls=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#lumapps_api_helpers.utils.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize <code class="docutils literal notranslate"><span class="pre">obj</span></code> to a JSON formatted <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">skipkeys</span></code> is true then <code class="docutils literal notranslate"><span class="pre">dict</span></code> keys that are not basic types
+(<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">unicode</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>)
+will be skipped instead of raising a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> is false, all non-ASCII characters are not escaped, and
+the return value may be a <code class="docutils literal notranslate"><span class="pre">unicode</span></code> instance. See <code class="docutils literal notranslate"><span class="pre">dump</span></code> for details.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">check_circular</span></code> is false, then the circular reference check
+for container types will be skipped and a circular reference will
+result in an <code class="docutils literal notranslate"><span class="pre">OverflowError</span></code> (or worse).</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">allow_nan</span></code> is false, then it will be a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> to
+serialize out of range <code class="docutils literal notranslate"><span class="pre">float</span></code> values (<code class="docutils literal notranslate"><span class="pre">nan</span></code>, <code class="docutils literal notranslate"><span class="pre">inf</span></code>, <code class="docutils literal notranslate"><span class="pre">-inf</span></code>) in
+strict compliance of the JSON specification, instead of using the
+JavaScript equivalents (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>, <code class="docutils literal notranslate"><span class="pre">Infinity</span></code>, <code class="docutils literal notranslate"><span class="pre">-Infinity</span></code>).</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">indent</span></code> is a non-negative integer, then JSON array elements and
+object members will be pretty-printed with that indent level. An indent
+level of 0 will only insert newlines. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the most compact
+representation.  Since the default item separator is <code class="docutils literal notranslate"><span class="pre">',</span> <span class="pre">'</span></code>,  the
+output might include trailing whitespace when <code class="docutils literal notranslate"><span class="pre">indent</span></code> is specified.
+You can use <code class="docutils literal notranslate"><span class="pre">separators=(',',</span> <span class="pre">':</span> <span class="pre">')</span></code> to avoid this.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">separators</span></code> is an <code class="docutils literal notranslate"><span class="pre">(item_separator,</span> <span class="pre">dict_separator)</span></code> tuple
+then it will be used instead of the default <code class="docutils literal notranslate"><span class="pre">(',</span> <span class="pre">',</span> <span class="pre">':</span> <span class="pre">')</span></code> separators.
+<code class="docutils literal notranslate"><span class="pre">(',',</span> <span class="pre">':')</span></code> is the most compact JSON representation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">encoding</span></code> is the character encoding for str instances, default is UTF-8.</p>
+<p><code class="docutils literal notranslate"><span class="pre">default(obj)</span></code> is a function that should return a serializable version
+of obj or raise TypeError. The default simply raises TypeError.</p>
+<p>If <em>sort_keys</em> is true (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>), then the output of
+dictionaries will be sorted by key.</p>
+<p>To use a custom <code class="docutils literal notranslate"><span class="pre">JSONEncoder</span></code> subclass (e.g. one that overrides the
+<code class="docutils literal notranslate"><span class="pre">.default()</span></code> method to serialize additional types), specify it with
+the <code class="docutils literal notranslate"><span class="pre">cls</span></code> kwarg; otherwise <code class="docutils literal notranslate"><span class="pre">JSONEncoder</span></code> is used.</p>
+</dd></dl>
+
 </div>
 </div>
 
