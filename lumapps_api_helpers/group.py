@@ -434,7 +434,7 @@ def update_users(group, users_to_add=[], users_to_remove=[]):
         result = api.get_call("feed", "subscribers", "save", body=body)
     except HttpError as e:
         raise BadRequestException(
-            "Error {} User {} has not been saved correctly.".format(str(e), user)
+            "Error {} Group {} has not been saved correctly.".format(str(e), group)
         )
 
     return result == ""
