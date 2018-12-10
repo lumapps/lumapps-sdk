@@ -152,12 +152,19 @@ workflows:
       - build:
           name: "Build"
           version: "3.6"
+
+      - linting:
+          name: "Linting"
+          version: "3.6"
+          requires:
+            - "Build"
       
       - test-and-coverage:
           name: "Test and coverage"
           version: "3.6"
           requires:
             - "Build"
+            - "Linting"
 
       - code-formatting:
           name: "Code formatting"
@@ -168,5 +175,5 @@ workflows:
           name: "Building documentation"
           version: "3.6"
           requires:
-            - "Test and coverage"
+            - "Code-formatting"
 
