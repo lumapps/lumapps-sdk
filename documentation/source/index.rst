@@ -26,6 +26,6 @@ Welcome to Lumapps SDK's documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contributing
+   :caption: How to contribute
 
    contributing
