@@ -111,44 +111,38 @@ workflows:
   workflow-python27:
     jobs:
       - build:
-        name: "Build 2.7"
-        version: "2.7"
-
+          name: "Build 2.7"
+          version: "2.7"
+      
       - test-and-coverage:
           name: "Test and coverage 2.7"
           version: "2.7"
           requires:
             - "Build 2.7"
+    
 
  
+    
   workflow-python36:
     jobs:
       - build:
-          name: "Build 3.6"
+          name: "Build"
           version: "3.6"
       
       - test-and-coverage:
-          name: "Test and coverage 3.6"
+          name: "Test and coverage"
           version: "3.6"
           requires:
-            - "Build 3.6"
-      
-      - documentation:
-          name: "Documentation 3.6"
-          version: "3.6"
-          requires:
-            - "Test and coverage 3.6"
-          filters:
-            branches:
-              only: master
+            - "Build"
 
       - code-formatting:
           name: "Code formatting"
           requires:
-              - "Documentation 3.6"
-          filters:
-            branches:
-              only: master
-    
-
+              - "Test and coverage"
+      
+      - documentation:
+          name: "Building documentation"
+          version: "3.6"
+          requires:
+            - "Test and coverage"
 
