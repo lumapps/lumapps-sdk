@@ -58,7 +58,7 @@ jobs:
           name: run Pyflakes
           command: |
             mkdir -p test-reports/flake8
-            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8/results.xml
+            flake8 lumapps_api_* --format junit-xml --output-file test-reports/flake8/results.xml
       - store_test_results:
           path: test-results
 
