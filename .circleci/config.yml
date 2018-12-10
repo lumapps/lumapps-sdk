@@ -162,17 +162,17 @@ workflows:
           requires:
             - "Build"
       
+      - code-formatting:
+          name: "Code formatting"
+          requires:
+              - "Build"
+      
       - test-and-coverage:
           name: "Test and coverage"
           version: "3.6"
           requires:
             - "Build"
             - "Linting"
-
-      - code-formatting:
-          name: "Code formatting"
-          requires:
-              - "Test and coverage"
       
       - documentation:
           name: "Building documentation"
