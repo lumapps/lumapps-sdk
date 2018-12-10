@@ -175,5 +175,5 @@ workflows:
           name: "Building documentation"
           version: "3.6"
           requires:
-            - "Code-formatting"
+            - "Code formatting"
 
