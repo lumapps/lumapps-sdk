@@ -11,10 +11,6 @@ coverage*
 htmlcov
 .coverage
 
-# Venv
-env
-env36
-
 # Doc
 documentation/build/
 .idea
