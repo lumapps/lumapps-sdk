@@ -41,6 +41,9 @@ commands:
 
 jobs:
   linting:
+    parameters:
+      version:
+          type: string
     executor:
       name: python
       version: << parameters.version >>
@@ -52,7 +55,7 @@ jobs:
           name: Install dependencies
           command: pip install flake8 flake8_formatter_junit_xml
       - run:
-          name: run pyflakes
+          name: run Pyflakes
           command: |
             mkdir -p test-reports/flake8
             flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8/results.xml
