@@ -140,6 +140,12 @@ workflows:
       - build:
           name: "Build 2.7"
           version: "2.7"
+
+      - linting:
+          name: "Linting"
+          version: "2.7"
+          requires:
+            - "Build"
       
       - test-and-coverage:
           name: "Test and coverage 2.7"
