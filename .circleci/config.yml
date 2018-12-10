@@ -40,6 +40,25 @@ commands:
 
 
 jobs:
+  linting:
+    executor:
+      name: python
+      version: << parameters.version >>
+    working_directory: ~/lumapps-sdk
+    steps:
+      - setup:
+          version: << parameters.version >>
+      - run: 
+          name: Install dependencies
+          command: pip install flake8 flake8_formatter_junit_xml
+      - run:
+          name: run pyflakes
+          command: |
+            mkdir -p test-reports/flake8
+            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8/results.xml
+      - store_test_results:
+          path: test-results
+
   build:
     parameters:
       version:
@@ -68,10 +87,15 @@ jobs:
           command: pip install pytest coverage
       - run:
           name: Run tests
-          command: coverage run -m pytest && coverage report
+          command: |
+            mkdir -p test-reports/pytest
+            coverage run -m pytest --junitxml=test-results/pytest/results.xml -v
+            coverage report
       - run:
           name: Upload to codecov
           command: bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
+      - store_test_results:
+          path: test-results
   
   code-formatting:
     executor:
