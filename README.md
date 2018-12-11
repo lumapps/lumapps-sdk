@@ -5,7 +5,7 @@
 
 ----
 [![Build](https://circleci.com/gh/aureldent/lumapps-sdk.svg?style=svg)](https://circleci.com/gh/aureldent/lumapps-sdk)
-[![Documentation Status](https://readthedocs.org/projects/pip/badge/?version=stable)](http://pip.pypa.io/en/stable/?badge=stable)
+[![Documentation Status](https://readthedocs.org/projects/lumapps-sdk/badge/?version=latest)](https://lumapps-sdk.readthedocs.io/en/latest/?badge=latest)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![coverage](https://codecov.io/gh/aureldent/lumapps-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/aureldent/lumapps-sdk)
 [![Known Vulnerabilities](https://snyk.io/test/github/aureldent/lumapps-sdk/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/aureldent/lumapps-sdk?targetFile=requirements.txt)
