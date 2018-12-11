@@ -1,9 +1,8 @@
+cryptography
+enum34
 google-api-python-client
 google-auth
 google-auth-httplib2
-python-slugify
-cryptography
 pathlib2
+python-slugify
 repoze.lru
-enum34
-future
