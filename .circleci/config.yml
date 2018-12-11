@@ -96,16 +96,19 @@ jobs:
           version: << parameters.version >>
       - run: 
           name: Install test and coverage librairies
-          command: pip install pytest coverage
+          command: pip install pytest coverage coveralls
       - run:
           name: Run tests
           command: |
             mkdir -p test-reports/pytest
             coverage run -m pytest --junitxml=test-results/pytest/results.xml -v
+            coveralls
             coverage report
       - run:
           name: Upload to codecov
-          command: bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
+          command: |
+            bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
+
       - store_test_results:
           path: test-results
   
@@ -154,7 +157,7 @@ jobs:
 workflows:
   version: 2.1
   
-  workflow-python27:
+  CI-python27:
     jobs:
       - build:
           name: "Build-27"
@@ -175,7 +178,7 @@ workflows:
 
  
     
-  workflow-python36:
+  CI-python36:
     jobs:
       - build:
           name: "Build-36"
