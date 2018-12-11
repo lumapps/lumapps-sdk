@@ -145,7 +145,7 @@ workflows:
           name: "Tests-27"
           version: "2.7"
           requires:
-            - "Linting-27"
+            - "Build-27"
     
 
  
