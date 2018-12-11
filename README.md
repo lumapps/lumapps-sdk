@@ -8,7 +8,9 @@
 [![Documentation Status](https://readthedocs.org/projects/lumapps-sdk/badge/?version=latest)](https://lumapps-sdk.readthedocs.io/en/latest/?badge=latest)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![coverage](https://codecov.io/gh/aureldent/lumapps-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/aureldent/lumapps-sdk)
-[![Known Vulnerabilities](https://snyk.io/test/github/aureldent/lumapps-sdk/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/aureldent/lumapps-sdk?targetFile=requirements.txt)
+[![Known Vulnerabilities]
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+(https://snyk.io/test/github/aureldent/lumapps-sdk/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/aureldent/lumapps-sdk?targetFile=requirements.txt)
 
 Lumapps SDK is a set of tools to manipulate the [LumappsAPI](http://api.lumapps.com)
 This includes a client that support all the routes of the API (located in folder lumapps_api_client)
