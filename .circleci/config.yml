@@ -138,20 +138,14 @@ workflows:
   workflow-python27:
     jobs:
       - build:
-          name: "Build"
+          name: "Build-27"
           version: "2.7"
-
-      - linting:
-          name: "Linting"
-          version: "2.7"
-          requires:
-            - "Build"
       
       - test-and-coverage:
-          name: "Test and coverage"
+          name: "Tests-27"
           version: "2.7"
           requires:
-            - "Linting"
+            - "Linting-27"
     
 
  
@@ -159,30 +153,30 @@ workflows:
   workflow-python36:
     jobs:
       - build:
-          name: "Build"
+          name: "Build-36"
           version: "3.6"
 
       - linting:
-          name: "Linting"
+          name: "Linting-36"
           version: "3.6"
           requires:
-            - "Build"
+            - "Build-36"
       
       - code-formatting:
           name: "Code formatting"
           requires:
-              - "Build"
+              - "Build-36"
       
       - test-and-coverage:
-          name: "Test and coverage"
+          name: "Test-36"
           version: "3.6"
           requires:
-            - "Build"
-            - "Linting"
+            - "Build-36"
+            - "Linting-36"
       
       - documentation:
           name: "Building documentation"
           version: "3.6"
           requires:
-            - "Test and coverage"
+            - "Test-36"
 

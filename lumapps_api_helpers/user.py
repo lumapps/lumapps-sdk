@@ -1,13 +1,11 @@
 import logging
-
-# from lumapps_api_client.lib import ApiClient
 from lumapps_api_helpers.exceptions import NotAuthorizedException, BadRequestException
 from googleapiclient.errors import HttpError
 
 
 def authorization_decorator(func):
     def func_wrapper(api, user, **kwargs):
-        # type: (ApiClient, User) -> boolean | dict
+        # type: (ApiClient, User, dict) -> Union[boolean, dict]
         """Instantiate an empty group
 
         Args:
@@ -60,6 +58,7 @@ class User(object):
         self._groups = {"to_add": [], "to_remove": [], "synced": []}
         self._id = uid
         self._api = api
+        self._status = ""
 
         # default attributes to be able to save the user
         self._accountType = "external"
@@ -86,7 +85,7 @@ class User(object):
         return self.to_lumapps_dict() == other.to_lumapps_dict()
 
     def get_attribute(self, attr):
-        # type: (str) -> object | str | int
+        # type: (str) -> Union[object, str, int]
         """
 
         Args:
@@ -95,11 +94,10 @@ class User(object):
             the value of this attribute from the full dictionary of the group attributes
         """
         label = "_{}".format(attr)
-        if hasattr(self, label):
-            return getattr(self, label, "")
+        return getattr(self, label, "")
 
     def set_attribute(self, attr, value, force=False):
-        # type: (str, str | int | object, boolean) -> None
+        # type: (str, Union[str, int, object], boolean) -> None
         """
 
         Args:
@@ -113,7 +111,7 @@ class User(object):
 
         if attr == "groups":
             if value and isinstance(value, str):
-                return self.set_groups({"to_add": value.split(";")})
+                self.set_groups({"to_add": value.split(";")})
 
         label = "_{}".format(attr)
 
@@ -157,7 +155,7 @@ class User(object):
         """fetch current user from lumapps using its email or uid
         """
         user = None
-        result = get(self.api, self._email, self._uid)
+        result = get(self._api, self._email, self._uid)
 
         if result is not None:
             if not self._customer or result.get("customer") == self._customer:
@@ -217,11 +215,11 @@ class User(object):
                 else:
                     return self._groups.get("synced")
 
-            subscriptions = self.get_attribute("subscriptions", [])
+            subscriptions = self.get_attribute("subscriptions")
             subscriptions = [sub.get("feed") for sub in subscriptions]
 
         if refresh or subscriptions == []:
-            subscriptions = self.api.get_call(
+            subscriptions = self._api.get_call(
                 "user", "subscription", "list", userId=self._uid
             )
             if subscriptions:
@@ -229,7 +227,7 @@ class User(object):
 
         from group import get_multi
 
-        groups = get_multi(subscriptions)
+        groups = get_multi(self._api, subscriptions)
         self._groups = {"synced": groups}
 
         if with_status:
@@ -238,7 +236,7 @@ class User(object):
             return groups
 
     def set_groups(self, groups, sync=False):
-        from lumapps_api_sdk.group import Group
+        from lumapps_api_helpers.group import Group
 
         if not groups:
             return
@@ -328,7 +326,7 @@ class User(object):
 
         if fetch_by_email:
             usr = get_by_email(api, email)
-            logging.info("fetching user by email %s: %s", email)
+            logging.info("fetching user by email %s: %s", usr, email)
             if usr:
                 return User(api=api, representation=usr[0])
 
@@ -355,7 +353,7 @@ def get(api, email="", uid="", fields=None):
         )
         return result
     except Exception as e:
-        logging.warning("user %s not found. Error %s", email, e.message)
+        logging.warning("user %s not found. Error %s", email, str(e))
         return None
 
 
@@ -386,7 +384,7 @@ def save_or_update(api, user):
 
 
 def deactivate(api, user):
-    # type: (ApiClient) -> Iterator(User)
+    # type: (ApiClient, list) -> Iterator[User]
     """A generator for User instances from raw Lumapps user Iterator
 
     Args:
@@ -402,7 +400,7 @@ def deactivate(api, user):
 
 
 def list_sync(api, **params):
-    # type: (ApiClient) -> List(User)
+    # type: (ApiClient, dict) -> List[User]
     """Fetch users
 
     Args:
@@ -419,7 +417,7 @@ def list_sync(api, **params):
 
 
 def list(api, **params):
-    # type: (ApiClient) -> Iterator(User)
+    # type: (ApiClient, dict) -> Iterator[User]
     """Fetch users
 
     Args:
@@ -436,7 +434,7 @@ def list(api, **params):
 
 
 def build_batch(api, users):
-    # type: (ApiClient, Iterator(dict[str])) -> User
+    # type: (ApiClient, Iterator[dict[str]]) -> User
     """A generator for User instances from raw Lumapps user Iterator
 
     Args:

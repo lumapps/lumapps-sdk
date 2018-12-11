@@ -46,7 +46,7 @@ def set_new_lumapps_uuids(content):
 
 
 def nested_findall(key, dict_or_list):
-    # type: (str, list[Dict[str | Dict | list]]) -> Generator[Dict[str]]
+    # type: (str, list[Dict[Union[str, Dict, list]]]) -> Generator[Dict[str]]
 
     """Find all elements by key recursively in lists or dictionnaries
 

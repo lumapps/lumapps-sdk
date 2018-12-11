@@ -5,14 +5,12 @@ from lumapps_api_helpers.exceptions import (
     BadRequestException,
     NotFoundException,
 )
-
-# from lumapps_api_client.lib import ApiClient
 from googleapiclient.errors import HttpError
 
 
 def authorization_decorator(func):
     def func_wrapper(api, group, **kwargs):
-        # type: (ApiClient, Group) -> boolean | dict
+        # type: (ApiClient, Group, dict) -> Union[boolean, dict]
         """Instantiate an empty group
 
         Args:
@@ -50,7 +48,7 @@ class Group(object):
         type="",
         representation=None,
     ):
-        # type: (ApiClient, str, str, str, str, str, dict) -> None
+        # type: (ApiClient, str, str, str, str, str, str, dict) -> None
         """Instantiate an empty group
 
         Args:
@@ -77,7 +75,7 @@ class Group(object):
             self._set_representation(representation)
 
     def get_attribute(self, attr):
-        # type: (str) -> object | str | int
+        # type: (str) -> Union[object, str, int]
         """
 
         Args:
@@ -91,7 +89,7 @@ class Group(object):
             return getattr(self, label, "")
 
     def set_attribute(self, attr, value, force=False):
-        # type: (str, str | int | object) -> None
+        # type: (str, Union[str, int, object], str) -> None
         """
 
         Args:
@@ -123,7 +121,7 @@ class Group(object):
             result: Lumapps Feed resource
             force: whether or no to override writable fields protection
         """
-        for k, v in result.iteritems():
+        for k, v in iter(result.items()):
             self.set_attribute(k, v, force)
 
     def to_lumapps(self):
@@ -131,7 +129,7 @@ class Group(object):
         ignore_fields = ["api", "type"]
         group = dict(
             (k[1:], v)
-            for k, v in vars(self).iteritems()
+            for k, v in iter(vars(self).items())
             if k[0] == "_" and k[1:] not in ignore_fields
         )
         if self._type:
@@ -404,7 +402,7 @@ def list(api, instance="", fields="", **params):
     return api.iter_call("feed", "search", fields=fields, body=params)
 
 
-def update_users(group, users_to_add=[], users_to_remove=[]):
+def update_users(group, users_to_add=list, users_to_remove=list):
     # TODO: Iterables and not lists
     # type (Group, list[User], list[User]) -> bool
     """Update the users of a group
@@ -442,7 +440,7 @@ def update_users(group, users_to_add=[], users_to_remove=[]):
 
 
 def build_batch(api, groups):
-    # type: (ApiClient, Iterator(dict[str])) -> User
+    # type: (ApiClient, Iterator[dict[str]]) -> User
     """A generator for User instances from raw Lumapps user Iterator
 
     Args:

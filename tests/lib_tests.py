@@ -20,7 +20,7 @@ def setup_logger():
 
 
 def test_get_bearer_token():
-    with open(AUTH_INFO_FILE) as fh:
+    with Path(AUTH_INFO_FILE).open() as fh:
         auth_info = json.load(fh)
     api_client = ApiClient(auth_info)
     assert api_client.bearer_token is not None
@@ -49,5 +49,3 @@ def test_reuse_api():
     assert api.get_call('user', 'get')['email'] == 'lvaugeois@managemybudget.net'
     api.token = token_ivo
     assert api.get_call('user', 'get')['email'] == 'ivo@managemybudget.net'
-
-

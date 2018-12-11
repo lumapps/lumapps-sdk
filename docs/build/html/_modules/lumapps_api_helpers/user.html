@@ -161,7 +161,7 @@
             
   <h1>Source code for lumapps_api_helpers.user</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="c1"># from lumapps_api_client.lib import ApiClient</span>
+<span class="kn">from</span> <span class="nn">lumapps_api_client.lib</span> <span class="k">import</span> <span class="n">ApiClient</span>
 <span class="kn">from</span> <span class="nn">lumapps_api_helpers.exceptions</span> <span class="k">import</span> <span class="n">NotAuthorizedException</span><span class="p">,</span> <span class="n">BadRequestException</span>
 <span class="kn">from</span> <span class="nn">googleapiclient.errors</span> <span class="k">import</span> <span class="n">HttpError</span>
 
@@ -318,9 +318,9 @@
         <span class="sd">&quot;&quot;&quot;fetch current user from lumapps using its email or uid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uid</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uid</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_customer</span> <span class="ow">or</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;customer&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_customer</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;user </span><span class="si">%s</span><span class="s2"> found </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_email</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_set_representation</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -378,11 +378,11 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_groups</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;synced&quot;</span><span class="p">)</span>
 
-            <span class="n">subscriptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;subscriptions&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">subscriptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;subscriptions&quot;</span><span class="p">)</span>
             <span class="n">subscriptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;feed&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">refresh</span> <span class="ow">or</span> <span class="n">subscriptions</span> <span class="o">==</span> <span class="p">[]:</span>
-            <span class="n">subscriptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+            <span class="n">subscriptions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
                 <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;subscription&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="n">userId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_uid</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">subscriptions</span><span class="p">:</span>
@@ -390,7 +390,7 @@
 
         <span class="kn">from</span> <span class="nn">group</span> <span class="k">import</span> <span class="n">get_multi</span>
 
-        <span class="n">groups</span> <span class="o">=</span> <span class="n">get_multi</span><span class="p">(</span><span class="n">subscriptions</span><span class="p">)</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">get_multi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="p">,</span> <span class="n">subscriptions</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_groups</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;synced&quot;</span><span class="p">:</span> <span class="n">groups</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">with_status</span><span class="p">:</span>
@@ -399,7 +399,7 @@
             <span class="k">return</span> <span class="n">groups</span>
 
     <span class="k">def</span> <span class="nf">set_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">lumapps_api_sdk.group</span> <span class="k">import</span> <span class="n">Group</span>
+        <span class="kn">from</span> <span class="nn">lumapps_api_helpers.group</span> <span class="k">import</span> <span class="n">Group</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">groups</span><span class="p">:</span>
             <span class="k">return</span>
@@ -489,7 +489,7 @@
 
         <span class="k">if</span> <span class="n">fetch_by_email</span><span class="p">:</span>
             <span class="n">usr</span> <span class="o">=</span> <span class="n">get_by_email</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;fetching user by email </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;fetching user by email </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">usr</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">usr</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="n">usr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
@@ -580,7 +580,7 @@
 
 
 <div class="viewcode-block" id="list"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.user.list">[docs]</a><span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-    <span class="c1"># type: (ApiClient) -&gt; Iterator(User)</span>
+    <span class="c1"># type: ApiClient -&gt; Iterator(User)</span>
     <span class="sd">&quot;&quot;&quot;Fetch users</span>
 
 <span class="sd">    Args:</span>

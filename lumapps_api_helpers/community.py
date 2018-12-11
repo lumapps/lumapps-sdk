@@ -1,9 +1,8 @@
 import logging
 
-from lumapps_api_sdk.exceptions import BadRequestException
+from lumapps_api_helpers.exceptions import BadRequestException
 
-# from lumapps_api_client.lib import ApiClient
-from server.modules.sdk.user import User
+from lumapps_api_helpers.user import User
 
 
 class Community(object):
@@ -21,7 +20,7 @@ class Community(object):
         author="",
         representation=None,
     ):
-        # type: (ApiClient, str, str, str, Community, dict) -> None
+        # type: (ApiClient, str, str, str, Community, str, dict) -> None
         """
         instantiate an empty community
         Args:
@@ -42,6 +41,8 @@ class Community(object):
         self._id = uid
         self._api = api
 
+        self._admins = []
+        self._users = []
         if representation is not None:
             self._set_representation(representation)
 
@@ -66,7 +67,7 @@ class Community(object):
         )
 
     def get_attribute(self, attr):
-        # type: (str) -> object | str | int
+        # type: (str) -> (Union[object,str,int])
         """
 
         Args:
@@ -79,7 +80,7 @@ class Community(object):
             return getattr(self, label, "")
 
     def set_attribute(self, attr, value, force=False):
-        # type: (str, str | int | object, boolean) -> None
+        # type: (str, Union[str,int,object], boolean) -> None
         """
 
         Args:
@@ -91,15 +92,15 @@ class Community(object):
 
         if attr == "adminKeys":
             attr = "admins"
-            value = [User.new(self.api, self._customer, uid=usr) for usr in value]
+            value = [User.new(self._api, self._customer, uid=usr) for usr in value]
 
         if attr == "userKeys":
             attr = "users"
-            value = [User.new(self.api, self._customer, uid=usr) for usr in value]
+            value = [User.new(self._api, self._customer, uid=usr) for usr in value]
 
         if attr == "authorId":
             attr = "author"
-            value = User.new(self.api, self._customer, uid=value)
+            value = User.new(self._api, self._customer, uid=value)
 
         label = "_{}".format(attr)
 
@@ -133,7 +134,7 @@ class Community(object):
         self._uid = result.get("uid")
         self._id = result.get("id")
 
-        for k, v in result.iteritems():
+        for k, v in iter(result.items()):
             self.set_attribute(k, v, force)
 
     def to_lumapps_dict(self):
@@ -143,7 +144,7 @@ class Community(object):
 
         community = dict(
             (k[1:], v)
-            for k, v in vars(self).iteritems()
+            for k, v in iter(vars(self).items())
             if k[0] == "_" and k[1:] not in ignore_fields and v is not None
         )
 
@@ -154,7 +155,7 @@ class Community(object):
         return community
 
     def get_posts(self, **params):
-        # type: (ApiClient) -> Iterator(dict[str])
+        # type: (dict) -> Iterator[dict[str]]
         """
         fetch community posts
         Arguments:
@@ -177,7 +178,7 @@ class Community(object):
 
 
 def list(api, **params):
-    # type: (ApiClient) -> Iterator(dict[str])
+    # type: (ApiClient, dict) -> Iterator[dict[str]]
     """
     fetch communities
     Arguments:
@@ -196,7 +197,7 @@ def list(api, **params):
 
 
 def build_batch(api, communities, association=None):
-    # type: (ApiClient, Iterator(dict[str]), dict[str]) -> Community
+    # type: (ApiClient, Iterator[dict[str]], dict[str]) -> Community
     """
     A generator for Community instances from raw Lumapps community Iterator
     Arguments:
@@ -209,7 +210,7 @@ def build_batch(api, communities, association=None):
     logging.info("building batch communities")
     for u in communities:
         if association:
-            community = dict([(association.get(k, k), v) for (k, v) in u.iteritems()])
+            community = dict([(association.get(k, k), v) for (k, v) in iter(u.items())])
         else:
             community = u
             community = Community(api, representation=community)

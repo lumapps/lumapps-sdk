@@ -24,7 +24,7 @@ class CustomException(Exception):
         @param message: the exception message
         @param info: an additional info to log
         """
-        super(Exception, self).__init__(
+        super(CustomException, self).__init__(
             message or self.message, httplib.responses[self.http_status]
         )
         self.info = info
