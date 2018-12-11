@@ -49,8 +49,7 @@ jobs:
       version: << parameters.version >>
     working_directory: ~/lumapps-sdk
     steps:
-      - setup:
-          version: << parameters.version >>
+      - checkout
       - run: 
           name: Install dependencies
           command: pip install flake8 flake8_formatter_junit_xml flake8-bugbear
@@ -61,6 +60,9 @@ jobs:
             flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8/results.xml
       - store_test_results:
           path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: flake8-artifacts
 
   build:
     parameters:
