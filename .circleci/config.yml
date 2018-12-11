@@ -59,8 +59,13 @@ jobs:
       - run:
           name: run flake8
           command: |
-            mkdir -p test-results/flake8
-            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8/results.xml
+            mkdir -p test-results
+            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8.xml
+      - run:
+          name: run bandit
+          command: |
+            pip install bandit
+            bandit -r -f xml -o test-results/security.xml lumapps*
       - store_test_results:
           path: test-results
       - store_artifacts:
