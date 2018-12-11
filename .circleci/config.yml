@@ -49,7 +49,8 @@ jobs:
       version: << parameters.version >>
     working_directory: ~/lumapps-sdk
     steps:
-      - checkout
+      - setup:
+          version: "3.6"
       - run: 
           name: Install dependencies
           command: pip install flake8 flake8_formatter_junit_xml flake8-bugbear
