@@ -50,7 +50,7 @@ jobs:
     working_directory: ~/lumapps-sdk
     steps:
       - setup:
-          version: "3.6"
+          version: << parameters.versions >>
       - run: 
           name: Install dependencies
           command: |
