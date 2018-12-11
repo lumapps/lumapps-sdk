@@ -182,8 +182,8 @@ workflows:
           requires:
             - "Build-36"
       
-      - code-formatting:
-          name: "Code formatting"
+      - extended-linting:
+          name: "Extended linting"
           requires:
               - "Build-36"
       
