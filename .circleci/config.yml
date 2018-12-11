@@ -198,6 +198,7 @@ workflows:
           requires:
             - "Build-36"
             - "Linting-36"
+            - "Extended linting"
       
       - documentation:
           name: "Building documentation"
