@@ -53,7 +53,7 @@ jobs:
           version: << parameters.version >>
       - run: 
           name: Install dependencies
-          command: pip install flake8 flake8_formatter_junit_xml
+          command: pip install pylint flake8_formatter_junit_xml flake8-bugbear
       - run:
           name: run Pyflakes
           command: |
@@ -135,23 +135,7 @@ jobs:
 workflows:
   version: 2.1
   
-  workflow-python27:
-    jobs:
-      - build:
-          name: "Build 2.7"
-          version: "2.7"
-
-      - linting:
-          name: "Linting"
-          version: "2.7"
-          requires:
-            - "Build 2.7"
-      
-      - test-and-coverage:
-          name: "Test and coverage 2.7"
-          version: "2.7"
-          requires:
-            - "Linting"
+v
     
 
  

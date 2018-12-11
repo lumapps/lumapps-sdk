@@ -4,7 +4,7 @@
 *Make sure of the version you are using (Git tags & releases)*
 
 ----
-
+[![CircleCI](https://circleci.com/gh/aureldent/lumapps-sdk/tree/master.svg?style=svg)](https://circleci.com/gh/aureldent/lumapps-sdk/tree/master)
 Lumapps SDK is a set of tools to manipulate the [LumappsAPI](http://api.lumapps.com)
 This includes a client that support all the routes of the API (located in folder lumapps_api_client)
 and a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)
