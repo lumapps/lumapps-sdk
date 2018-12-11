@@ -53,7 +53,9 @@ jobs:
           version: "3.6"
       - run: 
           name: Install dependencies
-          command: pip install flake8 flake8_formatter_junit_xml flake8-bugbear
+          command: |
+            pip install flake8 flake8_formatter_junit_xml
+            if [ << parameters.version >> > "3.6" ] ; then pip install flake8-bugbear ; fi
       - run:
           name: run flake8
           command: |
