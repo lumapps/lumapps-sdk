@@ -55,17 +55,11 @@ jobs:
           name: Install dependencies
           command: |
             pip install flake8 flake8_formatter_junit_xml
-            #if [ << parameters.version >> > "3.6" ] ; then pip install flake8-bugbear ; fi
       - run:
           name: run flake8
           command: |
             mkdir -p test-results
             flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8.xml
-      - run:
-          name: run bandit
-          command: |
-            pip install bandit
-            bandit -r -f xml -o test-results/security.xml lumapps*
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -110,7 +104,7 @@ jobs:
       - store_test_results:
           path: test-results
   
-  code-formatting:
+  extended-linting:
     executor:
       name: python
       version: "3.6"
@@ -119,11 +113,21 @@ jobs:
       - setup:
           version: "3.6"
       - run:
-          name: Install black
-          command: pip install black
+          name: Install black and flake8-bugbear
+          command: pip install black flake8 flake8_formatter_junit_xml
       - run:
-          name: Formatting
+          name: Formatting checks
           command: black --check *.py
+      - run:
+          name: Bugs checks
+          command: |
+            mkdir -p test-results
+            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8.xml
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: flake8-artifacts
 
   documentation:
     parameters:
@@ -154,6 +158,8 @@ workflows:
       - linting:
           name: "Linting-27"
           version: "2.7"
+          requires:
+              - "Build-27"
       
       - test-and-coverage:
           name: "Tests-27"
