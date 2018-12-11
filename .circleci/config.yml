@@ -60,6 +60,11 @@ jobs:
           command: |
             mkdir -p test-results
             flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8.xml
+      - run:
+          name: Security checks
+          command: |
+            pip install bandit
+            bandit -r lumapps_api*
       - store_test_results:
           path: test-results
       - store_artifacts:
