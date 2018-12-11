@@ -104,10 +104,6 @@ jobs:
             coverage run -m pytest --junitxml=test-results/pytest/results.xml -v
             coveralls
             coverage report
-      - run:
-          name: Upload to codecov
-          command: |
-            bash <(curl -s https://codecov.io/bash) -cF Build${CIRCLE_BUILD_NUM}
 
       - store_test_results:
           path: test-results
