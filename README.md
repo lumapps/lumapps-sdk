@@ -4,6 +4,9 @@
 *Make sure of the version you are using (Git tags & releases)*
 
 ----
+[![codecov](https://codecov.io/gh/aureldent/lumapps-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/aureldent/lumapps-sdk)
+[![CircleCI](https://circleci.com/gh/aureldent/lumapps-sdk.svg?style=svg)](https://circleci.com/gh/aureldent/lumapps-sdk)
+[![Known Vulnerabilities](https://snyk.io/test/github/aureldent/lumapps-sdk/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/aureldent/lumapps-sdk?targetFile=requirements.txt)
 
 Lumapps SDK is a set of tools to manipulate the [LumappsAPI](http://api.lumapps.com)
 This includes a client that support all the routes of the API (located in folder lumapps_api_client)
