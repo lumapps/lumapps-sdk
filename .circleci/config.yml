@@ -204,4 +204,7 @@ workflows:
           version: "3.6"
           requires:
             - "Test-36"
+          filters:
+            branches:
+              only: master
 
