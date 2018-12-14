@@ -1,17 +1,17 @@
 import logging
-from lumapps_api_client.lib import ApiClient
-from exceptions import NotAuthorizedException, BadRequestException
+from lumapps_api_helpers.exceptions import NotAuthorizedException, BadRequestException
 from googleapiclient.errors import HttpError
 
 
 def authorization_decorator(func):
     def func_wrapper(api, user, **kwargs):
-        # type: (ApiClient, User) -> boolean | dict
-        """
-        instantiate an empty group
+        # type: (ApiClient, User, dict) -> Union[boolean, dict]
+        """Instantiate an empty group
+
         Args:
             api: the ApiClient instance to use for requests
             user: theUser instance to process
+
         """
         customer = user.get_attribute("customer")
 
@@ -38,7 +38,7 @@ class User(object):
     USERS = []  # type: list[User]
 
     STATUS = {"LIVE": "enabled", "DISABLE": "disabled"}
-    STATUS_INV = {v: k for k, v in STATUS.iteritems()}
+    STATUS_INV = {v: k for k, v in iter(STATUS.items())}
 
     def __init__(self, api, customer="", email="", uid="", representation=None):
         # type: (ApiClient, str, str, str, dict) -> None
@@ -46,7 +46,7 @@ class User(object):
         instantiate a empty user
         """
 
-        self._customer = customer if customer else api.customer
+        self._customer = customer if customer else api.customerId
         self._uid = uid
         self._email = email
 
@@ -58,6 +58,7 @@ class User(object):
         self._groups = {"to_add": [], "to_remove": [], "synced": []}
         self._id = uid
         self._api = api
+        self._status = ""
 
         # default attributes to be able to save the user
         self._accountType = "external"
@@ -84,7 +85,7 @@ class User(object):
         return self.to_lumapps_dict() == other.to_lumapps_dict()
 
     def get_attribute(self, attr):
-        # type: (str) -> object | str | int
+        # type: (str) -> Union[object, str, int]
         """
 
         Args:
@@ -93,25 +94,24 @@ class User(object):
             the value of this attribute from the full dictionary of the group attributes
         """
         label = "_{}".format(attr)
-        if hasattr(self, label):
-            return getattr(self, label, "")
+        return getattr(self, label, "")
 
     def set_attribute(self, attr, value, force=False):
-        # type: (str, str | int | object, boolean) -> None
+        # type: (str, Union[str, int, object], boolean) -> None
         """
 
         Args:
-            attr: feed attribute key to save
-            value: feed attribute value to save
-            force: whether to force the storage of the attribute
-        Returns: None
+            attr (str,str): feed attribute key to save
+            value (int): feed attribute value to save
+            force (bool): whether to force the storage of the attribute
+
         """
         if attr == "status":
             value = User.STATUS.get(value, value)
 
         if attr == "groups":
             if value and isinstance(value, str):
-                return self.set_groups({"to_add": value.split(";")})
+                self.set_groups({"to_add": value.split(";")})
 
         label = "_{}".format(attr)
 
@@ -139,28 +139,25 @@ class User(object):
         Update the attribute of the class from a Lumapps User resource: https://api.lumapps.com/docs/output/_schemas/user
 
         Args:
-            result: Lumapps User resource dictionnary
-            force: save all the attributes from this dictionary
-        Returns: None
+            result (dict[str]): Lumapps User resource dictionnary
+            force (boolean): save all the attributes from this dictionary
+
         """
 
         self._uid = result.get("uid")
         self._id = result.get("id")
 
-        for k, v in result.iteritems():
+        for k, v in iter(result.items()):
             self.set_attribute(k, v, force)
 
     def get(self):
         # type: () -> object
-        """
-        :return:
-
-        fetch current user from lumapps using its email or uid
+        """fetch current user from lumapps using its email or uid
         """
         user = None
-        result = get(self.api, self._email, self._uid)
+        result = get(self._api, self._email, self._uid)
 
-        if result != None:
+        if result is not None:
             if not self._customer or result.get("customer") == self._customer:
                 logging.info("user %s found %s", self._email, result)
                 self._set_representation(result, force=True)
@@ -218,11 +215,11 @@ class User(object):
                 else:
                     return self._groups.get("synced")
 
-            subscriptions = self.get_attribute("subscriptions", [])
+            subscriptions = self.get_attribute("subscriptions")
             subscriptions = [sub.get("feed") for sub in subscriptions]
 
         if refresh or subscriptions == []:
-            subscriptions = self.api.get_call(
+            subscriptions = self._api.get_call(
                 "user", "subscription", "list", userId=self._uid
             )
             if subscriptions:
@@ -230,7 +227,7 @@ class User(object):
 
         from group import get_multi
 
-        groups = get_multi(subscriptions)
+        groups = get_multi(self._api, subscriptions)
         self._groups = {"synced": groups}
 
         if with_status:
@@ -239,7 +236,7 @@ class User(object):
             return groups
 
     def set_groups(self, groups, sync=False):
-        from lumapps_api_sdk.group import Group
+        from lumapps_api_helpers.group import Group
 
         if not groups:
             return
@@ -305,7 +302,7 @@ class User(object):
 
         user = dict(
             (k[1:], v)
-            for k, v in vars(self).iteritems()
+            for k, v in iter(vars(self).items())
             if k[0] == "_" and k[1:] not in ignore_fields and v is not None
         )
 
@@ -329,7 +326,7 @@ class User(object):
 
         if fetch_by_email:
             usr = get_by_email(api, email)
-            logging.info("fetching user by email %s: %s", email)
+            logging.info("fetching user by email %s: %s", usr, email)
             if usr:
                 return User(api=api, representation=usr[0])
 
@@ -356,7 +353,7 @@ def get(api, email="", uid="", fields=None):
         )
         return result
     except Exception as e:
-        logging.warning("user %s not found. Error %s", email, e.message)
+        logging.warning("user %s not found. Error %s", email, str(e))
         return None
 
 
@@ -364,10 +361,12 @@ def get(api, email="", uid="", fields=None):
 def save_or_update(api, user):
     # type: (ApiClient, User) ->  dict[str]
     """
-    Arguments:
+    Args:
         api: the ApiClient instance to use for requests
         user: the user to save
-    Returns: Saved user as Lumapps Resource or raise Exception if it fails
+
+    Returns:
+        Saved user as Lumapps Resource or raise Exception if it fails
     """
     if not user.get_attribute("email"):
         raise BadRequestException("User requires an email")
@@ -385,13 +384,15 @@ def save_or_update(api, user):
 
 
 def deactivate(api, user):
-    # type: (ApiClient) -> Iterator(User)
-    """
-    A generator for User instances from raw Lumapps user Iterator
-    Arguments:
+    # type: (ApiClient, list) -> Iterator[User]
+    """A generator for User instances from raw Lumapps user Iterator
+
+    Args:
         api: the ApiClient instance to use for requests
         users: list of Lumapps User resource dictionnary
-    Yields: a User attribute
+
+    Yields:
+        a User attribute
 
     """
     user.set_attribute("status", User.STATUS.get("DISABLE"))
@@ -399,44 +400,48 @@ def deactivate(api, user):
 
 
 def list_sync(api, **params):
-    # type: (ApiClient) -> List(User)
-    """
-    fetch users
-    Arguments:
+    # type: (ApiClient, dict) -> List[User]
+    """Fetch users
+
+    Args:
         api: the ApiClient instance to use for requests
-        **params: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
-    Return: a User object
+        ``**params``: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
+
+    Returns:
+        a list of User
 
     """
     users = api.get_call("user", "list", **params)
-    if users:
-        return [user for user in build_batch(api, users)]
+    return [user for user in build_batch(api, users)]
 
 
 def list(api, **params):
-    # type: (ApiClient) -> Iterator(User)
-    """
-    fetch users
-    Arguments:
+    # type: (ApiClient, dict) -> Iterator[Tuple[dict, User]]
+    """Fetch users
+
+    Args:
         api: the ApiClient instance to use for requests
-        **params: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
-    Return: a UserGenerator object
+        ``**params``: optional dictionary of search parameters as in https://api.lumapps.com/docs/user/list
+
+    Returns:
+        a Generator object containing tuples (representation, User instance)
 
     """
     users_iter = api.iter_call("user", "list", **params)
-    if users_iter:
-        return build_batch(api, users_iter)
+    return build_batch(api, users_iter)
 
 
 def build_batch(api, users):
-    # type: (ApiClient, Iterator(dict[str])) -> User
-    """
-    A generator for User instances from raw Lumapps user Iterator
-    Arguments:
+    # type: (ApiClient, Iterator[dict[str]]) -> User
+    """A generator for User instances from raw Lumapps user Iterator
+
+    Args:
         api: the ApiClient instance to use for requests
         users: list of Lumapps User dictionnary
         association: a dictionnary to translate the user dictionnary to User instance
-    Yields: a User attribute
+
+    Yields:
+        a tuple (representation, User instance)
 
     """
     logging.info("building batch %s", users)
@@ -446,14 +451,15 @@ def build_batch(api, users):
 
 def get_by_email(api, email):
     # type (ApiClient, str, str) -> dict(str)
-    """
-     a user by email
+    """Get a user by email
 
     Args:
         api: the ApiClient instance to use for requests
         email: name to search
         instance: the instance id
-    Returns: a Lumapps Feed instance
+
+    Returns:
+        a Lumapps Feed instance
     """
     logging.info("getting user by email %s", email)
     result = api.get_call("user", "get", email=email)
@@ -462,13 +468,14 @@ def get_by_email(api, email):
 
 def get_by_uid(api, uid):
     # type (ApiClient, str) -> dict(str)
-    """
-     a user by uid
+    """Get a user by uid
 
     Args:
         api: the ApiClient instance to use for requests
         uid: uid to fetch
-    Returns: a Lumapps Feed instance
+
+    Returns:
+        a Lumapps Feed instance
     """
     logging.info("getting user by uid %s", uid)
     result = api.get_call("user", "get", uid=uid)
