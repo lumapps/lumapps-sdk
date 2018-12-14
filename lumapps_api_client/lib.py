@@ -139,8 +139,8 @@ class ApiClient(object):
         self.email = ""
         self.last_cursor = None
         self.token_expiration = None
-        self.customerId = None
-        self.instanceId = None
+        self.customer_id = None
+        self.instance_id = None
         if not api_info:
             api_info = {}
         self.api_info = api_info
@@ -189,7 +189,7 @@ class ApiClient(object):
         exp = self._token_expiry
         if exp and exp > time() + 120:
             return
-        self.token, self._token_expiry = self.token_getter()
+        self.token, self._token_expiry, self.customer_id = self.token_getter()
 
     def _prune(self, method_parts, content):
         if not self.prune:
@@ -229,16 +229,6 @@ class ApiClient(object):
     @property
     def service(self):
         self._check_access_token()
-        ## if there is an expiration deadline reset the service
-        #if self.token_expiration:
-        #    expiry_dt = datetime.strptime(self.token_expiration, "%Y-%m-%dT%H:%M:%S")
-        #    # if expiry_dt < datetime.now():
-        #    remaining_time = expiry_dt - datetime.now()
-        #    if remaining_time.total_seconds() <= 30:
-        #        email = self.email
-        #        customerId = self.customerId
-        #        ApiClient.__init__(self, auth_info=self._auth_info)
-        #        self.set_customer_user(email, customerId)
         if self._service is None:
             self._service = build(
                 self._api_name,
