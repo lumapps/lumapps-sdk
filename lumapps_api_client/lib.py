@@ -393,8 +393,6 @@ class ApiClient(object):
             self.email = email
             self.customerId = customerId
             self.instanceId = instanceId
-            import logging
-            logging.info("getting customer token %s %s", token, self.token_expiration)
         else:
             raise Exception("USER_NOT_ALLOWED_FOR_CUSTOMER")
 
