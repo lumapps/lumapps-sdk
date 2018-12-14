@@ -1,15 +1,18 @@
 import logging
 
-from exceptions import NotAuthorizedException, BadRequestException, NotFoundException
-from lumapps_api_client.lib import ApiClient
+from lumapps_api_helpers.exceptions import (
+    NotAuthorizedException,
+    BadRequestException,
+    NotFoundException,
+)
 from googleapiclient.errors import HttpError
 
 
 def authorization_decorator(func):
     def func_wrapper(api, group, **kwargs):
-        # type: (ApiClient, Group) -> boolean | dict
-        """
-        instantiate an empty group
+        # type: (ApiClient, Group, dict) -> Union[boolean, dict]
+        """Instantiate an empty group
+
         Args:
             api: the ApiClient instance to use for requests
             group: the Group instance to process
@@ -31,8 +34,7 @@ def authorization_decorator(func):
 
 
 class Group(object):
-    """
-    Lumapps feed object
+    """Lumapps feed object
     """
 
     def __init__(
@@ -46,18 +48,18 @@ class Group(object):
         type="",
         representation=None,
     ):
-        # type: (ApiClient, str, str, str, str, str, dict) -> None
-        """
-        instantiate an empty group
+        # type: (ApiClient, str, str, str, str, str, str, dict) -> None
+        """Instantiate an empty group
+
         Args:
-            api: the ApiClient instance to use for requests
-            customer: the customer id of the group, used for autorization
-            instance: the instance id, if not defined the group is a customer group (platform level)
-            name: the group name
-            uid: the lumapps unique id of the group, generated automatically at the first save
-            remote_group:the remote email of the group (google group email for instance)
-            type: feed type id
-            representation: a dictionary of all group attributes from lumapps
+            api (object): the ApiClient instance to use for requests
+            customer (str): the customer id of the group, used for autorization
+            instance (str): the instance id, if not defined the group is a customer group (platform level)
+            name (str): the group name
+            uid (str): the lumapps unique id of the group, generated automatically at the first save
+            remote_group (str): the remote email of the group (google group email for instance)
+            type (str): feed type id
+            representation (dict): a dictionary of all group attributes from lumapps
         """
 
         self._customer = customer if customer else api.customer
@@ -73,11 +75,12 @@ class Group(object):
             self._set_representation(representation)
 
     def get_attribute(self, attr):
-        # type: (str) -> object | str | int
+        # type: (str) -> Union[object, str, int]
         """
 
         Args:
             attr: the attribute to fetch
+
         Returns:
             the value of this attribute from the full dictionary of the group attributes
         """
@@ -86,13 +89,12 @@ class Group(object):
             return getattr(self, label, "")
 
     def set_attribute(self, attr, value, force=False):
-        # type: (str, str | int | object) -> None
+        # type: (str, Union[str, int, object], str) -> None
         """
 
         Args:
             attr: feed attribute key to save
             value: feed attribute value to save
-        Returns: None
         """
 
         authorized_update_fields = (
@@ -113,15 +115,13 @@ class Group(object):
 
     def _set_representation(self, result, force=True):
         # type: (dict, bool) -> None
-        """
-        Update the attribute of the class from a Lumapps Feed resource: https://api.lumapps.com/docs/output/_schemas/feed
+        """Update the attribute of the class from a Lumapps Feed resource: https://api.lumapps.com/docs/output/_schemas/feed
 
         Args:
             result: Lumapps Feed resource
             force: whether or no to override writable fields protection
-        Returns: None
         """
-        for k, v in result.iteritems():
+        for k, v in iter(result.items()):
             self.set_attribute(k, v, force)
 
     def to_lumapps(self):
@@ -129,7 +129,7 @@ class Group(object):
         ignore_fields = ["api", "type"]
         group = dict(
             (k[1:], v)
-            for k, v in vars(self).iteritems()
+            for k, v in iter(vars(self).items())
             if k[0] == "_" and k[1:] not in ignore_fields
         )
         if self._type:
@@ -237,12 +237,14 @@ class Group(object):
 @authorization_decorator
 def save(api, group):
     # type (ApiClient, Group) -> Dict
-    """
-    Save or update a group (= Feed in Lumapps wording)
+    """Save or update a group (= Feed in Lumapps wording)
+
     Args:
         api: the ApiClient instance to use for requests
         group: the group to save, requires at least a customer and name values
-    Returns: Lumapps Feed resource
+
+    Returns:
+        Lumapps Feed resource
     """
     if not group.name and not group.uid:
         raise BadRequestException("Group requires a field name or field uid")
@@ -266,16 +268,17 @@ def save(api, group):
 @authorization_decorator
 def delete(api, group):
     # type (ApiClient, Group) -> bool
-    """
-    Delete a group by uid
+    """Delete a group by uid
 
     Args:
-        api: the ApiClient instance to use for requests
+        api (str): the ApiClient instance to use for requests
         group: the group to save, requires at least a customer and uuid values
-    Returns: whether the operation succeeded
+
+    Returns:
+        whether the operation succeeded
     """
 
-    if group.uid == None or group.uid == "":
+    if group.uid is None or group.uid == "":
         raise BadRequestException("Group requires a field uid to delete")
 
     return api.get_call("feed", "delete", uid=group.uid) == ""
@@ -310,13 +313,14 @@ def get_types_by_label(api, group, label):
 
 def get_multi(api, uids):
     # type (ApiClient, list[str]) -> list[dict(str)]
-    """
-     a group by uid
+    """A group by uid
 
     Args:
         api: the ApiClient instance to use for requests
         uids: list of uids to fetch
-    Returns: list of Group elements
+
+    Returns:
+        list of Group elements
     """
     groups = api.get_call("feed", "getMulti", uid=uids)
     return groups
@@ -324,14 +328,15 @@ def get_multi(api, uids):
 
 def get_by_name(api, name, instance=""):
     # type (ApiClient, str, str) -> dict(str)
-    """
-     a group by name
+    """A group by name
 
     Args:
         api: the ApiClient instance to use for requests
         name: name to search
         instance: the instance id
-    Returns: a Lumapps Feed instance
+
+    Returns:
+        a Lumapps Feed instance
     """
     logging.info("getting group by name %s", name)
     groups = list_sync(api, instance, query=name)
@@ -340,13 +345,14 @@ def get_by_name(api, name, instance=""):
 
 def get_by_uid(api, uid):
     # type (ApiClient, str) -> dict(str)
-    """
-     a group by uid
+    """A group by uid
 
     Args:
         api: the ApiClient instance to use for requests
         uid: uid to fetch
-    Returns: a Lumapps Feed instance
+
+    Returns:
+        a Lumapps Feed instance
     """
     logging.info("getting group by uid %s", uid)
     result = api.get_call("feed", "get", uid=uid)
@@ -355,56 +361,69 @@ def get_by_uid(api, uid):
 
 def list_sync(api, instance="", fields="", **params):
     # type (ApiClient, str, str) -> list[dict[str]]
-    """
-    list all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)
+    """List all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)
 
     Args:
         api: the ApiClient instance to use for requests
         instance: the instance id
         fields: the fields to be returned
-        **params: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feed/list
-    Returns: list of Lumapps Feed resource
+        ``**params``: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feed/list
+
+    Returns:
+        list of Lumapps Feed resource
     """
     if not params:
         params = dict()
     if instance != "":
         params["instance"] = instance
+    if fields != "":
+        params["fields"] = fields
 
-    result = api.get_call("feed", "search", fields=fields, body=params)
+    if not params.get("body", None):
+        params["body"] = {}
+
+    result = api.get_call("feed", "search", **params)
     return result
 
 
 def list(api, instance="", fields="", **params):
     # type (ApiClient, str, str) -> list[dict[str]]
-    """
-    list all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)
+    """List all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)
 
     Args:
         api: the ApiClient instance to use for requests
         instance: the instance id
         fields: the fields to be returned
-        **params: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feed/list
-    Yields: a Lumapps Feed resource
+        ``**params``: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feed/list
+
+    Yields:
+        a Lumapps Feed resource
     """
     if not params:
         params = dict()
     if instance != "":
         params["instance"] = instance
+    if fields != "":
+        params["fields"] = fields
 
-    return api.iter_call("feed", "search", fields=fields, body=params)
+    if not params.get("body", None):
+        params["body"] = {}
+
+    return api.iter_call("feed", "search", **params)
 
 
-def update_users(group, users_to_add=[], users_to_remove=[]):
+def update_users(group, users_to_add=list, users_to_remove=list):
     # TODO: Iterables and not lists
     # type (Group, list[User], list[User]) -> bool
-    """
-    update the users of a group
+    """Update the users of a group
 
     Args:
         group: the group to update
         users_to_add: list of users to add to the group
         users_to_remove: list of users to remove from the group
-    Returns: whether the operation succeeded
+
+    Returns:
+        whether the operation succeeded
     """
     api = group.api
 
@@ -424,20 +443,22 @@ def update_users(group, users_to_add=[], users_to_remove=[]):
         result = api.get_call("feed", "subscribers", "save", body=body)
     except HttpError as e:
         raise BadRequestException(
-            "Error {} User {} has not been saved correctly.".format(str(e), user)
+            "Error {} Group {} has not been saved correctly.".format(str(e), group)
         )
 
     return result == ""
 
 
 def build_batch(api, groups):
-    # type: (ApiClient, Iterator(dict[str])) -> User
-    """
-    A generator for User instances from raw Lumapps user Iterator
-    Arguments:
+    # type: (ApiClient, Iterator[dict[str]]) -> User
+    """A generator for User instances from raw Lumapps user Iterator
+
+    Args:
         api: the ApiClient instance to use for requests
         groups: list of dictionary
-    Yields: a User attribute
+
+    Yields:
+        a User attribute
 
     """
     logging.info("building batch %s", groups)
@@ -448,19 +469,23 @@ def build_batch(api, groups):
 
 def list_types_sync(api, instance="", **params):
     # type (ApiClient, str) -> list[dict[str]]
-    """
-    list all the groups types of an instance. If no instance is provided , fetch the platform types
+    """List all the groups types of an instance. If no instance is provided , fetch the platform types
 
     Args:
         api: the ApiClient instance to use for requests
         instance: the instance id
-        **params: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feedtype/list
-    Returns: list of Lumapps Feed resource
+        ``**params``: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/feedtype/list
+
+    Returns:
+        list of Lumapps Feed resourcess
     """
     if not params:
         params = dict()
     if instance != "":
         params["instance"] = instance
+
+    if not params.get("body", None):
+        params["body"] = {}
 
     result = api.get_call("feedtype", "list", **params)
     return result
