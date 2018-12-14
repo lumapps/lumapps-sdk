@@ -1,6 +1,6 @@
 from copy import deepcopy
 from lumapps_api_client.cli import pop_matches, load_config
-
+import pytest
 
 def test_pop_matches():
     d = {
@@ -50,6 +50,6 @@ def test_pop_matches():
 
 
 def test_load_config():
-    api_info, auth_info, user = load_config(
-        None, None, 'ivo@managemybudget.net', 'mmb')
-    assert True
+    with pytest.raises(SystemExit):
+        api_info, auth_info, user = load_config(
+            None, None, 'ivo@managemybudget.net', 'mmb')

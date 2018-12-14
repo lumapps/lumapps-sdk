@@ -3,5 +3,7 @@ coverage
 pytest
 flask
 sphinx
+mock
 sphinx-rtd-theme
 sphinxcontrib-napoleon
+
