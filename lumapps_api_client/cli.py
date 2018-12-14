@@ -4,36 +4,11 @@ import sys
 import argparse
 import json
 
-from lumapps_api_client.lib import ApiClient, ApiCallError, get_conf, set_conf
+from lumapps_api_client.lib import (
+    ApiClient, ApiCallError, get_conf, set_conf, FILTERS)
 import logging
 
 LIST_CONFIGS = '***LIST_CONFIGS***'
-FILTERS = {
-    # content/get, content/list, ...
-    'content/*': [
-        'lastRevision',
-        'authorDetails', 'updatedByDetails', 'writerDetails', 'headerDetails',
-        'customContentTypeDetails'],
-    # community/get, community/list, ...
-    'community/*': [
-        'lastRevision',
-        'authorDetails', 'updatedByDetails', 'writerDetails', 'headerDetails',
-        'customContentTypeDetails', 'adminsDetails', 'usersDetails'],
-    # template/get, template/list, ...
-    'template/*': [
-        'properties/duplicateContent'
-    ],
-    'community/post/*': [
-        'authorDetails', 'updatedByDetails', 'mentionsDetails',
-        'parentContentDetails'
-    ],
-    'comment/get': [
-        'authorProperties', 'mentionsDetails'
-    ],
-    'comment/list': [
-        'authorProperties', 'mentionsDetails'
-    ],
-}
 
 
 def parse_args():
@@ -59,8 +34,8 @@ def parse_args():
             help='a token can be gotten with '
                  '"getToken customerId=... email=..."')
     add_arg('--body-file', help='JSON POST data body file', metavar='FILE')
-    add_arg('-f', '--filter', action='store_true',
-            help='Filter out content based on methods being invoked. '
+    add_arg('-p', '--prune', action='store_true',
+            help='Prune extraneous content based on methods being invoked. '
                  'See below for filters used.')
     add_arg('--config', '-c', nargs='?', default=None, const=LIST_CONFIGS,
             help='SAVE/READ/LIST configuration(s): if a value is provided: '
@@ -112,35 +87,6 @@ def store_config(api_info, auth_info, conf_name, user=None):
     set_conf(conf)
 
 
-def filter_results(method_parts, results):
-    for filter_method in FILTERS:
-        filter_method_parts = filter_method.split('/')
-        if len(method_parts) != len(filter_method_parts):
-            continue
-        for filter_part, part in zip(filter_method_parts, method_parts):
-            if filter_part not in ('*', part):
-                break
-        else:
-            for pth in FILTERS[filter_method]:
-                if isinstance(results, list):
-                    for o in results:
-                        pop_matches(pth, o)
-                else:
-                    pop_matches(pth, results)
-
-
-def pop_matches(dpath, d):
-    if not dpath:
-        return
-    for pth_part in dpath.split('/')[:-1]:
-        if not isinstance(d, dict):
-            return
-        d = d.get(pth_part)
-    if not isinstance(d, dict):
-        return
-    d.pop(dpath.rpartition('/')[2], None)
-
-
 def cast_params(method_parts, params, api):
     truths = ('True', 'true', '1', 'Yes', 'yes', 'sure', 'yeah')
     method = api.methods[method_parts]
@@ -173,7 +119,8 @@ def main():
         return
     api_info, auth_info, user = load_config(
         args.api, args.auth, args.user, args.config)
-    api = ApiClient(auth_info, api_info, user=user, token=args.token)
+    api = ApiClient(auth_info, api_info,
+                    user=user, token=args.token, prune=args.prune)
     if args.config and (args.auth or args.api):
         store_config(api_info, auth_info, args.config, args.user)
     if not args.api_method:
@@ -202,8 +149,6 @@ def main():
         response = api.get_call(*method_parts, **params)
     except ApiCallError as err:
         sys.exit(err)
-    if args.filter:
-        filter_results(method_parts, response)
     print(json.dumps(response, indent=4, sort_keys=True))
 
 
