@@ -45,7 +45,7 @@ class Group(object):
         name="",
         uid="",
         remote_group="",
-        type="",
+        feed_type="",
         representation=None,
     ):
         # type: (ApiClient, str, str, str, str, str, str, dict) -> None
@@ -69,7 +69,7 @@ class Group(object):
         self._id = uid
         self._api = api
         self._remote_group = remote_group
-        self._type = {"uid": type}
+        self._type = {"uid": feed_type}
 
         if representation is not None:
             self._set_representation(representation)
@@ -254,6 +254,7 @@ def save(api, group):
 
     try:
         grp = group.to_lumapps()
+        print(grp)
         logging.info("saving group to remote %s ", grp)
         saved_grp = api.get_call("feed", "save", body=grp)
 
@@ -483,9 +484,6 @@ def list_types_sync(api, instance="", **params):
         params = dict()
     if instance != "":
         params["instance"] = instance
-
-    if not params.get("body", None):
-        params["body"] = {}
 
     result = api.get_call("feedtype", "list", **params)
     return result
