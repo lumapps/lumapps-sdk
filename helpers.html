@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Reporting bugs" href="contributing.html" />
@@ -53,7 +54,7 @@
 
           
             
-            <img src="_static/lumapps.webp" class="logo" alt="Logo"/>
+            <img src="_static/lumapps-sdk-logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -90,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 </ul>
-<p class="caption"><span class="caption-text">developer reference</span></p>
+<p class="caption"><span class="caption-text">Developer reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API helpers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.group">Group</a></li>
@@ -174,7 +175,7 @@
 <span id="group"></span><h2>Group<a class="headerlink" href="#module-lumapps_api_helpers.group" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="lumapps_api_helpers.group.Group">
-<em class="property">class </em><code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>instance=''</em>, <em>name=''</em>, <em>uid=''</em>, <em>remote_group=''</em>, <em>type=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.Group" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>instance=''</em>, <em>name=''</em>, <em>uid=''</em>, <em>remote_group=''</em>, <em>feed_type=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.Group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lumapps feed object</p>
 <dl class="method">
 <dt id="lumapps_api_helpers.group.Group.get_attribute">
@@ -734,14 +735,13 @@ filter_by (str, str): (key, value) filter only rows where key=value</dd>
 
 <dl class="function">
 <dt id="lumapps_api_helpers.utils.to_json">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">to_json</code><span class="sig-paren">(</span><em>obj</em>, <em>*</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>cls=None</em>, <em>indent=4</em>, <em>separators=None</em>, <em>default=None</em>, <em>sort_keys=True</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#lumapps_api_helpers.utils.to_json" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">to_json</code><span class="sig-paren">(</span><em>obj</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>cls=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#lumapps_api_helpers.utils.to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serialize <code class="docutils literal notranslate"><span class="pre">obj</span></code> to a JSON formatted <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">skipkeys</span></code> is true then <code class="docutils literal notranslate"><span class="pre">dict</span></code> keys that are not basic types
-(<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>) will be skipped
-instead of raising a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> is false, then the return value can contain non-ASCII
-characters if they appear in strings contained in <code class="docutils literal notranslate"><span class="pre">obj</span></code>. Otherwise, all
-such characters are escaped in JSON strings.</p>
+(<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">unicode</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>)
+will be skipped instead of raising a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> is false, all non-ASCII characters are not escaped, and
+the return value may be a <code class="docutils literal notranslate"><span class="pre">unicode</span></code> instance. See <code class="docutils literal notranslate"><span class="pre">dump</span></code> for details.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">check_circular</span></code> is false, then the circular reference check
 for container types will be skipped and a circular reference will
 result in an <code class="docutils literal notranslate"><span class="pre">OverflowError</span></code> (or worse).</p>
@@ -752,11 +752,13 @@ JavaScript equivalents (<code class="docutils literal notranslate"><span class="
 <p>If <code class="docutils literal notranslate"><span class="pre">indent</span></code> is a non-negative integer, then JSON array elements and
 object members will be pretty-printed with that indent level. An indent
 level of 0 will only insert newlines. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the most compact
-representation.</p>
-<p>If specified, <code class="docutils literal notranslate"><span class="pre">separators</span></code> should be an <code class="docutils literal notranslate"><span class="pre">(item_separator,</span> <span class="pre">key_separator)</span></code>
-tuple.  The default is <code class="docutils literal notranslate"><span class="pre">(',</span> <span class="pre">',</span> <span class="pre">':</span> <span class="pre">')</span></code> if <em>indent</em> is <code class="docutils literal notranslate"><span class="pre">None</span></code> and
-<code class="docutils literal notranslate"><span class="pre">(',',</span> <span class="pre">':</span> <span class="pre">')</span></code> otherwise.  To get the most compact JSON representation,
-you should specify <code class="docutils literal notranslate"><span class="pre">(',',</span> <span class="pre">':')</span></code> to eliminate whitespace.</p>
+representation.  Since the default item separator is <code class="docutils literal notranslate"><span class="pre">',</span> <span class="pre">'</span></code>,  the
+output might include trailing whitespace when <code class="docutils literal notranslate"><span class="pre">indent</span></code> is specified.
+You can use <code class="docutils literal notranslate"><span class="pre">separators=(',',</span> <span class="pre">':</span> <span class="pre">')</span></code> to avoid this.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">separators</span></code> is an <code class="docutils literal notranslate"><span class="pre">(item_separator,</span> <span class="pre">dict_separator)</span></code> tuple
+then it will be used instead of the default <code class="docutils literal notranslate"><span class="pre">(',</span> <span class="pre">',</span> <span class="pre">':</span> <span class="pre">')</span></code> separators.
+<code class="docutils literal notranslate"><span class="pre">(',',</span> <span class="pre">':')</span></code> is the most compact JSON representation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">encoding</span></code> is the character encoding for str instances, default is UTF-8.</p>
 <p><code class="docutils literal notranslate"><span class="pre">default(obj)</span></code> is a function that should return a serializable version
 of obj or raise TypeError. The default simply raises TypeError.</p>
 <p>If <em>sort_keys</em> is true (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>), then the output of
