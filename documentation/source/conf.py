@@ -113,7 +113,7 @@ html_static_path = ["_static"]
 
 html_logo = "_static/lumapps-sdk-logo.png"
 
-html_css_files = ['custom.css']
+html_css_files = ["custom.css"]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
