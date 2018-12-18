@@ -3,18 +3,29 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+=======================================
 Welcome to Lumapps SDK's documentation!
 =======================================
 
+.. image:: _static/lumapps.webp
+   :width: 20%
+   :align: center
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Using the Lumapps SDK
 
+   getting_started
+   cli
 
+.. toctree::
+   :maxdepth: 2
+   :caption: developer reference
 
-Indices and tables
-==================
+   helpers
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 1
+   :caption: How to contribute
+
+   contributing

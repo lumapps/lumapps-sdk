@@ -1,3 +1,4 @@
+# **Lumapps SDK**
 
 *Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break changethe behaviour of some helpers*
 

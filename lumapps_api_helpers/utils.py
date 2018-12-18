@@ -4,7 +4,12 @@ import os
 
 from functools import partial
 from operator import itemgetter
-from itertools import groupby, ifilter
+from itertools import groupby
+
+try:
+    from itertools import ifilter
+except ImportError:
+    from builtins import filter as ifilter
 
 try:
     import unicodecsv as csv
@@ -20,8 +25,6 @@ CSV_OPTIONS = {"delimiter": ","}
 def create_lumapps_uuid():  # type: () -> str
     """Generate a uid in the same format as lumapps
 
-    Args:
-
     Returns:
         A string valueof the unique id
 
@@ -34,8 +37,7 @@ def set_new_lumapps_uuids(content):
     """Generate a new unique id for every element in the list
 
     Args:
-        the list of dict elements where to replace ids
-    Returns:
+        content (list[Dict[str]]): the list of dict elements where to replace ids
 
     """
     with_uuid = list(nested_findall("uuid", content))
@@ -44,13 +46,14 @@ def set_new_lumapps_uuids(content):
 
 
 def nested_findall(key, dict_or_list):
-    # type: (str, list[Dict[str | Dict | list]]) -> Generator[Dict[str]]
+    # type: (str, list[Dict[Union[str, Dict, list]]]) -> Generator[Dict[str]]
 
     """Find all elements by key recursively in lists or dictionnaries
 
     Args:
-        key: The key to search
-        dict_or_list: The dictionary/list of dictionaries to look into
+        key (str): The key to search
+        dict_or_list (list[Dict[str or Dict or list]]): The dictionary/list of dictionaries to look into
+
     Yields:
         a generator where elements are elements of the dict with the searched key
     """
@@ -77,9 +80,10 @@ def nested_find_one(key, value, dict_or_list):
     """Find the first element by key recursively in lists or dictionnaries
 
     Args:
-        key: The key to search
-        value: the value to search
-        dict_or_list: The dictionary/list of dictionaries to look into
+        key (str): The key to search
+        value (str): the value to search
+        dict_or_list (list[Dict[str]]): The dictionary/list of dictionaries to look into
+
     Yields:
         the first element found
     """
@@ -92,9 +96,10 @@ def nested_findall_value(key, value, dict_or_list):
     """Find the first element by key and elements recursively in lists or dictionnaries
 
     Args:
-        key: The key to search
-        value: the value to search
-        dict_or_list: The dictionary/list of dictionaries to look into
+        key (str): The key to search.
+        value (str): the value to search.
+        dict_or_list (list[Dict[str]]): The dictionary/list of dictionaries to look into.
+
     Yields:
         a generator where elements of the dict with the searched key and value
     """
@@ -121,9 +126,10 @@ def read_csv_data(path, group_by=None, filter_by=None):
     """
 
      Args:
-        path: the path of the file to read
-        group_by: the key to use to group the parsed csv
-        filter_by: (key, value) filter only rows where key=value
+        path (str): the path of the file to read
+        group_by (str): the key to use to group the parsed csv
+        filter_by (str, str): (key, value) filter only rows where key=value
+
     Yields:
         the rows parsed
     """
