@@ -69,7 +69,3 @@ Some tips
 
 If you want to rapidly get info on your lumapps site you can use the ``?`` (``shift``+ ``,``), that shortcut will
 display you infos on the current site you are connected on.
-
-.. image:: 'Tip-shortcut.png'
-    :width: 300px
-    :align: center

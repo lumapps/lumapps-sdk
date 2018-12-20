@@ -10,7 +10,7 @@ from lumapps_api_helpers.exceptions import BadRequestException
 #------------------------------------------------------------------------------------#
 
 def list_medias(api, lang, **params):
-    # type (ApiClient, str, dict) -> (list)
+    # type (ApiClient, str, dict) -> (Iterable[dict])
     """List all the medias.
 
         Args:
@@ -18,11 +18,11 @@ def list_medias(api, lang, **params):
             lang (str): the lang. Defaults to english (en).
             ``**params``: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/media/list.
 
-        Returns:
-            list: A list containing all the medias.
+        Yields:
+            a Lumapps Media resource
     """ 
     params["lang"] = lang if lang else 'en'
-    return api.get_call("media", "list", **params)
+    return api.iter_call("media", "list", **params)
 
 
 
@@ -113,7 +113,7 @@ def upload_and_save(api, instance, files, langs=None, names=None):
 #------------------------------------------------------------------------------------#
 
 def list_media_folders(api, lang, **params):
-    # type: (ApiClient, str, dict) -> list[dict]
+    # type: (ApiClient, str, dict) -> Iterable[dict]
     """List all media folder associated to a lang in
 
         Args:
@@ -121,13 +121,13 @@ def list_media_folders(api, lang, **params):
             lang (str): The lang associated to the folders.
             ``**params`` (dict, optional): A dict containing other optional parameters as described in https://api.lumapps.com/docs/media/folder/list
 
-        Returns:
-            list[dict]: The list of all the folders in the specified language.
+        Yields:
+            A LumApps MediaFolder resource.
     """
     if not params:
         params = {}
     params["lang"] = lang
-    return api.get_call("media","folder", "list", **params)
+    return api.iter_call("media","folder", "list", **params)
 
 
 def create_media_folder(api, instance, lang, name, **params):
