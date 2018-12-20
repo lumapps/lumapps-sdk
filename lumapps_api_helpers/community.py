@@ -177,7 +177,7 @@ class Community(object):
         return self._api.iter_call("community", "post", "search", body=params)
 
 
-def list(api, **params):
+def list_communities(api, **params):
     # type: (ApiClient, dict) -> Iterator[dict[str]]
     """Fetch communities
 
@@ -248,3 +248,4 @@ def list_sync(api, instance="", **params):
 
     result = api.get_call("community", "list", **params)
     return result
+

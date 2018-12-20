@@ -11,16 +11,13 @@ from lumapps_api_helpers.exceptions import BadRequestException
 
 class TestMedia(unittest.TestCase):
 
-    # def setUp(self):
-    #     credentials = mock.Mock(spec="google.oauth2.credentials.Credentials")
-    #     self.client = ApiClient("test@test.com", credentials=credentials)
-    #     http = HttpMock("test_data/lumapps_discovery.json", {"status": "200"})
-    #     service = build("lumapps", "v1", http=http, developerKey="no")
-    #     self.client._service = service
-
     def setUp(self):
-        self.client = ApiClient(token="yo29.2XtxetmwsqgGZxM7IqQvpZzsXdrc9wXtXFLgaVZd1pWRAvB1UZgfrGbqMnh6KgUrV6OIdkUrxSW0LPAIspID1FubTUcKZCELy+1oYgGU+S8=")
-
+        credentials = mock.Mock(spec="google.oauth2.credentials.Credentials")
+        self.client = ApiClient("test@test.com", credentials=credentials)
+        http = HttpMock("test_data/lumapps_discovery.json", {"status": "200"})
+        service = build("lumapps", "v1", http=http, developerKey="no")
+        self.client._service = service
+        
     def test_list_medias(self):
         with self.assertRaises(Exception):
             medias = list_medias(self.client, "")

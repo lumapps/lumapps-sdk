@@ -6,8 +6,7 @@ from apiclient.http import HttpMock
 from apiclient.discovery import build
 
 from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.community import list as list_communities
-from lumapps_api_helpers.community import build_batch
+from lumapps_api_helpers.community import build_batch, disable_notifications_of_all_commu, list_communities
 
 
 class CommunitiesTest(unittest.TestCase):
@@ -17,6 +16,7 @@ class CommunitiesTest(unittest.TestCase):
         http = HttpMock("test_data/lumapps_discovery.json", {"status": "200"})
         service = build("lumapps", "v1", http=http, developerKey="no")
         self.client._service = service
+
 
     def test_list_communities(self):
         rep = list_communities(self.client)
