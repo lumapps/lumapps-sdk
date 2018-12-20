@@ -3,11 +3,12 @@ import logging
 from lumapps_api_helpers.exceptions import BadRequestException
 
 
-#------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------#
 #                                                                                    #
 #                                      Medias                                        #
 #                                                                                    #
-#------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------#
+
 
 def list_medias(api, lang, **params):
     # type (ApiClient, str, dict) -> (Iterable[dict])
@@ -20,10 +21,9 @@ def list_medias(api, lang, **params):
 
         Yields:
             a Lumapps Media resource
-    """ 
-    params["lang"] = lang if lang else 'en'
+    """
+    params["lang"] = lang if lang else "en"
     return api.iter_call("media", "list", **params)
-
 
 
 def upload_file(api, f):
@@ -37,13 +37,18 @@ def upload_file(api, f):
         Returns:
             list[dict]: The post request return.
     """
-    upload_url = api.get_call('file', 'uploadUrl')['uploadUrl']
-    response = api.get_authed_session().post(upload_url, files=[('files', open(f, 'rb'))])
+    upload_url = api.get_call("file", "uploadUrl")["uploadUrl"]
+    response = api.get_authed_session().post(
+        upload_url, files=[("files", open(f, "rb"))]
+    )
     if response.status_code != 200:
-        logging.error("Upload file {} failed. Response content was {}.".format(f, reponse.content))
+        logging.error(
+            "Upload file {} failed. Response content was {}.".format(f, reponse.content)
+        )
         raise Exception(str(response.content))
     uploaded_file = response.json()
     return uploaded_file
+
 
 def save_media(api, media):
     # type: (ApiClient, dict) -> None
@@ -53,7 +58,8 @@ def save_media(api, media):
             api (object): The ApiClient instance used to request.
             media (dict): the media to save.
     """
-    api.get_call("media", "save", body = media)
+    api.get_call("media", "save", body=media)
+
 
 def uploaded_to_media(uploaded_file, instance, lang, name=None):
     # type: (dict, str, str, str) -> dict
@@ -69,21 +75,24 @@ def uploaded_to_media(uploaded_file, instance, lang, name=None):
     """
     media = {}
     media["instance"] = instance
-    media['content'] = [{
-                'ext': uploaded_file.get('ext'),
-                'height': uploaded_file.get('height', 0),
-                'width': uploaded_file.get('width', 0),
-                'lang': lang,
-                'mimeType': uploaded_file.get('mimeType'),
-                'name': name or uploaded_file.get('name'),
-                'url': uploaded_file.get('url'),
-                'servingUrl': uploaded_file.get('url'),
-                'size': uploaded_file.get('fileSize'),
-                'type': uploaded_file.get('type'),
-                'value': uploaded_file.get('blobKey'),
-            }]
-    media['name'] = {lang: name or uploaded_file.get('name')}
+    media["content"] = [
+        {
+            "ext": uploaded_file.get("ext"),
+            "height": uploaded_file.get("height", 0),
+            "width": uploaded_file.get("width", 0),
+            "lang": lang,
+            "mimeType": uploaded_file.get("mimeType"),
+            "name": name or uploaded_file.get("name"),
+            "url": uploaded_file.get("url"),
+            "servingUrl": uploaded_file.get("url"),
+            "size": uploaded_file.get("fileSize"),
+            "type": uploaded_file.get("type"),
+            "value": uploaded_file.get("blobKey"),
+        }
+    ]
+    media["name"] = {lang: name or uploaded_file.get("name")}
     return media
+
 
 def upload_and_save(api, instance, files, langs=None, names=None):
     # type: (ApiClient, str, list[str], list[str], list[str]) -> None
@@ -96,8 +105,8 @@ def upload_and_save(api, instance, files, langs=None, names=None):
             langs (list[str], optional): A list containing the lang associated to each file. Defaults to english.
             name (list[str], optional): A list containing the name associated to each file. Defaults to the filename.
     """
-    langs = ['en']*len(files) if langs is None else langs
-    names = [None]*len(files) if names is None else names
+    langs = ["en"] * len(files) if langs is None else langs
+    names = [None] * len(files) if names is None else names
     for f, lang, name in zip(files, langs, names):
         uploaded_file = upload_file(api, f)
         logging.info("File {} uploaded !")
@@ -106,11 +115,13 @@ def upload_and_save(api, instance, files, langs=None, names=None):
         logging.info("File : {} saved !".format(f))
         print("File : {} saved !".format(f))
 
-#------------------------------------------------------------------------------------#
+
+# ------------------------------------------------------------------------------------#
 #                                                                                    #
 #                                   Media folders                                    #
 #                                                                                    #
-#------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------#
+
 
 def list_media_folders(api, lang, **params):
     # type: (ApiClient, str, dict) -> Iterable[dict]
@@ -127,7 +138,7 @@ def list_media_folders(api, lang, **params):
     if not params:
         params = {}
     params["lang"] = lang
-    return api.iter_call("media","folder", "list", **params)
+    return api.iter_call("media", "folder", "list", **params)
 
 
 def create_media_folder(api, instance, lang, name, **params):
@@ -148,8 +159,9 @@ def create_media_folder(api, instance, lang, name, **params):
         params = {}
     params["instance"] = instance
     params["name"] = {lang: name}
-    response = api.get_call("media", "folder","save", body = params)
+    response = api.get_call("media", "folder", "save", body=params)
     return reponse
+
 
 def move_media_to_folder(api, itemid, folderid, **params):
     # type: (ApiClient, str, str, dict) -> dict
@@ -168,4 +180,4 @@ def move_media_to_folder(api, itemid, folderid, **params):
         params = {}
     params["itemId"] = itemid
     params["destinationFolderId"] = folderid
-    return api.get_call("media", "media", "move", body = params)
+    return api.get_call("media", "media", "move", body=params)

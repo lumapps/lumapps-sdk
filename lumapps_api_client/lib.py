@@ -15,31 +15,43 @@ FILTERS = {
     # content/get, content/list, ...
     "content/*": [
         "lastRevision",
-        "authorDetails", "updatedByDetails", "writerDetails", "headerDetails",
-        "customContentTypeDetails"],
+        "authorDetails",
+        "updatedByDetails",
+        "writerDetails",
+        "headerDetails",
+        "customContentTypeDetails",
+    ],
     # community/get, community/list, ...
     "community/*": [
         "lastRevision",
-        "authorDetails", "updatedByDetails", "writerDetails", "headerDetails",
-        "customContentTypeDetails", "adminsDetails", "usersDetails"],
+        "authorDetails",
+        "updatedByDetails",
+        "writerDetails",
+        "headerDetails",
+        "customContentTypeDetails",
+        "adminsDetails",
+        "usersDetails",
+    ],
     "communitytemplate/*": [
         "lastRevision",
-        "authorDetails", "updatedByDetails", "writerDetails", "headerDetails",
-        "customContentTypeDetails", "adminsDetails", "usersDetails"],
+        "authorDetails",
+        "updatedByDetails",
+        "writerDetails",
+        "headerDetails",
+        "customContentTypeDetails",
+        "adminsDetails",
+        "usersDetails",
+    ],
     # template/get, template/list, ...
-    "template/*": [
-        "properties/duplicateContent"
-    ],
+    "template/*": ["properties/duplicateContent"],
     "community/post/*": [
-        "authorDetails", "updatedByDetails", "mentionsDetails",
-        "parentContentDetails"
+        "authorDetails",
+        "updatedByDetails",
+        "mentionsDetails",
+        "parentContentDetails",
     ],
-    "comment/get": [
-        "authorProperties", "mentionsDetails"
-    ],
-    "comment/list": [
-        "authorProperties", "mentionsDetails"
-    ],
+    "comment/get": ["authorProperties", "mentionsDetails"],
+    "comment/list": ["authorProperties", "mentionsDetails"],
 }
 
 
@@ -99,8 +111,7 @@ class DiscoveryCache(object):
         cached = get_conf()["cache"].get(url)
         if not cached:
             return None
-        expiry_dt = datetime.strptime(
-            cached["expiry"][:19], "%Y-%m-%dT%H:%M:%S")
+        expiry_dt = datetime.strptime(cached["expiry"][:19], "%Y-%m-%dT%H:%M:%S")
         if expiry_dt < datetime.now():
             return None
         return cached["content"]
@@ -109,10 +120,11 @@ class DiscoveryCache(object):
     def set(url, content):
         conf = get_conf()
         conf["cache"][url] = {
-            "expiry": (datetime.now() +
-                       timedelta(
-                           seconds=DiscoveryCache._max_age)).isoformat()[:19],
-            "content": content}
+            "expiry": (
+                datetime.now() + timedelta(seconds=DiscoveryCache._max_age)
+            ).isoformat()[:19],
+            "content": content,
+        }
         set_conf(conf)
 
 
@@ -147,16 +159,19 @@ class ApiClient(object):
         self.api_info = api_info
         self._api_name = api_info.get("name", "lumsites")
         self._api_scopes = api_info.get(
-            "scopes", ["https://www.googleapis.com/auth/userinfo.email"])
+            "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
+        )
         self._api_version = api_info.get("version", "v1")
-        self.base_url = api_info.get(
-            "base_url", "https://lumsites.appspot.com").rstrip("/")
+        self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
+            "/"
+        )
         if self._api_name in GOOGLE_APIS:
             url_path = "discovery/v1/apis"
         else:
             url_path = "_ah/api/discovery/v1/apis"
         self._url = "{}/{}/{}/{}/rest".format(
-            self.base_url, url_path, self._api_name, self._api_version)
+            self.base_url, url_path, self._api_name, self._api_version
+        )
         self._methods = None
         self._service = None
         self.token_getter = token_getter
@@ -174,7 +189,8 @@ class ApiClient(object):
             self.token = token
         elif auth_info:  # service account
             self.creds = service_account.Credentials.from_service_account_info(
-                auth_info)
+                auth_info
+            )
             if self._api_scopes:
                 self.creds = self.creds.with_scopes(self._api_scopes)
             if user:
@@ -237,15 +253,16 @@ class ApiClient(object):
                 discoveryServiceUrl=self._url,
                 credentials=self.creds,
                 cache_discovery=True,
-                cache=cache)
+                cache=cache,
+            )
         return self._service
 
     @property
     def methods(self):
         if self._methods is None:
             self._methods = {
-                n: m for n, m in self.walk_api_methods(
-                    self.service._resourceDesc)}
+                n: m for n, m in self.walk_api_methods(self.service._resourceDesc)
+            }
         return self._methods
 
     def get_help(self, method_parts, debug=False):
@@ -256,17 +273,16 @@ class ApiClient(object):
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
         method = self.methods[method_parts]
-        w(method.get("httpMethod", "?") + " method: " +
-            " ".join(method_parts) + "\n")
+        w(method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n")
         if "description" in method:
             w(method["description"].strip() + "\n")
         if debug:
             w(json.dumps(method, indent=4, sort_keys=True))
         params = method.get("parameters", {})
         if method.get("httpMethod", "") == "POST":
-            params.update({
-                "body": {"required": True, "type": "JSON"},
-                "fields": {"type": "JSON"}})
+            params.update(
+                {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
+            )
         if not params:
             w("API method takes no parameters")
         else:
@@ -275,20 +291,26 @@ class ApiClient(object):
                 param = params[param_name]
                 descr = param.get("description")
                 descr = "\n" + wrapper.fill(descr) if descr else ""
-                w("  {}: {} {} {}".format(
-                    param_name,
-                    param["type"],
-                    "*" if param.get("required") else "",
-                    descr))
+                w(
+                    "  {}: {} {} {}".format(
+                        param_name,
+                        param["type"],
+                        "*" if param.get("required") else "",
+                        descr,
+                    )
+                )
         return "\n".join(help_lines)
 
     def get_method_descriptions(self, methods):
         lines = []
         for method_parts in methods:
             method = self.methods[method_parts]
-            lines.append((
-                " ".join(method_parts),
-                method.get("description", "").strip().split("\n")[0]))
+            lines.append(
+                (
+                    " ".join(method_parts),
+                    method.get("description", "").strip().split("\n")[0],
+                )
+            )
         longest_name = max(len(l[0]) for l in lines)
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
         return "\n".join(fmt.format(*l) for l in lines)
@@ -324,8 +346,9 @@ class ApiClient(object):
                     params["body"]["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(
-                method_parts, params).execute(num_retries=self.num_retries)
+            response = self._get_api_call(method_parts, params).execute(
+                num_retries=self.num_retries
+            )
             if "more" in response and "items" not in response:
                 self.last_cursor = None
                 return items  # empty list
@@ -351,8 +374,9 @@ class ApiClient(object):
                     params["body"]["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(
-                method_parts, params).execute(num_retries=self.num_retries)
+            response = self._get_api_call(method_parts, params).execute(
+                num_retries=self.num_retries
+            )
             if "more" in response and "items" not in response:
                 self.last_cursor = None
                 return  # empty list
@@ -375,12 +399,13 @@ class ApiClient(object):
         # find 'startswith' matches of the last part
         last = method_parts[-1]
         idx = len(method_parts) - 1
-        matches = [m for m in matches
-                   if len(m) >= idx and m[idx].startswith(last)]
+        matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
         if not matches:
             return "API method not found"
-        return ("API method not found. Did you mean any of these?\n" +
-                self.get_method_descriptions(sorted(matches)))
+        return (
+            "API method not found. Did you mean any of these?\n"
+            + self.get_method_descriptions(sorted(matches))
+        )
 
     def set_customer_user(self, email, customerId, instanceId=None):
         token = self.get_call("user", "getToken", email=email, customerId=customerId)

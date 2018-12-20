@@ -248,4 +248,3 @@ def list_sync(api, instance="", **params):
 
     result = api.get_call("community", "list", **params)
     return result
-
