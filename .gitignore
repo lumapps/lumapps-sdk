@@ -1,5 +1,6 @@
 lumapps_api_client/libs/
 documentation/build/
+.coverage
 .pytest_cache
 *egg*
 *.pyc

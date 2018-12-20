@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from textwrap import TextWrapper
 
 from google.oauth2 import service_account
+from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
@@ -423,3 +424,6 @@ class ApiClient(object):
 
     def is_god(self):
         return bool(self.user.get("isGod", False))
+
+    def get_authed_session(self):
+        return AuthorizedSession(self.creds)
