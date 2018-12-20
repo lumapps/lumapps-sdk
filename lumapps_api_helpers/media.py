@@ -2,6 +2,13 @@ import logging
 
 from lumapps_api_helpers.exceptions import BadRequestException
 
+
+#------------------------------------------------------------------------------------#
+#                                                                                    #
+#                                      Medias                                        #
+#                                                                                    #
+#------------------------------------------------------------------------------------#
+
 def list_medias(api, lang, **params):
     # type (ApiClient, str, dict) -> (list)
     """List all the medias.
@@ -16,6 +23,8 @@ def list_medias(api, lang, **params):
     """ 
     params["lang"] = lang if lang else 'en'
     return api.get_call("media", "list", **params)
+
+
 
 def upload_file(api, f):
     # type: (ApiClient, list[str]) -> (dict)
@@ -97,7 +106,66 @@ def upload_and_save(api, instance, files, langs=None, names=None):
         logging.info("File : {} saved !".format(f))
         print("File : {} saved !".format(f))
 
+#------------------------------------------------------------------------------------#
+#                                                                                    #
+#                                   Media folders                                    #
+#                                                                                    #
+#------------------------------------------------------------------------------------#
 
-        
+def list_media_folders(api, lang, **params):
+    # type: (ApiClient, str, dict) -> list[dict]
+    """List all media folder associated to a lang in
 
-    
+        Args:
+            api (object): The instance of the ApiClient used for request.
+            lang (str): The lang associated to the folders.
+            ``**params`` (dict, optional): A dict containing other optional parameters as described in https://api.lumapps.com/docs/media/folder/list
+
+        Returns:
+            list[dict]: The list of all the folders in the specified language.
+    """
+    if not params:
+        params = {}
+    params["lang"] = lang
+    return api.get_call("media","folder", "list", **params)
+
+
+def create_media_folder(api, instance, lang, name, **params):
+    # type: (ApiClient, str, str, str) -> dict
+    """Create a media folder
+
+        Args:
+            api (object): The ApiClient instance used to requests.
+            instance (str): The instance id of the Lumapps site.
+            lang (str): The lang associated to the folder.
+            name (str): The name of the folder.
+            ``**params`` (dict): A dict of optionnal params as described in https://api.lumapps.com/docs/output/_schemas/folder
+
+        Returns:
+            dict: The repsonse of the post request, ie a folder object.
+    """
+    if not params:
+        params = {}
+    params["instance"] = instance
+    params["name"] = {lang: name}
+    response = api.get_call("media", "folder","save", body = params)
+    return reponse
+
+def move_media_to_folder(api, itemid, folderid, **params):
+    # type: (ApiClient, str, str, dict) -> dict
+    """Move a media in a specified folder.
+
+        Args:
+            api (object): The ApiClient instance used for the request.
+            itemid (str): The id of the media to move.
+            folderid (str): The id of the folder to move the media into.
+            ``**params`` (dict, optional): An optional dict of parameters as described in https://api.lumapps.com/docs/output/_schemas/servermediamediamessagesfilesystemitemmoverequest
+
+        Returns:
+            dict: The response of the post request containing the media object that was moved.
+    """
+    if not params:
+        params = {}
+    params["itemId"] = itemid
+    params["destinationFolderId"] = folderid
+    return api.get_call("media", "media", "move", body = params)

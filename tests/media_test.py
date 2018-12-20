@@ -6,7 +6,7 @@ from apiclient.http import HttpMock
 from apiclient.discovery import build
 
 from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.media import list_medias, uploaded_to_media
+from lumapps_api_helpers.media import list_medias, uploaded_to_media,  move_media_to_folder, copy_media_to_folder
 from lumapps_api_helpers.exceptions import BadRequestException
 
 class TestMedia(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestMedia(unittest.TestCase):
     #     self.client._service = service
 
     def setUp(self):
-        self.client = ApiClient(token="yo29.lLZMNTpVGFNKtUgwSrVr/kWMY6zwtII+0NURoAth8v6zNTtHWvLa/7HUrGy/ALCB5jGU/HsQKO8qNBUISIi4IT6yWZAWDxIKpQMFZ3E+N7Q=")
+        self.client = ApiClient(token="yo29.2XtxetmwsqgGZxM7IqQvpZzsXdrc9wXtXFLgaVZd1pWRAvB1UZgfrGbqMnh6KgUrV6OIdkUrxSW0LPAIspID1FubTUcKZCELy+1oYgGU+S8=")
 
     def test_list_medias(self):
         with self.assertRaises(Exception):
@@ -47,3 +47,21 @@ class TestMedia(unittest.TestCase):
         assert media['content'][0]['lang'] == lang
         assert media['name'] == {lang: uploaded_file['name']}
         assert media['instance'] == instance
+
+    # def test_list_media_folders(self):
+    #     instance = "4684057579618304"
+    #     list_media_folders(self.client, 'en', instance = instance)
+    #     assert False
+
+    # def test_list_medias(self):
+    #     instance = "4684057579618304"
+    #     medias = list_medias(self.client, 'en', instance = instance)
+    #     for media in medias:
+    #         print(media['name'], media['id'])
+    #     assert False
+
+    def test_move_to_folder(self):
+        folderid = "5981450607525888"
+        itemid = "5726581493596160"
+        print(copy_media_to_folder(self.client, itemid, folderid))
+        assert False

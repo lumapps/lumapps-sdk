@@ -61,3 +61,15 @@ We will display the full name of a registered user in lumapps
     user_email = "[A LUMAPPS USER EMAIL]"
     usr = api.get_call("user", "get", email=user_email)
     print("Hello {}".format(usr.get("fullName", "")))
+
+
+---------
+Some tips
+---------
+
+If you want to rapidly get info on your lumapps site you can use the ``?`` (``shift``+ ``,``), that shortcut will
+display you infos on the current site you are connected on.
+
+.. image:: 'Tip-shortcut.png'
+    :width: 300px
+    :align: center
