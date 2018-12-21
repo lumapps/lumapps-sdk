@@ -1,7 +1,5 @@
 import logging
 
-from lumapps_api_helpers.exceptions import BadRequestException
-
 
 # ------------------------------------------------------------------------------------#
 #                                                                                    #
@@ -43,7 +41,7 @@ def upload_file(api, f):
     )
     if response.status_code != 200:
         logging.error(
-            "Upload file {} failed. Response content was {}.".format(f, reponse.content)
+            "Upload file {} failed. Response content was {}.".format(f, response.content)
         )
         raise Exception(str(response.content))
     uploaded_file = response.json()
@@ -160,7 +158,7 @@ def create_media_folder(api, instance, lang, name, **params):
     params["instance"] = instance
     params["name"] = {lang: name}
     response = api.get_call("media", "folder", "save", body=params)
-    return reponse
+    return response
 
 
 def move_media_to_folder(api, itemid, folderid, **params):
