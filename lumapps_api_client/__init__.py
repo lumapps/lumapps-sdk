@@ -1,4 +1,3 @@
-import sys
 from .lib import ApiClient, ApiCallError
 
 __version__ = "0.1"
