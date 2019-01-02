@@ -149,7 +149,7 @@ jobs:
           command: pip install -r requirements_dev.txt
       - run:
           name: Build doc
-          command: cd docs && make clean html
+          command: cd documentation && make clean html
   
   deploy-doc:
     docker:
