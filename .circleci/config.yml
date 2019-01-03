@@ -149,20 +149,8 @@ jobs:
           command: pip install -r requirements_dev.txt
       - run:
           name: Build doc
-          command: cd docs && make clean html
+          command: cd documentation && make clean html
   
-  deploy-doc:
-    docker:
-      - image: circleci/python:3.6
-    steps:
-      - checkout
-      - run:
-          name: Installing dependencies
-          command: | 
-            virtualenv env
-            source env/bin/activate
-            pip install -e .  
-            pip install -r requirements_dev.txt
 
 
 
