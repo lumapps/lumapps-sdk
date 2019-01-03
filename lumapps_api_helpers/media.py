@@ -113,7 +113,6 @@ def upload_and_save(api, instance, files, langs=None, names=None):
             saved_medias.append(media_saved)
             logging.info("File : {} saved !".format(f))
             print("File : {} saved !".format(f))
-        print(media_saved)
 
     return saved_medias
 
