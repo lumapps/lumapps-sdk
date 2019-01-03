@@ -141,7 +141,7 @@ class ApiClient(object):
         token=None,
         token_getter=None,
         prune=False,
-        num_retries=5,
+        num_retries=1,
     ):
         """
             Note:
