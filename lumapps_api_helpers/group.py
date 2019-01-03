@@ -387,7 +387,7 @@ def list_sync(api, instance="", fields="", **params):
     return result
 
 
-def list(api, instance="", fields="", **params):
+def list_groups(api, instance="", fields="", **params):
     # type (ApiClient, str, str) -> list[dict[str]]
     """List all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)
 
