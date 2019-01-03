@@ -1,7 +1,7 @@
 Group management
 ================
 
-Groups in LumApps are named ``Feeds`` in the apu and object definition. The SDK includes a helper to easily manipulate the groups.
+Groups in LumApps are named ``Feeds`` in the api and object definition. The SDK includes a helper to easily manipulate the groups.
 
 To list all the feeds of your Lumapps plateform
 -----------------------------------------------

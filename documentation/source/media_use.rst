@@ -1,10 +1,10 @@
 Media Management
 ================
 
-The SDK includes a helper to easily manipulate the medias.
+The SDK includes a helper to easily manipulate the media files.
 
-List all the medias of your Lumapps platform
---------------------------------------------
+List all the media files of your Lumapps platform
+--------------------------------------------------
 
 You can list all the medias in a specific language with this helper.
 
@@ -15,7 +15,7 @@ You can list all the medias in a specific language with this helper.
     api = ... # previously obtained
     medias = list_medias(api, 'en')
 
-Save one or several media(s) to your Lumapps site
+Save one or several media to your Lumapps site
 -------------------------------------------------
 
 We provide you a simple way to upload one or several

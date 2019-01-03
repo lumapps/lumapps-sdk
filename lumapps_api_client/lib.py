@@ -145,7 +145,7 @@ class ApiClient(object):
     ):
         """
             Note:
-                At least one type of authentication infos is required (auth_info, credentials, token)
+                At least one type of authentication info is required (auth_info, credentials, token)
             Args:
                 user (str): the user email.
                 auth_info (dict): A service account key (json file).
@@ -227,7 +227,7 @@ class ApiClient(object):
         self.token, self._token_expiry = self.token_getter()
 
     def _prune(self, method_parts, content):
-        """Filter the api response.
+        """Prune the api response.
         """
         if not self.prune:
             return content
@@ -265,8 +265,7 @@ class ApiClient(object):
 
     @property
     def service(self):
-        """ Setup the service object.
-            It construct the methods specific to the given API.
+        """Setup the service object.
         """
         self._check_access_token()
         if self._service is None:

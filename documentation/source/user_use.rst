@@ -3,7 +3,7 @@ User Management
 
 The SDK includes a helper to easily manipulate the users.
 
-To list all the users of your Lumapps plateform
+To list all users of your Lumapps plateform
 ------------------------------------------------
 
 .. code-block:: python 
