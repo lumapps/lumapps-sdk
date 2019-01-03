@@ -6,8 +6,7 @@ from apiclient.http import HttpMock
 from apiclient.discovery import build
 
 from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.community import list as list_communities
-from lumapps_api_helpers.community import build_batch
+from lumapps_api_helpers.community import build_batch, list_communities
 
 
 class CommunitiesTest(unittest.TestCase):
