@@ -177,7 +177,7 @@ class Community(object):
         return self._api.iter_call("community", "post", "search", body=params)
 
 
-def list(api, **params):
+def list_communities(api, **params):
     # type: (ApiClient, dict) -> Iterator[dict[str]]
     """Fetch communities
 
@@ -231,6 +231,7 @@ def list_sync(api, instance="", **params):
         api: the ApiClient instance to use for requests
         instance: the instance id
         **params: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/community/list
+        
     Returns: list of Lumapps Community resources
     """
     if not params:

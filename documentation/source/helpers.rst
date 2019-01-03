@@ -1,7 +1,12 @@
 API helpers
 ===========
 
+Media
+-----
 
+.. automodule:: lumapps_api_helpers.media
+    :members:
+    
 Group
 -----
 

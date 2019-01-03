@@ -193,4 +193,4 @@ texinfo_documents = [
 # -- Extension configuration -------------------------------------------------
 
 nitpicky = True
-nitpick_ignore = [("py:class", "type"), ("py:class", "list"), ("py:class", "Dict")]
+nitpick_ignore = [("py:class", "type"), ("py:class", "list"), ("py:class", "Dict"), ('py:class', "optional")]

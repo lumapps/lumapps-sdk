@@ -415,7 +415,7 @@ def list_sync(api, **params):
     return [user for user in build_batch(api, users)]
 
 
-def list(api, **params):
+def list_users(api, **params):
     # type: (ApiClient, dict) -> Iterator[Tuple[dict, User]]
     """Fetch users
 
