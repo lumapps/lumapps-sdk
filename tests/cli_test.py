@@ -1,4 +1,3 @@
-from copy import deepcopy
 from lumapps_api_client.cli import load_config
 import pytest
 

@@ -231,6 +231,7 @@ def list_sync(api, instance="", **params):
         api: the ApiClient instance to use for requests
         instance: the instance id
         **params: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/community/list
+        
     Returns: list of Lumapps Community resources
     """
     if not params:
