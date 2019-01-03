@@ -1,4 +1,4 @@
-import sys
+from .lib import ApiClient, ApiCallError
 
-sys.path.insert(0, './libs')
 __version__ = "0.1"
+__all__ = ['ApiClient', 'ApiCallError']
