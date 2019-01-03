@@ -17,10 +17,6 @@ class TestMedia(unittest.TestCase):
         service = build("lumapps", "v1", http=http, developerKey="no")
         self.client._service = service
 
-    def test_list_medias(self):
-        with self.assertRaises(Exception):
-            list_medias(self.client, "")
-
     def test_uploaded_to_media(self):
         # Test when name is given
         with open("test_data/uploaded_file.json", "r") as f:
