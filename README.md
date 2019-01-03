@@ -1,14 +1,16 @@
 # **Lumapps SDK**
 
-*Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break changethe behaviour of some helpers*
+*Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
 
 *Make sure of the version you are using (Git tags & releases)*
 
 ----
 
-Lumapps SDK is a set of tools to manipulate the [LumappsAPI](http://api.lumapps.com)
-This includes a client that support all the routes of the API (located in folder lumapps_api_client)
-and a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)
+Lumapps SDK is a set of tools to manipulate the [Lumapps API](http://api.lumapps.com).
+
+This includes: 
+- a client that support all the routes of the API (located in folder lumapps_api_client)
+- a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)
 
 
 ## Quick start
@@ -67,8 +69,9 @@ print("Hello {}".format(usr.get("fullName", "")))
 
 ## Documentation
 
-The SDK documentation is available in the [the wiki](../../wiki)
-The folder "examples" also provides some basic examples to manipulate the sdk
+The SDK documentation is available [here](https://lumapps.github.io/lumapps-sdk)
+
+The (wiki)[../../wiki)] "examples" folder also provides some basic examples to manipulate the sdk.
 
 <!-- ### Running documentation locally
 
