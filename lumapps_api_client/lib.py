@@ -189,6 +189,7 @@ class ApiClient(object):
         )
 
         # Attach correct credentials
+
         self._methods = None
         self._service = None
         self.token_getter = token_getter

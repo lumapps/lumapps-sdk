@@ -12,7 +12,11 @@ cd ..
 cp -a documentation/build/html/* out/
 
 cd out
+touch .nojekyll
 git add -A
 git commit -m "Automated deployement to Github Page"
 
 git push origin gh-pages
+
+cd ..
+rm -rf out

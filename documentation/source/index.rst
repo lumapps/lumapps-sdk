@@ -7,10 +7,6 @@
 Welcome to Lumapps SDK's documentation!
 =======================================
 
-.. image:: _static/lumapps.webp
-   :width: 20%
-   :align: center
-
 .. toctree::
    :maxdepth: 2
    :caption: Using the Lumapps SDK
