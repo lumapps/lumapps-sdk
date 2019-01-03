@@ -153,8 +153,6 @@ jobs:
   
 
 
-
-
 workflows:
   version: 2.1
   
@@ -163,56 +161,36 @@ workflows:
       - build:
           name: "Build-27"
           version: "2.7"
-          filters:
-            branches:
-              only: master
 
       - linting:
           name: "Linting-27"
           version: "2.7"
           requires:
               - "Build-27"
-          filters:
-            branches:
-              only: master
       
       - test-and-coverage:
           name: "Tests-27"
           version: "2.7"
           requires:
             - "Linting-27"
-          filters:
-            branches:
-              only: master
-    
-
- 
+  
     
   CI-python36:
     jobs:
       - build:
           name: "Build-36"
           version: "3.6"
-          filters:
-            branches:
-              only: master
 
       - linting:
           name: "Linting-36"
           version: "3.6"
           requires:
             - "Build-36"
-          filters:
-            branches:
-              only: master
       
       - extended-linting:
           name: "Extended linting"
           requires:
               - "Build-36"
-          filters:
-            branches:
-              only: master
       
       - test-and-coverage:
           name: "Test-36"
@@ -221,17 +199,11 @@ workflows:
             - "Build-36"
             - "Linting-36"
             - "Extended linting"
-          filters:
-            branches:
-              only: master
       
       - documentation:
           name: "Building documentation"
           version: "3.6"
           requires:
             - "Test-36"
-          filters:
-            branches:
-              only: master
               
 
