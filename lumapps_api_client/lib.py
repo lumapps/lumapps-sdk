@@ -134,7 +134,7 @@ cache = DiscoveryCache()
 class ApiClient(object):
     def __init__(
         self,
-        user,
+        user=None,
         auth_info=None,
         api_info=None,
         credentials=None,

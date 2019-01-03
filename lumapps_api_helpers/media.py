@@ -47,8 +47,11 @@ def save_media(api, media):
         Args:
             api (object): The ApiClient instance used to request.
             media (dict): the media to save.
+        
+        Returns:
+            dict: A dict containing information about the saved media. 
     """
-    api.get_call("media", "save", body=media)
+    return api.get_call("media", "save", body=media)
 
 
 def uploaded_to_media(uploaded_file, instance, lang, name=None):
@@ -94,16 +97,23 @@ def upload_and_save(api, instance, files, langs=None, names=None):
             files (list[str]): A list of the paths to the files to save.
             langs (list[str], optional): A list containing the lang associated to each file. Defaults to english.
             name (list[str], optional): A list containing the name associated to each file. Defaults to the filename.
+
+        Returns:
+            list: A list containing information about each of the uploaded medias.
     """
     langs = ["en"] * len(files) if langs is None else langs
     names = [None] * len(files) if names is None else names
+    saved_medias = []
     for f, lang, name in zip(files, langs, names):
         uploaded_file = upload_file(api, f)
         logging.info("File {} uploaded !")
         media = uploaded_to_media(uploaded_file, instance, lang, name)
-        save_media(api, media)
-        logging.info("File : {} saved !".format(f))
-        print("File : {} saved !".format(f))
+        saved_media = save_media(api, media)
+        if saved_media:
+            saved_medias.append(saved_media)
+            logging.info("File : {} saved !".format(f))
+            print("File : {} saved !".format(f))
+    return saved_medias
 
 
 # ------------------------------------------------------------------------------------#
