@@ -6,4 +6,5 @@ sphinx
 mock
 sphinx-rtd-theme
 sphinxcontrib-napoleon
+pre-commit-hooks
 
