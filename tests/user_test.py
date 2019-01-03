@@ -6,8 +6,7 @@ from apiclient.http import HttpMock
 from apiclient.discovery import build
 
 from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.user import list as list_users
-from lumapps_api_helpers.user import build_batch, get_by_email
+from lumapps_api_helpers.user import build_batch, get_by_email, list_users
 
 
 class UserTests(unittest.TestCase):
