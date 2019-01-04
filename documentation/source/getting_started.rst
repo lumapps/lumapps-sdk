@@ -13,7 +13,7 @@ Install via ``pip``
 
 .. code-block:: bash
 
-    $ pip install git+ssh://git@github.com/lumapps/lumapps-apiclient.git@clean#egg=lumapps-sdk
+    $ pip install git+https://github.com/lumapps/lumapps-sdk.git
 
 Install as a developer
 ----------------------

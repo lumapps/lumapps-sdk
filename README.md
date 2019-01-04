@@ -21,9 +21,7 @@ This includes:
 ### Installation
 
 ```
-git clone https://github.com/lumapps/lumapps-sdk.git
-cd lumapps-sdk
-pip install -e .
+pip install git+https://github.com/lumapps/lumapps-sdk.git
 ```
 
 ### Getting started

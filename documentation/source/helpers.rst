@@ -1,5 +1,3 @@
-API helpers
-===========
 
 Media
 -----
