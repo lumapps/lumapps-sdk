@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Lumapps SDK’s documentation! &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>User Management &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -29,7 +29,8 @@
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting Started with the Lumapps SDK" href="getting_started.html" /> 
+    <link rel="next" title="Media" href="helpers.html" />
+    <link rel="prev" title="Group management" href="group_use.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -48,7 +49,7 @@
           
 
           
-            <a href="#">
+            <a href="index.html">
           
 
           
@@ -91,11 +92,15 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Use Cases</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#to-list-all-users-of-your-lumapps-plateform">To list all users of your Lumapps plateform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#to-create-a-user">To create a user</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Developer reference</span></p>
 <ul>
@@ -123,7 +128,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Lumapps SDK</a>
+          <a href="index.html">Lumapps SDK</a>
         
       </nav>
 
@@ -152,15 +157,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Welcome to Lumapps SDK’s documentation!</li>
+      <li>User Management</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/user_use.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,67 +178,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-lumapps-sdk-s-documentation">
-<h1>Welcome to Lumapps SDK’s documentation!<a class="headerlink" href="#welcome-to-lumapps-sdk-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#authentication-using-a-bearer-token">Authentication using a bearer token</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#your-first-api-call">Your first API call</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#some-tips">Some tips</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#required-parameters">Required parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#usage-examples">Usage examples</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="user-management">
+<h1>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h1>
+<p>The SDK includes a helper to easily manipulate the users.</p>
+<div class="section" id="to-list-all-users-of-your-lumapps-plateform">
+<h2>To list all users of your Lumapps plateform<a class="headerlink" href="#to-list-all-users-of-your-lumapps-plateform" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_sdk</span> <span class="kn">import</span> <span class="n">user</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">api</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">usr_dict</span><span class="p">,</span> <span class="n">usr_obj</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">usr_obj</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Use Cases</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="content_use.html#content-listing">Content Listing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_use.html#content-details">Content details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_use.html#content-creation">Content creation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="media_use.html#list-all-the-media-files-of-your-lumapps-platform">List all the media files of your Lumapps platform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="media_use.html#save-one-or-several-media-to-your-lumapps-site">Save one or several media to your Lumapps site</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="group_use.html#to-list-all-the-feeds-of-your-lumapps-plateform">To list all the feeds of your Lumapps plateform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group_use.html#to-create-a-group-synced-to-a-google-group-email">To create a group synced to a google group email</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="user_use.html#to-list-all-users-of-your-lumapps-plateform">To list all users of your Lumapps plateform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user_use.html#to-create-a-user">To create a user</a></li>
-</ul>
-</li>
-</ul>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Developer reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
-</ul>
+<div class="section" id="to-create-a-user">
+<h2>To create a user<a class="headerlink" href="#to-create-a-user" title="Permalink to this headline">¶</a></h2>
+<p>Save a user by provinding an <cite>email</cite>, a <cite>first_name</cite> and a <cite>last_name</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_sdk.user</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
+<span class="n">usr</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span>
+      <span class="n">api</span><span class="p">,</span>
+      <span class="n">email</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+      <span class="n">representation</span> <span class="o">=</span><span class="p">{</span><span class="s2">&quot;firstName&quot;</span><span class="p">:</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span><span class="s2">&quot;lastName&quot;</span><span class="p">:</span><span class="s2">&quot;last_name&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">success</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">usr</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">success</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Reporting bugs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html#suggesting-enhancements">Suggesting enhancements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html#contributing-to-code">Contributing to code</a></li>
-</ul>
 </div>
 </div>
 
@@ -245,8 +219,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started with the Lumapps SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="helpers.html" class="btn btn-neutral float-right" title="Media" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="group_use.html" class="btn btn-neutral" title="Group management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

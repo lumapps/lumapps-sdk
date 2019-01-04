@@ -89,9 +89,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with the Lumapps SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Use Cases</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../content_use.html">Content Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../media_use.html">Media Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../group_use.html">Group management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_use.html">User Management</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Developer reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../helpers.html">API helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html#module-lumapps_api_helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html#module-lumapps_api_helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -578,7 +588,7 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">user</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">build_batch</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">users</span><span class="p">)]</span></div>
 
 
-<div class="viewcode-block" id="list"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.user.list">[docs]</a><span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="list_users"><a class="viewcode-back" href="../../helpers.html#lumapps_api_helpers.user.list_users">[docs]</a><span class="k">def</span> <span class="nf">list_users</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, dict) -&gt; Iterator[Tuple[dict, User]]</span>
     <span class="sd">&quot;&quot;&quot;Fetch users</span>
 
@@ -680,6 +690,7 @@
         <script type="text/javascript" src="../../_static/jquery.js"></script>
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
     
 
   

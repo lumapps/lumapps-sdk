@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API helpers &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Media &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Reporting bugs" href="contributing.html" />
-    <link rel="prev" title="CLI" href="cli.html" /> 
+    <link rel="prev" title="User Management" href="user_use.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,14 +91,19 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Use Cases</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Developer reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API helpers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lumapps_api_helpers.utils">Utils</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-lumapps_api_helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-lumapps_api_helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-lumapps_api_helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -150,7 +155,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>API helpers</li>
+      <li>Media</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -169,10 +174,208 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api-helpers">
-<h1>API helpers<a class="headerlink" href="#api-helpers" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-lumapps_api_helpers.media">
+<span id="media"></span><h1>Media<a class="headerlink" href="#module-lumapps_api_helpers.media" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="lumapps_api_helpers.media.create_media_folder">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">create_media_folder</code><span class="sig-paren">(</span><em>api</em>, <em>instance</em>, <em>lang</em>, <em>name</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#create_media_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.create_media_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a media folder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used to requests.</li>
+<li><strong>instance</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The instance id of the Lumapps site.</li>
+<li><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The lang associated to the folder.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the folder.</li>
+<li><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – A dict of optionnal params as described in <a class="reference external" href="https://api.lumapps.com/docs/output/_schemas/folder">https://api.lumapps.com/docs/output/_schemas/folder</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The repsonse of the post request, ie a folder object.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.list_media_folders">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">list_media_folders</code><span class="sig-paren">(</span><em>api</em>, <em>lang</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#list_media_folders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.list_media_folders" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all media folder associated to a lang in</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The instance of the ApiClient used for request.</li>
+<li><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The lang associated to the folders.</li>
+<li><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – A dict containing other optional parameters as described in <a class="reference external" href="https://api.lumapps.com/docs/media/folder/list">https://api.lumapps.com/docs/media/folder/list</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first last">A LumApps MediaFolder resource.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.list_medias">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">list_medias</code><span class="sig-paren">(</span><em>api</em>, <em>lang</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#list_medias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.list_medias" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all the medias.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used for request.</li>
+<li><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the lang. Defaults to english (en).</li>
+<li><strong>**params</strong> – optional  dictionary of search parameters as defined in <a class="reference external" href="https://api.lumapps.com/docs/media/list">https://api.lumapps.com/docs/media/list</a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first last">a Lumapps Media resource</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.move_media_to_folder">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">move_media_to_folder</code><span class="sig-paren">(</span><em>api</em>, <em>itemid</em>, <em>folderid</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#move_media_to_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.move_media_to_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a media in a specified folder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used for the request.</li>
+<li><strong>itemid</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The id of the media to move.</li>
+<li><strong>folderid</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The id of the folder to move the media into.</li>
+<li><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – An optional dict of parameters as described in <a class="reference external" href="https://api.lumapps.com/docs/output/_schemas/servermediamediamessagesfilesystemitemmoverequest">https://api.lumapps.com/docs/output/_schemas/servermediamediamessagesfilesystemitemmoverequest</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The response of the post request containing the media object that was moved.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.save_media">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">save_media</code><span class="sig-paren">(</span><em>api</em>, <em>media</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#save_media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.save_media" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a media.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used to request.</li>
+<li><strong>media</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the media to save.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict containing information about the saved media.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.upload_and_save">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">upload_and_save</code><span class="sig-paren">(</span><em>api</em>, <em>instance</em>, <em>files</em>, <em>langs=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#upload_and_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.upload_and_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload and save a list of 1 or several files to the specified lumapps site (instance).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used to request.</li>
+<li><strong>instance</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the instance where to save the files</li>
+<li><strong>files</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em>) – A list of the paths to the files to save.</li>
+<li><strong>langs</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – A list containing the lang associated to each file. Defaults to english.</li>
+<li><strong>name</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – A list containing the name associated to each file. Defaults to the filename.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list containing information about each of the uploaded medias.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.upload_file">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">upload_file</code><span class="sig-paren">(</span><em>api</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload a file to the googleusercontent of the ApiClient.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used for request.</li>
+<li><strong>files</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em>) – A list of paths to the files to upload.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The post request return.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list[<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.media.uploaded_to_media">
+<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">uploaded_to_media</code><span class="sig-paren">(</span><em>uploaded_file</em>, <em>instance</em>, <em>lang</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#uploaded_to_media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.uploaded_to_media" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform an uploaded file (post reponse) into a minimal media.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uploaded_file</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – The post reponse returned after uploading a file.</li>
+<li><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the lang associated to the file.</li>
+<li><strong>instance</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the instance where the file will live (and be saved).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A media ressource as described in <a class="reference external" href="https://api.lumapps.com/docs/output/_schemas/media">https://api.lumapps.com/docs/output/_schemas/media</a>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-lumapps_api_helpers.group">
-<span id="group"></span><h2>Group<a class="headerlink" href="#module-lumapps_api_helpers.group" title="Permalink to this headline">¶</a></h2>
+<span id="group"></span><h1>Group<a class="headerlink" href="#module-lumapps_api_helpers.group" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="lumapps_api_helpers.group.Group">
 <em class="property">class </em><code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>instance=''</em>, <em>name=''</em>, <em>uid=''</em>, <em>remote_group=''</em>, <em>feed_type=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.Group" title="Permalink to this definition">¶</a></dt>
@@ -315,8 +518,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.list">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">list</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>fields=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.list" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps_api_helpers.group.list_groups">
+<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">list_groups</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>fields=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#list_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.list_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -402,7 +605,7 @@
 
 <dl class="function">
 <dt id="lumapps_api_helpers.group.update_users">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">update_users</code><span class="sig-paren">(</span><em>group</em>, <em>users_to_add=&lt;function list&gt;</em>, <em>users_to_remove=&lt;function list&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#update_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.update_users" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">update_users</code><span class="sig-paren">(</span><em>group</em>, <em>users_to_add=&lt;type 'list'&gt;</em>, <em>users_to_remove=&lt;type 'list'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#update_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.update_users" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the users of a group</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -424,7 +627,7 @@
 
 </div>
 <div class="section" id="module-lumapps_api_helpers.user">
-<span id="user"></span><h2>User<a class="headerlink" href="#module-lumapps_api_helpers.user" title="Permalink to this headline">¶</a></h2>
+<span id="user"></span><h1>User<a class="headerlink" href="#module-lumapps_api_helpers.user" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="lumapps_api_helpers.user.User">
 <em class="property">class </em><code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>email=''</em>, <em>uid=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.User" title="Permalink to this definition">¶</a></dt>
@@ -557,27 +760,6 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.list">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">list</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch users</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>api</strong> – the ApiClient instance to use for requests</li>
-<li><strong>**params</strong> – optional dictionary of search parameters as in <a class="reference external" href="https://api.lumapps.com/docs/user/list">https://api.lumapps.com/docs/user/list</a></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a Generator object containing tuples (representation, User instance)</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="lumapps_api_helpers.user.list_sync">
 <code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">list_sync</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#list_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.list_sync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch users</p>
@@ -592,6 +774,27 @@
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a list of User</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps_api_helpers.user.list_users">
+<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">list_users</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#list_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.list_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch users</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>api</strong> – the ApiClient instance to use for requests</li>
+<li><strong>**params</strong> – optional dictionary of search parameters as in <a class="reference external" href="https://api.lumapps.com/docs/user/list">https://api.lumapps.com/docs/user/list</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a Generator object containing tuples (representation, User instance)</p>
 </td>
 </tr>
 </tbody>
@@ -618,7 +821,7 @@
 
 </div>
 <div class="section" id="module-lumapps_api_helpers.utils">
-<span id="utils"></span><h2>Utils<a class="headerlink" href="#module-lumapps_api_helpers.utils" title="Permalink to this headline">¶</a></h2>
+<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-lumapps_api_helpers.utils" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="lumapps_api_helpers.utils.create_lumapps_uuid">
 <code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">create_lumapps_uuid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#create_lumapps_uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.create_lumapps_uuid" title="Permalink to this definition">¶</a></dt>
@@ -769,7 +972,6 @@ the <code class="docutils literal notranslate"><span class="pre">cls</span></cod
 </dd></dl>
 
 </div>
-</div>
 
 
            </div>
@@ -782,7 +984,7 @@ the <code class="docutils literal notranslate"><span class="pre">cls</span></cod
         <a href="contributing.html" class="btn btn-neutral float-right" title="Reporting bugs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cli.html" class="btn btn-neutral" title="CLI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="user_use.html" class="btn btn-neutral" title="User Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -816,6 +1018,7 @@ the <code class="docutils literal notranslate"><span class="pre">cls</span></cod
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

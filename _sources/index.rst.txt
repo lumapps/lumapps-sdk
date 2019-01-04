@@ -15,6 +15,15 @@ Welcome to Lumapps SDK's documentation!
    cli
 
 .. toctree::
+    :maxdepth: 2
+    :caption: Use Cases
+
+    content_use
+    media_use
+    group_use
+    user_use
+
+.. toctree::
    :maxdepth: 2
    :caption: Developer reference
 

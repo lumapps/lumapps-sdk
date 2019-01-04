@@ -96,13 +96,24 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#authentication-using-a-bearer-token">Authentication using a bearer token</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#your-first-api-call">Your first API call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#some-tips">Some tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Use Cases</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Developer reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html">API helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -180,7 +191,7 @@
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="install-via-pip">
 <h3>Install via <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#install-via-pip" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+ssh://git@github.com/lumapps/lumapps-apiclient.git@clean#egg<span class="o">=</span>lumapps-sdk
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/lumapps/lumapps-sdk.git
 </pre></div>
 </div>
 </div>
@@ -219,6 +230,11 @@ $ pip install -r requirements_dev.txt
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="some-tips">
+<h2>Some tips<a class="headerlink" href="#some-tips" title="Permalink to this headline">¶</a></h2>
+<p>If you want to rapidly get info on your lumapps site you can use the <code class="docutils literal notranslate"><span class="pre">?</span></code> (<code class="docutils literal notranslate"><span class="pre">shift``+</span> <span class="pre">``,</span></code>), that shortcut will
+display you infos on the current site you are connected on.</p>
 </div>
 </div>
 
@@ -267,6 +283,7 @@ $ pip install -r requirements_dev.txt
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

@@ -90,9 +90,19 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Use Cases</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Developer reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html">API helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -170,6 +180,7 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -193,6 +204,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="helpers.html#lumapps_api_helpers.utils.create_lumapps_uuid">create_lumapps_uuid() (in module lumapps_api_helpers.utils)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="helpers.html#lumapps_api_helpers.media.create_media_folder">create_media_folder() (in module lumapps_api_helpers.media)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -242,12 +257,12 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="helpers.html#lumapps_api_helpers.group.list">list() (in module lumapps_api_helpers.group)</a>
-
-      <ul>
-        <li><a href="helpers.html#lumapps_api_helpers.user.list">(in module lumapps_api_helpers.user)</a>
+      <li><a href="helpers.html#lumapps_api_helpers.group.list_groups">list_groups() (in module lumapps_api_helpers.group)</a>
 </li>
-      </ul></li>
+      <li><a href="helpers.html#lumapps_api_helpers.media.list_media_folders">list_media_folders() (in module lumapps_api_helpers.media)</a>
+</li>
+      <li><a href="helpers.html#lumapps_api_helpers.media.list_medias">list_medias() (in module lumapps_api_helpers.media)</a>
+</li>
       <li><a href="helpers.html#lumapps_api_helpers.group.list_sync">list_sync() (in module lumapps_api_helpers.group)</a>
 
       <ul>
@@ -258,11 +273,23 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="helpers.html#lumapps_api_helpers.group.list_types_sync">list_types_sync() (in module lumapps_api_helpers.group)</a>
 </li>
+      <li><a href="helpers.html#lumapps_api_helpers.user.list_users">list_users() (in module lumapps_api_helpers.user)</a>
+</li>
       <li><a href="helpers.html#module-lumapps_api_helpers.group">lumapps_api_helpers.group (module)</a>
+</li>
+      <li><a href="helpers.html#module-lumapps_api_helpers.media">lumapps_api_helpers.media (module)</a>
 </li>
       <li><a href="helpers.html#module-lumapps_api_helpers.user">lumapps_api_helpers.user (module)</a>
 </li>
       <li><a href="helpers.html#module-lumapps_api_helpers.utils">lumapps_api_helpers.utils (module)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="helpers.html#lumapps_api_helpers.media.move_media_to_folder">move_media_to_folder() (in module lumapps_api_helpers.media)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -294,6 +321,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="helpers.html#lumapps_api_helpers.group.save">save() (in module lumapps_api_helpers.group)</a>
 </li>
+      <li><a href="helpers.html#lumapps_api_helpers.media.save_media">save_media() (in module lumapps_api_helpers.media)</a>
+</li>
       <li><a href="helpers.html#lumapps_api_helpers.user.save_or_update">save_or_update() (in module lumapps_api_helpers.user)</a>
 </li>
   </ul></td>
@@ -322,8 +351,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="helpers.html#lumapps_api_helpers.group.update_users">update_users() (in module lumapps_api_helpers.group)</a>
 </li>
+      <li><a href="helpers.html#lumapps_api_helpers.media.upload_and_save">upload_and_save() (in module lumapps_api_helpers.media)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="helpers.html#lumapps_api_helpers.media.upload_file">upload_file() (in module lumapps_api_helpers.media)</a>
+</li>
+      <li><a href="helpers.html#lumapps_api_helpers.media.uploaded_to_media">uploaded_to_media() (in module lumapps_api_helpers.media)</a>
+</li>
       <li><a href="helpers.html#lumapps_api_helpers.user.User">User (class in lumapps_api_helpers.user)</a>
 </li>
   </ul></td>
@@ -366,6 +401,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   
