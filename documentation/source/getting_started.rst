@@ -1,22 +1,22 @@
 ====================================
-Getting Started with the Lumapps SDK
+Getting Started with the LumApps SDK
 ====================================
 
-This quick guide will help you startup your first project using the Lumapps SDK
+This quick guide will help you started with your first project using LumApps SDK
 
 ------------
 Installation
 ------------
 
-Install via ``pip``
--------------------
+Install with ``pip``
+--------------------
 
 .. code-block:: bash
 
     $ pip install git+https://github.com/lumapps/lumapps-sdk.git
 
-Install as a developer
-----------------------
+Install from sources
+--------------------
 
 .. code-block:: bash
 
@@ -25,14 +25,18 @@ Install as a developer
     $ pip install -e .
     $ pip install -r requirements_dev.txt
 
-
 -----------------------------------
 Authentication using a bearer token
 -----------------------------------
 
-Lumapps supports multiple ways of authentification. They are explained [here]() The fastest one to implement is the following:
+LumApps supports multiple methods of authentification. They are explained
+[here](). The following method allows a LumApps user to use his or her
+bearer token with LumApps SDK.
 
-You can obtain your token by logging to your Lumapps account. Go to https://sites.lumapps.com and authentificate. Once connected, open the javascript console of your browser and run:
+You can retrieve such a bearer token by logging in LumApps in your Chrome or
+Firefox browser. Go to https://sites.lumapps.com and log in, if you are not
+already. Then open the developer console of your browser and run the following
+javascript in the Console tab:
 
 .. code-block:: javascript
 
@@ -40,13 +44,12 @@ You can obtain your token by logging to your Lumapps account. Go to https://site
     instance = instance[instance.length-2];
     fetch(window.location.origin+"/service/init?customerHost="+window.location.host+"&instanceSlug="+instance+"&slug=").then(data=>{return data.json()}).then(res => {console.log(res.token)})
 
-
-This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps
+This will generate your personal LumApps token that will be valid for 60
+minutes, and that we will use in the following steps.
 
 .. code-block:: python
 
     from lumapps_api_client.lib import ApiClient
-
     token = "[MY TOKEN]"
     api = ApiClient(token=token)
 
@@ -54,14 +57,13 @@ This will generate your personal Lumapps token that will be active for 60 minute
 Your first API call
 -------------------
 
-We will display the full name of a registered user in lumapps
+Let's display the full name of a registered user in lumapps
 
 .. code-block:: python
 
     user_email = "[A LUMAPPS USER EMAIL]"
     usr = api.get_call("user", "get", email=user_email)
     print("Hello {}".format(usr.get("fullName", "")))
-
 
 ---------
 Some tips

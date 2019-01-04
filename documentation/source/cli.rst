@@ -1,6 +1,6 @@
-===
-CLI
-===
+==================
+Client Application
+==================
 
 -------------------
 Required parameters
