@@ -14,16 +14,15 @@
 #
 import os
 import sys
+from lumapps_api_client import __version__
 
 sys.path.insert(0, os.path.abspath("../.."))
-
-from lumapps_api_client import __version__
 
 # -- Project information -----------------------------------------------------
 
 project = u"Lumapps SDK"
-copyright = u"2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI"
-author = u"JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI"
+copyright = u"2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN"
+author = u"JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN"
 
 # The short X.Y version
 version = __version__
@@ -49,10 +48,7 @@ extensions = [
     "sphinx.ext.doctest",
 ]
 
-intersphinx_mapping = {
-    "python": ("https://docs.python.org/3", None),
-    "python": ("https://docs.python.org/2.7", None),
-}
+intersphinx_mapping = {"python": ("https://docs.python.org/2.7", None)}
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -93,7 +89,7 @@ html_theme = "sphinx_rtd_theme"
 # documentation.
 html_theme_options = {
     "canonical_url": "",  # To add
-    "analytics_id": "UA-XXXXXXX-1",  #  To add
+    "analytics_id": "UA-XXXXXXX-1",  # To add
     "logo_only": True,
     "display_version": True,
     "prev_next_buttons_location": "bottom",
@@ -193,4 +189,9 @@ texinfo_documents = [
 # -- Extension configuration -------------------------------------------------
 
 nitpicky = True
-nitpick_ignore = [("py:class", "type"), ("py:class", "list"), ("py:class", "Dict"), ('py:class', "optional")]
+nitpick_ignore = [
+    ("py:class", "type"),
+    ("py:class", "list"),
+    ("py:class", "Dict"),
+    ("py:class", "optional"),
+]

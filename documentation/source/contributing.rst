@@ -61,9 +61,9 @@ How do I submit an Enhancement suggestion ?
 - **Provide examples** to more clearly get what you would want.
 - **Provide code snippets** if you can or **schemas** to illustrate your suggestion.
 
-====================
-Contributing to code
-====================
+========================
+**Contributing to code**
+========================
 
 Local development
 -----------------
@@ -83,4 +83,11 @@ Now you will need to install the required dependencies and be sure the tests are
     $ pip install -e . && pip install -r requirements_dev.txt
     $ pytest 
 
-We also use the `black  <https://github.com/ambv/black>`_ coding style and you must ensure that your code follows it. If not, the CI will fail and your Pull Request will not be merged.
+We also use the `black  <https://github.com/ambv/black>`_ coding style and you must ensure that your code follows it. 
+
+To help you, you can use ``pre-commit hooks`` so that the necessary checks are done before you commit or push.
+
+.. code-block:: bash
+
+    $ pre-commit install
+
