@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Media Management &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Media Files and Library &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Group management" href="group_use.html" />
-    <link rel="prev" title="Content Management" href="content_use.html" /> 
+    <link rel="next" title="Users" href="user_use.html" />
+    <link rel="prev" title="Contents" href="content_use.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,21 +88,21 @@
             
               <p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the LumApps SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Client Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Use Cases</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Media Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#list-all-the-media-files-of-your-lumapps-platform">List all the media files of your Lumapps platform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#save-one-or-several-media-to-your-lumapps-site">Save one or several media to your Lumapps site</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content_use.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Media Files and Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#list-media-files-in-the-library-of-a-lumapps-platform">List media files in the library of a LumApps platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#save-one-or-multiple-media-files-in-the-library-of-a-lumapps-site">Save one or multiple media files in the library of a LumApps site</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html">Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html#groups">Groups</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developer reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
@@ -159,7 +159,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Media Management</li>
+      <li>Media Files and Library</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -178,12 +178,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="media-management">
-<h1>Media Management<a class="headerlink" href="#media-management" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="media-files-and-library">
+<h1>Media Files and Library<a class="headerlink" href="#media-files-and-library" title="Permalink to this headline">¶</a></h1>
 <p>The SDK includes a helper to easily manipulate the media files.</p>
-<div class="section" id="list-all-the-media-files-of-your-lumapps-platform">
-<h2>List all the media files of your Lumapps platform<a class="headerlink" href="#list-all-the-media-files-of-your-lumapps-platform" title="Permalink to this headline">¶</a></h2>
-<p>You can list all the medias in a specific language with this helper.</p>
+<div class="section" id="list-media-files-in-the-library-of-a-lumapps-platform">
+<h2>List media files in the library of a LumApps platform<a class="headerlink" href="#list-media-files-in-the-library-of-a-lumapps-platform" title="Permalink to this headline">¶</a></h2>
+<p>List the media for a specific language.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_helpers.media</span> <span class="kn">import</span> <span class="n">list_medias</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
@@ -191,16 +191,15 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="save-one-or-several-media-to-your-lumapps-site">
-<h2>Save one or several media to your Lumapps site<a class="headerlink" href="#save-one-or-several-media-to-your-lumapps-site" title="Permalink to this headline">¶</a></h2>
-<p>We provide you a simple way to upload one or several
-media(s) at the same time to your Lumapps site (instance).
-Just provide the instance id, the files paths and optionaly the langs and names
-of each file and we upload and save it for you.</p>
+<div class="section" id="save-one-or-multiple-media-files-in-the-library-of-a-lumapps-site">
+<h2>Save one or multiple media files in the library of a LumApps site<a class="headerlink" href="#save-one-or-multiple-media-files-in-the-library-of-a-lumapps-site" title="Permalink to this headline">¶</a></h2>
+<p>Uploading files in the media library of a given LumApps site is straightforward:
+provide the instance id of the site, the files paths, and optionally the
+languages and names for each file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_helpers.media</span> <span class="kn">import</span> <span class="n">upload_and_save</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
-<span class="n">instance</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># The instance id of your Lumapps site</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># The instance id of your LumApps site</span>
 <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;path_to_file1&#39;</span><span class="p">,</span> <span class="s1">&#39;path_to_file2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 <span class="n">langs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;file_1&#39;</span><span class="p">,</span> <span class="s1">&#39;file_2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
@@ -219,10 +218,10 @@ of each file and we upload and save it for you.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="group_use.html" class="btn btn-neutral float-right" title="Group management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="user_use.html" class="btn btn-neutral float-right" title="Users" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="content_use.html" class="btn btn-neutral" title="Content Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="content_use.html" class="btn btn-neutral" title="Contents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

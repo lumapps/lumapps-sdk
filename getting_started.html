@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with the Lumapps SDK &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Getting Started with the LumApps SDK &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="CLI" href="cli.html" />
+    <link rel="next" title="Client Application" href="cli.html" />
     <link rel="prev" title="Lumapps SDK" href="index.html" /> 
 
   
@@ -88,10 +88,10 @@
             
               <p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with the Lumapps SDK</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with the LumApps SDK</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-via-pip">Install via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-as-a-developer">Install as a developer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-with-pip">Install with <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-from-sources">Install from sources</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#authentication-using-a-bearer-token">Authentication using a bearer token</a></li>
@@ -99,16 +99,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#some-tips">Some tips</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Client Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Use Cases</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content_use.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Files and Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html">Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html#groups">Groups</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developer reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
@@ -165,7 +165,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Getting Started with the Lumapps SDK</li>
+      <li>Getting Started with the LumApps SDK</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -185,18 +185,18 @@
            <div itemprop="articleBody">
             
   <div class="section" id="getting-started-with-the-lumapps-sdk">
-<h1>Getting Started with the Lumapps SDK<a class="headerlink" href="#getting-started-with-the-lumapps-sdk" title="Permalink to this headline">¶</a></h1>
-<p>This quick guide will help you startup your first project using the Lumapps SDK</p>
+<h1>Getting Started with the LumApps SDK<a class="headerlink" href="#getting-started-with-the-lumapps-sdk" title="Permalink to this headline">¶</a></h1>
+<p>This quick guide will help you started with your first project using LumApps SDK</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="install-via-pip">
-<h3>Install via <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#install-via-pip" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="install-with-pip">
+<h3>Install with <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#install-with-pip" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/lumapps/lumapps-sdk.git
 </pre></div>
 </div>
 </div>
-<div class="section" id="install-as-a-developer">
-<h3>Install as a developer<a class="headerlink" href="#install-as-a-developer" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="install-from-sources">
+<h3>Install from sources<a class="headerlink" href="#install-from-sources" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/lumapps/lumapps-sdk.git
 $ <span class="nb">cd</span> lumapps-sdk
 $ pip install -e .
@@ -207,16 +207,21 @@ $ pip install -r requirements_dev.txt
 </div>
 <div class="section" id="authentication-using-a-bearer-token">
 <h2>Authentication using a bearer token<a class="headerlink" href="#authentication-using-a-bearer-token" title="Permalink to this headline">¶</a></h2>
-<p>Lumapps supports multiple ways of authentification. They are explained [here]() The fastest one to implement is the following:</p>
-<p>You can obtain your token by logging to your Lumapps account. Go to <a class="reference external" href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authentificate. Once connected, open the javascript console of your browser and run:</p>
+<p>LumApps supports multiple methods of authentification. They are explained
+[here](). The following method allows a LumApps user to use his or her
+bearer token with LumApps SDK.</p>
+<p>You can retrieve such a bearer token by logging in LumApps in your Chrome or
+Firefox browser. Go to <a class="reference external" href="https://sites.lumapps.com">https://sites.lumapps.com</a> and log in, if you are not
+already. Then open the developer console of your browser and run the following
+javascript in the Console tab:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
 <span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">[</span><span class="nx">instance</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">2</span><span class="p">];</span>
 <span class="nx">fetch</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="o">+</span><span class="s2">&quot;/service/init?customerHost=&quot;</span><span class="o">+</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="o">+</span><span class="s2">&quot;&amp;instanceSlug=&quot;</span><span class="o">+</span><span class="nx">instance</span><span class="o">+</span><span class="s2">&quot;&amp;slug=&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="p">=&gt;{</span><span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">json</span><span class="p">()}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">token</span><span class="p">)})</span>
 </pre></div>
 </div>
-<p>This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps</p>
+<p>This will generate your personal LumApps token that will be valid for 60
+minutes, and that we will use in the following steps.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_client.lib</span> <span class="kn">import</span> <span class="n">ApiClient</span>
-
 <span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;[MY TOKEN]&quot;</span>
 <span class="n">api</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
 </pre></div>
@@ -224,7 +229,7 @@ $ pip install -r requirements_dev.txt
 </div>
 <div class="section" id="your-first-api-call">
 <h2>Your first API call<a class="headerlink" href="#your-first-api-call" title="Permalink to this headline">¶</a></h2>
-<p>We will display the full name of a registered user in lumapps</p>
+<p>Let’s display the full name of a registered user in lumapps</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_email</span> <span class="o">=</span> <span class="s2">&quot;[A LUMAPPS USER EMAIL]&quot;</span>
 <span class="n">usr</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
@@ -246,7 +251,7 @@ display you infos on the current site you are connected on.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="cli.html" class="btn btn-neutral float-right" title="CLI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="Client Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Lumapps SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Content Management &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Contents &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Media Management" href="media_use.html" />
-    <link rel="prev" title="CLI" href="cli.html" /> 
+    <link rel="next" title="Media Files and Library" href="media_use.html" />
+    <link rel="prev" title="Client Application" href="cli.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,22 +88,22 @@
             
               <p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the LumApps SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Client Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Use Cases</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Content Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#content-listing">Content Listing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#content-details">Content details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#content-creation">Content creation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#list-contents">List contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-one-content">Get one content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-content">Create a content</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Files and Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html">Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_use.html#groups">Groups</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developer reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
@@ -160,7 +160,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Content Management</li>
+      <li>Contents</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,36 +179,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="content-management">
-<h1>Content Management<a class="headerlink" href="#content-management" title="Permalink to this headline">¶</a></h1>
-<p>The SDK includes a helper to easily manipulate the content.</p>
-<div class="section" id="content-listing">
-<h2>Content Listing<a class="headerlink" href="#content-listing" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<p>Create, retrieve and update contents.</p>
+<div class="section" id="list-contents">
+<h2>List contents<a class="headerlink" href="#list-contents" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">contents</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lang&quot;</span><span class="p">:</span><span class="s2">&quot;en&quot;</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="content-details">
-<h2>Content details<a class="headerlink" href="#content-details" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-one-content">
+<h2>Get one content<a class="headerlink" href="#get-one-content" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span><span class="n">uid</span><span class="o">=</span><span class="mi">5386179638984704</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="content-creation">
-<h2>Content creation<a class="headerlink" href="#content-creation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_content</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">[</span><span class="n">template</span><span class="p">],</span> <span class="c1"># from existing content or template</span>
-            <span class="s2">&quot;customContentType&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;customContentType&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;customer&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;instance&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;feedKeys&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;feedKeys&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;publicationDate&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">[</span><span class="n">publicationDate</span><span class="p">],</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;created content from api&quot;</span><span class="p">},</span>
-            <span class="s2">&quot;slug&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;create-content-from-api&quot;</span><span class="p">},</span> <span class="c1"># WARNING : unique</span>
-            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="c1"># if any</span>
-        <span class="p">}</span>
+<div class="section" id="create-a-content">
+<h2>Create a content<a class="headerlink" href="#create-a-content" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_content</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="n">template</span><span class="p">,</span> <span class="c1"># from existing content or template</span>
+    <span class="s2">&quot;customContentType&quot;</span><span class="p">:</span> <span class="s2">&quot;customContentType id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="s2">&quot;customer id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;instance&quot;</span><span class="p">:</span> <span class="s2">&quot;instance id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;feedKeys&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;feed id 1&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="s2">&quot;publicationDate&quot;</span><span class="p">:</span> <span class="s2">&quot;2000-01-01&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;created content from api&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;slug&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;create-content-from-api&quot;</span><span class="p">},</span> <span class="c1"># WARNING: must be unique</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="c1"># optional</span>
+<span class="p">}</span>
 
-<span class="n">new_content_saved</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span><span class="s2">&quot;save&quot;</span><span class="p">,</span><span class="n">body</span><span class="o">=</span><span class="n">new_content</span><span class="p">)</span>
+<span class="n">new_content_saved</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">new_content</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -222,10 +223,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="media_use.html" class="btn btn-neutral float-right" title="Media Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="media_use.html" class="btn btn-neutral float-right" title="Media Files and Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cli.html" class="btn btn-neutral" title="CLI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cli.html" class="btn btn-neutral" title="Client Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

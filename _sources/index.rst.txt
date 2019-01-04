@@ -17,13 +17,13 @@
 
     content_use
     media_use
-    group_use
     user_use
 
 .. toctree::
    :maxdepth: 2
-   :caption: Developer reference
+   :caption: Reference
    :hidden:
+
 
    helpers
 

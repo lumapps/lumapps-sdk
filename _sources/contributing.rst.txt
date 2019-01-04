@@ -3,8 +3,9 @@
 Reporting bugs
 ==============
 
-This section guildes you through submitting a but report for the Lumapps SDK. Following these guidances helps maintainers and the comunity understand your report,
-reproduce the bahavior, and find related reports.
+This section explains how to submit bug reports for Lumapps SDK. Following
+these guidelines helps maintainers and the comunity understand your report,
+reproduce the behavior, and find related reports.
 
 Before submitting a bug
 -----------------------
@@ -15,14 +16,17 @@ Before submitting a bug
 How do I submit a bug
 ---------------------
 
-Bugs are tracked on the `official issue tracke <ttps://github.com/lumapps/lumapps-sdk/issues>`_ where you can create a new one.
+Bugs are tracked on the `official issue tracker <ttps://github.com/lumapps/lumapps-sdk/issues>`_ where you can create a new one.
 
-Explain the problem and include additional details to help maintainers reproduce the problem:
+Explain the problem and include additional information to help maintainers
+reproduce the problem:
 
-- **Use a clear and descriptive title** for the issue to identify the problem. 
-- **Describe the exact steps which reproduce the problem** in as many details as possible.
+- **Use a clear and descriptive title** that identifies the problem.
+- **Provide the exact steps to reproduce the problem** in the clearest and most
+  concise manner possible.
 - **Provide specific examples to demonstrate the steps to produce the issue**. Include links to files.
-- **Dexcribe the bahavior you observed after following the steps** and point out what exactly is the problem with that behavior.
+- **Describe the bahavior you observe after following the steps** and point out
+  what exactly is the problem with that behavior.
 - **Explain which behavior you expected to see and why**
 
 Provide more context by answering theses questions:

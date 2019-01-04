@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Management &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Users &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Media" href="helpers.html" />
-    <link rel="prev" title="Group management" href="group_use.html" /> 
+    <link rel="prev" title="Media Files and Library" href="media_use.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,21 +88,25 @@
             
               <p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the LumApps SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Client Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Use Cases</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">User Management</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="content_use.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Files and Library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Users</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#to-list-all-users-of-your-lumapps-plateform">To list all users of your Lumapps plateform</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#to-create-a-user">To create a user</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#groups">Groups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#to-list-all-the-feeds-of-your-lumapps-plateform">To list all the feeds of your Lumapps plateform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#to-create-a-group-synced-to-a-google-group-email">To create a group synced to a google group email</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developer reference</span></p>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
@@ -159,7 +163,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>User Management</li>
+      <li>Users</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -178,8 +182,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="user-management">
-<h1>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="users">
+<h1>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h1>
 <p>The SDK includes a helper to easily manipulate the users.</p>
 <div class="section" id="to-list-all-users-of-your-lumapps-plateform">
 <h2>To list all users of your Lumapps plateform<a class="headerlink" href="#to-list-all-users-of-your-lumapps-plateform" title="Permalink to this headline">¶</a></h2>
@@ -210,6 +214,44 @@
 </div>
 </div>
 </div>
+<div class="section" id="groups">
+<h1>Groups<a class="headerlink" href="#groups" title="Permalink to this headline">¶</a></h1>
+<p>Groups in LumApps are named <code class="docutils literal notranslate"><span class="pre">Feeds</span></code> in the api and object definition. The SDK includes a helper to easily manipulate the groups.</p>
+<div class="section" id="to-list-all-the-feeds-of-your-lumapps-plateform">
+<h2>To list all the feeds of your Lumapps plateform<a class="headerlink" href="#to-list-all-the-feeds-of-your-lumapps-plateform" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_sdk</span> <span class="kn">import</span> <span class="n">group</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">api</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also filter by instance</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="s2">&quot;my_instance&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-create-a-group-synced-to-a-google-group-email">
+<h2>To create a group synced to a google group email<a class="headerlink" href="#to-create-a-group-synced-to-a-google-group-email" title="Permalink to this headline">¶</a></h2>
+<p>Save a feed by providing the <cite>instance_id</cite>, a <cite>group_name</cite>, a <cite>google_group_email</cite> and a <cite>feed_type_id</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_helpers.group</span> <span class="kn">import</span> <span class="n">Group</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
+<span class="n">group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span>
+    <span class="n">api</span><span class="p">,</span>
+    <span class="n">instance</span><span class="o">=</span><span class="s2">&quot;instance_id&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;group_name&quot;</span><span class="p">,</span>
+    <span class="n">group</span><span class="o">=</span><span class="s2">&quot;google_group_email&quot;</span><span class="p">,</span>
+    <span class="n">feed_type</span><span class="o">=</span><span class="s2">&quot;feed_type_id&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">success</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">success</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 
 
            </div>
@@ -222,7 +264,7 @@
         <a href="helpers.html" class="btn btn-neutral float-right" title="Media" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="group_use.html" class="btn btn-neutral" title="Group management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="media_use.html" class="btn btn-neutral" title="Media Files and Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
