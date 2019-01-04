@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Lumapps SDK’s documentation! &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Lumapps SDK &mdash; Lumapps SDK 0.1 documentation</title>
   
 
   
@@ -108,7 +108,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Reporting bugs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html#suggesting-enhancements">Suggesting enhancements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html#contributing-to-code">Contributing to code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#contributing-to-code"><strong>Contributing to code</strong></a></li>
 </ul>
 
             
@@ -154,7 +154,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Welcome to Lumapps SDK’s documentation!</li>
+      <li><strong>Lumapps SDK</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -173,67 +173,79 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-lumapps-sdk-s-documentation">
-<h1>Welcome to Lumapps SDK’s documentation!<a class="headerlink" href="#welcome-to-lumapps-sdk-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="lumapps-sdk">
+<h1><strong>Lumapps SDK</strong><a class="headerlink" href="#lumapps-sdk" title="Permalink to this headline">¶</a></h1>
+<p><em>Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers</em></p>
+<p><em>Make sure of the version you are using (Git tags &amp; releases)</em></p>
+<hr class="docutils" />
+<p>Lumapps SDK is a set of tools to manipulate the <a class="reference external" href="https://api.lumapps.com/docs/start">Lumapps API</a>.</p>
+<p>This includes:
+- a client that support all the routes of the API (located in folder lumapps_api_client)
+- a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)</p>
+</div>
+<div class="section" id="quick-start">
+<h1>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/lumapps/lumapps-sdk.git</span>
+<span class="pre">`</span></code></p>
+</div>
+<div class="section" id="get-your-token">
+<h2>Get your token<a class="headerlink" href="#get-your-token" title="Permalink to this headline">¶</a></h2>
+<p>Lumapps supports multiple ways of authentification.
+The fastest one to implement is the following:</p>
+<p>Get your token by logging to your Lumapps account.
+Go to <a class="reference external" href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authentificate.
+Once connected, open the javascript console of your browser and run:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+<span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">[</span><span class="nx">instance</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">2</span><span class="p">];</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="o">+</span><span class="s2">&quot;/service/init?customerHost=&quot;</span><span class="o">+</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="o">+</span><span class="s2">&quot;&amp;instanceSlug=&quot;</span><span class="o">+</span><span class="nx">instance</span><span class="o">+</span><span class="s2">&quot;&amp;slug=&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="p">=&gt;{</span><span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">json</span><span class="p">()}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">token</span><span class="p">)})</span>
+</pre></div>
+</div>
+<p>This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps</p>
+</div>
+<div class="section" id="authentificate">
+<h2>Authentificate<a class="headerlink" href="#authentificate" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_client.lib</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;MY TOKEN&quot;</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="your-first-api-call">
+<h3>Your first API call<a class="headerlink" href="#your-first-api-call" title="Permalink to this headline">¶</a></h3>
+<p>Let’s display the full name of a registered user in lumapps</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_email</span> <span class="o">=</span> <span class="s2">&quot;YOUR EMAIL&quot;</span>
+<span class="n">usr</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<p>The SDK documentation is available <a class="reference external" href="https://lumapps.github.io/lumapps-sdk">here</a>.</p>
+<div class="section" id="code-convention">
+<h2>Code convention<a class="headerlink" href="#code-convention" title="Permalink to this headline">¶</a></h2>
+<p>Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.</p>
+</div>
+</div>
+<div class="section" id="how-to-get-help-contribute-or-provide-feedback">
+<h1>How to get help, contribute, or provide feedback<a class="headerlink" href="#how-to-get-help-contribute-or-provide-feedback" title="Permalink to this headline">¶</a></h1>
+<p>Please refer to our <a class="reference external" href="https://lumapps.github.io/lumapps-sdk/contributing.html#contributing-to-code">contributing guidelines</a>.</p>
+</div>
+<div class="section" id="copyright-and-license">
+<h1>Copyright and license<a class="headerlink" href="#copyright-and-license" title="Permalink to this headline">¶</a></h1>
+<p>Lumapps SDK is licensed under A MIT license - see the <a class="reference external" href="LICENSE.RST">LICENSE.rst</a> file.</p>
+<hr class="docutils" />
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Using the Lumapps SDK</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with the Lumapps SDK</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#authentication-using-a-bearer-token">Authentication using a bearer token</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#your-first-api-call">Your first API call</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#some-tips">Some tips</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#required-parameters">Required parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#usage-examples">Usage examples</a></li>
-</ul>
-</li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Use Cases</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="content_use.html">Content Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="content_use.html#content-listing">Content Listing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_use.html#content-details">Content details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content_use.html#content-creation">Content creation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="media_use.html#list-all-the-media-files-of-your-lumapps-platform">List all the media files of your Lumapps platform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="media_use.html#save-one-or-several-media-to-your-lumapps-site">Save one or several media to your Lumapps site</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="group_use.html">Group management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="group_use.html#to-list-all-the-feeds-of-your-lumapps-plateform">To list all the feeds of your Lumapps plateform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group_use.html#to-create-a-group-synced-to-a-google-group-email">To create a group synced to a google group email</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html">User Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="user_use.html#to-list-all-users-of-your-lumapps-plateform">To list all users of your Lumapps plateform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user_use.html#to-create-a-user">To create a user</a></li>
-</ul>
-</li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Developer reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Reporting bugs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html#suggesting-enhancements">Suggesting enhancements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html#contributing-to-code">Contributing to code</a></li>
-</ul>
 </div>
 </div>
 
@@ -255,7 +267,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI
+        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN
 
     </p>
   </div>

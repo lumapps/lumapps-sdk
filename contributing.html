@@ -116,7 +116,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-do-i-submit-an-enhancement-suggestion">How do I submit an Enhancement suggestion ?</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#contributing-to-code">Contributing to code</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="#contributing-to-code"><strong>Contributing to code</strong></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#local-development">Local development</a></li>
 </ul>
 </li>
@@ -240,7 +240,7 @@ Fllowing this guidelines helps maintainers and the community understand your sug
 </div>
 </div>
 <div class="section" id="contributing-to-code">
-<h1>Contributing to code<a class="headerlink" href="#contributing-to-code" title="Permalink to this headline">¶</a></h1>
+<h1><strong>Contributing to code</strong><a class="headerlink" href="#contributing-to-code" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="local-development">
 <h2>Local development<a class="headerlink" href="#local-development" title="Permalink to this headline">¶</a></h2>
 <p>To contribute to the lumapps-sdk you need to clone the repo:</p>
@@ -254,7 +254,11 @@ $ pip install -e . <span class="o">&amp;&amp;</span> pip install -r requirements
 $ pytest
 </pre></div>
 </div>
-<p>We also use the <a class="reference external" href="https://github.com/ambv/black">black</a> coding style and you must ensure that your code follows it. If not, the CI will fail and your Pull Request will not be merged.</p>
+<p>We also use the <a class="reference external" href="https://github.com/ambv/black">black</a> coding style and you must ensure that your code follows it.</p>
+<p>To help you, you can use <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">hooks</span></code> so that the necessary checks are done before you commit or push.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pre-commit install
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -276,7 +280,7 @@ $ pytest
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI
+        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN
 
     </p>
   </div>
