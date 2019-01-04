@@ -20,12 +20,11 @@ Welcome to Lumapps SDK's documentation!
 
     content_use
     media_use
-    group_use
     user_use
 
 .. toctree::
    :maxdepth: 2
-   :caption: Developer reference
+   :caption: Reference
 
    helpers
 
