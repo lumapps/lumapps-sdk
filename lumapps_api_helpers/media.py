@@ -1,5 +1,6 @@
 import logging
 
+
 def list_medias(api, lang, **params):
     # type (ApiClient, str, dict) -> (Iterable[dict])
     """List all the medias.
@@ -33,7 +34,9 @@ def upload_file(api, f):
     )
     if response.status_code != 200:
         logging.error(
-            "Upload file {} failed. Response content was {}.".format(f, response.content)
+            "Upload file {} failed. Response content was {}.".format(
+                f, response.content
+            )
         )
         raise Exception(str(response.content))
     uploaded_file = response.json()
@@ -54,7 +57,7 @@ def save_media(api, media):
     return api.get_call("media", "save", body=media)
 
 
-def uploaded_to_media(uploaded_file, instance, lang, name=None):
+def uploaded_to_media(uploaded_file, instance, lang, name=None, **params):
     # type: (dict, str, str, str) -> dict
     """Transform an uploaded file (post reponse) into a minimal media.
 
@@ -66,7 +69,7 @@ def uploaded_to_media(uploaded_file, instance, lang, name=None):
         Returns:
             dict: A media ressource as described in https://api.lumapps.com/docs/output/_schemas/media.
     """
-    media = {}
+    media = {key: params[key] for key in params}
     media["instance"] = instance
     media["content"] = [
         {

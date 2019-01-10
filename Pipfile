@@ -1,0 +1,26 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+coverage = "*"
+pytest = "*"
+mock = "*"
+sphinxcontrib-napoleon = "*"
+pre-commit = "*"
+pre-commit-hooks = "*"
+Flask = "*"
+Sphinx = "*"
+sphinx_rtd_theme = "*"
+
+[packages]
+google-api-python-client = "*"
+google-auth = "*"
+google-auth-httplib2 = "*"
+python-slugify = "*"
+cryptography = "*"
+pathlib2 = "*"
+enum34 = "*"
+"repoze.lru" = "*"

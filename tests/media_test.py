@@ -6,7 +6,7 @@ from apiclient.http import HttpMock
 from apiclient.discovery import build
 
 from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.media import list_medias, uploaded_to_media
+from lumapps_api_helpers.media import uploaded_to_media
 
 
 class TestMedia(unittest.TestCase):
@@ -38,3 +38,11 @@ class TestMedia(unittest.TestCase):
         assert media["content"][0]["lang"] == lang
         assert media["name"] == {lang: uploaded_file["name"]}
         assert media["instance"] == instance
+
+        # Test whith additionnal params
+        key = "289830"
+        media = uploaded_to_media(
+            uploaded_file, instance, lang, hasCroppedContent=False, contentKey=key
+        )
+        assert media["hasCroppedContent"] is False
+        assert media["contentKey"] == key
