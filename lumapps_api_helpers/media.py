@@ -119,6 +119,26 @@ def upload_and_save(api, instance, files, langs=None, names=None):
     return saved_medias
 
 
+def delete_medias(api, langs, names, **params):
+    """ Delete all specified medias
+
+        Args:
+            api (object): The ApiClient instance used to request.
+            langs (list[str]): A list of the langs of the medias you want to delete.
+            names (list[str]): A list of the names of the files you want to delete.
+
+        Warning:
+            **Be carefull** this function will delete **all** files that have a similar name (given they have the same lang).
+    """
+    uids_to_delete = []
+    for lang in langs:
+        medias = list_medias(api, lang, **params)
+        for media in medias:
+            if media["name"] in names:
+                uids_to_delete.append(media["uid"])
+    api.get_call("delete", "deleteMulti", uid=uids_to_delete)
+
+
 # ------------------------------------------------------------------------------------#
 #                                                                                    #
 #                                   Media folders                                    #
