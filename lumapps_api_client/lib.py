@@ -214,7 +214,9 @@ class ApiClient(object):
             if user:
                 self.creds = self.creds.with_subject(user)
         else:
-            self.creds = Credentials(None)
+            raise Exception(
+                "You must provide authentication infos (token_getter, auth_info, credentials or token)."
+            )
 
         if user:
             self.email = user
