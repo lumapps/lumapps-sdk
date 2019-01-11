@@ -1,6 +1,18 @@
 **Lumapps SDK**
 ===============
 
+.. image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
+    :target: https://circleci.com/gh/lumapps/lumapps-sdk
+
+.. image:: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
+    :target: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
+    :alt: License: MIT
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+    :alt: Black style
+
+
 *Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
 
 *Make sure of the version you are using (Git tags & releases)*
