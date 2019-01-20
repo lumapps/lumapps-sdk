@@ -30,7 +30,7 @@ This includes:
 Quick start
 ===========
 
-Installation::
+Installation
 ------------
 
     $ pip install git+https://github.com/lumapps/lumapps-sdk.git
