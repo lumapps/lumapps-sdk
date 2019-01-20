@@ -1,5 +1,15 @@
-documentation/build/
-.coverage
-.pytest_cache
+.DS_STORE
+__pycache__
 *egg*
 *.pyc
+documentation/build/
+dist
+build
+
+# Test state
+.coverage
+coverage.xml
+.pytest_cache
+
+# IntelliJ / PyCharm IDE
+.idea/

@@ -1,5 +1,5 @@
 import json
-from lumapps_api_helpers.media import uploaded_to_media
+from lumapps.helpers.media import uploaded_to_media
 
 
 def test_uploaded_to_media():

@@ -1,6 +1,6 @@
 import logging
 
-from lumapps_api_helpers.exceptions import (
+from lumapps.helpers.exceptions import (
     NotAuthorizedException,
     BadRequestException,
     NotFoundException,

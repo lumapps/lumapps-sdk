@@ -1,8 +1,8 @@
 import logging
 
-from lumapps_api_helpers.exceptions import BadRequestException
+from lumapps.helpers.exceptions import BadRequestException
 
-from lumapps_api_helpers.user import User
+from lumapps.helpers.user import User
 
 
 class Community(object):

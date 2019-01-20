@@ -10,7 +10,7 @@ def read_file(file_path):
 
 setup(
     name="lumapps-sdk",
-    version=read_file("lumapps_api_client/version.py"),
+    version=0.1,
     author="LumApps",
     url="https://github.com/lumapps/lumapps-sdk",
     packages=find_packages(exclude=["documentation", "tests"]),

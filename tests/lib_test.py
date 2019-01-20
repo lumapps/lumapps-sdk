@@ -1,7 +1,7 @@
 import pytest
 
 from copy import deepcopy
-from lumapps_api_client.lib import pop_matches, ApiClient
+from lumapps.client.lib import pop_matches, ApiClient
 
 
 def test_pop_matches():

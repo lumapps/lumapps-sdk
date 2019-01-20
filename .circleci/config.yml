@@ -59,12 +59,12 @@ jobs:
           name: run flake8
           command: |
             mkdir -p test-results
-            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8.xml
+            flake8 lumapps --format junit-xml --output-file test-results/flake8.xml
       - run:
           name: Security checks
           command: |
             pip install bandit
-            bandit -r lumapps_api*
+            bandit -r lumapps*
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -127,7 +127,7 @@ jobs:
           name: Bugs checks
           command: |
             mkdir -p test-results
-            flake8 lumapps_api_* --format junit-xml --output-file test-results/flake8.xml
+            flake8 lumapps --format junit-xml --output-file test-results/flake8.xml
       - store_test_results:
           path: test-results
       - store_artifacts:
