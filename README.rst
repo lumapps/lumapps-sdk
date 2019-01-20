@@ -22,6 +22,7 @@
 Lumapps SDK is a set of tools to manipulate the `Lumapps API <https://api.lumapps.com/docs/start>`_.
 
 This includes: 
+
 - a client that support all the routes of the API (located in folder lumapps_api_client)
 - a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)
 
@@ -29,11 +30,11 @@ This includes:
 Quick start
 ===========
 
-Installation
+Installation::
 ------------
-```
-pip install git+https://github.com/lumapps/lumapps-sdk.git
-```
+
+    $ pip install git+https://github.com/lumapps/lumapps-sdk.git
+
 
 Get your token
 --------------

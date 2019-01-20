@@ -1,42 +1,45 @@
-import os
 from io import open
 from setuptools import setup, find_packages
 
-__version__ = None
-with open("lumapps_api_client/version.py") as f:
-    exec(f.read())
 
-long_description = "Please see our GitHub README"
-if os.path.exists("README.md"):
-    long_description = open("README.md", "r", encoding="utf-8").read()
-
-
-def getRequires():
-    deps = []
-
-    requirements = None
-    with open("requirements.txt") as f:
-        requirements = f.read().splitlines()
-
-    return deps if requirements is None else requirements
+def read_file(file_path):
+    with open(file_path, "r") as f:
+        content = f.read()
+    return content
 
 
 setup(
-    name="lumapps_sdk",
-    version=str(__version__),
-    author="Jean Sebastien SEVESTRE, Ludovic VAUGEOIS PEPIN, Salah GHAMIZI",
-    author_email="js@lumapps.com",
-    url="",
-    packages=find_packages(include=["lumapps_api_helpers", "lumapps_api_client"]),
+    name="lumapps-sdk",
+    version=read_file("lumapps_api_client/version.py"),
+    author="LumApps",
+    url="https://github.com/lumapps/lumapps-sdk",
+    packages=find_packages(exclude=["documentation", "tests"]),
     include_package_data=True,
     license="MIT",
     description="Lumapps SDK for Python",
-    long_description=long_description,
-    install_requires=getRequires(),
+    long_description=read_file("README.rst"),
+    long_description_content_type="text/x-rst",
+    install_requires=[
+        "google-api-python-client",
+        "google-auth",
+        "google-auth-httplib2",
+        "python-slugify",
+        "cryptography",
+        "pathlib2",
+        "repoze.lru",
+        "enum34",
+    ],
     classifiers=[
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
     ],
+    project_urls={
+        "Documentation": "https://lumapps.github.io/lumapps-sdk/",
+        "Source": "https://github.com/lumapps/lumapps-sdk",
+        "Issues": "https://github.com/lumapps/lumapps-sdk/issues",
+        "CI": "https://circleci.com/gh/lumapps/lumapps-sdk",
+    },
     entry_points={
         "console_scripts": [
             "lumapps_api_client=lumapps_api_client.cli:main",
