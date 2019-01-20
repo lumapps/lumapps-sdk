@@ -1,5 +1,6 @@
 from io import open
 from setuptools import setup, find_packages
+from lumapps.config import __version__, __pypi_packagename__
 
 
 def read_file(file_path):
@@ -9,8 +10,8 @@ def read_file(file_path):
 
 
 setup(
-    name="lumapps-sdk",
-    version=0.1,
+    name=__pypi_packagename__,
+    version=__version__,
     author="LumApps",
     url="https://github.com/lumapps/lumapps-sdk",
     packages=find_packages(exclude=["documentation", "tests"]),
@@ -42,8 +43,8 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "lumapps_api_client=lumapps_api_client.cli:main",
-            "lac=lumapps_api_client.cli:main",
+            "client=lumapps.client.cli:main",
+            "lac=lumapps.client.cli:main",
         ]
     },
 )
