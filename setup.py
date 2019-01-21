@@ -42,9 +42,6 @@ setup(
         "CI": "https://circleci.com/gh/lumapps/lumapps-sdk",
     },
     entry_points={
-        "console_scripts": [
-            "client=lumapps.client.cli:main",
-            "lac=lumapps.client.cli:main",
-        ]
+        "console_scripts": ["client=lumapps.cli:main", "lac=lumapps.cli:main"]
     },
 )

@@ -9,7 +9,7 @@ from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
-from lumapps.client.utils import (
+from lumapps.utils import (
     DiscoveryCache,
     pop_matches,
     ApiCallError,

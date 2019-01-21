@@ -1,3 +1,7 @@
+"""
+    This is an example of how to upload one or several media(s) 
+    to your LumApps instance.
+"""
 from lumapps.client.lib import ApiClient
 from lumapps.helpers.media import upload_and_save
 
