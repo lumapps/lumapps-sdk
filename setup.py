@@ -20,16 +20,7 @@ setup(
     description="Lumapps SDK for Python",
     long_description=read_file("README.rst"),
     long_description_content_type="text/x-rst",
-    install_requires=[
-        "google-api-python-client",
-        "google-auth",
-        "google-auth-httplib2",
-        "python-slugify",
-        "cryptography",
-        "pathlib2",
-        "repoze.lru",
-        "enum34",
-    ],
+    install_requires=read_file("requirements.txt").splitlines(),
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 2.7",
