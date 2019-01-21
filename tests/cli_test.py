@@ -1,4 +1,4 @@
-from lumapps.client.cli import load_config
+from lumapps.cli import load_config
 import pytest
 
 

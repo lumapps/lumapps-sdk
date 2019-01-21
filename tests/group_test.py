@@ -5,7 +5,7 @@ import mock
 from apiclient.http import HttpMock
 from apiclient.discovery import build
 
-from lumapps.client.lib import ApiClient
+from lumapps.client import ApiClient
 from lumapps.helpers.group import build_batch, list_groups
 
 
