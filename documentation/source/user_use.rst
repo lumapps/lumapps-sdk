@@ -8,7 +8,7 @@ To list all users of your Lumapps plateform
 
 .. code-block:: python 
 
-    from lumapps_api_sdk import user
+    from lumapps.helpers import user
 
     api = ... # previously obtained
     users = user.list(api)
@@ -23,7 +23,7 @@ Save a user by provinding an `email`, a `first_name` and a `last_name`.
 
 .. code-block:: python
 
-    from lumapps_api_sdk.user import User
+    from lumapps.helpers.user import User
 
     api = ... # previously obtained
     usr = User(
@@ -45,7 +45,7 @@ To list all the feeds of your Lumapps plateform
 
 .. code-block:: python
 
-    from lumapps_api_sdk import group
+    from lumapps.helpers import group
 
     api = ... # previously obtained
     groups = group.list(api)
@@ -66,7 +66,7 @@ Save a feed by providing the `instance_id`, a `group_name`, a `google_group_emai
 
 .. code-block:: python
 
-    from lumapps_api_helpers.group import Group
+    from lumapps.helpers.group import Group
 
     api = ... # previously obtained
     group = Group(
