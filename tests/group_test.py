@@ -5,8 +5,8 @@ import mock
 from apiclient.http import HttpMock
 from apiclient.discovery import build
 
-from lumapps_api_client.lib import ApiClient
-from lumapps_api_helpers.group import build_batch, list_groups
+from lumapps.client import ApiClient
+from lumapps.helpers.group import build_batch, list_groups
 
 
 class GroupTests(unittest.TestCase):

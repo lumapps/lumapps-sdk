@@ -12,11 +12,14 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+
+# flake8: noqa
 import os
 import sys
-from lumapps_api_client import __version__
 
 sys.path.insert(0, os.path.abspath("../.."))
+
+import lumapps
 
 # -- Project information -----------------------------------------------------
 
@@ -25,9 +28,9 @@ copyright = u"2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN"
 author = u"JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN"
 
 # The short X.Y version
-version = __version__
+version = lumapps.__version__
 # The full version, including alpha/beta/rc tags
-release = __version__
+release = lumapps.__version__
 
 
 # -- General configuration ---------------------------------------------------

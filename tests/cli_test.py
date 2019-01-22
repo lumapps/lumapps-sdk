@@ -1,5 +1,6 @@
-from lumapps_api_client.cli import load_config
+from lumapps.cli import load_config
 import pytest
+
 
 def test_load_config():
     with pytest.raises(SystemExit):

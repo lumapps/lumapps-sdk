@@ -2,23 +2,23 @@
 Media
 -----
 
-.. automodule:: lumapps_api_helpers.media
+.. automodule:: lumapps.helpers.media
     :members:
     
 Group
 -----
 
-.. automodule:: lumapps_api_helpers.group
+.. automodule:: lumapps.helpers.group
     :members:
 
 User
 ----
 
-.. automodule:: lumapps_api_helpers.user
+.. automodule:: lumapps.helpers.user
     :members:
 
 Utils
 -----
 
-.. automodule:: lumapps_api_helpers.utils
+.. automodule:: lumapps.helpers.utils
     :members:

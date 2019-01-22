@@ -4,7 +4,8 @@ import sys
 import argparse
 import json
 
-from lumapps_api_client.lib import ApiClient, ApiCallError, get_conf, set_conf, FILTERS
+from lumapps.utils import ApiCallError, get_conf, set_conf, FILTERS
+from lumapps.client import ApiClient
 import logging
 
 LIST_CONFIGS = "***LIST_CONFIGS***"

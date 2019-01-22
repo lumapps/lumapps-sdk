@@ -1,6 +1,18 @@
 **Lumapps SDK**
 ===============
 
+.. image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
+    :target: https://circleci.com/gh/lumapps/lumapps-sdk
+
+.. image:: https://black.readthedocs.io/en/stable/_static/license.svg
+    :target: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
+    :alt: License: MIT
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+    :alt: Black style
+
+
 *Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
 
 *Make sure of the version you are using (Git tags & releases)*
@@ -10,6 +22,7 @@
 Lumapps SDK is a set of tools to manipulate the `Lumapps API <https://api.lumapps.com/docs/start>`_.
 
 This includes: 
+
 - a client that support all the routes of the API (located in folder lumapps_api_client)
 - a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)
 
@@ -19,9 +32,9 @@ Quick start
 
 Installation
 ------------
-```
-pip install git+https://github.com/lumapps/lumapps-sdk.git
-```
+
+``$ pip install git+https://github.com/lumapps/lumapps-sdk.git``
+
 
 Get your token
 --------------
@@ -47,7 +60,7 @@ Authentificate
 
 .. code-block:: python
 
-    from lumapps_api_client.lib import ApiClient
+    from lumapps.client import ApiClient
     token = "MY TOKEN"
     api = ApiClient(token=token)
 

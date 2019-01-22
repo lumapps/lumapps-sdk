@@ -1,11 +1,15 @@
+# Tests
 flake8
 coverage
 pytest
-flask
-sphinx
 mock
+
+# Doc
+sphinx
 sphinx-rtd-theme
 sphinxcontrib-napoleon
+
+# Dev tools
 pre-commit
 pre-commit-hooks
 
