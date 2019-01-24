@@ -329,14 +329,12 @@ class ApiClient(object):
                 num_retries=self.num_retries
             )
             if "more" in response and "items" not in response:
-                self.last_cursor = None
                 return  # empty list
             if "more" in response and "items" in response:
-                if response.get("more", False):
-                    cursor = response["cursor"]
-                    self.last_cursor = cursor
                 for item in response["items"]:
                     yield self._prune(method_parts, item)
+                if response.get("more", False):
+                    cursor = response["cursor"]
                 else:
                     return
             else:
