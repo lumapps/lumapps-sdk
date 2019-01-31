@@ -52,8 +52,6 @@ class ApiClient(object):
         self.email = ""
         self.last_cursor = None
         self.token_expiration = None
-        self.customer_id = None
-        self.instance_id = None
 
         # Api infos setup : construct the api url.
         if not api_info:
