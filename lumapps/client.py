@@ -137,7 +137,14 @@ class ApiClient(object):
 
     def get_new_client_as(self, user):
         return ApiClient(self._auth_info, self.api_info, user=user)
-
+    
+    @token.setter	
+    def token(self, v):	
+        if self.creds and self.creds.token == v:	
+            return	
+        self._service = None	
+        self.creds = Credentials(v)
+        
     @property
     def token(self):
         if not self.creds.token:
