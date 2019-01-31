@@ -52,8 +52,6 @@ class ApiClient(object):
         self.email = ""
         self.last_cursor = None
         self.token_expiration = None
-        self.customer_id = None
-        self.instance_id = None
 
         # Api infos setup : construct the api url.
         if not api_info:
@@ -90,7 +88,7 @@ class ApiClient(object):
         elif auth_info and "bearer" in auth_info:
             self.creds = Credentials(auth_info["bearer"].replace("Bearer ", ""))
         elif token:
-            self.creds = None
+            self.creds = Credentials(token)
             self.token = token
         elif auth_info:  # service account
             self.creds = service_account.Credentials.from_service_account_info(
@@ -145,13 +143,6 @@ class ApiClient(object):
         if not self.creds.token:
             self.service._http.request(self.base_url)
         return self.creds.token
-
-    @token.setter
-    def token(self, v):
-        if self.creds and self.creds.token == v:
-            return
-        self._service = None
-        self.creds = Credentials(v)
 
     @property
     def service(self):
