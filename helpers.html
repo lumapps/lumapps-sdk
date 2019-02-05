@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Media &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Media &mdash; Lumapps SDK 0.1.1 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.1
               </div>
             
           
@@ -101,9 +101,9 @@
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#module-lumapps_api_helpers.utils">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-lumapps.helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-lumapps.helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-lumapps.helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -174,11 +174,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-lumapps_api_helpers.media">
-<span id="media"></span><h1>Media<a class="headerlink" href="#module-lumapps_api_helpers.media" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-lumapps.helpers.media">
+<span id="media"></span><h1>Media<a class="headerlink" href="#module-lumapps.helpers.media" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="lumapps_api_helpers.media.create_media_folder">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">create_media_folder</code><span class="sig-paren">(</span><em>api</em>, <em>instance</em>, <em>lang</em>, <em>name</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#create_media_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.create_media_folder" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.create_media_folder">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">create_media_folder</code><span class="sig-paren">(</span><em>api</em>, <em>instance</em>, <em>lang</em>, <em>name</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#create_media_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.create_media_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a media folder</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -204,8 +204,31 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.list_media_folders">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">list_media_folders</code><span class="sig-paren">(</span><em>api</em>, <em>lang</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#list_media_folders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.list_media_folders" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.delete_medias">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">delete_medias</code><span class="sig-paren">(</span><em>api</em>, <em>langs</em>, <em>names</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#delete_medias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.delete_medias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all specified medias</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>api</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) – The ApiClient instance used to request.</li>
+<li><strong>langs</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em>) – A list of the langs of the medias you want to delete.</li>
+<li><strong>names</strong> (<em>list</em><em>[</em><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>]</em>) – A list of the names of the files you want to delete.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>Be carefull</strong> this function will delete <strong>all</strong> files that have a similar name (given they have the same lang).</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumapps.helpers.media.list_media_folders">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">list_media_folders</code><span class="sig-paren">(</span><em>api</em>, <em>lang</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#list_media_folders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.list_media_folders" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all media folder associated to a lang in</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -226,8 +249,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.list_medias">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">list_medias</code><span class="sig-paren">(</span><em>api</em>, <em>lang</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#list_medias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.list_medias" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.list_medias">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">list_medias</code><span class="sig-paren">(</span><em>api</em>, <em>lang</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#list_medias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.list_medias" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the medias.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -248,8 +271,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.move_media_to_folder">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">move_media_to_folder</code><span class="sig-paren">(</span><em>api</em>, <em>itemid</em>, <em>folderid</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#move_media_to_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.move_media_to_folder" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.move_media_to_folder">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">move_media_to_folder</code><span class="sig-paren">(</span><em>api</em>, <em>itemid</em>, <em>folderid</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#move_media_to_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.move_media_to_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move a media in a specified folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -274,8 +297,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.save_media">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">save_media</code><span class="sig-paren">(</span><em>api</em>, <em>media</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#save_media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.save_media" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.save_media">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">save_media</code><span class="sig-paren">(</span><em>api</em>, <em>media</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#save_media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.save_media" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a media.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -298,8 +321,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.upload_and_save">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">upload_and_save</code><span class="sig-paren">(</span><em>api</em>, <em>instance</em>, <em>files</em>, <em>langs=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#upload_and_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.upload_and_save" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.upload_and_save">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">upload_and_save</code><span class="sig-paren">(</span><em>api</em>, <em>instance</em>, <em>files</em>, <em>langs=None</em>, <em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#upload_and_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.upload_and_save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload and save a list of 1 or several files to the specified lumapps site (instance).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -325,8 +348,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.upload_file">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">upload_file</code><span class="sig-paren">(</span><em>api</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.upload_file" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.upload_file">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">upload_file</code><span class="sig-paren">(</span><em>api</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.upload_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload a file to the googleusercontent of the ApiClient.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -349,8 +372,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.media.uploaded_to_media">
-<code class="descclassname">lumapps_api_helpers.media.</code><code class="descname">uploaded_to_media</code><span class="sig-paren">(</span><em>uploaded_file</em>, <em>instance</em>, <em>lang</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/media.html#uploaded_to_media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.media.uploaded_to_media" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.media.uploaded_to_media">
+<code class="descclassname">lumapps.helpers.media.</code><code class="descname">uploaded_to_media</code><span class="sig-paren">(</span><em>uploaded_file</em>, <em>instance</em>, <em>lang</em>, <em>name=None</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/media.html#uploaded_to_media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.media.uploaded_to_media" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform an uploaded file (post reponse) into a minimal media.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -374,15 +397,15 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-lumapps_api_helpers.group">
-<span id="group"></span><h1>Group<a class="headerlink" href="#module-lumapps_api_helpers.group" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-lumapps.helpers.group">
+<span id="group"></span><h1>Group<a class="headerlink" href="#module-lumapps.helpers.group" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lumapps_api_helpers.group.Group">
-<em class="property">class </em><code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>instance=''</em>, <em>name=''</em>, <em>uid=''</em>, <em>remote_group=''</em>, <em>feed_type=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.Group" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.Group">
+<em class="property">class </em><code class="descclassname">lumapps.helpers.group.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>instance=''</em>, <em>name=''</em>, <em>uid=''</em>, <em>remote_group=''</em>, <em>feed_type=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.Group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lumapps feed object</p>
 <dl class="method">
-<dt id="lumapps_api_helpers.group.Group.get_attribute">
-<code class="descname">get_attribute</code><span class="sig-paren">(</span><em>attr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#Group.get_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.Group.get_attribute" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.Group.get_attribute">
+<code class="descname">get_attribute</code><span class="sig-paren">(</span><em>attr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#Group.get_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.Group.get_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -396,8 +419,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="lumapps_api_helpers.group.Group.set_attribute">
-<code class="descname">set_attribute</code><span class="sig-paren">(</span><em>attr</em>, <em>value</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#Group.set_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.Group.set_attribute" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.Group.set_attribute">
+<code class="descname">set_attribute</code><span class="sig-paren">(</span><em>attr</em>, <em>value</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#Group.set_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.Group.set_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -415,8 +438,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.build_batch">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">build_batch</code><span class="sig-paren">(</span><em>api</em>, <em>groups</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#build_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.build_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.build_batch">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">build_batch</code><span class="sig-paren">(</span><em>api</em>, <em>groups</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#build_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.build_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator for User instances from raw Lumapps user Iterator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -436,8 +459,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.delete">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>api</em>, <em>group</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.delete" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.delete">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>api</em>, <em>group</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate an empty group</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -454,8 +477,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.get_by_name">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">get_by_name</code><span class="sig-paren">(</span><em>api</em>, <em>name</em>, <em>instance=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#get_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.get_by_name" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.get_by_name">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">get_by_name</code><span class="sig-paren">(</span><em>api</em>, <em>name</em>, <em>instance=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#get_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.get_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>A group by name</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -476,8 +499,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.get_by_uid">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">get_by_uid</code><span class="sig-paren">(</span><em>api</em>, <em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#get_by_uid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.get_by_uid" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.get_by_uid">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">get_by_uid</code><span class="sig-paren">(</span><em>api</em>, <em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#get_by_uid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.get_by_uid" title="Permalink to this definition">¶</a></dt>
 <dd><p>A group by uid</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -497,8 +520,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.get_multi">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">get_multi</code><span class="sig-paren">(</span><em>api</em>, <em>uids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.get_multi" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.get_multi">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">get_multi</code><span class="sig-paren">(</span><em>api</em>, <em>uids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.get_multi" title="Permalink to this definition">¶</a></dt>
 <dd><p>A group by uid</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -518,8 +541,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.list_groups">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">list_groups</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>fields=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#list_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.list_groups" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.list_groups">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">list_groups</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>fields=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#list_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.list_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -541,8 +564,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.list_sync">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">list_sync</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>fields=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#list_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.list_sync" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.list_sync">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">list_sync</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>fields=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#list_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.list_sync" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the groups of an instance. If no instance is provided , fetch the customer groups ( = platform feeds in lumapps)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -564,8 +587,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.list_types_sync">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">list_types_sync</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#list_types_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.list_types_sync" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.list_types_sync">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">list_types_sync</code><span class="sig-paren">(</span><em>api</em>, <em>instance=''</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#list_types_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.list_types_sync" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the groups types of an instance. If no instance is provided , fetch the platform types</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -586,8 +609,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.save">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">save</code><span class="sig-paren">(</span><em>api</em>, <em>group</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.save" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.save">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">save</code><span class="sig-paren">(</span><em>api</em>, <em>group</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate an empty group</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -604,8 +627,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.group.update_users">
-<code class="descclassname">lumapps_api_helpers.group.</code><code class="descname">update_users</code><span class="sig-paren">(</span><em>group</em>, <em>users_to_add=&lt;type 'list'&gt;</em>, <em>users_to_remove=&lt;type 'list'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/group.html#update_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.group.update_users" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.group.update_users">
+<code class="descclassname">lumapps.helpers.group.</code><code class="descname">update_users</code><span class="sig-paren">(</span><em>group</em>, <em>users_to_add=&lt;type 'list'&gt;</em>, <em>users_to_remove=&lt;type 'list'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/group.html#update_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.group.update_users" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the users of a group</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -626,21 +649,21 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-lumapps_api_helpers.user">
-<span id="user"></span><h1>User<a class="headerlink" href="#module-lumapps_api_helpers.user" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-lumapps.helpers.user">
+<span id="user"></span><h1>User<a class="headerlink" href="#module-lumapps.helpers.user" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="lumapps_api_helpers.user.User">
-<em class="property">class </em><code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>email=''</em>, <em>uid=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.User" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.User">
+<em class="property">class </em><code class="descclassname">lumapps.helpers.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>api</em>, <em>customer=''</em>, <em>email=''</em>, <em>uid=''</em>, <em>representation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.User" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lumapps user object</p>
 <dl class="method">
-<dt id="lumapps_api_helpers.user.User.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#User.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.User.get" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.User.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#User.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.User.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>fetch current user from lumapps using its email or uid</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumapps_api_helpers.user.User.get_attribute">
-<code class="descname">get_attribute</code><span class="sig-paren">(</span><em>attr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#User.get_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.User.get_attribute" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.User.get_attribute">
+<code class="descname">get_attribute</code><span class="sig-paren">(</span><em>attr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#User.get_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.User.get_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -654,8 +677,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="lumapps_api_helpers.user.User.set_attribute">
-<code class="descname">set_attribute</code><span class="sig-paren">(</span><em>attr</em>, <em>value</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#User.set_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.User.set_attribute" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.User.set_attribute">
+<code class="descname">set_attribute</code><span class="sig-paren">(</span><em>attr</em>, <em>value</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#User.set_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.User.set_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -674,8 +697,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.build_batch">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">build_batch</code><span class="sig-paren">(</span><em>api</em>, <em>users</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#build_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.build_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.build_batch">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">build_batch</code><span class="sig-paren">(</span><em>api</em>, <em>users</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#build_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.build_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator for User instances from raw Lumapps user Iterator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -696,8 +719,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.deactivate">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">deactivate</code><span class="sig-paren">(</span><em>api</em>, <em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.deactivate" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.deactivate">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">deactivate</code><span class="sig-paren">(</span><em>api</em>, <em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.deactivate" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator for User instances from raw Lumapps user Iterator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -717,8 +740,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.get_by_email">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">get_by_email</code><span class="sig-paren">(</span><em>api</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#get_by_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.get_by_email" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.get_by_email">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">get_by_email</code><span class="sig-paren">(</span><em>api</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#get_by_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.get_by_email" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a user by email</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -739,8 +762,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.get_by_uid">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">get_by_uid</code><span class="sig-paren">(</span><em>api</em>, <em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#get_by_uid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.get_by_uid" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.get_by_uid">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">get_by_uid</code><span class="sig-paren">(</span><em>api</em>, <em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#get_by_uid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.get_by_uid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a user by uid</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -760,8 +783,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.list_sync">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">list_sync</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#list_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.list_sync" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.list_sync">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">list_sync</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#list_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.list_sync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch users</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -781,8 +804,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.list_users">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">list_users</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#list_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.list_users" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.list_users">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">list_users</code><span class="sig-paren">(</span><em>api</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#list_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.list_users" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch users</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -802,8 +825,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.user.save_or_update">
-<code class="descclassname">lumapps_api_helpers.user.</code><code class="descname">save_or_update</code><span class="sig-paren">(</span><em>api</em>, <em>user</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/user.html#save_or_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.user.save_or_update" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.user.save_or_update">
+<code class="descclassname">lumapps.helpers.user.</code><code class="descname">save_or_update</code><span class="sig-paren">(</span><em>api</em>, <em>user</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/user.html#save_or_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.user.save_or_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate an empty group</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -820,11 +843,11 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-lumapps_api_helpers.utils">
-<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-lumapps_api_helpers.utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-lumapps.helpers.utils">
+<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-lumapps.helpers.utils" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.create_lumapps_uuid">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">create_lumapps_uuid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#create_lumapps_uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.create_lumapps_uuid" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.create_lumapps_uuid">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">create_lumapps_uuid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/utils.html#create_lumapps_uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.utils.create_lumapps_uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a uid in the same format as lumapps</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -837,8 +860,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.nested_find_one">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">nested_find_one</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#nested_find_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.nested_find_one" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.nested_find_one">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">nested_find_one</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/utils.html#nested_find_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.utils.nested_find_one" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the first element by key recursively in lists or dictionnaries</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -859,8 +882,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.nested_findall">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">nested_findall</code><span class="sig-paren">(</span><em>key</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#nested_findall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.nested_findall" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.nested_findall">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">nested_findall</code><span class="sig-paren">(</span><em>key</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/utils.html#nested_findall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.utils.nested_findall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all elements by key recursively in lists or dictionnaries</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -880,8 +903,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.nested_findall_value">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">nested_findall_value</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#nested_findall_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.nested_findall_value" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.nested_findall_value">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">nested_findall_value</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>dict_or_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/utils.html#nested_findall_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.utils.nested_findall_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the first element by key and elements recursively in lists or dictionnaries</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -902,8 +925,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.read_csv_data">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">read_csv_data</code><span class="sig-paren">(</span><em>path</em>, <em>group_by=None</em>, <em>filter_by=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#read_csv_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.read_csv_data" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.read_csv_data">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">read_csv_data</code><span class="sig-paren">(</span><em>path</em>, <em>group_by=None</em>, <em>filter_by=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/utils.html#read_csv_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.utils.read_csv_data" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><dl class="docutils">
 <dt>Args:</dt>
@@ -923,8 +946,8 @@ filter_by (str, str): (key, value) filter only rows where key=value</dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.set_new_lumapps_uuids">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">set_new_lumapps_uuids</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps_api_helpers/utils.html#set_new_lumapps_uuids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps_api_helpers.utils.set_new_lumapps_uuids" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.set_new_lumapps_uuids">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">set_new_lumapps_uuids</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lumapps/helpers/utils.html#set_new_lumapps_uuids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumapps.helpers.utils.set_new_lumapps_uuids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a new unique id for every element in the list</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -937,8 +960,8 @@ filter_by (str, str): (key, value) filter only rows where key=value</dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="lumapps_api_helpers.utils.to_json">
-<code class="descclassname">lumapps_api_helpers.utils.</code><code class="descname">to_json</code><span class="sig-paren">(</span><em>obj</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>cls=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#lumapps_api_helpers.utils.to_json" title="Permalink to this definition">¶</a></dt>
+<dt id="lumapps.helpers.utils.to_json">
+<code class="descclassname">lumapps.helpers.utils.</code><code class="descname">to_json</code><span class="sig-paren">(</span><em>obj</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>cls=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#lumapps.helpers.utils.to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serialize <code class="docutils literal notranslate"><span class="pre">obj</span></code> to a JSON formatted <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">skipkeys</span></code> is true then <code class="docutils literal notranslate"><span class="pre">dict</span></code> keys that are not basic types
 (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">unicode</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>)

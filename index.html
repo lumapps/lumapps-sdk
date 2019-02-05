@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lumapps SDK &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Lumapps SDK &mdash; Lumapps SDK 0.1.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.1
               </div>
             
           
@@ -100,9 +100,9 @@
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -175,21 +175,24 @@
             
   <div class="section" id="lumapps-sdk">
 <h1><strong>Lumapps SDK</strong><a class="headerlink" href="#lumapps-sdk" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://circleci.com/gh/lumapps/lumapps-sdk"><img alt="https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg" src="https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg" /></a>
+<a class="reference external image-reference" href="https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst"><img alt="License: MIT" src="https://black.readthedocs.io/en/stable/_static/license.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/ambv/black"><img alt="Black style" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 <p><em>Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers</em></p>
 <p><em>Make sure of the version you are using (Git tags &amp; releases)</em></p>
 <hr class="docutils" />
 <p>Lumapps SDK is a set of tools to manipulate the <a class="reference external" href="https://api.lumapps.com/docs/start">Lumapps API</a>.</p>
-<p>This includes:
-- a client that support all the routes of the API (located in folder lumapps_api_client)
-- a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)</p>
+<p>This includes:</p>
+<ul class="simple">
+<li>a client that support all the routes of the API (located in folder lumapps_api_client)</li>
+<li>a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)</li>
+</ul>
 </div>
 <div class="section" id="quick-start">
 <h1>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/lumapps/lumapps-sdk.git</span>
-<span class="pre">`</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">lumapps-sdk</span></code></p>
 </div>
 <div class="section" id="get-your-token">
 <h2>Get your token<a class="headerlink" href="#get-your-token" title="Permalink to this headline">¶</a></h2>
@@ -207,7 +210,7 @@ Once connected, open the javascript console of your browser and run:</p>
 </div>
 <div class="section" id="authentificate">
 <h2>Authentificate<a class="headerlink" href="#authentificate" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_client.lib</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 <span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;MY TOKEN&quot;</span>
 <span class="n">api</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
 </pre></div>

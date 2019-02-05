@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Media Files and Library &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Media Files and Library &mdash; Lumapps SDK 0.1.1 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.1
               </div>
             
           
@@ -105,9 +105,9 @@
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -184,7 +184,7 @@
 <div class="section" id="list-media-files-in-the-library-of-a-lumapps-platform">
 <h2>List media files in the library of a LumApps platform<a class="headerlink" href="#list-media-files-in-the-library-of-a-lumapps-platform" title="Permalink to this headline">¶</a></h2>
 <p>List the media for a specific language.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_helpers.media</span> <span class="kn">import</span> <span class="n">list_medias</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.helpers.media</span> <span class="kn">import</span> <span class="n">list_medias</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
 <span class="n">medias</span> <span class="o">=</span> <span class="n">list_medias</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">)</span>
@@ -196,7 +196,7 @@
 <p>Uploading files in the media library of a given LumApps site is straightforward:
 provide the instance id of the site, the files paths, and optionally the
 languages and names for each file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_helpers.media</span> <span class="kn">import</span> <span class="n">upload_and_save</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.helpers.media</span> <span class="kn">import</span> <span class="n">upload_and_save</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># The instance id of your LumApps site</span>

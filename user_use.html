@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Users &mdash; Lumapps SDK 0.1 documentation</title>
+  <title>Users &mdash; Lumapps SDK 0.1.1 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.1
               </div>
             
           
@@ -109,9 +109,9 @@
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps_api_helpers.utils">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.user">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.utils">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -187,7 +187,7 @@
 <p>The SDK includes a helper to easily manipulate the users.</p>
 <div class="section" id="to-list-all-users-of-your-lumapps-plateform">
 <h2>To list all users of your Lumapps plateform<a class="headerlink" href="#to-list-all-users-of-your-lumapps-plateform" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_sdk</span> <span class="kn">import</span> <span class="n">user</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.helpers</span> <span class="kn">import</span> <span class="n">user</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
 <span class="n">users</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">api</span><span class="p">)</span>
@@ -200,7 +200,7 @@
 <div class="section" id="to-create-a-user">
 <h2>To create a user<a class="headerlink" href="#to-create-a-user" title="Permalink to this headline">¶</a></h2>
 <p>Save a user by provinding an <cite>email</cite>, a <cite>first_name</cite> and a <cite>last_name</cite>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_sdk.user</span> <span class="kn">import</span> <span class="n">User</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.helpers.user</span> <span class="kn">import</span> <span class="n">User</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
 <span class="n">usr</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span>
@@ -219,7 +219,7 @@
 <p>Groups in LumApps are named <code class="docutils literal notranslate"><span class="pre">Feeds</span></code> in the api and object definition. The SDK includes a helper to easily manipulate the groups.</p>
 <div class="section" id="to-list-all-the-feeds-of-your-lumapps-plateform">
 <h2>To list all the feeds of your Lumapps plateform<a class="headerlink" href="#to-list-all-the-feeds-of-your-lumapps-plateform" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_sdk</span> <span class="kn">import</span> <span class="n">group</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.helpers</span> <span class="kn">import</span> <span class="n">group</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
 <span class="n">groups</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">api</span><span class="p">)</span>
@@ -236,7 +236,7 @@
 <div class="section" id="to-create-a-group-synced-to-a-google-group-email">
 <h2>To create a group synced to a google group email<a class="headerlink" href="#to-create-a-group-synced-to-a-google-group-email" title="Permalink to this headline">¶</a></h2>
 <p>Save a feed by providing the <cite>instance_id</cite>, a <cite>group_name</cite>, a <cite>google_group_email</cite> and a <cite>feed_type_id</cite>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps_api_helpers.group</span> <span class="kn">import</span> <span class="n">Group</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.helpers.group</span> <span class="kn">import</span> <span class="n">Group</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># previously obtained</span>
 <span class="n">group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span>

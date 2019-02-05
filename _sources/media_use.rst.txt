@@ -10,7 +10,7 @@ List the media for a specific language.
 
 .. code-block:: python
 
-    from lumapps_api_helpers.media import list_medias
+    from lumapps.helpers.media import list_medias
 
     api = ... # previously obtained
     medias = list_medias(api, 'en')
@@ -24,7 +24,7 @@ languages and names for each file.
 
 .. code-block:: python
 
-    from lumapps_api_helpers.media import upload_and_save
+    from lumapps.helpers.media import upload_and_save
 
     api = ... # previously obtained
     instance = ... # The instance id of your LumApps site
