@@ -33,7 +33,7 @@ Quick start
 Installation
 ------------
 
-``$ pip install git+https://github.com/lumapps/lumapps-sdk.git``
+``$ pip install lumapps-sdk``
 
 
 Get your token
