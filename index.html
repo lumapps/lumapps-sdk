@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lumapps SDK &mdash; Lumapps SDK 0.1.1 documentation</title>
+  <title>Lumapps SDK &mdash; Lumapps SDK 0.1.3 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting Started with the LumApps SDK" href="getting_started.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -61,7 +63,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.1.3
               </div>
             
           
@@ -181,11 +183,11 @@
 <p><em>Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers</em></p>
 <p><em>Make sure of the version you are using (Git tags &amp; releases)</em></p>
 <hr class="docutils" />
-<p>Lumapps SDK is a set of tools to manipulate the <a class="reference external" href="https://api.lumapps.com/docs/start">Lumapps API</a>.</p>
+<p>LumApps SDK is a set of tools to manipulate the <a class="reference external" href="https://api.lumapps.com/docs/start">Lumapps API</a>.</p>
 <p>This includes:</p>
 <ul class="simple">
 <li>a client that support all the routes of the API (located in folder lumapps_api_client)</li>
-<li>a set of helper classes to easily manipulate Lumapps elements as Python Objects and classes (folder lumapps_api_helpers)</li>
+<li>a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps_api_helpers)</li>
 </ul>
 </div>
 <div class="section" id="quick-start">
@@ -196,9 +198,9 @@
 </div>
 <div class="section" id="get-your-token">
 <h2>Get your token<a class="headerlink" href="#get-your-token" title="Permalink to this headline">¶</a></h2>
-<p>Lumapps supports multiple ways of authentification.
+<p>LumApps supports multiple ways of authentification.
 The fastest one to implement is the following:</p>
-<p>Get your token by logging to your Lumapps account.
+<p>Get your token by logging to your LumApps account.
 Go to <a class="reference external" href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authentificate.
 Once connected, open the javascript console of your browser and run:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
@@ -208,8 +210,8 @@ Once connected, open the javascript console of your browser and run:</p>
 </div>
 <p>This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps</p>
 </div>
-<div class="section" id="authentificate">
-<h2>Authentificate<a class="headerlink" href="#authentificate" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="authenticate">
+<h2>Authenticate<a class="headerlink" href="#authenticate" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lumapps.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 <span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;MY TOKEN&quot;</span>
 <span class="n">api</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
@@ -287,26 +289,28 @@ Once connected, open the javascript console of your browser and run:</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXXXX-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
 
 </body>
 </html>
