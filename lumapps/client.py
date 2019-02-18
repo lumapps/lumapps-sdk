@@ -1,11 +1,9 @@
 from __future__ import print_function, unicode_literals
 import json
 from time import time
-from datetime import datetime, timedelta
 from textwrap import TextWrapper
 
 from google.oauth2 import service_account
-from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
