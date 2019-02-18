@@ -1,11 +1,9 @@
 from __future__ import print_function, unicode_literals
 import json
 from time import time
-from datetime import datetime, timedelta
 from textwrap import TextWrapper
 
 from google.oauth2 import service_account
-from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
@@ -31,17 +29,21 @@ class ApiClient(object):
         num_retries=1,
     ):
         """
-            Note:
-                At least one type of authentication info is required (auth_info, credentials, token)
-            Args:
-                user (str): the user email.
-                auth_info (dict): A service account key (json file).
-                api_info (dict): A dict containing the description of your api. If no api_info is given this defaults to the lumsites api infos.
-                credentials (dict): oauth2 credentials.
-                token (str): A bearer token.
-                token_getter ():
-                prune (bool): Whether or not to use FILTERS to filter the Lumapps api response. Defaults to False.
-                num_retries (int): number of times that a request will be retried. Default to 1.
+        Note:
+            At least one type of authentication info is required (auth_info,
+            credentials, token)
+        Args:
+            user (str): The user email.
+            auth_info (dict): A service account key (json file).
+            api_info (dict): A dict containing the description of your api. If
+                no api_info is given this defaults to the lumsites api infos.
+            credentials (dict): oauth2 credentials.
+            token (str): A bearer token.
+            token_getter ():
+            prune (bool): Whether or not to use FILTERS to prune the LumApps
+                API responses. Defaults to False.
+            num_retries (int): Number of times that a request will be retried.
+                Default to 1.
         """
         self._get_token_user = None
         self._token_expiry = 0
@@ -62,9 +64,9 @@ class ApiClient(object):
             "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
         )
         self._api_version = api_info.get("version", "v1")
-        self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
-            "/"
-        )
+        self.base_url = api_info.get(
+            "base_url", "https://lumsites.appspot.com"
+        ).rstrip("/")
         if self._api_name in GOOGLE_APIS:
             url_path = "discovery/v1/apis"
         else:
@@ -72,9 +74,6 @@ class ApiClient(object):
         self._url = "{}/{}/{}/{}/rest".format(
             self.base_url, url_path, self._api_name, self._api_version
         )
-
-        # Attach correct credentials
-
         self._methods = None
         self._service = None
         self.token_getter = token_getter
@@ -100,9 +99,9 @@ class ApiClient(object):
                 self.creds = self.creds.with_subject(user)
         else:
             raise Exception(
-                "You must provide authentication infos (token_getter, auth_info, credentials or token)."
+                "You must provide authentication infos (token_getter, "
+                "auth_info, credentials or token)."
             )
-
         if user:
             self.email = user
 
@@ -171,7 +170,9 @@ class ApiClient(object):
     def methods(self):
         if self._methods is None:
             self._methods = {
-                n: m for n, m in self.walk_api_methods(self.service._resourceDesc)
+                n: m for n, m in self.walk_api_methods(
+                    self.service._resourceDesc
+                )
             }
         return self._methods
 
@@ -183,7 +184,8 @@ class ApiClient(object):
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
         method = self.methods[method_parts]
-        w(method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n")
+        w(method.get("httpMethod", "?") + " method: " +
+          " ".join(method_parts) + "\n")
         if "description" in method:
             w(method["description"].strip() + "\n")
         if debug:
@@ -191,7 +193,10 @@ class ApiClient(object):
         params = method.get("parameters", {})
         if method.get("httpMethod", "") == "POST":
             params.update(
-                {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
+                {
+                    "body": {"required": True, "type": "JSON"},
+                    "fields": {"type": "JSON"}
+                }
             )
         if not params:
             w("API method takes no parameters")
@@ -247,24 +252,20 @@ class ApiClient(object):
 
     def get_call(self, *method_parts, **params):
         """
-            Note:
-                This function will only return the first page in case your result as several pages.
-                To obtain all the pages as an iterator use iter_call.
+        Args:
+            *method_parts (str): API method.
+            **params: Parameters.
 
-            Args:
-                method_parts (list[str]): A list of the methods of the api to call. 
-                ``**params`` (dict): A dict of additionnal parameters.
-            
-            Returns:
-                dict: The object corresponding to the Api response.
+        Returns:
+            dict: An object, or list of objects returned by API method.
 
-            Example:
-                To list the feedtypes in the Lumapps api you need to call the endpoint
-                -> GET https://lumsites.appspot.com/_ah/api/lumsites/v1/feedtype/list
-                Using this function you can call this endpoint like this:
+        Example:
+            List feedtypes in LumApps:
+            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            With this method:
 
-                    >>> result = get_call("feedtype", "list")
-                    >>> print(result)
+                >>> feedtypes = get_call("feedtype", "list")
+                >>> print(feedtypes)
         """
         if params is None:
             params = {}
@@ -296,21 +297,20 @@ class ApiClient(object):
 
     def iter_call(self, *method_parts, **params):
         """
-
         Args:
-            method_parts (list[str]): A list of the methods of the api to call. 
-            ``**params`` (dict): A dict of additionnal parameters.
+            *method_parts (str): API method.
+            **params: Parameters.
         
         Yields:
-            dict: A page of result corresponding to the api response.
+            dict: Objects returned by API method.
 
         Example:
-            To list the feedtypes in the Lumapps api you need to call the endpoint
-            -> GET https://lumsites.appspot.com/_ah/api/lumsites/v1/feedtype/list
-            Using this function you can call this endpoint like this:
+            List feedtypes in LumApps:
+            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            With this method:
 
-                >>> feetypes = iter_call("feedtype", "list")
-                >>> for feedtype in feedtypes: print(feetype)
+                >>> feedtypes = iter_call("feedtype", "list")
+                >>> for feedtype in feedtypes: print(feedtype)
         """
         if params is None:
             params = {}
@@ -346,56 +346,12 @@ class ApiClient(object):
         # find 'startswith' matches of the last part
         last = method_parts[-1]
         idx = len(method_parts) - 1
-        matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
+        matches = [
+            m for m in matches if len(m) >= idx and m[idx].startswith(last)
+        ]
         if not matches:
             return "API method not found"
         return (
             "API method not found. Did you mean any of these?\n"
             + self.get_method_descriptions(sorted(matches))
         )
-
-    def set_customer_user(self, email, customerId, instanceId=None):
-        token = self.get_call("user", "getToken", email=email, customerId=customerId)
-        self._user = {}
-        if token and token.get("accessToken"):
-            TOKEN_VALIDITY_DURATION = 60 * 60
-            self.token_expiration = (
-                datetime.now() + timedelta(seconds=TOKEN_VALIDITY_DURATION)
-            ).isoformat()[:19]
-            self.token = token.get("accessToken")
-            self.email = email
-            self.customerId = customerId
-            self.instanceId = instanceId
-        else:
-            raise Exception("USER_NOT_ALLOWED_FOR_CUSTOMER")
-
-    @property
-    def user(self):
-        if not self._user:
-            if not self.email:
-                raise Exception()
-            self._user = self.get_call("user", "get", email=self.email)
-        return self._user
-
-    @property
-    def customer(self):
-        return self.user.get("customer", None)
-
-    def is_admin_instance(self, instance):
-        if self.is_admin_platform():
-            return True
-        instances_admin = self.user.get("instancesSuperAdmin", None)
-        return not instances_admin or instance in instances_admin
-
-    def is_admin_platform(self):
-        if self.is_god():
-            return True
-
-        is_super_admin = self.user.get("isSuperAdmin", False)
-        return bool(is_super_admin)
-
-    def is_god(self):
-        return bool(self.user.get("isGod", False))
-
-    def get_authed_session(self):
-        return AuthorizedSession(self.creds)
