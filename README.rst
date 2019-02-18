@@ -13,7 +13,7 @@
     :alt: Black style
 
 
-*Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
+*Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
 
 *Make sure of the version you are using (Git tags & releases)*
 
@@ -23,8 +23,8 @@ LumApps SDK is a set of tools to manipulate the `Lumapps API <https://api.lumapp
 
 This includes: 
 
-- a client that support all the routes of the API (located in folder lumapps_api_client)
-- a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps_api_helpers)
+- a client that support all the routes of the API (located in folder lumapps)
+- a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)
 
 
 Quick start
@@ -39,11 +39,11 @@ Installation
 Get your token
 --------------
 
-LumApps supports multiple ways of authentification.
+LumApps supports multiple ways of authentication.
 The fastest one to implement is the following:
 
 Get your token by logging to your LumApps account.
-Go to `https://sites.lumapps.com <https://sites.lumapps.com>`_ and authentificate.
+Go to `https://sites.lumapps.com <https://sites.lumapps.com>`_ and authenticate.
 Once connected, open the javascript console of your browser and run:
 
 .. code-block:: javascript

@@ -34,7 +34,17 @@ def authorization_decorator(func):
 
 
 class Group(object):
-    """Lumapps feed object
+    """ Lumapps group (feed) object
+
+        Args:
+            api (object): the ApiClient instance to use for requests
+            customer (str): the customer id of the group, used for autorization
+            instance (str): the instance id, if not defined the group is a customer group (platform level)
+            name (str): the group name
+            uid (str): the lumapps unique id of the group, generated automatically at the first save
+            remote_group (str): the remote email of the group (google group email for instance)
+            type (str): feed type id
+            representation (dict): a dictionary of all group attributes from lumapps
     """
 
     def __init__(
@@ -49,18 +59,6 @@ class Group(object):
         representation=None,
     ):
         # type: (ApiClient, str, str, str, str, str, str, dict) -> None
-        """Instantiate an empty group
-
-        Args:
-            api (object): the ApiClient instance to use for requests
-            customer (str): the customer id of the group, used for autorization
-            instance (str): the instance id, if not defined the group is a customer group (platform level)
-            name (str): the group name
-            uid (str): the lumapps unique id of the group, generated automatically at the first save
-            remote_group (str): the remote email of the group (google group email for instance)
-            type (str): feed type id
-            representation (dict): a dictionary of all group attributes from lumapps
-        """
 
         self._customer = customer if customer else api.customer
         self._uid = uid

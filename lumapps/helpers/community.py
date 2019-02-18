@@ -6,8 +6,16 @@ from lumapps.helpers.user import User
 
 
 class Community(object):
-    """
-    Lumapps community object
+    """ Lumapps community object
+
+        Args:
+            api: the ApiClient instance to use for requests
+            customer: the customer id of the community, used for autorization
+            instance: the instance id, if not defined the community is a customer community (platform level)
+            title: the community name
+            author: Community object of the community owner
+            uid: the lumapps unique id of the community, generated automatically at the first save
+            representation: a dictionary of all community attributes from lumapps
     """
 
     def __init__(
@@ -21,17 +29,6 @@ class Community(object):
         representation=None,
     ):
         # type: (ApiClient, str, str, str, Community, str, dict) -> None
-        """
-        instantiate an empty community
-        Args:
-            api: the ApiClient instance to use for requests
-            customer: the customer id of the community, used for autorization
-            instance: the instance id, if not defined the community is a customer community (platform level)
-            title: the community name
-            author: Community object of the community owner
-            uid: the lumapps unique id of the community, generated automatically at the first save
-            representation: a dictionary of all community attributes from lumapps
-        """
 
         self._customer = customer if customer else api.customerId
         self._uid = uid
@@ -158,9 +155,12 @@ class Community(object):
         # type: (dict) -> Iterator[dict[str]]
         """
         fetch community posts
-        Arguments:
+
+        Args:
             **params: optional dictionary of search parameters as in https://api.lumapps.com/docs/output/_schemas/servercontentcommunitypostpostmessagespostlistrequest
-        Return: a Community Post Generator object
+        
+        Returns: 
+            a Community Post Generator object
 
         """
         params["contentId"] = self._uid
@@ -205,11 +205,14 @@ def build_batch(api, communities, association=None):
     # type: (ApiClient, Iterator[dict[str]], dict[str]) -> Community
     """
     A generator for Community instances from raw Lumapps community Iterator
-    Arguments:
+
+    Args:
         api: the ApiClient instance to use for requests
         communities: list of Lumapps Community dictionnary
         association: a dictionnary to translate the community dictionnary to Community instance
-    Yields: a Community attribute
+
+    Yields: 
+        a Community attribute
 
     """
     logging.info("building batch communities")
@@ -232,7 +235,8 @@ def list_sync(api, instance="", **params):
         instance: the instance id
         **params: optional  dictionary of search parameters as defined in https://api.lumapps.com/docs/community/list
         
-    Returns: list of Lumapps Community resources
+    Returns: 
+        list: a list of Lumapps Community resources
     """
     if not params:
         params = dict()
