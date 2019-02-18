@@ -17,6 +17,25 @@ from lumapps.utils import (
 
 
 class ApiClient(object):
+    """
+        Args:
+            user (str): The user email.
+            auth_info (dict): A service account key (json file).
+            api_info (dict): A dict containing the description of your api. If
+                no api_info is given this defaults to the lumsites api infos.
+            credentials (dict): oauth2 credentials.
+            token (str): A bearer token.
+            token_getter (object): a token getter function
+            prune (bool): Whether or not to use FILTERS to prune the LumApps
+                API responses. Defaults to False.
+            num_retries (int): Number of times that a request will be retried.
+                Default to 1.
+
+        Note:
+            At least one type of authentication info is required (auth_info,
+            credentials, token)
+    """
+
     def __init__(
         self,
         auth_info=None,
@@ -28,23 +47,6 @@ class ApiClient(object):
         prune=False,
         num_retries=1,
     ):
-        """
-        Note:
-            At least one type of authentication info is required (auth_info,
-            credentials, token)
-        Args:
-            user (str): The user email.
-            auth_info (dict): A service account key (json file).
-            api_info (dict): A dict containing the description of your api. If
-                no api_info is given this defaults to the lumsites api infos.
-            credentials (dict): oauth2 credentials.
-            token (str): A bearer token.
-            token_getter ():
-            prune (bool): Whether or not to use FILTERS to prune the LumApps
-                API responses. Defaults to False.
-            num_retries (int): Number of times that a request will be retried.
-                Default to 1.
-        """
         self._get_token_user = None
         self._token_expiry = 0
         self.num_retries = num_retries
@@ -64,9 +66,9 @@ class ApiClient(object):
             "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
         )
         self._api_version = api_info.get("version", "v1")
-        self.base_url = api_info.get(
-            "base_url", "https://lumsites.appspot.com"
-        ).rstrip("/")
+        self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
+            "/"
+        )
         if self._api_name in GOOGLE_APIS:
             url_path = "discovery/v1/apis"
         else:
@@ -170,9 +172,7 @@ class ApiClient(object):
     def methods(self):
         if self._methods is None:
             self._methods = {
-                n: m for n, m in self.walk_api_methods(
-                    self.service._resourceDesc
-                )
+                n: m for n, m in self.walk_api_methods(self.service._resourceDesc)
             }
         return self._methods
 
@@ -184,8 +184,7 @@ class ApiClient(object):
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
         method = self.methods[method_parts]
-        w(method.get("httpMethod", "?") + " method: " +
-          " ".join(method_parts) + "\n")
+        w(method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n")
         if "description" in method:
             w(method["description"].strip() + "\n")
         if debug:
@@ -193,10 +192,7 @@ class ApiClient(object):
         params = method.get("parameters", {})
         if method.get("httpMethod", "") == "POST":
             params.update(
-                {
-                    "body": {"required": True, "type": "JSON"},
-                    "fields": {"type": "JSON"}
-                }
+                {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
             )
         if not params:
             w("API method takes no parameters")
@@ -262,6 +258,7 @@ class ApiClient(object):
         Example:
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            
             With this method:
 
                 >>> feedtypes = get_call("feedtype", "list")
@@ -307,6 +304,7 @@ class ApiClient(object):
         Example:
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            
             With this method:
 
                 >>> feedtypes = iter_call("feedtype", "list")
@@ -346,9 +344,7 @@ class ApiClient(object):
         # find 'startswith' matches of the last part
         last = method_parts[-1]
         idx = len(method_parts) - 1
-        matches = [
-            m for m in matches if len(m) >= idx and m[idx].startswith(last)
-        ]
+        matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
         if not matches:
             return "API method not found"
         return (

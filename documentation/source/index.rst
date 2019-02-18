@@ -18,6 +18,7 @@
     content_use
     media_use
     user_use
+    group_use
 
 .. toctree::
    :maxdepth: 2
@@ -25,7 +26,7 @@
    :hidden:
 
 
-   helpers
+   reference
 
 .. toctree::
    :maxdepth: 1

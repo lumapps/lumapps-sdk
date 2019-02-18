@@ -1,3 +1,8 @@
+ApiClient
+---------
+
+.. autoclass:: lumapps.client.ApiClient
+
 
 Media
 -----
@@ -15,10 +20,4 @@ User
 ----
 
 .. automodule:: lumapps.helpers.user
-    :members:
-
-Utils
------
-
-.. automodule:: lumapps.helpers.utils
     :members:

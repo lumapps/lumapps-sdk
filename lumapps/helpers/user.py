@@ -1,12 +1,16 @@
 import logging
-from lumapps.helpers.exceptions import NotAuthorizedException, BadRequestException
+from lumapps.helpers.exceptions import (
+    NotAuthorizedException,
+    BadRequestException,
+    MissingFieldException,
+)
 from googleapiclient.errors import HttpError
 
 
 def authorization_decorator(func):
     def func_wrapper(api, user, **kwargs):
         # type: (ApiClient, User, dict) -> Union[boolean, dict]
-        """Instantiate an empty group
+        """Decorator to check
 
         Args:
             api: the ApiClient instance to use for requests
@@ -16,7 +20,7 @@ def authorization_decorator(func):
         customer = user.get_attribute("customer")
 
         if customer == "":
-            raise NotAuthorizedException("user requires a customer value")
+            raise MissingFieldException("user requires a customer value")
 
         elif customer != api.customer:
             raise NotAuthorizedException(
@@ -31,8 +35,14 @@ def authorization_decorator(func):
 
 
 class User(object):
-    """
-    Lumapps user object
+    """ Lumapps user object
+
+        Args:
+            api (object): the ApiClient instance to use for requests
+            customer (str): the customer id of the group, used for autorization
+            email (str): the email associated to the user
+            uid (str): the lumapps unique id of the group, generated automatically at the first save
+            representation (dict): a dictionary of all group attributes from lumapps
     """
 
     USERS = []  # type: list[User]
@@ -90,6 +100,7 @@ class User(object):
 
         Args:
             attr: the attribute to fetch
+
         Returns:
             the value of this attribute from the full dictionary of the group attributes
         """
@@ -135,8 +146,7 @@ class User(object):
 
     def _set_representation(self, result, force=True):
         # type: (dict[str], boolean) -> None
-        """
-        Update the attribute of the class from a Lumapps User resource: https://api.lumapps.com/docs/output/_schemas/user
+        """ Update the attribute of the class from a Lumapps User resource: https://api.lumapps.com/docs/output/_schemas/user
 
         Args:
             result (dict[str]): Lumapps User resource dictionnary
@@ -152,7 +162,7 @@ class User(object):
 
     def get(self):
         # type: () -> object
-        """fetch current user from lumapps using its email or uid
+        """ Fetch current user from lumapps using its email or uid
         """
         user = None
         result = get(self._api, self._email, self._uid)
@@ -361,6 +371,7 @@ def get(api, email="", uid="", fields=None):
 def save_or_update(api, user):
     # type: (ApiClient, User) ->  dict[str]
     """
+
     Args:
         api: the ApiClient instance to use for requests
         user: the user to save
@@ -385,15 +396,14 @@ def save_or_update(api, user):
 
 def deactivate(api, user):
     # type: (ApiClient, list) -> Iterator[User]
-    """A generator for User instances from raw Lumapps user Iterator
+    """Desactivate a user
 
     Args:
         api: the ApiClient instance to use for requests
-        users: list of Lumapps User resource dictionnary
+        user: a User object
 
-    Yields:
-        a User attribute
-
+    Returns:
+        The result of the operation.
     """
     user.set_attribute("status", User.STATUS.get("DISABLE"))
     return save_or_update(api, user)

@@ -29,7 +29,7 @@ Install from sources
 Authentication using a bearer token
 -----------------------------------
 
-LumApps supports multiple methods of authentification. They are explained
+LumApps supports multiple methods of authentication. They are explained
 [here](). The following method allows a LumApps user to use his or her
 bearer token with LumApps SDK.
 
