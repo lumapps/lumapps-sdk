@@ -238,6 +238,7 @@ class ApiClient(object):
     def _get_api_call(self, method_parts, params):
         """Construct the method to call by using the service.
         """
+
         api_call = self.service
         for part in method_parts[:-1]:
             api_call = getattr(api_call, part)()
@@ -270,6 +271,8 @@ class ApiClient(object):
         cursor = None
         if "body" in params and isinstance(params["body"], str):
             params["body"] = json.loads(params["body"])
+
+        max_res = int(params.get("maxResults", 0))
         while True:
             if cursor:
                 if "body" in params:
@@ -284,7 +287,9 @@ class ApiClient(object):
                 return items  # empty list
             if "more" in response and "items" in response:
                 items.extend(response["items"])
-                if response.get("more", False):
+                if response.get("more", False) and (
+                    max_res == 0 or len(items) < max_res
+                ):
                     self.last_cursor = cursor = response["cursor"]
                 else:
                     return self._prune(method_parts, items)
@@ -315,6 +320,9 @@ class ApiClient(object):
         cursor = None
         if "body" in params and isinstance(params["body"], str):
             params["body"] = json.loads(params["body"])
+
+        max_res = int(params.get("maxResults", 0))
+        cpt = 0
         while True:
             if cursor:
                 if "body" in params:
@@ -328,8 +336,9 @@ class ApiClient(object):
                 return  # empty list
             if "more" in response and "items" in response:
                 for item in response["items"]:
+                    cpt += 1
                     yield self._prune(method_parts, item)
-                if response.get("more", False):
+                if response.get("more", False) and (max_res == 0 or cpt < max_res):
                     cursor = response["cursor"]
                 else:
                     return
@@ -351,3 +360,6 @@ class ApiClient(object):
             "API method not found. Did you mean any of these?\n"
             + self.get_method_descriptions(sorted(matches))
         )
+    
+    def get_authed_session(self):
+        return AuthorizedSession(self.creds)
