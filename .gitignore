@@ -13,3 +13,6 @@ coverage.xml
 
 # IntelliJ / PyCharm IDE
 .idea/
+
+# virtualenv
+env/
