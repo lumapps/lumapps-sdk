@@ -24,8 +24,8 @@ import lumapps
 # -- Project information -----------------------------------------------------
 
 project = u"Lumapps SDK"
-copyright = u"2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN"
-author = u"JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN"
+copyright = u"2019, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN, M.VAST"
+author = u"JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN, M.VAST"
 
 # The short X.Y version
 version = lumapps.__version__
