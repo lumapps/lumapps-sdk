@@ -1,5 +1,8 @@
+import pytest
 import json
+
 from lumapps.helpers.media import uploaded_to_media
+from lumapps.helpers.media import upload_and_save
 
 
 def test_uploaded_to_media():
@@ -31,3 +34,20 @@ def test_uploaded_to_media():
     )
     assert media["hasCroppedContent"] is False
     assert media["contentKey"] == key
+
+
+def test_parameters_length():
+    # if optional parameters are specified (langs & names)
+    # their length must be equal to the files list
+    # raise an error if not
+    files = ["fake_test_file_one", "fake_test_file_two"]
+    langs = ["en", "fr"]
+    names = ["first_fake", "second_fake"]
+    partial_langs = ["en"]
+    partial_names = ["first_fake"]
+    client = instance = None
+
+    with pytest.raises(ValueError):
+        upload_and_save(client, instance, files, partial_langs, names)
+    with pytest.raises(ValueError):
+        upload_and_save(client, instance, files, langs, partial_names)
