@@ -80,7 +80,9 @@ Now you will need to install the required dependencies and be sure the tests are
 .. code-block:: bash
 
     $ virtualenv env
+    $ source env/bin/activate
     $ pip install -e . && pip install -r requirements_dev.txt
+    $ cd tests/
     $ pytest 
 
 We also use the `black  <https://github.com/ambv/black>`_ coding style and you must ensure that your code follows it. 

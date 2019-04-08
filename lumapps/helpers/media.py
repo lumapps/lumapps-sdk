@@ -104,8 +104,13 @@ def upload_and_save(api, instance, files, langs=None, names=None):
         Returns:
             list: A list containing information about each of the uploaded medias.
     """
-    langs = ["en"] * len(files) if langs is None else langs
-    names = [None] * len(files) if names is None else names
+    # default values
+    if langs is None and Names is None:
+        langs = ["en"] * len(files)
+        names = [None] * len(files)
+    elif not (len(langs) == len(names) == len(files)):
+        raise ValueError("if set, langs and names list must have the same len as files")
+
     saved_medias = []
     for f, lang, name in zip(files, langs, names):
         uploaded_file = upload_file(api, f)
