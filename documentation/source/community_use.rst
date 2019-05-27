@@ -15,14 +15,14 @@ List communities
     )
 
 Get one community
----------------
+-----------------
 
 .. code-block:: python
 
     content = api.get_call("community", "get", uid=2386179638984704)
 
 Create a community
-----------------
+------------------
 
 .. code-block:: python
 
