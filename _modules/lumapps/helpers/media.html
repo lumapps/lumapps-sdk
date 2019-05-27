@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lumapps.helpers.media &mdash; Lumapps SDK 0.1.3 documentation</title>
+  <title>lumapps.helpers.media &mdash; Lumapps SDK 0.1.4 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.3
+                0.1.4
               </div>
             
           
@@ -94,16 +94,17 @@
 <p class="caption"><span class="caption-text">Use Cases</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../content_use.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community_use.html">Contents</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../media_use.html">Media Files and Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_use.html">Users</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../user_use.html#groups">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../group_use.html">Groups</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html#module-lumapps.helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html#module-lumapps.helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html#module-lumapps.helpers.utils">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference.html">ApiClient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference.html#module-lumapps.helpers.media">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference.html#module-lumapps.helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference.html#module-lumapps.helpers.user">User</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -176,7 +177,7 @@
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 
 
-<div class="viewcode-block" id="list_medias"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.list_medias">[docs]</a><span class="k">def</span> <span class="nf">list_medias</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="list_medias"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.list_medias">[docs]</a><span class="k">def</span> <span class="nf">list_medias</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="c1"># type (ApiClient, str, dict) -&gt; (Iterable[dict])</span>
     <span class="sd">&quot;&quot;&quot;List all the medias.</span>
 
@@ -192,7 +193,7 @@
     <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">iter_call</span><span class="p">(</span><span class="s2">&quot;media&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="upload_file"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.upload_file">[docs]</a><span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<div class="viewcode-block" id="upload_file"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.upload_file">[docs]</a><span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, list[str]) -&gt; (dict)</span>
     <span class="sd">&quot;&quot;&quot;Upload a file to the googleusercontent of the ApiClient.</span>
 
@@ -218,7 +219,7 @@
     <span class="k">return</span> <span class="n">uploaded_file</span></div>
 
 
-<div class="viewcode-block" id="save_media"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.save_media">[docs]</a><span class="k">def</span> <span class="nf">save_media</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
+<div class="viewcode-block" id="save_media"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.save_media">[docs]</a><span class="k">def</span> <span class="nf">save_media</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, dict) -&gt; None</span>
     <span class="sd">&quot;&quot;&quot;Save a media.</span>
 
@@ -232,7 +233,7 @@
     <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;media&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">media</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="uploaded_to_media"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.uploaded_to_media">[docs]</a><span class="k">def</span> <span class="nf">uploaded_to_media</span><span class="p">(</span><span class="n">uploaded_file</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="uploaded_to_media"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.uploaded_to_media">[docs]</a><span class="k">def</span> <span class="nf">uploaded_to_media</span><span class="p">(</span><span class="n">uploaded_file</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="c1"># type: (dict, str, str, str) -&gt; dict</span>
     <span class="sd">&quot;&quot;&quot;Transform an uploaded file (post reponse) into a minimal media.</span>
 
@@ -265,7 +266,7 @@
     <span class="k">return</span> <span class="n">media</span></div>
 
 
-<div class="viewcode-block" id="upload_and_save"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.upload_and_save">[docs]</a><span class="k">def</span> <span class="nf">upload_and_save</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">langs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="upload_and_save"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.upload_and_save">[docs]</a><span class="k">def</span> <span class="nf">upload_and_save</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">langs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, str, list[str], list[str], list[str]) -&gt; None</span>
     <span class="sd">&quot;&quot;&quot;Upload and save a list of 1 or several files to the specified lumapps site (instance).</span>
 
@@ -279,8 +280,13 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            list: A list containing information about each of the uploaded medias.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">langs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="k">if</span> <span class="n">langs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">langs</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="k">if</span> <span class="n">names</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">names</span>
+    <span class="c1"># default values</span>
+    <span class="k">if</span> <span class="n">langs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">langs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">langs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;if set, langs and names list must have the same len as files&quot;</span><span class="p">)</span>
+
     <span class="n">saved_medias</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">langs</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
         <span class="n">uploaded_file</span> <span class="o">=</span> <span class="n">upload_file</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
@@ -294,7 +300,7 @@
     <span class="k">return</span> <span class="n">saved_medias</span></div>
 
 
-<div class="viewcode-block" id="delete_medias"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.delete_medias">[docs]</a><span class="k">def</span> <span class="nf">delete_medias</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">langs</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="delete_medias"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.delete_medias">[docs]</a><span class="k">def</span> <span class="nf">delete_medias</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">langs</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Delete all specified medias</span>
 
 <span class="sd">        Args:</span>
@@ -321,7 +327,7 @@
 <span class="c1"># ------------------------------------------------------------------------------------#</span>
 
 
-<div class="viewcode-block" id="list_media_folders"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.list_media_folders">[docs]</a><span class="k">def</span> <span class="nf">list_media_folders</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="list_media_folders"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.list_media_folders">[docs]</a><span class="k">def</span> <span class="nf">list_media_folders</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, str, dict) -&gt; Iterable[dict]</span>
     <span class="sd">&quot;&quot;&quot;List all media folder associated to a lang in</span>
 
@@ -339,7 +345,7 @@
     <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">iter_call</span><span class="p">(</span><span class="s2">&quot;media&quot;</span><span class="p">,</span> <span class="s2">&quot;folder&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_media_folder"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.create_media_folder">[docs]</a><span class="k">def</span> <span class="nf">create_media_folder</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="create_media_folder"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.create_media_folder">[docs]</a><span class="k">def</span> <span class="nf">create_media_folder</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, str, str, str) -&gt; dict</span>
     <span class="sd">&quot;&quot;&quot;Create a media folder</span>
 
@@ -361,7 +367,7 @@
     <span class="k">return</span> <span class="n">response</span></div>
 
 
-<div class="viewcode-block" id="move_media_to_folder"><a class="viewcode-back" href="../../../helpers.html#lumapps.helpers.media.move_media_to_folder">[docs]</a><span class="k">def</span> <span class="nf">move_media_to_folder</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">itemid</span><span class="p">,</span> <span class="n">folderid</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<div class="viewcode-block" id="move_media_to_folder"><a class="viewcode-back" href="../../../reference.html#lumapps.helpers.media.move_media_to_folder">[docs]</a><span class="k">def</span> <span class="nf">move_media_to_folder</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">itemid</span><span class="p">,</span> <span class="n">folderid</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
     <span class="c1"># type: (ApiClient, str, str, dict) -&gt; dict</span>
     <span class="sd">&quot;&quot;&quot;Move a media in a specified folder.</span>
 
@@ -391,7 +397,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN
+        &copy; Copyright 2019, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN, M.VAST
 
     </p>
   </div>

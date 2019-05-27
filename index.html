@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lumapps SDK &mdash; Lumapps SDK 0.1.3 documentation</title>
+  <title>LumApps SDK &mdash; Lumapps SDK 0.1.4 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.1.3
+                0.1.4
               </div>
             
           
@@ -95,16 +95,17 @@
 <p class="caption"><span class="caption-text">Use Cases</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="content_use.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community_use.html">Contents</a></li>
 <li class="toctree-l1"><a class="reference internal" href="media_use.html">Media Files and Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_use.html">Users</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_use.html#groups">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="group_use.html">Groups</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html">Media</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.group">Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.user">User</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpers.html#module-lumapps.helpers.utils">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">ApiClient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html#module-lumapps.helpers.media">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html#module-lumapps.helpers.group">Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html#module-lumapps.helpers.user">User</a></li>
 </ul>
 <p class="caption"><span class="caption-text">How to contribute</span></p>
 <ul>
@@ -156,7 +157,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li><strong>Lumapps SDK</strong></li>
+      <li><strong>LumApps SDK</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -176,18 +177,18 @@
            <div itemprop="articleBody">
             
   <div class="section" id="lumapps-sdk">
-<h1><strong>Lumapps SDK</strong><a class="headerlink" href="#lumapps-sdk" title="Permalink to this headline">¶</a></h1>
+<h1><strong>LumApps SDK</strong><a class="headerlink" href="#lumapps-sdk" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://circleci.com/gh/lumapps/lumapps-sdk"><img alt="https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg" src="https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg" /></a>
 <a class="reference external image-reference" href="https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst"><img alt="License: MIT" src="https://black.readthedocs.io/en/stable/_static/license.svg" /></a>
 <a class="reference external image-reference" href="https://github.com/ambv/black"><img alt="Black style" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
-<p><em>Please be aware the this sdk is still in beta version (0.1) and is undergoing a fast paced evolution that may break change the behaviour of some helpers</em></p>
+<p><em>Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers</em></p>
 <p><em>Make sure of the version you are using (Git tags &amp; releases)</em></p>
 <hr class="docutils" />
-<p>LumApps SDK is a set of tools to manipulate the <a class="reference external" href="https://api.lumapps.com/docs/start">Lumapps API</a>.</p>
+<p>LumApps SDK is a set of tools to manipulate the <a class="reference external" href="https://api.lumapps.com/docs/start">LumApps API</a>.</p>
 <p>This includes:</p>
 <ul class="simple">
-<li>a client that support all the routes of the API (located in folder lumapps_api_client)</li>
-<li>a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps_api_helpers)</li>
+<li><p>a client that support all the routes of the API (located in folder lumapps)</p></li>
+<li><p>a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)</p></li>
 </ul>
 </div>
 <div class="section" id="quick-start">
@@ -198,17 +199,17 @@
 </div>
 <div class="section" id="get-your-token">
 <h2>Get your token<a class="headerlink" href="#get-your-token" title="Permalink to this headline">¶</a></h2>
-<p>LumApps supports multiple ways of authentification.
+<p>LumApps supports multiple ways of authentication.
 The fastest one to implement is the following:</p>
 <p>Get your token by logging to your LumApps account.
-Go to <a class="reference external" href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authentificate.
+Go to <a class="reference external" href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authenticate.
 Once connected, open the javascript console of your browser and run:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
 <span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">[</span><span class="nx">instance</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">2</span><span class="p">];</span>
 <span class="nx">fetch</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="o">+</span><span class="s2">&quot;/service/init?customerHost=&quot;</span><span class="o">+</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="o">+</span><span class="s2">&quot;&amp;instanceSlug=&quot;</span><span class="o">+</span><span class="nx">instance</span><span class="o">+</span><span class="s2">&quot;&amp;slug=&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="p">=&gt;{</span><span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">json</span><span class="p">()}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">token</span><span class="p">)})</span>
 </pre></div>
 </div>
-<p>This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps</p>
+<p>This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps</p>
 </div>
 <div class="section" id="authenticate">
 <h2>Authenticate<a class="headerlink" href="#authenticate" title="Permalink to this headline">¶</a></h2>
@@ -242,7 +243,7 @@ Once connected, open the javascript console of your browser and run:</p>
 </div>
 <div class="section" id="copyright-and-license">
 <h1>Copyright and license<a class="headerlink" href="#copyright-and-license" title="Permalink to this headline">¶</a></h1>
-<p>Lumapps SDK is licensed under A MIT license - see the <a class="reference external" href="LICENSE.RST">LICENSE.rst</a> file.</p>
+<p>LumApps SDK is released under the MIT license - see the <a class="reference external" href="LICENSE.RST">LICENSE.rst</a> file.</p>
 <hr class="docutils" />
 <div class="toctree-wrapper compound">
 </div>
@@ -272,7 +273,7 @@ Once connected, open the javascript console of your browser and run:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN
+        &copy; Copyright 2019, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN, M.VAST
 
     </p>
   </div>
