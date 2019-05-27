@@ -1,4 +1,4 @@
-**Lumapps SDK**
+**LumApps SDK**
 ===============
 
 .. image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
@@ -19,9 +19,9 @@
 
 ----
 
-LumApps SDK is a set of tools to manipulate the `Lumapps API <https://api.lumapps.com/docs/start>`_.
+LumApps SDK is a set of tools to manipulate the `LumApps API <https://api.lumapps.com/docs/start>`_.
 
-This includes: 
+This includes:
 
 - a client that support all the routes of the API (located in folder lumapps)
 - a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)
@@ -51,9 +51,9 @@ Once connected, open the javascript console of your browser and run:
     var instance = window.location.pathname.split('/');
     instance = instance[instance.length-2];
     fetch(window.location.origin+"/service/init?customerHost="+window.location.host+"&instanceSlug="+instance+"&slug=").then(data=>{return data.json()}).then(res => {console.log(res.token)})
-    
 
-This will generate your personal Lumapps token that will be active for 60 minutes, and that we will use in the following steps
+
+This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps
 
 Authenticate
 --------------
@@ -74,7 +74,7 @@ Let's display the full name of a registered user in lumapps
     user_email = "YOUR EMAIL"
     usr = api.get_call("user", "get", email=user_email)
     print("Hello {}".format(usr.get("fullName", "")))
-    
+
 
 
 Documentation

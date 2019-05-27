@@ -9,7 +9,7 @@ def read_file(file_path):
     return content
 
 
-install_requires = ["requests==2.20.1", "google-api-python-client==1.7.7"]
+install_requires = ["requests>=2.22", "google-api-python-client>=1.7"]
 readme = read_file("README.rst")
 
 setup(
