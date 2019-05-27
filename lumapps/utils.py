@@ -2,6 +2,8 @@ import os
 import json
 from datetime import datetime, timedelta
 
+from lumapps.config import __pypi_packagename__
+
 GOOGLE_APIS = ("drive", "admin", "groupssettings")
 FILTERS = {
     # content/get, content/list, ...
@@ -66,10 +68,7 @@ def get_conf_file():
         d = os.environ["XDG_CONFIG_HOME"]
     else:
         d = os.path.join(os.path.expanduser("~"), ".config")
-    if __package__:
-        return os.path.join(d, __package__ + ".conf")
-    else:
-        return os.path.join(d, "lumapps_api_client.conf")
+    return os.path.join(d, "{}.conf".format(__pypi_packagename__))
 
 
 def get_conf():
