@@ -1,5 +1,5 @@
-Contents
-========
+Communities
+===========
 
 Create, retrieve and update contents.
 
