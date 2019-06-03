@@ -17,7 +17,6 @@
 
     content_use
     community_use
-    media_use
     user_use
     group_use
 

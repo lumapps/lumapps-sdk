@@ -1,26 +1,24 @@
 Groups
 ======
 
-Groups in LumApps are named ``Feeds`` in the api and object definition. The SDK includes a helper to easily manipulate the groups.
+Groups in LumApps are named ``Feeds`` in the api and object definition. The SDK includes allows you to easily manipulate the groups.
 
 To list all the feeds of your LumApps platform
 -----------------------------------------------
 
 .. code-block:: python
 
-    from lumapps.helpers import group
-
     api = ... # previously obtained
-    groups = group.list(api)
+    groups = api.get_call("feed", "list")
 
     for grp in groups:
-        print(grp)
+        print("Group {} []".format(grp.get("name"), grp.get("uid")))
 
 You can also filter by instance
 
 .. code-block:: python
 
-    groups = group.list(api, instance="my_instance")
+    groups = api.get_call("feed", "list", instance="<my_instance>")
 
 To create a group synced to a google group email
 ------------------------------------------------
@@ -29,15 +27,13 @@ Save a feed by providing the `instance_id`, a `group_name`, a `google_group_emai
 
 .. code-block:: python
 
-    from lumapps.helpers.group import Group
-
     api = ... # previously obtained
-    group = Group(
-        api,
-        instance="instance_id",
-        name="group_name",
-        group="google_group_email",
-        feed_type="feed_type_id",
-    )
-    success, errors = group.save()
-    print(success)
+    group = {
+        instance="<instance_id>",
+        name="<group_name>",
+        group="<google_group_email>",
+        feed_type="<group_type_id>"
+    }
+
+    saved_group = api.get_call("feed", "save", body=group)
+    print(saved_group)
