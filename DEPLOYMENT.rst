@@ -4,7 +4,7 @@ Doc
 
 cd documentation
 
-./deploy.sh
+./doc-deploy.sh
 
 Pypi release
 ------------
