@@ -3,7 +3,7 @@ Groups
 
 Groups in LumApps are named ``Feeds`` in the api and object definition. The SDK includes a helper to easily manipulate the groups.
 
-To list all the feeds of your Lumapps plateform
+To list all the feeds of your LumApps platform
 -----------------------------------------------
 
 .. code-block:: python
