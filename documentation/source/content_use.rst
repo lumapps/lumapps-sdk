@@ -24,7 +24,7 @@ Create a content
 
     new_content = {
         "type": "page",
-        "template": template, # from existing content or template
+        "template": {}, # from existing content or template
         "customContentType": "customContentType id",
         "customer": "customer id",
         "instance": "instance id",
