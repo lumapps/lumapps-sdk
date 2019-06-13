@@ -197,7 +197,8 @@
 <span class="n">user</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;email@mail.com&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;first_name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;last_name&gt;&quot;</span>
+    <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;last_name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;accountType&quot;</span><span class="p">:</span> <span class="s2">&quot;external&quot;</span>
 <span class="p">}</span>
 <span class="n">saved_user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">saved_user</span><span class="p">)</span>

@@ -26,7 +26,8 @@ Save a user by provinding an `email`, a `first_name` and a `last_name`.
     user = {
         "email": "<email@mail.com>",
         "firstName": "<first_name>",
-        "lastName": "<last_name>"
+        "lastName": "<last_name>",
+        "accountType": "external"
     }
     saved_user = api.get_call("user", "save", body=user)
     print(saved_user)
