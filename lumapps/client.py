@@ -3,9 +3,17 @@ import json
 from time import time
 from textwrap import TextWrapper
 
+import uritemplate
+import httplib2
 from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googleapiclient.discovery import (
+    build_from_document,
+    DISCOVERY_URI,
+    V2_DISCOVERY_URI,
+    _retrieve_discovery_doc,
+)
 
 from lumapps.utils import (
     DiscoveryCache,
@@ -14,6 +22,35 @@ from lumapps.utils import (
     GOOGLE_APIS,
     FILTERS,
 )
+
+
+def _get_build_content(
+    serviceName,
+    version,
+    discoveryServiceUrl=DISCOVERY_URI,
+    developerKey=None,
+    cache_discovery=True,
+    cache=None,
+):
+    params = {
+        'api': serviceName,
+        'apiVersion': version
+    }
+    discovery_http = httplib2.Http(timeout=60)
+    discovery_http.disable_ssl_certificate_validation = True
+    for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI,):
+        requested_url = uritemplate.expand(discovery_url, params)
+        try:
+            return _retrieve_discovery_doc(
+                requested_url, discovery_http, cache_discovery, cache, developerKey
+            )
+        except HttpError as e:
+            if e.resp.status == 404:
+                continue
+            else:
+                raise e
+
+    raise Exception("name: %s  version: %s" % (serviceName, version))
 
 
 class ApiClient(object):
@@ -160,14 +197,14 @@ class ApiClient(object):
         """
         self._check_access_token()
         if self._service is None:
-            self._service = build(
+            build_content = _get_build_content(
                 self._api_name,
                 self._api_version,
                 discoveryServiceUrl=self._url,
-                credentials=self.creds,
                 cache_discovery=True,
                 cache=DiscoveryCache(),
             )
+            self._service = build_from_document(build_content, credentials=self.creds)
             if self.no_verify:
                 self._service._http.http.disable_ssl_certificate_validation = True
         return self._service
