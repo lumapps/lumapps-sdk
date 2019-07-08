@@ -46,10 +46,12 @@ class ApiClient(object):
         token_getter=None,
         prune=False,
         num_retries=1,
+        no_verify=False,
     ):
         self._get_token_user = None
         self._token_expiry = 0
         self.num_retries = num_retries
+        self.no_verify = no_verify
         self.prune = prune
         self._auth_info = auth_info
         self._user = {}
@@ -166,6 +168,8 @@ class ApiClient(object):
                 cache_discovery=True,
                 cache=DiscoveryCache(),
             )
+            if self.no_verify:
+                self._service._http.http.disable_ssl_certificate_validation = True
         return self._service
 
     @property
@@ -258,7 +262,7 @@ class ApiClient(object):
         Example:
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
-            
+
             With this method:
 
                 >>> feedtypes = get_call("feedtype", "list")
@@ -297,14 +301,14 @@ class ApiClient(object):
         Args:
             *method_parts (str): API method.
             **params: Parameters.
-        
+
         Yields:
             dict: Objects returned by API method.
 
         Example:
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
-            
+
             With this method:
 
                 >>> feedtypes = iter_call("feedtype", "list")
