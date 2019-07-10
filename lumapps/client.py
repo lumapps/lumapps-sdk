@@ -84,11 +84,13 @@ class ApiClient(object):
         prune=False,
         num_retries=1,
         no_verify=False,
+        proxy_info=None,
     ):
         self._get_token_user = None
         self._token_expiry = 0
         self.num_retries = num_retries
         self.no_verify = no_verify
+        self.proxy_info = proxy_info
         self.prune = prune
         self._auth_info = auth_info
         self._user = {}
@@ -207,6 +209,14 @@ class ApiClient(object):
             self._service = build_from_document(build_content, credentials=self.creds)
             if self.no_verify:
                 self._service._http.http.disable_ssl_certificate_validation = True
+            if self.proxy_info:
+                self._service._http.http.proxy_info = httplib2.ProxyInfo(
+                    httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
+                    self.proxy_info["host"],
+                    self.proxy_info["port"],
+                    proxy_user=self.proxy_info["user"],
+                    proxy_pass=self.proxy_info["password"],
+                )
         return self._service
 
     @property
