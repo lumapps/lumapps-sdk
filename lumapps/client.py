@@ -31,12 +31,21 @@ def _get_build_content(
     developerKey=None,
     cache_discovery=True,
     cache=None,
+    proxy_info=None
 ):
     params = {
         'api': serviceName,
         'apiVersion': version
     }
     discovery_http = httplib2.Http(timeout=60)
+    if proxy_info:
+        discovery_http.proxy_info = httplib2.ProxyInfo(
+            httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
+            proxy_info["host"],
+            proxy_info["port"],
+            proxy_user=proxy_info["user"],
+            proxy_pass=proxy_info["password"],
+        )
     discovery_http.disable_ssl_certificate_validation = True
     for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI,):
         requested_url = uritemplate.expand(discovery_url, params)
@@ -205,6 +214,7 @@ class ApiClient(object):
                 discoveryServiceUrl=self._url,
                 cache_discovery=True,
                 cache=DiscoveryCache(),
+                proxy_info=self.proxy_info,
             )
             self._service = build_from_document(build_content, credentials=self.creds)
             if self.no_verify:
