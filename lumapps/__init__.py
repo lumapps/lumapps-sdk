@@ -1,1 +1,5 @@
-from lumapps.config import __version__, __pypi_packagename__  # noqa
+import logging
+from logging import NullHandler
+
+# Set default logging handler to avoid "No handler found" warnings.
+logging.getLogger(__name__).addHandler(NullHandler())

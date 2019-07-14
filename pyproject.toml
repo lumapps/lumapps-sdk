@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "lumapps-sdk"
+version = "1.0.0"
+description = "LumApps sdk for python to help you manipulate LumApps Api's"
+
+authors = [
+    "Aurelien <aurelien@lumapps.com>"
+]
+
+license = "MIT"
+
+readme = "README.md"
+repository = "https://github.com/lumapps/lumapps-sdk"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+aiohttp = "^3.5.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+pytest-cov = "^2.4"
+mypy = "^0.720"
+black = "^19.3b0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
