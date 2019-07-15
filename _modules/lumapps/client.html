@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lumapps.client &mdash; Lumapps SDK 0.1.5 documentation</title>
+  <title>lumapps.client &mdash; Lumapps SDK 0.1.7 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.5
+                0.1.7
               </div>
             
           
@@ -175,9 +175,17 @@
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 <span class="kn">from</span> <span class="nn">textwrap</span> <span class="k">import</span> <span class="n">TextWrapper</span>
 
+<span class="kn">import</span> <span class="nn">uritemplate</span>
+<span class="kn">import</span> <span class="nn">httplib2</span>
 <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">from</span> <span class="nn">google.oauth2.credentials</span> <span class="k">import</span> <span class="n">Credentials</span>
-<span class="kn">from</span> <span class="nn">googleapiclient.discovery</span> <span class="k">import</span> <span class="n">build</span>
+<span class="kn">from</span> <span class="nn">googleapiclient.errors</span> <span class="k">import</span> <span class="n">HttpError</span>
+<span class="kn">from</span> <span class="nn">googleapiclient.discovery</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">build_from_document</span><span class="p">,</span>
+    <span class="n">DISCOVERY_URI</span><span class="p">,</span>
+    <span class="n">V2_DISCOVERY_URI</span><span class="p">,</span>
+    <span class="n">_retrieve_discovery_doc</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">lumapps.utils</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">DiscoveryCache</span><span class="p">,</span>
@@ -186,6 +194,44 @@
     <span class="n">GOOGLE_APIS</span><span class="p">,</span>
     <span class="n">FILTERS</span><span class="p">,</span>
 <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_build_content</span><span class="p">(</span>
+    <span class="n">serviceName</span><span class="p">,</span>
+    <span class="n">version</span><span class="p">,</span>
+    <span class="n">discoveryServiceUrl</span><span class="o">=</span><span class="n">DISCOVERY_URI</span><span class="p">,</span>
+    <span class="n">developerKey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cache_discovery</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">proxy_info</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="n">serviceName</span><span class="p">,</span>
+        <span class="s1">&#39;apiVersion&#39;</span><span class="p">:</span> <span class="n">version</span>
+    <span class="p">}</span>
+    <span class="n">discovery_http</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Http</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">proxy_info</span><span class="p">:</span>
+        <span class="n">discovery_http</span><span class="o">.</span><span class="n">proxy_info</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">ProxyInfo</span><span class="p">(</span>
+            <span class="n">httplib2</span><span class="o">.</span><span class="n">socks</span><span class="o">.</span><span class="n">PROXY_TYPE_HTTP_NO_TUNNEL</span><span class="p">,</span>
+            <span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">],</span>
+            <span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span>
+            <span class="n">proxy_user</span><span class="o">=</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">],</span>
+            <span class="n">proxy_pass</span><span class="o">=</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="n">discovery_http</span><span class="o">.</span><span class="n">disable_ssl_certificate_validation</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">discovery_url</span> <span class="ow">in</span> <span class="p">(</span><span class="n">discoveryServiceUrl</span><span class="p">,</span> <span class="n">V2_DISCOVERY_URI</span><span class="p">,):</span>
+        <span class="n">requested_url</span> <span class="o">=</span> <span class="n">uritemplate</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">discovery_url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_retrieve_discovery_doc</span><span class="p">(</span>
+                <span class="n">requested_url</span><span class="p">,</span> <span class="n">discovery_http</span><span class="p">,</span> <span class="n">cache_discovery</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">developerKey</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">HttpError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;name: </span><span class="si">%s</span><span class="s2">  version: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">serviceName</span><span class="p">,</span> <span class="n">version</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="ApiClient"><a class="viewcode-back" href="../../reference.html#lumapps.client.ApiClient">[docs]</a><span class="k">class</span> <span class="nc">ApiClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -218,10 +264,14 @@
         <span class="n">token_getter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">prune</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">num_retries</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">no_verify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">proxy_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_token_user</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_token_expiry</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_retries</span> <span class="o">=</span> <span class="n">num_retries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_verify</span> <span class="o">=</span> <span class="n">no_verify</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span> <span class="o">=</span> <span class="n">proxy_info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prune</span> <span class="o">=</span> <span class="n">prune</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span> <span class="o">=</span> <span class="n">auth_info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="p">{}</span>
@@ -330,14 +380,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_access_token</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_service</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span>
+            <span class="n">build_content</span> <span class="o">=</span> <span class="n">_get_build_content</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_api_name</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_api_version</span><span class="p">,</span>
                 <span class="n">discoveryServiceUrl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">,</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">creds</span><span class="p">,</span>
                 <span class="n">cache_discovery</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">cache</span><span class="o">=</span><span class="n">DiscoveryCache</span><span class="p">(),</span>
+                <span class="n">proxy_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service</span> <span class="o">=</span> <span class="n">build_from_document</span><span class="p">(</span><span class="n">build_content</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">creds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_verify</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">_http</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">disable_ssl_certificate_validation</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">_http</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">proxy_info</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">ProxyInfo</span><span class="p">(</span>
+                    <span class="n">httplib2</span><span class="o">.</span><span class="n">socks</span><span class="o">.</span><span class="n">PROXY_TYPE_HTTP_NO_TUNNEL</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">],</span>
+                    <span class="n">proxy_user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">],</span>
+                    <span class="n">proxy_pass</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span>
 
     <span class="nd">@property</span>
@@ -430,7 +491,7 @@
 <span class="sd">        Example:</span>
 <span class="sd">            List feedtypes in LumApps:</span>
 <span class="sd">            -&gt; GET https://.../_ah/api/lumsites/v1/feedtype/list</span>
-<span class="sd">            </span>
+
 <span class="sd">            With this method:</span>
 
 <span class="sd">                &gt;&gt;&gt; feedtypes = get_call(&quot;feedtype&quot;, &quot;list&quot;)</span>
@@ -469,14 +530,14 @@
 <span class="sd">        Args:</span>
 <span class="sd">            *method_parts (str): API method.</span>
 <span class="sd">            **params: Parameters.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Yields:</span>
 <span class="sd">            dict: Objects returned by API method.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            List feedtypes in LumApps:</span>
 <span class="sd">            -&gt; GET https://.../_ah/api/lumsites/v1/feedtype/list</span>
-<span class="sd">            </span>
+
 <span class="sd">            With this method:</span>
 
 <span class="sd">                &gt;&gt;&gt; feedtypes = iter_call(&quot;feedtype&quot;, &quot;list&quot;)</span>
