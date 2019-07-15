@@ -46,7 +46,7 @@ class LumAppsBaseClient:
             asyncio.set_event_loop(loop)
             return loop
 
-    def _get_headers(self, has_json, has_files):
+    def _get_headers(self, has_json):
         """Contructs the headers need for a request.
         Args:
             has_json (bool): Whether or not the request has json.
@@ -65,28 +65,22 @@ class LumAppsBaseClient:
         if has_json:
             headers.update({"Content-Type": "application/json;charset=utf-8"})
 
-        if has_files:
-            # These are set automatically by the aiohttp library.
-            headers.pop("Content-Type", None)
-
         return headers
 
     def api_call(
         self,
         api_endpoint: str,
         http_verb: str = "POST",
-        files: dict = None,
         data: Union[dict, FormData] = None,
         params: dict = None,
         json: dict = None,
+        _format: str = "json",
     ) -> Union[asyncio.Future, LumAppsResponse]:
         """Create a request and execute the API call to LumApps.
         Args:
             api_endpoint (str): The target LumApps API endpoint.
                 e.g. 'user/list'
             http_verb (str): HTTP Verb. e.g. 'POST'
-            files (dict): Files to multipart upload.
-                e.g. {imageORfile: file_objectORfile_path}
             data: The body to attach to the request. If a dictionary is
                 provided, form-encoding will take place.
                 e.g. {'key1': 'value1', 'key2': 'value2'}
@@ -95,6 +89,8 @@ class LumAppsBaseClient:
             json (dict): JSON for the body to attach to the request
                 (if files or data is not specified).
                 e.g. {'key1': 'value1', 'key2': 'value2'}
+            _format (str): The format of the response (json, text, bytes).
+                Defaults to json.
         Returns:
             (LumAppsReponse)
                 The server's response to an HTTP request. Data
@@ -108,20 +104,30 @@ class LumAppsBaseClient:
                 POST requests.
         """
         has_json = json is not None
-        has_files = files is not None
         if has_json and http_verb != "POST":
-            msg = "Json data can only be submitted as POST requests. GET requests should use the 'params' argument."
+            msg = """Json data can only be submitted as POST requests.\
+                    GET requests should use the 'params' argument."""
             raise err.LumAppsRequestError(msg)
 
         api_url = self._get_url(api_endpoint)
 
-        req_args = {"headers": self._get_headers(has_json, has_files)}
+        req_args = {
+            "headers": self._get_headers(has_json),
+            "data": data,
+            "params": params,
+            "json": json,
+        }
 
         if self._event_loop is None:
             self._event_loop = self._get_event_loop()
 
         future = asyncio.ensure_future(
-            self._send(http_verb=http_verb, api_url=api_url, req_args=req_args),
+            self._send(
+                http_verb=http_verb,
+                api_url=api_url,
+                req_args=req_args,
+                _format=_format,
+            ),
             loop=self._event_loop,
         )
 
@@ -136,36 +142,56 @@ class LumAppsBaseClient:
             api_endpoint (str): The Slack Web API endpoint. e.g. 'user/list'
         Returns:
             The absolute API URL.
-                e.g. 'https://lumsites.appspot.com/_ah/apu/lumsites/v1/user/list'
+                e.g. 'https://lumsites.appspot.com/_ah/api/lumsites/v1/user/list'
         """
         return urljoin(self.base_url, api_endpoint)
 
-    async def _request(self, *, http_verb, api_url, req_args):
+    async def _request(self, *, http_verb, api_url, req_args, _format="json"):
         """Submit the HTTP request with the running session or a new session.
         Returns:
             A dictionary of the response data.
         """
-        if self.session and not self.session.closed:
-            async with self.session.request(http_verb, api_url, **req_args) as res:
+
+        async def format_res(res, _format="json"):
+            if _format == "json":
                 return {
                     "data": await res.json(),
                     "headers": res.headers,
                     "status_code": res.status,
                 }
-        async with aiohttp.ClientSession(
-            loop=self._event_loop, timeout=aiohttp.ClientTimeout(total=self.timeout)
-        ) as session:
-            async with session.request(http_verb, api_url, **req_args) as res:
+            elif _format == "binary":
                 return {
-                    "data": await res.json(),
+                    "data": await res.read(),
+                    "headers": res.headers,
+                    "status_code": res.status,
+                }
+            else:
+                return {
+                    "data": await res.test(),
                     "headers": res.headers,
                     "status_code": res.status,
                 }
 
-    async def _send(self, http_verb, api_url, req_args):
+        if self.session and not self.session.closed:
+            async with self.session.request(
+                http_verb, api_url, **req_args
+            ) as res:
+                return await format_res(res, _format)
+        async with aiohttp.ClientSession(
+            loop=self._event_loop,
+            timeout=aiohttp.ClientTimeout(total=self.timeout),
+        ) as session:
+            async with session.request(http_verb, api_url, **req_args) as res:
+                return await format_res(res, _format)
+
+    async def _send(self, http_verb, api_url, req_args, _format="json"):
         res = await self._request(
-            http_verb=http_verb, api_url=api_url, req_args=req_args
+            http_verb=http_verb,
+            api_url=api_url,
+            req_args=req_args,
+            _format="json",
         )
+
         data = {
             "client": self,
             "http_verb": http_verb,
