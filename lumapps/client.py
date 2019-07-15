@@ -31,12 +31,21 @@ def _get_build_content(
     developerKey=None,
     cache_discovery=True,
     cache=None,
+    proxy_info=None
 ):
     params = {
         'api': serviceName,
         'apiVersion': version
     }
     discovery_http = httplib2.Http(timeout=60)
+    if proxy_info:
+        discovery_http.proxy_info = httplib2.ProxyInfo(
+            httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
+            proxy_info["host"],
+            proxy_info["port"],
+            proxy_user=proxy_info["user"],
+            proxy_pass=proxy_info["password"],
+        )
     discovery_http.disable_ssl_certificate_validation = True
     for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI,):
         requested_url = uritemplate.expand(discovery_url, params)
@@ -84,11 +93,13 @@ class ApiClient(object):
         prune=False,
         num_retries=1,
         no_verify=False,
+        proxy_info=None,
     ):
         self._get_token_user = None
         self._token_expiry = 0
         self.num_retries = num_retries
         self.no_verify = no_verify
+        self.proxy_info = proxy_info
         self.prune = prune
         self._auth_info = auth_info
         self._user = {}
@@ -203,10 +214,19 @@ class ApiClient(object):
                 discoveryServiceUrl=self._url,
                 cache_discovery=True,
                 cache=DiscoveryCache(),
+                proxy_info=self.proxy_info,
             )
             self._service = build_from_document(build_content, credentials=self.creds)
             if self.no_verify:
                 self._service._http.http.disable_ssl_certificate_validation = True
+            if self.proxy_info:
+                self._service._http.http.proxy_info = httplib2.ProxyInfo(
+                    httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
+                    self.proxy_info["host"],
+                    self.proxy_info["port"],
+                    proxy_user=self.proxy_info["user"],
+                    proxy_pass=self.proxy_info["password"],
+                )
         return self._service
 
     @property
