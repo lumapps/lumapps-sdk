@@ -149,7 +149,9 @@ class LumAppsResponse(object):
             LumAppsApiError: The request to the LumApps API failed.
         """
         if self.status_code == 200 and self.data:
-            self._logger.debug("Received the following response: %s", self.data)
+            self._logger.debug(
+                "Received the following response: %s", self.data
+            )
             return self
         msg = "The request to the LumApps API failed."
         raise e.LumAppsApiError(message=msg, response=self.data)
