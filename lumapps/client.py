@@ -1,11 +1,10 @@
 from typing import List, Generator
 
 from lumapps.base_client import LumAppsBaseClient
+from lumapps.errors import LumAppsRequestError, LumAppsClientError
 
 
 class LumAppsApiClient(LumAppsBaseClient):
-    DISCOVERY_URL = "https://lumsites.appspot.com/_ah/api/discovery/v1/apis/lumsites/v1/rest"
-
     def list_all(self, api_endpoint: str) -> List[dict]:
         """ A method to call a /list endpoint and obtain all results in a list
 
@@ -20,7 +19,9 @@ class LumAppsApiClient(LumAppsBaseClient):
         data = [item for sublist in _data for item in sublist]
         return data
 
-    def iter_pages(self, api_endpoint: str) -> Generator[List[dict]]:
+    def iter_pages(
+        self, api_endpoint: str
+    ) -> Generator[List[dict], None, None]:
         """ A method to call a /list endpoint and obtain a generator that will
             gradually give you each result page
 
@@ -34,7 +35,7 @@ class LumAppsApiClient(LumAppsBaseClient):
         for page in pages:
             yield page
 
-    def iter_entities(self, api_endpoint: str) -> Generator[dict]:
+    def iter_entities(self, api_endpoint: str) -> Generator[dict, None, None]:
         """A method to call a /list endpoint and obtain a generator that will
             gradually give you each result entity
 
@@ -58,6 +59,45 @@ class LumAppsApiClient(LumAppsBaseClient):
         )
         return api_endpoint
 
-    # def get_call(self, *method_parts, **params):
-    #     api_endpoint = "/".join(method_parts)
-    #     res = self.api_call(api_endpoint, "GET")
+    def extract_method_from_spec(self, *method_parts):
+        if self.api_spec.get("discoveryVersion"):
+            return self._extract_method_from_discovery(method_parts)
+        elif self.api_spec.get("swagger"):
+            # spec_type = "swagger"
+            # Parse spec
+            pass
+        else:
+            raise LumAppsClientError("Unknwon spec type")
+
+    def _extract_method_from_discovery(self, *method_parts):
+
+        resources = self.api_spec.get("resources")
+
+        if not resources:
+            return
+
+        getted = None
+        for i, part in enumerate(method_parts):
+            if i == len(method_parts) - 2:
+                getted = resources.get(part, {})
+            elif i == len(method_parts) - 1:
+                getted = getted.get("methods", {}).get(part, {})
+            else:
+                if not getted:
+                    getted = resources.get(part, {}).get("resources", {})
+                getted = getted.get(part, {}).get("resources", {})
+        return getted
+
+    def get_call(self, *method_parts, **params):
+        """
+        """
+        api_endpoint = "/".join(method_parts)
+        # last_part = method_parts[-1]
+
+        method = self._extract_method_from_discovery(method_parts)
+        if not method:
+            raise LumAppsRequestError(
+                f"Could not find the endpoint {api_endpoint}"
+            )
+
+        print(f"Found method {method} for endpoint {api_endpoint}")

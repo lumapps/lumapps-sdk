@@ -16,3 +16,11 @@ repos:
     -   id: check-added-large-files
     -   id: detect-private-key
     -   id: check-merge-conflict
+-   repo: local
+    hooks:
+    -   id: tests
+        name: run tests
+        entry: py.test -v
+        language: system
+        types: [python]
+        stages: [push]

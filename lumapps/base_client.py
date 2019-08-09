@@ -1,6 +1,6 @@
 import logging
 import asyncio
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from typing import Optional, Union
 
 import aiohttp
@@ -17,6 +17,9 @@ class LumAppsBaseClient:
         self,
         token=None,
         base_url=BASE_URL,
+        api_spec: Union[
+            str, dict
+        ] = "https://lumsites.appspot.com/_ah/api/discovery/v1/apis/lumsites/v1/rest",
         run_async=False,
         session=None,
         proxy=None,
@@ -33,6 +36,16 @@ class LumAppsBaseClient:
         self.headers = headers or {}
         self._logger = logging.getLogger(__name__)
         self._event_loop = loop
+
+        if isinstance(api_spec, str):
+            if urlparse(api_spec).scheme != "":
+                self.api_spec = self.api_call(api_spec, "GET", _format="text")
+            else:
+                with open(api_spec, "r") as f:
+                    data = f.read()
+                self.api_spec = data
+        else:
+            self.api_spec = api_spec
 
     def authenticate(self, token):
         pass
@@ -75,6 +88,7 @@ class LumAppsBaseClient:
         params: dict = None,
         json: dict = None,
         _format: str = "json",
+        full_url: bool = False,
     ) -> Union[asyncio.Future, LumAppsResponse]:
         """Create a request and execute the API call to LumApps.
         Args:
@@ -109,7 +123,7 @@ class LumAppsBaseClient:
                     GET requests should use the 'params' argument."""
             raise err.LumAppsRequestError(msg)
 
-        api_url = self._get_url(api_endpoint)
+        api_url = self._get_url(api_endpoint) if not full_url else api_endpoint
 
         req_args = {
             "headers": self._get_headers(has_json),

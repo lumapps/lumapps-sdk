@@ -6,6 +6,7 @@ import types
 
 import lumapps
 from tests.helpers import async_test, add_list_data_to_mock, mock_request
+from lumapps.errors import LumAppsClientError
 
 
 @mock.patch("lumapps.LumAppsApiClient._request", new_callable=mock_request)
@@ -45,7 +46,20 @@ class TestLumAppsApiCient(unittest.TestCase):
         self.assertIsInstance(pages, types.GeneratorType)
         self.assertTrue(len(list(pages)) == 4)
 
-    def test_parse_list_endpoint(self, mock_request):
+    def test_get_call_raise_error_for_non_known_endpoint(self, mock_request):
+        client = lumapps.LumAppsApiClient()
+
+        with self.assertRaises(LumAppsClientError):
+            client.get_call("user", "getter")
+
+
+class TestLumAppsApiCientStatixMethods(unittest.TestCase):
+    def setUp(self):
+        self.client = lumapps.LumAppsApiClient(
+            "token-xoxb-abc-123", loop=asyncio.get_event_loop()
+        )
+
+    def test_parse_list_endpoint(self):
 
         # Test left unchanged
         endpoint = "user/list"
@@ -60,3 +74,20 @@ class TestLumAppsApiCient(unittest.TestCase):
         endpoint = "feed"
         parsed_endpoint = self.client._parse_list_endpoint(endpoint)
         self.assertTrue(parsed_endpoint == "feed/list")
+
+    def test_extract_method_from_discovery(self):
+        client = lumapps.LumAppsApiClient()
+        r1 = client._extract_method_from_discovery("user", "save")
+        r2 = client._extract_method_from_discovery("user", "directory", "list")
+        r3 = client._extract_method_from_discovery("user", "getToken")
+        r4 = client._extract_method_from_discovery("user", "not")
+
+        self.assertTrue(r1 and r2 and r3 and not r4)
+
+        verbs = [
+            r1.get("httpMethod"),
+            r2.get("httpMethod"),
+            r3.get("httpMethod"),
+            r4.get("httpMethod"),
+        ]
+        self.assertEqual(verbs, ["POST", "GET", "GET", None])
