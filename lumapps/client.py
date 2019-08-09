@@ -63,7 +63,6 @@ class LumAppsApiClient(LumAppsBaseClient):
         if self.api_spec.get("discoveryVersion"):
             return self._extract_method_from_discovery(method_parts)
         elif self.api_spec.get("swagger"):
-            # spec_type = "swagger"
             # Parse spec
             pass
         else:

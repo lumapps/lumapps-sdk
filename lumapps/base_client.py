@@ -1,5 +1,7 @@
 import logging
 import asyncio
+import json
+
 from urllib.parse import urljoin, urlparse
 from typing import Optional, Union
 
@@ -39,10 +41,15 @@ class LumAppsBaseClient:
 
         if isinstance(api_spec, str):
             if urlparse(api_spec).scheme != "":
-                self.api_spec = self.api_call(api_spec, "GET", _format="text")
+                response = self.api_call(api_spec, "GET", _format="text")
+                self.api_spec = (
+                    {}
+                    if isinstance(response, asyncio.Future)
+                    else response.data
+                )
             else:
                 with open(api_spec, "r") as f:
-                    data = f.read()
+                    data = json.load(f)
                 self.api_spec = data
         else:
             self.api_spec = api_spec
@@ -113,7 +120,7 @@ class LumAppsBaseClient:
                 be iterated on to execute subsequent requests.
         Raises:
             LumAppsApiCallError: The following LumApps API call failed:
-                'chat.postMessage'.
+                'user/getone'.
             LumAppsRequestError: Json data can only be submitted as
                 POST requests.
         """
