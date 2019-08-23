@@ -1,7 +1,10 @@
+import asyncio
+
 from typing import List, Generator
 
 from lumapps.base_client import LumAppsBaseClient
 from lumapps.errors import LumAppsRequestError, LumAppsClientError
+from lumapps.lumapps_reponse import LumAppsResponse
 
 
 class LumAppsApiClient(LumAppsBaseClient):
@@ -70,16 +73,21 @@ class LumAppsApiClient(LumAppsBaseClient):
 
     def _extract_method_from_discovery(self, *method_parts):
 
-        resources = self.api_spec.get("resources")
+        if isinstance(method_parts[0], tuple):
+            method_parts = method_parts[0]
 
+        resources = self.api_spec.get("resources")
         if not resources:
             return
 
         getted = None
+
         for i, part in enumerate(method_parts):
             if i == len(method_parts) - 2:
                 getted = resources.get(part, {})
             elif i == len(method_parts) - 1:
+                if not getted:
+                    getted = resources.get(part, {}).get("methods", {})
                 getted = getted.get("methods", {}).get(part, {})
             else:
                 if not getted:
@@ -87,11 +95,8 @@ class LumAppsApiClient(LumAppsBaseClient):
                 getted = getted.get(part, {}).get("resources", {})
         return getted
 
-    def get_call(self, *method_parts, **params):
-        """
-        """
+    def _generic_call(self, method_parts, params) -> LumAppsResponse:
         api_endpoint = "/".join(method_parts)
-        # last_part = method_parts[-1]
 
         method = self._extract_method_from_discovery(method_parts)
         if not method:
@@ -99,4 +104,91 @@ class LumAppsApiClient(LumAppsBaseClient):
                 f"Could not find the endpoint {api_endpoint}"
             )
 
-        print(f"Found method {method} for endpoint {api_endpoint}")
+        http_verb = method.get("httpMethod")
+        if not http_verb:
+            raise LumAppsRequestError(
+                f"Could not find the http method for the endpoint {api_endpoint}"
+            )
+
+        if http_verb == "GET":
+            res = self.api_call(api_endpoint, "GET", params=params)
+        elif http_verb == "POST":
+            body = params.get("body")
+            if not body:
+                raise LumAppsClientError(f"No body given for a POST endpoint")
+            del params["body"]
+            res = self.api_call(api_endpoint, "POST", params=params, json=body)
+        else:
+            raise LumAppsClientError(f"Http method {http_verb} not supported")
+
+        if isinstance(res, asyncio.Future):
+            if self._event_loop is None:
+                self._event_loop = self._get_event_loop()
+            return self._event_loop.run_until_complete(res)
+
+        return res
+
+    def get_call(self, *method_parts, **params) -> List[dict]:
+        """
+            Returns:
+                list[dict]: a list containing all the data resulting of the query
+
+            Examples:
+                To get a the user test@test.com via the user/get endpoint
+                ```python
+                    client = LumAppsApiClient()
+                    user = client.get_call("user", "get", email="test@test.com")
+                    print(user[0])
+                ```
+                To list french communities you do
+                ```python
+                    client = LumAppsApiClient()
+                    communities = communities.iter_call("community", "list", fields="items(id, name)", body={"lang": "fr"})
+                    for community in communities:
+                        print(community)
+                ````
+                This example illustrate how to call a POST endpoint.
+        """
+        res = self._generic_call(method_parts, params)
+
+        if res.is_iterable:
+            _data = [page.get("items", []) for page in res]
+            data = [item for sublist in _data for item in sublist]
+            return data
+        else:
+            return list(res)
+
+    def iter_call(
+        self, *method_parts, **params
+    ) -> Generator[LumAppsResponse, None, None]:
+        """
+
+            Yields:
+                dict: An entity of the data resutling of the request
+
+            Examples:
+                To get a the user test@test.com via the user/get endpoint
+                ```python
+                    client = LumAppsApiClient()
+                    user = client.get_call("user", "get", email="test@test.com")
+                    print(user[0])
+                ```
+
+                To list french communities you do
+                ```python
+                    client = LumAppsApiClient()
+                    communities = communities.iter_call("community", "list", fields="items(id, name)", body={"lang": "fr"})
+                    for community in communities:
+                        print(community)
+                ````
+                This example illustrate how to call a POST endpoint.
+        """
+        res = self._generic_call(method_parts, params)
+
+        if res.is_iterable:
+            for page in res:
+                items = page.get("items", [])
+                for i in items:
+                    yield i
+        else:
+            yield res

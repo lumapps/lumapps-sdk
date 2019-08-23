@@ -41,7 +41,7 @@ class LumAppsBaseClient:
 
         if isinstance(api_spec, str):
             if urlparse(api_spec).scheme != "":
-                response = self.api_call(api_spec, "GET", _format="text")
+                response = self.api_call(api_spec, "GET", _format="json")
                 self.api_spec = (
                     {}
                     if isinstance(response, asyncio.Future)
@@ -53,9 +53,6 @@ class LumAppsBaseClient:
                 self.api_spec = data
         else:
             self.api_spec = api_spec
-
-    def authenticate(self, token):
-        pass
 
     def _get_event_loop(self):
         """Retrieves the event loop or creates a new one."""
@@ -188,7 +185,7 @@ class LumAppsBaseClient:
                 }
             else:
                 return {
-                    "data": await res.test(),
+                    "data": await res.text(),
                     "headers": res.headers,
                     "status_code": res.status,
                 }
@@ -210,7 +207,7 @@ class LumAppsBaseClient:
             http_verb=http_verb,
             api_url=api_url,
             req_args=req_args,
-            _format="json",
+            _format=_format,
         )
 
         data = {

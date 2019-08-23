@@ -42,7 +42,7 @@ def async_test(coro):
     return wrapper
 
 
-def mock_request():
+def mock_request(*args, **kwargs):
     response_mock = Mock(name="Response")
     data = {"data": {"test": True}, "headers": ANY, "status_code": 200}
     response_mock.return_value = data
@@ -52,6 +52,39 @@ def mock_request():
     )
     send_request.response = response_mock
     return send_request
+
+
+def add_user_to_mock(mocked_request, email):
+    mocked_request.response.side_effect = [
+        {
+            "data": {"id": "10001", "email": email},
+            "status_code": 200,
+            "headers": {},
+        }
+    ]
+
+
+def add_list_communities_data_to_mock(mocked_request):
+    mocked_request.response.side_effect = [
+        {
+            "data": {
+                "cursor": "2689dadarr",
+                "more": True,
+                "items": [{"id": "10001"}, {"id": "10002"}],
+            },
+            "status_code": 200,
+            "headers": {},
+        },
+        {
+            "data": {
+                "cursor": "",
+                "more": False,
+                "items": [{"id": "10003"}, {"id": "10004"}],
+            },
+            "status_code": 200,
+            "headers": {},
+        },
+    ]
 
 
 def add_list_data_to_mock(mocked_request):
@@ -75,4 +108,3 @@ def add_list_data_to_mock(mocked_request):
             "headers": {},
         },
     ]
-    return mocked_request

@@ -139,6 +139,10 @@ class LumAppsResponse(object):
         """
         return self.data.get(key, default)
 
+    @property
+    def is_iterable(self):
+        return self._next_cursor_is_present(self.data)
+
     def validate(self):
         """Check if the response from LumApps was successful.
         Returns:
