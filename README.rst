@@ -49,7 +49,11 @@ Once connected, open the javascript console of your browser and run:
 .. code-block:: javascript
 
     var instance = window.location.pathname.split('/');
-    instance = instance[instance.length-2];
+    if (instance[1] == "a"){
+        instance = instance[3]
+    }else{
+        instance = instance[2]
+    }
     fetch(window.location.origin+"/service/init?customerHost="+window.location.host+"&instanceSlug="+instance+"&slug=").then(data=>{return data.json()}).then(res => {console.log(res.token)})
 
 
