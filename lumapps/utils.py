@@ -96,33 +96,49 @@ def _get_conn():
 
 
 def get_discovery_cache(url):
-    return _get_conn().execute(
-        "SELECT * FROM discovery_cache WHERE url=?", (url,)
-    ).fetchone()
+    try:
+        return _get_conn().execute(
+            "SELECT * FROM discovery_cache WHERE url=?", (url,)
+        ).fetchone()
+    except sqlite3.OperationalError:
+        return None
 
 
 def set_discovery_cache(url, expiry, content):
-    _get_conn().execute(
-        "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
-        (url, expiry, content),
-    )
+    try:
+        _get_conn().execute(
+            "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
+            (url, expiry, content),
+        )
+    except sqlite3.OperationalError:
+        pass
 
 
 def get_config(name):
-    row = _get_conn().execute(
-        "SELECT content FROM config WHERE name=?", (name,)
-    ).fetchone()
+    try:
+        row = _get_conn().execute(
+            "SELECT content FROM config WHERE name=?", (name,)
+        ).fetchone()
+    except sqlite3.OperationalError:
+        return None
     return loads(row[0]) if row else None
 
 
 def get_config_names():
-    return [r[0] for r in _get_conn().execute("SELECT name FROM config")]
+    try:
+        return [r[0] for r in _get_conn().execute("SELECT name FROM config")]
+    except sqlite3.OperationalError:
+        return []
 
 
 def set_config(name, content):
-    _get_conn().execute(
-        "INSERT OR REPLACE INTO config VALUES (?, ?)", (name, dumps(content, indent=4)),
-    )
+    try:
+        _get_conn().execute(
+            "INSERT OR REPLACE INTO config VALUES (?, ?)",
+            (name, dumps(content, indent=4)),
+        )
+    except sqlite3.OperationalError:
+        pass
 
 
 class ApiCallError(Exception):
