@@ -1,5 +1,6 @@
 import os
-import json
+import sqlite3
+from json import loads, dumps
 from datetime import datetime, timedelta
 
 from lumapps.config import __pypi_packagename__
@@ -61,33 +62,67 @@ def pop_matches(dpath, d):
     d.pop(dpath.rpartition("/")[2], None)
 
 
-def get_conf_file():
+def get_conf_db_file():
     if "APPDATA" in os.environ:
         d = os.environ["APPDATA"]
     elif "XDG_CONFIG_HOME" in os.environ:
         d = os.environ["XDG_CONFIG_HOME"]
     else:
         d = os.path.join(os.path.expanduser("~"), ".config")
-    return os.path.join(d, "{}.conf".format(__pypi_packagename__))
+    return os.path.join(d, "{}.db".format(__pypi_packagename__))
 
 
-def get_conf():
-    try:
-        with open(get_conf_file()) as fh:
-            conf = json.load(fh)
-    except IOError:
-        return {"configs": {}, "cache": {}}
-    if not conf:
-        conf = {"configs": {}, "cache": {}}
-    return conf
+def _get_conn():
+    conn = sqlite3.connect(get_conf_db_file())
+    conn.isolation_level = None
+    conn.row_factory = sqlite3.Row
+    conn.execute('PRAGMA journal_mode=WAL')
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS discovery_cache (
+            url TEXT NOT NULL,
+            expiry TEXT NOT NULL,
+            content TEXT NOT NULL,
+            PRIMARY KEY (url)
+        )"""
+    )
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS config (
+            name TEXT NOT NULL,
+            content TEXT NOT NULL,
+            PRIMARY KEY (name)
+        )"""
+    )
+    return conn
 
 
-def set_conf(conf):
-    try:
-        with open(get_conf_file(), "wt") as fh:
-            return json.dump(conf, fh, indent=4)
-    except IOError:
-        pass
+def get_discovery_cache(url):
+    return _get_conn().execute(
+        "SELECT * FROM discovery_cache WHERE url=?", (url,)
+    ).fetchone()
+
+
+def set_discovery_cache(url, expiry, content):
+    _get_conn().execute(
+        "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
+        (url, expiry, content),
+    )
+
+
+def get_config(name):
+    row = _get_conn().execute(
+        "SELECT content FROM config WHERE name=?", (name,)
+    ).fetchone()
+    return loads(row[0]) if row else None
+
+
+def get_config_names():
+    return [r[0] for r in _get_conn().execute("SELECT name FROM config")]
+
+
+def set_config(name, content):
+    _get_conn().execute(
+        "INSERT OR REPLACE INTO config VALUES (?, ?)", (name, dumps(content, indent=4)),
+    )
 
 
 class ApiCallError(Exception):
@@ -99,7 +134,7 @@ class DiscoveryCache(object):
 
     @staticmethod
     def get(url):
-        cached = get_conf()["cache"].get(url)
+        cached = get_discovery_cache(url)
         if not cached:
             return None
         expiry_dt = datetime.strptime(cached["expiry"][:19], "%Y-%m-%dT%H:%M:%S")
@@ -109,11 +144,7 @@ class DiscoveryCache(object):
 
     @staticmethod
     def set(url, content):
-        conf = get_conf()
-        conf["cache"][url] = {
-            "expiry": (
-                datetime.now() + timedelta(seconds=DiscoveryCache._max_age)
-            ).isoformat()[:19],
-            "content": content,
-        }
-        set_conf(conf)
+        expiry = (
+            datetime.now() + timedelta(seconds=DiscoveryCache._max_age)
+        ).isoformat()[:19]
+        set_discovery_cache(url, expiry, content)

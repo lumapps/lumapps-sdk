@@ -4,7 +4,13 @@ import sys
 import argparse
 import json
 
-from lumapps.utils import ApiCallError, get_conf, set_conf, FILTERS
+from lumapps.utils import (
+    ApiCallError,
+    FILTERS,
+    get_config_names,
+    get_config,
+    set_config,
+)
 from lumapps.client import ApiClient
 import logging
 
@@ -69,19 +75,18 @@ def parse_args():
 
 
 def list_configs():
-    conf = get_conf()["configs"]
-    if not conf:
+    conf_names = get_config_names()
+    if not conf_names:
         print("There are no saved configs")
         return
     print("Saved configs:")
-    for conf_name in conf:
+    for conf_name in conf_names:
         print("  " + conf_name)
 
 
 def load_config(api_file, auth_file, user, conf_name):
     if conf_name:
-        configs = get_conf()["configs"]
-        conf = configs.get(conf_name, {})
+        conf = get_config(conf_name) or {}
         if not conf and not auth_file:
             sys.exit('config "{}" not found'.format(conf_name))
     else:
@@ -102,9 +107,7 @@ def load_config(api_file, auth_file, user, conf_name):
 
 
 def store_config(api_info, auth_info, conf_name, user=None):
-    conf = get_conf()
-    conf["configs"][conf_name] = {"api": api_info, "auth": auth_info, "user": user}
-    set_conf(conf)
+    set_config(conf_name, {"api": api_info, "auth": auth_info, "user": user})
 
 
 def cast_params(method_parts, params, api):
