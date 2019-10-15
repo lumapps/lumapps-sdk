@@ -28,9 +28,9 @@ copyright = u"2019, JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN, M.VAST"
 author = u"JS.Sevestre, L.VAUGEOIS PEPIN, S.GHAMIZI, A.DENTAN, M.VAST"
 
 # The short X.Y version
-version = lumapps.__version__
+version = lumapps.api.__version__
 # The full version, including alpha/beta/rc tags
-release = lumapps.__version__
+release = lumapps.api.__version__
 
 
 # -- General configuration ---------------------------------------------------

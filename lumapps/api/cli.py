@@ -4,14 +4,14 @@ import sys
 import argparse
 import json
 
-from lumapps.utils import (
+from lumapps.api.utils import (
     ApiCallError,
     FILTERS,
     get_config_names,
     get_config,
     set_config,
 )
-from lumapps.client import ApiClient
+from lumapps.api import ApiClient
 import logging
 
 LIST_CONFIGS = "***LIST_CONFIGS***"

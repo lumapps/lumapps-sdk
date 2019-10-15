@@ -64,7 +64,7 @@ Authenticate
 
 .. code-block:: python
 
-    from lumapps.client import ApiClient
+    from lumapps.api import ApiClient
     token = "MY TOKEN"
     api = ApiClient(token=token)
 

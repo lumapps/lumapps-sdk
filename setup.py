@@ -1,6 +1,6 @@
 from io import open
 from setuptools import setup, find_packages
-from lumapps.config import __version__, __pypi_packagename__
+from lumapps.api import __version__, __pypi_packagename__
 
 
 def read_file(file_path):
@@ -41,6 +41,6 @@ setup(
         "CI": "https://circleci.com/gh/lumapps/lumapps-sdk",
     },
     entry_points={
-        "console_scripts": ["client=lumapps.cli:main", "lac=lumapps.cli:main"]
+        "console_scripts": ["client=lumapps.api.cli:main", "lac=lumapps.api.cli:main"]
     },
 )

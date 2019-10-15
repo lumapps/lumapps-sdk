@@ -15,7 +15,7 @@ from googleapiclient.discovery import (
     _retrieve_discovery_doc,
 )
 
-from lumapps.utils import (
+from lumapps.api.utils import (
     DiscoveryCache,
     pop_matches,
     ApiCallError,

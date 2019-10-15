@@ -1,8 +1,8 @@
 """
-    This is an example of how to upload one or several media(s) 
+    This is an example of how to upload one or several media(s)
     to your LumApps instance.
 """
-from lumapps import ApiClient
+from lumapps.api import ApiClient
 from lumapps.helpers.media import upload_and_save
 
 TOKEN = "<your_token>"
