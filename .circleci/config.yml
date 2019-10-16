@@ -29,7 +29,7 @@ commands:
       - restore_cache:
           key: python<< parameters.version >>-requirements-{{ checksum "requirements.txt" }}
       - run: pip install -r requirements.txt
-      - run: pip install -r requirement_dev.txt
+      - run: pip install -r requirements_dev.txt
       - run: pip install -e .
       - run: python --version
       - save_cache:
