@@ -1,0 +1,320 @@
+{
+    "basicMode": false,
+    "components": [
+        {
+            "cells": [
+                {
+                    "cellType": "default",
+                    "components": [
+                        {
+                            "createdAt": null,
+                            "customer": null,
+                            "description": {},
+                            "enabled": false,
+                            "feedKeys": [],
+                            "hasModelVersion": false,
+                            "href": null,
+                            "id": null,
+                            "instance": null,
+                            "isGlobal": false,
+                            "isMainWidget": false,
+                            "isOverride": false,
+                            "modelVersion": null,
+                            "placeholder": null,
+                            "properties": {
+                                "more": {},
+                                "style": {
+                                    "content": {},
+                                    "footer": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "header": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "main": {}
+                                },
+                                "stylesMigrated": true
+                            },
+                            "required": false,
+                            "status": "LIVE",
+                            "style": null,
+                            "systemInfo": null,
+                            "title": {},
+                            "type": "widget",
+                            "updatedAt": null,
+                            "uuid": "a52851bc-3566-46e5-b3e2-d054cadd4ebf",
+                            "widgetType": "title"
+                        },
+                        {
+                            "createdAt": null,
+                            "customer": null,
+                            "description": {},
+                            "enabled": false,
+                            "feedKeys": [],
+                            "hasModelVersion": false,
+                            "href": null,
+                            "id": null,
+                            "instance": null,
+                            "isGlobal": false,
+                            "isMainWidget": false,
+                            "isOverride": false,
+                            "modelVersion": null,
+                            "placeholder": null,
+                            "properties": {
+                                "fields": [
+                                    {
+                                        "enable": true,
+                                        "name": "author"
+                                    },
+                                    {
+                                        "enable": true,
+                                        "name": "publication-date"
+                                    },
+                                    {
+                                        "enable": true,
+                                        "name": "tags"
+                                    },
+                                    {
+                                        "enable": true,
+                                        "name": "metadata"
+                                    },
+                                    {
+                                        "enable": true,
+                                        "name": "social"
+                                    }
+                                ],
+                                "more": {},
+                                "style": {
+                                    "content": {},
+                                    "footer": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "header": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "main": {}
+                                },
+                                "stylesMigrated": true
+                            },
+                            "required": false,
+                            "status": "LIVE",
+                            "style": null,
+                            "systemInfo": null,
+                            "title": {},
+                            "type": "widget",
+                            "updatedAt": null,
+                            "uuid": "01ebb6e7-fb47-4f9c-8b82-dc21e4688f6e",
+                            "widgetType": "meta"
+                        },
+                        {
+                            "createdAt": null,
+                            "customer": null,
+                            "description": {},
+                            "enabled": false,
+                            "feedKeys": [],
+                            "hasModelVersion": false,
+                            "href": null,
+                            "id": null,
+                            "instance": null,
+                            "isGlobal": false,
+                            "isMainWidget": false,
+                            "isOverride": false,
+                            "modelVersion": null,
+                            "placeholder": null,
+                            "properties": {
+                                "more": {},
+                                "style": {
+                                    "content": {},
+                                    "footer": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "header": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "main": {}
+                                },
+                                "stylesMigrated": true
+                            },
+                            "required": false,
+                            "status": "LIVE",
+                            "style": null,
+                            "systemInfo": null,
+                            "title": {},
+                            "type": "widget",
+                            "updatedAt": null,
+                            "uuid": "1de15b3b-a667-4ce3-8fb9-8bb84edcedb6",
+                            "widgetType": "html"
+                        },
+                        {
+                            "createdAt": null,
+                            "customer": null,
+                            "description": {},
+                            "enabled": false,
+                            "feedKeys": [],
+                            "hasModelVersion": false,
+                            "href": null,
+                            "id": null,
+                            "instance": null,
+                            "isGlobal": false,
+                            "isMainWidget": false,
+                            "isOverride": false,
+                            "modelVersion": null,
+                            "placeholder": null,
+                            "properties": {
+                                "style": {
+                                    "content": {},
+                                    "footer": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "header": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "main": {}
+                                },
+                                "stylesMigrated": true
+                            },
+                            "required": false,
+                            "status": "LIVE",
+                            "style": null,
+                            "systemInfo": null,
+                            "title": {},
+                            "type": "widget",
+                            "updatedAt": null,
+                            "uuid": "da2fdc65-c6ab-49cf-9425-0324b19957ed",
+                            "widgetType": "html"
+                        },
+                        {
+                            "createdAt": null,
+                            "customer": null,
+                            "description": {},
+                            "enabled": false,
+                            "feedKeys": [],
+                            "hasModelVersion": false,
+                            "href": null,
+                            "id": null,
+                            "instance": null,
+                            "isGlobal": false,
+                            "isMainWidget": false,
+                            "isOverride": false,
+                            "modelVersion": null,
+                            "placeholder": null,
+                            "properties": {
+                                "fields": [
+                                    {
+                                        "enable": true,
+                                        "name": "like"
+                                    },
+                                    {
+                                        "enable": false,
+                                        "name": "comment"
+                                    },
+                                    {
+                                        "enable": true,
+                                        "name": "follow"
+                                    }
+                                ],
+                                "more": {},
+                                "style": {
+                                    "content": {},
+                                    "footer": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "header": {
+                                        "icon": {},
+                                        "label": {},
+                                        "main": {},
+                                        "wrapper": {}
+                                    },
+                                    "main": {}
+                                },
+                                "stylesMigrated": true
+                            },
+                            "required": false,
+                            "status": "LIVE",
+                            "style": null,
+                            "systemInfo": null,
+                            "title": {},
+                            "type": "widget",
+                            "updatedAt": null,
+                            "uuid": "97c3507a-1a32-4c40-bf12-10bada655c64",
+                            "widgetType": "meta-social"
+                        }
+                    ],
+                    "createdAt": null,
+                    "description": {},
+                    "hasModelVersion": false,
+                    "modelVersion": null,
+                    "placeholder": null,
+                    "properties": {
+                        "style": {
+                            "components": {}
+                        }
+                    },
+                    "status": "LIVE",
+                    "systemInfo": null,
+                    "title": {},
+                    "type": "cell",
+                    "updatedAt": null,
+                    "uuid": "d1286909-b509-460f-907b-a4c50be33ff8",
+                    "width": 12
+                }
+            ],
+            "createdAt": null,
+            "description": {},
+            "hasModelVersion": false,
+            "modelVersion": null,
+            "placeholder": null,
+            "properties": {
+                "style": {}
+            },
+            "status": "LIVE",
+            "systemInfo": null,
+            "title": {},
+            "type": "row",
+            "updatedAt": null,
+            "uuid": "1803d396-2e02-4cb7-8c90-aaa4723005b6"
+        }
+    ],
+    "contentType": "page",
+    "createdAt": "2019-10-15T15:30:29.170006",
+    "customContentType": "44444444444441",
+    "customer": "12345",
+    "fixedLayout": false,
+    "fixedWidgets": false,
+    "heritable": false,
+    "id": "678901",
+    "instance": "2222222222",
+    "name": {
+        "en": "Template 1"
+    },
+    "uid": "678901",
+    "updatedAt": "2019-10-15T15:30:29.169903",
+    "visibilityInheritedOnly": false
+}

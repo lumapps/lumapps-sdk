@@ -1,0 +1,216 @@
+{
+    "author": "john.doe@foo.bar",
+    "authorId": "1111111111",
+    "canMarkRelevant": true,
+    "canonicalUrl": {
+        "en": "https://sites.lumapps.com/a/foo-bar/foo-bar-1/page-1"
+    },
+    "comments": 0,
+    "count": "0",
+    "createdAt": "2019-03-12T11:50:58.856571",
+    "customContentType": "4444444444444",
+    "customer": "12345",
+    "excerpt": {
+        "en": "This is Page 1. Foo bar!"
+    },
+    "feedKeys": [
+        "33333333333333"
+    ],
+    "following": false,
+    "hasCommentWidget": false,
+    "hasRelevantComment": false,
+    "id": "6789",
+    "instance": "2222222222",
+    "isCustomizableLayout": false,
+    "isDefaultContentList": false,
+    "isDefaultUserDirectory": false,
+    "isFeatured": false,
+    "isHomepage": false,
+    "isNavItem": false,
+    "liked": false,
+    "likes": 0,
+    "notificationsEnabled": false,
+    "notifyAuthor": false,
+    "notifyUsers": false,
+    "properties": {
+        "lastLifeCycle": {
+            "delta": 0,
+            "mandatory": false,
+            "manual": false
+        }
+    },
+    "public": false,
+    "publicationDate": "2019-03-12T11:50:59.608474",
+    "shareable": false,
+    "slug": {
+        "en": "page-1"
+    },
+    "status": "LIVE",
+    "template": {
+        "basicMode": false,
+        "components": [
+            {
+                "cells": [
+                    {
+                        "cellType": "default",
+                        "components": [
+                            {
+                                "createdAt": null,
+                                "customer": null,
+                                "description": {},
+                                "enabled": false,
+                                "feedKeys": [],
+                                "hasModelVersion": false,
+                                "href": null,
+                                "id": null,
+                                "instance": null,
+                                "isGlobal": false,
+                                "isMainWidget": false,
+                                "isOverride": false,
+                                "modelVersion": null,
+                                "placeholder": null,
+                                "properties": {
+                                    "more": {},
+                                    "style": {
+                                        "content": {},
+                                        "footer": {
+                                            "icon": {},
+                                            "label": {},
+                                            "main": {},
+                                            "wrapper": {}
+                                        },
+                                        "header": {
+                                            "icon": {},
+                                            "label": {},
+                                            "main": {},
+                                            "wrapper": {}
+                                        },
+                                        "main": {}
+                                    },
+                                    "stylesMigrated": true
+                                },
+                                "required": false,
+                                "status": "LIVE",
+                                "style": null,
+                                "systemInfo": null,
+                                "title": {},
+                                "type": "widget",
+                                "updatedAt": null,
+                                "uuid": "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6",
+                                "widgetType": "title"
+                            },
+                            {
+                                "createdAt": null,
+                                "customer": null,
+                                "description": {},
+                                "enabled": false,
+                                "feedKeys": [],
+                                "hasModelVersion": false,
+                                "href": null,
+                                "id": null,
+                                "instance": null,
+                                "isGlobal": false,
+                                "isMainWidget": false,
+                                "isOverride": false,
+                                "modelVersion": null,
+                                "placeholder": null,
+                                "properties": {
+                                    "content": {
+                                        "en": "<p>This is Page 1.</p><p><br></p><p>Foo bar!</p>"
+                                    },
+                                    "more": {},
+                                    "popin": {
+                                        "en": ""
+                                    },
+                                    "style": {
+                                        "content": {},
+                                        "footer": {
+                                            "icon": {},
+                                            "label": {},
+                                            "main": {},
+                                            "wrapper": {}
+                                        },
+                                        "header": {
+                                            "icon": {},
+                                            "label": {},
+                                            "main": {},
+                                            "wrapper": {}
+                                        },
+                                        "main": {}
+                                    },
+                                    "stylesMigrated": true
+                                },
+                                "required": false,
+                                "status": "LIVE",
+                                "style": null,
+                                "systemInfo": null,
+                                "title": {},
+                                "type": "widget",
+                                "updatedAt": null,
+                                "uuid": "2ad93c14-0a9d-4d0e-a91b-eb38e1025991",
+                                "widgetType": "html"
+                            }
+                        ],
+                        "createdAt": null,
+                        "description": {},
+                        "hasModelVersion": false,
+                        "modelVersion": null,
+                        "placeholder": null,
+                        "properties": {
+                            "style": {
+                                "components": {}
+                            }
+                        },
+                        "status": "LIVE",
+                        "systemInfo": null,
+                        "title": {},
+                        "type": "cell",
+                        "updatedAt": null,
+                        "uuid": "f0951e06-ffb6-4406-a9c5-97e0be977f94",
+                        "width": 12
+                    }
+                ],
+                "createdAt": null,
+                "description": {},
+                "hasModelVersion": false,
+                "modelVersion": null,
+                "placeholder": null,
+                "properties": {
+                    "style": {}
+                },
+                "status": "LIVE",
+                "systemInfo": null,
+                "title": {},
+                "type": "row",
+                "updatedAt": null,
+                "uuid": "ae9aac74-1ee5-45c2-9a57-8e447ad663f3"
+            }
+        ],
+        "createdAt": "2019-03-12T11:50:58.856890",
+        "customContentType": "4444444444444",
+        "fixedLayout": false,
+        "fixedWidgets": false,
+        "heritable": false,
+        "id": "",
+        "properties": {
+            "lastLifeCycle": {
+                "delta": 0,
+                "mandatory": false,
+                "manual": false
+            }
+        },
+        "uid": "",
+        "visibilityInheritedOnly": false
+    },
+    "title": {
+        "en": "Page 1"
+    },
+    "type": "page",
+    "uid": "6789",
+    "updatedAt": "2019-05-27T08:48:37.387555",
+    "updatedBy": "john.doe@foo.bar",
+    "updatedById": "1111111111",
+    "url": "/canonical/customer/12345/Content/6789",
+    "version": 4,
+    "weight": 0.0
+}
