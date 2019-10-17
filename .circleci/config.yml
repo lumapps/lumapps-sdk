@@ -101,7 +101,6 @@ jobs:
           name: Run tests
           command: |
             mkdir -p test-reports/pytest
-            cd tests
             coverage run -m pytest --junitxml=test-results/pytest/results.xml -v
             bash <(curl -s https://codecov.io/bash)
             coverage report
