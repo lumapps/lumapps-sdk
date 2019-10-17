@@ -1,6 +1,6 @@
 from io import open
 from setuptools import setup, find_packages
-from lumapps.config import __version__, __pypi_packagename__
+from lumapps.api import __version__, __pypi_packagename__
 
 
 def read_file(file_path):
@@ -9,7 +9,11 @@ def read_file(file_path):
     return content
 
 
-install_requires = ["requests>=2.22", "google-api-python-client>=1.7"]
+install_requires = [
+    "requests>=2.22",
+    "google-api-python-client>=1.7",
+    "uritemplate>=3.0",
+]
 readme = read_file("README.rst")
 
 setup(
@@ -41,6 +45,6 @@ setup(
         "CI": "https://circleci.com/gh/lumapps/lumapps-sdk",
     },
     entry_points={
-        "console_scripts": ["client=lumapps.cli:main", "lac=lumapps.cli:main"]
+        "console_scripts": ["client=lumapps.api.cli:main", "lac=lumapps.api.cli:main"]
     },
 )

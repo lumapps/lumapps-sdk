@@ -1,4 +1,4 @@
 ApiClient
 ---------
 
-.. autoclass:: lumapps.client.ApiClient
+.. autoclass:: lumapps.api.ApiClient

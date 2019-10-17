@@ -3,7 +3,7 @@ import sqlite3
 from json import loads, dumps
 from datetime import datetime, timedelta
 
-from lumapps.config import __pypi_packagename__
+from lumapps.api.conf import __pypi_packagename__
 
 GOOGLE_APIS = ("drive", "admin", "groupssettings")
 FILTERS = {

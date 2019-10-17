@@ -49,7 +49,7 @@ minutes, and that we will use in the following steps.
 
 .. code-block:: python
 
-    from lumapps.client import ApiClient
+    from lumapps.api import ApiClient
     token = "[MY TOKEN]"
     api = ApiClient(token=token)
 
