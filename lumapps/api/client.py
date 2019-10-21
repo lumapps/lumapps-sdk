@@ -28,7 +28,6 @@ def _get_build_content(
     serviceName,
     version,
     discoveryServiceUrl=DISCOVERY_URI,
-    developerKey=None,
     cache_discovery=True,
     cache=None,
     proxy_info=None
@@ -51,7 +50,7 @@ def _get_build_content(
         requested_url = uritemplate.expand(discovery_url, params)
         try:
             return _retrieve_discovery_doc(
-                requested_url, discovery_http, cache_discovery, cache, developerKey
+                requested_url, discovery_http, cache_discovery, cache
             )
         except HttpError as e:
             if e.resp.status == 404:
