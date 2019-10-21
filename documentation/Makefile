@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    = -nW
-SPHINXBUILD   = python3.7 -m sphinx
+SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = LumappsSDK
 SOURCEDIR     = source
 BUILDDIR      = build
