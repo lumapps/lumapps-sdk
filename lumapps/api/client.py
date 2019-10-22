@@ -61,7 +61,7 @@ def _get_build_content(
     raise Exception("name: %s  version: %s" % (serviceName, version))
 
 
-def _parse_method_parts(*parts):
+def _parse_method_parts(parts):
     ret = []
     for part in parts:
         for sub_part in part.split('/'):
