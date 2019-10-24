@@ -61,6 +61,14 @@ def _get_build_content(
     raise Exception("name: %s  version: %s" % (serviceName, version))
 
 
+def _parse_method_parts(parts):
+    ret = []
+    for part in parts:
+        for sub_part in part.split('/'):
+            ret.append(sub_part)
+    return ret
+
+
 class ApiClient(object):
     """
         Args:
@@ -326,6 +334,7 @@ class ApiClient(object):
         """
         if params is None:
             params = {}
+        method_parts = _parse_method_parts(method_parts)
         items = []
         cursor = None
         if "body" in params and isinstance(params["body"], str):
@@ -372,6 +381,7 @@ class ApiClient(object):
         """
         if params is None:
             params = {}
+        method_parts = _parse_method_parts(method_parts)
         cursor = None
         if "body" in params and isinstance(params["body"], str):
             params["body"] = json.loads(params["body"])
