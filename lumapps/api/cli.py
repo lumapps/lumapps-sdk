@@ -6,7 +6,7 @@ import json
 
 from lumapps.api.utils import (
     ApiCallError,
-    FILTERS,
+    print_prune_filters,
     get_config_names,
     get_config,
     set_config,
@@ -18,16 +18,8 @@ LIST_CONFIGS = "***LIST_CONFIGS***"
 
 
 def parse_args():
-    s = ""
-    for f in FILTERS:
-        s += "\nMethods " + f + "\n"
-        for pth in sorted(FILTERS[f]):
-            s += "    " + pth + "\n"
-
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        add_help=False,
-        epilog="FILTERS:\n" + s,
+        formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False
     )
     add_arg = parser.add_argument
     add_arg(
@@ -37,25 +29,25 @@ def parse_args():
         help="API method with parameters in the form arg_name=value",
     )
     add_arg("--help", "-h", action="store_true")
+    add_arg("--print-prune-filters", action="store_true")
     add_arg("--debug", "-d", action="store_true")
     add_arg("--api", help="JSON file", metavar="FILE")
     add_arg("--user", help="user to act on behalf")
     add_arg("--auth", help="JSON auth file", metavar="FILE")
     add_arg(
         "--token",
-        help="a token can be gotten with " '"getToken customerId=... email=..."',
+        help="a token can be obtained with 'user/getToken customerId=... email=...'",
     )
     add_arg("--body-file", help="JSON POST data body file", metavar="FILE")
     add_arg(
         "-p",
         "--prune",
         action="store_true",
-        help="Prune extraneous content based on methods being invoked. "
-        "See below for filters used.",
+        help="Prune extraneous content; use --print-prune-filters to see the filters.",
     )
     add_arg(
-        "--config",
         "-c",
+        "--config",
         nargs="?",
         default=None,
         const=LIST_CONFIGS,
@@ -132,6 +124,9 @@ def setup_logger():
 
 def main():
     arg_parser, args = parse_args()
+    if args.print_prune_filters:
+        print_prune_filters()
+        return
     if args.debug:
         setup_logger()
     if not (args.auth or args.api or args.config or args.token):
