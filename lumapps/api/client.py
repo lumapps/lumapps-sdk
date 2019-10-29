@@ -30,12 +30,9 @@ def _get_build_content(
     discoveryServiceUrl=DISCOVERY_URI,
     cache_discovery=True,
     cache=None,
-    proxy_info=None
+    proxy_info=None,
 ):
-    params = {
-        'api': serviceName,
-        'apiVersion': version
-    }
+    params = {"api": serviceName, "apiVersion": version}
     discovery_http = httplib2.Http(timeout=60)
     if proxy_info:
         discovery_http.proxy_info = httplib2.ProxyInfo(
@@ -46,7 +43,7 @@ def _get_build_content(
             proxy_pass=proxy_info["password"],
         )
     discovery_http.disable_ssl_certificate_validation = True
-    for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI,):
+    for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI):
         requested_url = uritemplate.expand(discovery_url, params)
         try:
             return _retrieve_discovery_doc(
@@ -57,14 +54,13 @@ def _get_build_content(
                 continue
             else:
                 raise e
-
     raise Exception("name: %s  version: %s" % (serviceName, version))
 
 
 def _parse_method_parts(parts):
     ret = []
     for part in parts:
-        for sub_part in part.split('/'):
+        for sub_part in part.split("/"):
             ret.append(sub_part)
     return ret
 
