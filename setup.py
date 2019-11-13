@@ -37,7 +37,5 @@ setup(
         "Issues": "https://github.com/lumapps/lumapps-sdk/issues",
         "CI": "https://circleci.com/gh/lumapps/lumapps-sdk",
     },
-    entry_points={
-        "console_scripts": ["lac=lumapps.api.cli:main"]
-    },
+    entry_points={"console_scripts": ["lac=lumapps.api.cli:main"]},
 )
