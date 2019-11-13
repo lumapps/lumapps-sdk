@@ -1,21 +1,9 @@
-from io import open
 from setuptools import setup, find_packages
 from lumapps.api import __version__, __pypi_packagename__
 
 
-def read_file(file_path):
-    with open(file_path, "r") as f:
-        content = f.read()
-    return content
-
-
-install_requires = [
-    "requests>=2.22",
-    "google-api-python-client>=1.7",
-    "uritemplate>=3.0",
-]
-readme = read_file("README.rst")
-
+with open("README.rst", "r") as f:
+    readme = f.read()
 setup(
     name=__pypi_packagename__,
     version=__version__,
@@ -27,7 +15,11 @@ setup(
     description="Lumapps SDK for Python",
     long_description=readme,
     long_description_content_type="text/x-rst",
-    install_requires=install_requires,
+    install_requires=[
+        "requests>=2.22",
+        "google-api-python-client>=1.7",
+        "uritemplate>=3.0",
+    ],
     python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
     keywords="lumapps sdk",
     classifiers=[
@@ -37,6 +29,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     project_urls={
         "Documentation": "https://lumapps.github.io/lumapps-sdk/",
@@ -45,6 +38,6 @@ setup(
         "CI": "https://circleci.com/gh/lumapps/lumapps-sdk",
     },
     entry_points={
-        "console_scripts": ["client=lumapps.api.cli:main", "lac=lumapps.api.cli:main"]
+        "console_scripts": ["lac=lumapps.api.cli:main"]
     },
 )

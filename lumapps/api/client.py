@@ -106,7 +106,6 @@ class ApiClient(object):
         self.prune = prune
         self._auth_info = auth_info
         self._user = {}
-        self.email = ""
         self.last_cursor = None
         self.token_expiration = None
 
@@ -157,8 +156,7 @@ class ApiClient(object):
                 "You must provide authentication infos (token_getter, "
                 "auth_info, credentials or token)."
             )
-        if user:
-            self.email = user
+        self.email = user or ""
 
     def _check_access_token(self):
         if not self.token_getter:

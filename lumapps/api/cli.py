@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 from __future__ import print_function, unicode_literals
 import sys
-import argparse
 import json
+import logging
+from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType, SUPPRESS
 
 from lumapps.api.utils import (
     ApiCallError,
@@ -11,33 +12,34 @@ from lumapps.api.utils import (
     get_config,
     set_config,
 )
-from lumapps.api import ApiClient
-import logging
+from lumapps.api import ApiClient, TokenClient
 
 LIST_CONFIGS = "***LIST_CONFIGS***"
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter, add_help=False
-    )
+    parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter, add_help=False)
     add_arg = parser.add_argument
+    group1 = parser.add_mutually_exclusive_group()
     add_arg(
         "api_method",
         nargs="*",
-        metavar="METHOD_PART",
-        help="API method with parameters in the form arg_name=value",
+        metavar="METHOD_AND_PARAMETERS",
+        help=" parameters in the form arg_name=value. The method can be ",
     )
     add_arg("--help", "-h", action="store_true")
     add_arg("--print-prune-filters", action="store_true")
     add_arg("--debug", "-d", action="store_true")
+    add_arg("--proxy", help="JSON file", metavar="FILE")
+    add_arg("--no-verify", help="disable SSL verification", action="store_true")
     add_arg("--api", help="JSON file", metavar="FILE")
-    add_arg("--user", help="user to act on behalf")
     add_arg("--auth", help="JSON auth file", metavar="FILE")
-    add_arg(
-        "--token",
-        help="a token can be obtained with 'user/getToken customerId=... email=...'",
+    group1.add_argument(
+        "--user", metavar="EMAIL", help="use domain wide delegation for this user"
     )
+    group1.add_argument("--email", help="use user/getToken to get token for this email")
+    group1.add_argument("--token")
+    add_arg("--customer-id", help="may be required when using --email")
     add_arg("--body-file", help="JSON POST data body file", metavar="FILE")
     add_arg(
         "-p",
@@ -56,13 +58,7 @@ def parse_args():
         "no value is provided: list saved configs",
         metavar="CONF_NAME",
     )
-    add_arg(
-        "body",
-        nargs="?",
-        type=argparse.FileType("r"),
-        default=sys.stdin,
-        help=argparse.SUPPRESS,
-    )
+    add_arg("body", nargs="?", type=FileType("r"), default=sys.stdin, help=SUPPRESS)
     return parser, parser.parse_args()
 
 
@@ -135,8 +131,32 @@ def main():
     if args.config == LIST_CONFIGS:
         list_configs()
         return
+    if args.proxy:
+        with open(args.proxy) as fh:
+            proxy_info = json.load(fh)
+    else:
+        proxy_info = None
     api_info, auth_info, user = load_config(args.api, args.auth, args.user, args.config)
-    api = ApiClient(auth_info, api_info, user=user, token=args.token, prune=args.prune)
+    if args.email:
+        token_client = TokenClient(
+            args.customer_id,
+            auth_info,
+            api_info,
+            no_verify=args.no_verify,
+        )
+        token_getter = token_client.get_token_getter(args.email)
+    else:
+        token_getter = None
+    api = ApiClient(
+        auth_info,
+        api_info,
+        user=user,
+        token=args.token,
+        token_getter=token_getter,
+        prune=args.prune,
+        proxy_info=proxy_info,
+        no_verify=args.no_verify,
+    )
     if args.config and (args.auth or args.api):
         store_config(api_info, auth_info, args.config, args.user)
     if not args.api_method:
