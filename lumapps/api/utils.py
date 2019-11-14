@@ -164,3 +164,12 @@ class DiscoveryCache(object):
             datetime.now() + timedelta(seconds=DiscoveryCache._max_age)
         ).isoformat()[:19]
         set_discovery_cache(url, expiry, content)
+
+
+def list_prune_filters():
+    s = ""
+    for f in FILTERS:
+        s += "\nMethods " + f + "\n"
+        for pth in sorted(FILTERS[f]):
+            s += "    " + pth + "\n"
+    print("PRUNE FILTERS:\n" + s)
