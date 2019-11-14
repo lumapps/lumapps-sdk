@@ -166,7 +166,7 @@ class DiscoveryCache(object):
         set_discovery_cache(url, expiry, content)
 
 
-def print_prune_filters():
+def list_prune_filters():
     s = ""
     for f in FILTERS:
         s += "\nMethods " + f + "\n"

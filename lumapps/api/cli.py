@@ -7,7 +7,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType, SUPP
 
 from lumapps.api.utils import (
     ApiCallError,
-    print_prune_filters,
+    list_prune_filters,
     get_config_names,
     get_config,
     set_config,
@@ -21,6 +21,7 @@ def parse_args():
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter, add_help=False)
     add_arg = parser.add_argument
     group1 = parser.add_mutually_exclusive_group()
+    group2 = parser.add_mutually_exclusive_group()
     add_arg(
         "api_method",
         nargs="*",
@@ -28,25 +29,20 @@ def parse_args():
         help=" parameters in the form arg_name=value. The method can be ",
     )
     add_arg("--help", "-h", action="store_true")
-    add_arg("--print-prune-filters", action="store_true")
     add_arg("--debug", "-d", action="store_true")
     add_arg("--proxy", help="JSON file", metavar="FILE")
     add_arg("--no-verify", help="disable SSL verification", action="store_true")
     add_arg("--api", help="JSON file", metavar="FILE")
-    add_arg("--auth", help="JSON auth file", metavar="FILE")
+    group2.add_argument("--auth", help="JSON auth file", metavar="FILE")
+    group2.add_argument("--token")
     group1.add_argument(
         "--user", metavar="EMAIL", help="use domain wide delegation for this user"
     )
     group1.add_argument("--email", help="use user/getToken to get token for this email")
-    group1.add_argument("--token")
     add_arg("--customer-id", help="may be required when using --email")
     add_arg("--body-file", help="JSON POST data body file", metavar="FILE")
-    add_arg(
-        "-p",
-        "--prune",
-        action="store_true",
-        help="Prune extraneous content; use --print-prune-filters to see the filters.",
-    )
+    add_arg("-p", "--prune", action="store_true", help="reomove extraneous content")
+    add_arg("--list-prune-filters", action="store_true")
     add_arg(
         "-c",
         "--config",
@@ -120,8 +116,8 @@ def setup_logger():
 
 def main():
     arg_parser, args = parse_args()
-    if args.print_prune_filters:
-        print_prune_filters()
+    if args.list_prune_filters:
+        list_prune_filters()
         return
     if args.debug:
         setup_logger()

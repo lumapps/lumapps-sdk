@@ -1,4 +1,5 @@
 from lumapps.api.cli import load_config
+
 import pytest
 
 
