@@ -17,7 +17,7 @@ from lumapps.api import ApiClient, TokenClient
 LIST_CONFIGS = "***LIST_CONFIGS***"
 
 
-def parse_args():
+def parse_args(*args, **kwargs):
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter, add_help=False)
     add_arg = parser.add_argument
     group1 = parser.add_mutually_exclusive_group()
@@ -55,7 +55,7 @@ def parse_args():
         metavar="CONF_NAME",
     )
     add_arg("body", nargs="?", type=FileType("r"), default=sys.stdin, help=SUPPRESS)
-    return parser, parser.parse_args()
+    return parser, parser.parse_args(*args, **kwargs)
 
 
 def list_configs():
