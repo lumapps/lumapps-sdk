@@ -74,7 +74,7 @@ Usage examples
 
     lac --auth web_auth.json template list instance=6724836101455872
 
-**Get current user, using Service Account with domain-wide delegation**
+**Get current user using Service Account with domain-wide delegation**
 
 .. code-block:: bash
 
