@@ -236,6 +236,14 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lac --auth web_auth.json template list <span class="nv">instance</span><span class="o">=</span><span class="m">6724836101455872</span>
 </pre></div>
 </div>
+<p><strong>Get current user, using Service Account with domain-wide delegation</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lac --auth service_account.json --user john.doe@foobar.com user get
+</pre></div>
+</div>
+<p><strong>Get current user using Service Account to get token from LumApps</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lac --auth service_account.json --email john.doe@foobar.com user get
+</pre></div>
+</div>
 </div>
 </div>
 
