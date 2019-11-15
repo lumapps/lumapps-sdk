@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lumapps.api.client &mdash; Lumapps SDK 0.1.10 documentation</title>
+  <title>lumapps.api.client &mdash; Lumapps SDK 0.1.12 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.10
+                0.1.12
               </div>
             
           
@@ -202,12 +202,9 @@
     <span class="n">discoveryServiceUrl</span><span class="o">=</span><span class="n">DISCOVERY_URI</span><span class="p">,</span>
     <span class="n">cache_discovery</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">proxy_info</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">proxy_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;api&#39;</span><span class="p">:</span> <span class="n">serviceName</span><span class="p">,</span>
-        <span class="s1">&#39;apiVersion&#39;</span><span class="p">:</span> <span class="n">version</span>
-    <span class="p">}</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;api&quot;</span><span class="p">:</span> <span class="n">serviceName</span><span class="p">,</span> <span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span> <span class="n">version</span><span class="p">}</span>
     <span class="n">discovery_http</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Http</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">proxy_info</span><span class="p">:</span>
         <span class="n">discovery_http</span><span class="o">.</span><span class="n">proxy_info</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">ProxyInfo</span><span class="p">(</span>
@@ -218,7 +215,7 @@
             <span class="n">proxy_pass</span><span class="o">=</span><span class="n">proxy_info</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">],</span>
         <span class="p">)</span>
     <span class="n">discovery_http</span><span class="o">.</span><span class="n">disable_ssl_certificate_validation</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">for</span> <span class="n">discovery_url</span> <span class="ow">in</span> <span class="p">(</span><span class="n">discoveryServiceUrl</span><span class="p">,</span> <span class="n">V2_DISCOVERY_URI</span><span class="p">,):</span>
+    <span class="k">for</span> <span class="n">discovery_url</span> <span class="ow">in</span> <span class="p">(</span><span class="n">discoveryServiceUrl</span><span class="p">,</span> <span class="n">V2_DISCOVERY_URI</span><span class="p">):</span>
         <span class="n">requested_url</span> <span class="o">=</span> <span class="n">uritemplate</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">discovery_url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_retrieve_discovery_doc</span><span class="p">(</span>
@@ -229,14 +226,13 @@
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">e</span>
-
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;name: </span><span class="si">%s</span><span class="s2">  version: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">serviceName</span><span class="p">,</span> <span class="n">version</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_parse_method_parts</span><span class="p">(</span><span class="n">parts</span><span class="p">):</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">sub_part</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sub_part</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_part</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ret</span>
 
@@ -282,7 +278,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">prune</span> <span class="o">=</span> <span class="n">prune</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span> <span class="o">=</span> <span class="n">auth_info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_cursor</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token_expiration</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -333,8 +328,7 @@
                 <span class="s2">&quot;You must provide authentication infos (token_getter, &quot;</span>
                 <span class="s2">&quot;auth_info, credentials or token).&quot;</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_check_access_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_getter</span><span class="p">:</span>
