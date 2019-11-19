@@ -47,6 +47,7 @@ FILTERS = {
         "parentContentDetails",
         "headerDetails",
         "tagsDetails",
+        "excerpt",
     ],
     "comment/get": ["authorProperties", "mentionsDetails"],
     "comment/list": ["authorProperties", "mentionsDetails"],
