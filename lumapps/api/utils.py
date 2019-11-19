@@ -45,6 +45,8 @@ FILTERS = {
         "updatedByDetails",
         "mentionsDetails",
         "parentContentDetails",
+        "headerDetails",
+        "tagsDetails",
     ],
     "comment/get": ["authorProperties", "mentionsDetails"],
     "comment/list": ["authorProperties", "mentionsDetails"],
