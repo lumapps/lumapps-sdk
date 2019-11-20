@@ -113,7 +113,7 @@ def test_new_lumapps_uuid():
 def test_iter_with_key():
     with open("tests/test_data/content_1.json") as fh:
         content = json.load(fh)
-    with_uuid = list(iter_with_key("uuid", content))
+    with_uuid = list(iter_with_key(content, "uuid"))
     assert len(with_uuid) == 4
     assert with_uuid[0]["uuid"] == "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
     assert with_uuid[1]["uuid"] == "2ad93c14-0a9d-4d0e-a91b-eb38e1025991"
@@ -121,13 +121,20 @@ def test_iter_with_key():
     assert with_uuid[3]["uuid"] == "ae9aac74-1ee5-45c2-9a57-8e447ad663f3"
 
 
+def test_iter_with_key2():
+    with open("tests/test_data/content_1.json") as fh:
+        content = json.load(fh)
+    matches = list(iter_with_key(content, "instance"))
+    assert len(matches) == 3
+
+
 def test_iter_with_key_value():
     with open("tests/test_data/content_1.json") as fh:
         content = json.load(fh)
-    with_uuid = list(iter_with_key_value("uuid", "foo", content))
+    with_uuid = list(iter_with_key_value(content, "uuid", "foo"))
     assert with_uuid == []
     with_uuid = list(iter_with_key_value(
-        "uuid", "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6", content
+        content, "uuid", "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
     ))
     assert len(with_uuid) == 1
 
@@ -136,7 +143,7 @@ def test_set_new_lumapps_uuids():
     with open("tests/test_data/content_1.json") as fh:
         content = json.load(fh)
     set_new_lumapps_uuids(content)
-    with_uuid = list(iter_with_key("uuid", content))
+    with_uuid = list(iter_with_key(content, "uuid"))
     assert len(with_uuid) == 4
     assert with_uuid[0]["uuid"] != "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
     assert with_uuid[1]["uuid"] != "2ad93c14-0a9d-4d0e-a91b-eb38e1025991"
@@ -149,13 +156,13 @@ def test_copy_with_new_lumapps_uuids():
         content = json.load(fh)
     content2 = copy_with_new_lumapps_uuids(content)
     assert content != content2
-    with_uuid = list(iter_with_key("uuid", content))
+    with_uuid = list(iter_with_key(content, "uuid"))
     assert len(with_uuid) == 4
     assert with_uuid[0]["uuid"] == "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
     assert with_uuid[1]["uuid"] == "2ad93c14-0a9d-4d0e-a91b-eb38e1025991"
     assert with_uuid[2]["uuid"] == "f0951e06-ffb6-4406-a9c5-97e0be977f94"
     assert with_uuid[3]["uuid"] == "ae9aac74-1ee5-45c2-9a57-8e447ad663f3"
-    with_uuid = list(iter_with_key("uuid", content2))
+    with_uuid = list(iter_with_key(content2, "uuid"))
     assert len(with_uuid) == 4
     assert with_uuid[0]["uuid"] != "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
     assert with_uuid[1]["uuid"] != "2ad93c14-0a9d-4d0e-a91b-eb38e1025991"

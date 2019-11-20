@@ -16,6 +16,7 @@ FILTERS = {
         "headerDetails",
         "customContentTypeDetails",
         "properties/duplicateContent",
+        "excerpt",
     ],
     # community/get, community/list, ...
     "community/*": [
