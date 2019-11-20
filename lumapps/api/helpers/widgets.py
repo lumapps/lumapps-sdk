@@ -62,23 +62,22 @@ def find_all_widgets_and_containers(container, **params):
     return list(((w, c) for w, c in iter_widgets(container, **params)))
 
 
-def iter_with_key(key, dict_or_list):
+def iter_with_key(dict_or_list, key):
     if isinstance(dict_or_list, list):
-        for d in dict_or_list:
-            for foo in iter_with_key(key, d):
-                yield foo
+        for list_item in dict_or_list:
+            for dict_match in iter_with_key(list_item, key):
+                yield dict_match
     if isinstance(dict_or_list, dict):
         for k, v in dict_or_list.items():
             if key == k:
                 yield dict_or_list
-                break
             elif isinstance(v, dict):
-                for foo in iter_with_key(key, v):
-                    yield foo
+                for dict_match in iter_with_key(v, key):
+                    yield dict_match
             elif isinstance(v, list):
-                for d in v:
-                    for foo in iter_with_key(key, d):
-                        yield foo
+                for list_item in v:
+                    for dict_match in iter_with_key(list_item, key):
+                        yield dict_match
 
 
 def find_one_with_key_value(key, value, dict_or_list):
@@ -86,23 +85,22 @@ def find_one_with_key_value(key, value, dict_or_list):
         return d
 
 
-def iter_with_key_value(key, value, dict_or_list):
+def iter_with_key_value(dict_or_list, key, value):
     if isinstance(dict_or_list, list):
-        for d in dict_or_list:
-            for foo in iter_with_key_value(key, value, d):
-                yield foo
+        for list_item in dict_or_list:
+            for dict_match in iter_with_key_value(list_item, key, value):
+                yield dict_match
     if isinstance(dict_or_list, dict):
         for k, v in dict_or_list.items():
             if key == k and v == value:
                 yield dict_or_list
-                break
             elif isinstance(v, dict):
-                for foo in iter_with_key_value(key, value, v):
-                    yield foo
+                for dict_match in iter_with_key_value(v, key, value):
+                    yield dict_match
             elif isinstance(v, list):
-                for d in v:
-                    for foo in iter_with_key_value(key, value, d):
-                        yield foo
+                for list_item in v:
+                    for dict_match in iter_with_key_value(list_item, key, value):
+                        yield dict_match
 
 
 def new_lumapps_uuid():
@@ -110,8 +108,7 @@ def new_lumapps_uuid():
 
 
 def set_new_lumapps_uuids(content):
-    with_uuid = list(iter_with_key("uuid", content))
-    for o in with_uuid:
+    for o in list(iter_with_key(content, "uuid")):
         o["uuid"] = new_lumapps_uuid()
 
 
