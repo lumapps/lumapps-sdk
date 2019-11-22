@@ -1,18 +1,9 @@
 import requests
-from typing import Union
-
-from lumapps.api.client import ApiClient
 
 
 def create_new_media(
-    client: ApiClient,
-    file_data_or_path: Union[bytes, str],
-    doc_path: str,
-    filename: str,
-    mimetype: str,
-    is_shared: bool,
-    lang: str = "en",
-) -> Union[dict, None]:
+    client, file_data_or_path, doc_path, filename, mimetype, is_shared, lang="en"
+):
     """ Upload a file and create a new media in LumApps media library.
 
     Arguments:
@@ -69,14 +60,14 @@ def create_new_media(
 
 
 def add_new_media_file_of_given_lang_to_existing_media(
-    client: ApiClient,
-    media: dict,
-    file_data_or_path: Union[bytes, str],
-    filename: str,
-    mimetype: str,
-    lang: str = "en",
-    croppedContent: bool = False,
-) -> Union[dict, None]:
+    client,
+    media,
+    file_data_or_path,
+    filename,
+    mimetype,
+    lang="en",
+    croppedContent=False,
+):
     """ Add a file to an existing LumApps media.
 
     Arguments:
@@ -115,13 +106,8 @@ def add_new_media_file_of_given_lang_to_existing_media(
 
 
 def _upload_new_media_file_of_given_lang(
-    client: ApiClient,
-    file_data_or_path: Union[bytes, str],
-    filename: str,
-    mimetype: str,
-    lang: str = "en",
-    prepare_for_lumapps: bool = True,
-) -> Union[dict, None]:
+    client, file_data_or_path, filename, mimetype, lang="en", prepare_for_lumapps=True
+):
     """ Upload a file to lumapps without creating an associated media
 
     Note:
