@@ -77,7 +77,7 @@ def add_new_media_file_of_given_lang_to_existing_media(
     lang: str = "en",
     croppedContent: bool = False,
 ) -> Union[dict, None]:
-    """[summary]
+    """ Add a file to an existing LumApps media.
 
     Arguments:
         client (ApiClient): The ApiClient used to make requests to the LumApps Api.
