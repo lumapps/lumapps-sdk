@@ -144,7 +144,7 @@ def _upload_new_media_file_of_given_lang(
 
     # Get an upload url for the file
     response = requests.get(
-        f"{client.base_url}/upload?success=/upload",
+        "{}/upload?success=/upload".format(client.base_url),
         headers={"Authorization": "Bearer " + client.token},
     )
     upload_url = response.json().get("uploadUrl")
