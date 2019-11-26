@@ -22,7 +22,7 @@ def create_new_media(
         Exception: The data or file path type provided is not supported.
 
     Returns:
-        Union[dict, None]: Return the uploaded media if successfull, None otherwise.
+        Optional[Dict[str, Any]]: Return the uploaded media if successfull, None otherwise.
     """
 
     if isinstance(file_data_or_path, str):
@@ -59,7 +59,7 @@ def create_new_media(
     return None
 
 
-def add_new_media_file_of_given_lang_to_existing_media(
+def add_media_file_for_lang(
     client,
     media,
     file_data_or_path,
@@ -72,7 +72,7 @@ def add_new_media_file_of_given_lang_to_existing_media(
 
     Arguments:
         client (ApiClient): The ApiClient used to make requests to the LumApps Api.
-        media (dict): The LumApps media on which the files have to be uploaded.
+        media (Dict[str, Any]): The LumApps media on which the files have to be uploaded.
         file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
         doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
                         (eg: provider=<my_provider>/site=<my_site_id>/resource=<my_parent_folder_id>)
@@ -84,7 +84,7 @@ def add_new_media_file_of_given_lang_to_existing_media(
         croppedContent (bool): Wether to add the file to the croppedContent instead or content (default: False)
 
     Returns:
-        Union[Dict, None]: The updated media if succesfull, otherwise None.
+        Optional[Dict[str, Any]]: The updated media if succesfull, otherwise None.
     """
 
     # upload the file
@@ -130,7 +130,7 @@ def _upload_new_media_file_of_given_lang(
         Exception: The data or file path type provided is not supported.
 
     Returns:
-        Union[dict, None]: Return the uploaded file if successfull, None otherwise.
+        Optional[Dict[str, Any]]: Return the uploaded file if successfull, None otherwise.
     """
 
     if isinstance(file_data_or_path, str):
