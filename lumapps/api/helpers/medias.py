@@ -31,7 +31,7 @@ def create_new_media(
         file_data = file_data_or_path
     else:
         raise Exception(
-            f"File data or path type not supported: {type(file_data_or_path)}"
+            "File data or path type not supported: {}".format(type(file_data_or_path))
         )
 
     # Get upload url for the document
@@ -139,7 +139,7 @@ def _upload_new_media_file_of_given_lang(
         file_data = file_data_or_path
     else:
         raise Exception(
-            f"File data or path type not supported: {type(file_data_or_path)}"
+            "File data or path type not supported: {}".format(type(file_data_or_path))
         )
 
     # Get an upload url for the file
