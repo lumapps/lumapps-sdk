@@ -1,5 +1,8 @@
 import os
-import sqlite3
+try:
+    import sqlite3
+except ImportError:
+    sqlite3 = None
 from json import loads, dumps
 from datetime import datetime, timedelta
 
@@ -101,6 +104,8 @@ def _get_conn():
 
 
 def get_discovery_cache(url):
+    if sqlite3 is None:
+        return None
     try:
         return _get_conn().execute(
             "SELECT * FROM discovery_cache WHERE url=?", (url,)
@@ -110,6 +115,8 @@ def get_discovery_cache(url):
 
 
 def set_discovery_cache(url, expiry, content):
+    if sqlite3 is None:
+        return
     try:
         _get_conn().execute(
             "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
@@ -120,6 +127,8 @@ def set_discovery_cache(url, expiry, content):
 
 
 def get_config(name):
+    if sqlite3 is None:
+        return None
     try:
         row = _get_conn().execute(
             "SELECT content FROM config WHERE name=?", (name,)
@@ -130,6 +139,8 @@ def get_config(name):
 
 
 def get_config_names():
+    if sqlite3 is None:
+        return []
     try:
         return [r[0] for r in _get_conn().execute("SELECT name FROM config")]
     except sqlite3.OperationalError:
@@ -137,6 +148,8 @@ def get_config_names():
 
 
 def set_config(name, content):
+    if sqlite3 is None:
+        return
     try:
         _get_conn().execute(
             "INSERT OR REPLACE INTO config VALUES (?, ?)",
@@ -155,6 +168,8 @@ class DiscoveryCache(object):
 
     @staticmethod
     def get(url):
+        if sqlite3 is None:
+            return None
         cached = get_discovery_cache(url)
         if not cached:
             return None
@@ -165,6 +180,8 @@ class DiscoveryCache(object):
 
     @staticmethod
     def set(url, content):
+        if sqlite3 is None:
+            return
         expiry = (
             datetime.now() + timedelta(seconds=DiscoveryCache._max_age)
         ).isoformat()[:19]
