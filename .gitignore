@@ -11,8 +11,10 @@ build
 coverage.xml
 .pytest_cache
 
-# IntelliJ / PyCharm IDE
+# IDEs
 .idea/
+.vscode/
 
 # virtualenv
 env/
+venv/
