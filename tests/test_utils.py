@@ -10,6 +10,7 @@ from lumapps.api.utils import (
     get_config_names,
     set_config,
     get_config,
+    _conn,
 )
 
 
@@ -34,6 +35,8 @@ def test_discovery_cache_dict():
 
 @patch("lumapps.api.utils.get_conf_db_file", MagicMock(return_value=":memory:"))
 def test_discovery_cache_sqlite():
+    global _conn
+    _conn = None
     c = _DiscoveryCacheSqlite
     assert c.get('foobar.com') is None
     c.set('foobar.com', "bla")
@@ -42,6 +45,8 @@ def test_discovery_cache_sqlite():
 
 @patch("lumapps.api.utils.get_conf_db_file", MagicMock(return_value=":memory:"))
 def test_get_set_configs():
+    global _conn
+    _conn = None
     assert len(get_config_names()) == 0
     set_config("foo", "bar")
     assert len(get_config_names()) == 1
