@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 
 from lumapps.api.conf import __pypi_packagename__
 
+CACHE_MAX_AGE = timedelta(seconds=60 * 60 * 24)  # 1 day
 GOOGLE_APIS = ("drive", "admin", "groupssettings")
 FILTERS = {
     # content/get, content/list, ...
@@ -80,32 +81,36 @@ def get_conf_db_file():
     return os.path.join(d, "{}.db".format(__pypi_packagename__))
 
 
+_conn = None
+
+
 def _get_conn():
-    conn = sqlite3.connect(get_conf_db_file())
-    conn.isolation_level = None
-    conn.row_factory = sqlite3.Row
-    conn.execute('PRAGMA journal_mode=WAL')
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS discovery_cache (
-            url TEXT NOT NULL,
-            expiry TEXT NOT NULL,
-            content TEXT NOT NULL,
-            PRIMARY KEY (url)
-        )"""
-    )
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS config (
-            name TEXT NOT NULL,
-            content TEXT NOT NULL,
-            PRIMARY KEY (name)
-        )"""
-    )
-    return conn
+    global _conn
+    if _conn is None:
+        conn = sqlite3.connect(get_conf_db_file())
+        conn.isolation_level = None
+        conn.row_factory = sqlite3.Row
+        conn.execute('PRAGMA journal_mode=WAL')
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS discovery_cache (
+                url TEXT NOT NULL,
+                expiry TEXT NOT NULL,
+                content TEXT NOT NULL,
+                PRIMARY KEY (url)
+            )"""
+        )
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS config (
+                name TEXT NOT NULL,
+                content TEXT NOT NULL,
+                PRIMARY KEY (name)
+            )"""
+        )
+        _conn = conn
+    return _conn
 
 
 def get_discovery_cache(url):
-    if sqlite3 is None:
-        return None
     try:
         return _get_conn().execute(
             "SELECT * FROM discovery_cache WHERE url=?", (url,)
@@ -115,8 +120,6 @@ def get_discovery_cache(url):
 
 
 def set_discovery_cache(url, expiry, content):
-    if sqlite3 is None:
-        return
     try:
         _get_conn().execute(
             "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
@@ -127,8 +130,6 @@ def set_discovery_cache(url, expiry, content):
 
 
 def get_config(name):
-    if sqlite3 is None:
-        return None
     try:
         row = _get_conn().execute(
             "SELECT content FROM config WHERE name=?", (name,)
@@ -139,8 +140,6 @@ def get_config(name):
 
 
 def get_config_names():
-    if sqlite3 is None:
-        return []
     try:
         return [r[0] for r in _get_conn().execute("SELECT name FROM config")]
     except sqlite3.OperationalError:
@@ -148,8 +147,6 @@ def get_config_names():
 
 
 def set_config(name, content):
-    if sqlite3 is None:
-        return
     try:
         _get_conn().execute(
             "INSERT OR REPLACE INTO config VALUES (?, ?)",
@@ -163,13 +160,26 @@ class ApiCallError(Exception):
     pass
 
 
-class DiscoveryCache(object):
-    _max_age = 60 * 60 * 24  # 1 day
+class _DiscoveryCacheDict(object):
+    _cache = {}
 
     @staticmethod
     def get(url):
-        if sqlite3 is None:
+        cached = _DiscoveryCacheDict._cache.get(url)
+        if not cached or cached["expiry"] < datetime.now():
             return None
+        return cached["content"]
+
+    @staticmethod
+    def set(url, content):
+        expiry = datetime.now() + CACHE_MAX_AGE
+        _DiscoveryCacheDict._cache[url] = {"expiry": expiry, "content": content}
+
+
+class _DiscoveryCacheSqlite(object):
+
+    @staticmethod
+    def get(url):
         cached = get_discovery_cache(url)
         if not cached:
             return None
@@ -180,12 +190,14 @@ class DiscoveryCache(object):
 
     @staticmethod
     def set(url, content):
-        if sqlite3 is None:
-            return
-        expiry = (
-            datetime.now() + timedelta(seconds=DiscoveryCache._max_age)
-        ).isoformat()[:19]
+        expiry = (datetime.now() + CACHE_MAX_AGE).isoformat()[:19]
         set_discovery_cache(url, expiry, content)
+
+
+if os.getenv("GAE_ENV") or sqlite3 is None:
+    DiscoveryCache = _DiscoveryCacheDict
+else:
+    DiscoveryCache = _DiscoveryCacheSqlite
 
 
 def list_prune_filters():
