@@ -166,9 +166,7 @@ class _DiscoveryCacheDict(object):
     @staticmethod
     def get(url):
         cached = _DiscoveryCacheDict._cache.get(url)
-        if not cached:
-            return None
-        if cached["expiry"] < datetime.now():
+        if not cached or cached["expiry"] < datetime.now():
             return None
         return cached["content"]
 
