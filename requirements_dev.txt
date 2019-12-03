@@ -12,4 +12,4 @@ sphinxcontrib-napoleon
 # Dev tools
 pre-commit
 pre-commit-hooks
-
+wheel
