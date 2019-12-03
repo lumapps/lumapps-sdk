@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lumapps.api.client &mdash; Lumapps SDK 0.1.13 documentation</title>
+  <title>lumapps.api.client &mdash; Lumapps SDK 0.1.17 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.13
+                0.1.17
               </div>
             
           
@@ -170,24 +170,24 @@
            <div itemprop="articleBody">
             
   <h1>Source code for lumapps.api.client</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
-<span class="kn">from</span> <span class="nn">textwrap</span> <span class="k">import</span> <span class="n">TextWrapper</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">TextWrapper</span>
 
 <span class="kn">import</span> <span class="nn">uritemplate</span>
 <span class="kn">import</span> <span class="nn">httplib2</span>
-<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
-<span class="kn">from</span> <span class="nn">google.oauth2.credentials</span> <span class="k">import</span> <span class="n">Credentials</span>
-<span class="kn">from</span> <span class="nn">googleapiclient.errors</span> <span class="k">import</span> <span class="n">HttpError</span>
-<span class="kn">from</span> <span class="nn">googleapiclient.discovery</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="kn">import</span> <span class="n">service_account</span>
+<span class="kn">from</span> <span class="nn">google.oauth2.credentials</span> <span class="kn">import</span> <span class="n">Credentials</span>
+<span class="kn">from</span> <span class="nn">googleapiclient.errors</span> <span class="kn">import</span> <span class="n">HttpError</span>
+<span class="kn">from</span> <span class="nn">googleapiclient.discovery</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">build_from_document</span><span class="p">,</span>
     <span class="n">DISCOVERY_URI</span><span class="p">,</span>
     <span class="n">V2_DISCOVERY_URI</span><span class="p">,</span>
     <span class="n">_retrieve_discovery_doc</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">lumapps.api.utils</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">lumapps.api.utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">DiscoveryCache</span><span class="p">,</span>
     <span class="n">pop_matches</span><span class="p">,</span>
     <span class="n">ApiCallError</span><span class="p">,</span>
@@ -257,7 +257,7 @@
 <span class="sd">            credentials, token)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">auth_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">api_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

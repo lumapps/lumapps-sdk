@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LumApps SDK &mdash; Lumapps SDK 0.1.13 documentation</title>
+  <title>LumApps SDK &mdash; Lumapps SDK 0.1.17 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.1.13
+                0.1.17
               </div>
             
           
@@ -223,7 +223,7 @@ Once connected, open the javascript console of your browser and run:</p>
 <p>Let’s display the full name of a registered user in lumapps</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_email</span> <span class="o">=</span> <span class="s2">&quot;YOUR EMAIL&quot;</span>
 <span class="n">usr</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>

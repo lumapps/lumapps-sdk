@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Users &mdash; Lumapps SDK 0.1.13 documentation</title>
+  <title>Users &mdash; Lumapps SDK 0.1.17 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.13
+                0.1.17
               </div>
             
           
@@ -186,7 +186,7 @@
 <span class="n">users</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;User {} [{}]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">),</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uid&quot;</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;User </span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fullName&quot;</span><span class="p">),</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uid&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -201,7 +201,7 @@
     <span class="s2">&quot;accountType&quot;</span><span class="p">:</span> <span class="s2">&quot;external&quot;</span>
 <span class="p">}</span>
 <span class="n">saved_user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">saved_user</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">saved_user</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
