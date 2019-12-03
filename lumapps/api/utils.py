@@ -84,6 +84,11 @@ def get_conf_db_file():
 _conn = None
 
 
+def _unset_conn():
+    global _conn
+    _conn = None
+
+
 def _get_conn():
     global _conn
     if _conn is None:
