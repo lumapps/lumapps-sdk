@@ -351,6 +351,11 @@ class ApiClient(object):
                     self.last_cursor = cursor = response["cursor"]
                 else:
                     return self._prune(method_parts, items)
+            # Special case (api inconsistency => eg, customcontenttype/tag/list endpoint)
+            elif "more" not in response and "items" in response:
+                self.last_cusor = None
+                items.extend(response["items"])
+                return self._prune(method_parts, items)
             else:
                 self.last_cursor = None
                 return self._prune(method_parts, response)
@@ -397,6 +402,10 @@ class ApiClient(object):
                     cursor = response["cursor"]
                 else:
                     return
+             # Special case (api inconsistency => eg, customcontenttype/tag/list endpoint)
+            elif "more" not in response and "items" in response:
+                for item in response["items"]:
+                    yield self._prune(method_parts, items)
             else:
                 yield self._prune(method_parts, response)
 
