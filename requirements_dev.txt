@@ -2,7 +2,7 @@
 flake8
 coverage
 pytest
-mock
+pytest-mock
 
 # Doc
 sphinx

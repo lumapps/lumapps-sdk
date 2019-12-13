@@ -81,38 +81,27 @@ def get_conf_db_file():
     return os.path.join(d, "{}.db".format(__pypi_packagename__))
 
 
-_conn = None
-
-
-def _unset_conn():
-    global _conn
-    _conn = None
-
-
 def _get_conn():
-    global _conn
-    if _conn is None:
-        conn = sqlite3.connect(get_conf_db_file())
-        conn.isolation_level = None
-        conn.row_factory = sqlite3.Row
-        conn.execute('PRAGMA journal_mode=WAL')
-        conn.execute(
-            """CREATE TABLE IF NOT EXISTS discovery_cache (
-                url TEXT NOT NULL,
-                expiry TEXT NOT NULL,
-                content TEXT NOT NULL,
-                PRIMARY KEY (url)
-            )"""
-        )
-        conn.execute(
-            """CREATE TABLE IF NOT EXISTS config (
-                name TEXT NOT NULL,
-                content TEXT NOT NULL,
-                PRIMARY KEY (name)
-            )"""
-        )
-        _conn = conn
-    return _conn
+    conn = sqlite3.connect(get_conf_db_file())
+    conn.isolation_level = None
+    conn.row_factory = sqlite3.Row
+    conn.execute('PRAGMA journal_mode=WAL')
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS discovery_cache (
+            url TEXT NOT NULL,
+            expiry TEXT NOT NULL,
+            content TEXT NOT NULL,
+            PRIMARY KEY (url)
+        )"""
+    )
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS config (
+            name TEXT NOT NULL,
+            content TEXT NOT NULL,
+            PRIMARY KEY (name)
+        )"""
+    )
+    return conn
 
 
 def get_discovery_cache(url):
