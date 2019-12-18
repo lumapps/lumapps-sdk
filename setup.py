@@ -18,7 +18,6 @@ setup(
     install_requires=[
         "requests>=2.22",
         "google-api-python-client>=1.7",
-        "uritemplate>=3.0",
     ],
     python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
     keywords="lumapps sdk",
