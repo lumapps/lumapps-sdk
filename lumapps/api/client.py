@@ -191,6 +191,21 @@ class ApiClient(object):
         return ApiClient(self._auth_info, self.api_info, user=user)
 
     def authenticate_on_behalf_of(self, user_email, customer_id):
+        """ Using a service account, authenticate as a user
+            (the service account has to be authorized to do so)
+
+            Can be used to reinstanciate a new ApiClient
+            or inplace of the current one.
+
+            Args:
+                user_email (str): The email of the user you want to authenticate
+                on the behalf of
+
+                customer_id (str): The id of the LumApps customer the user belong to
+
+            Returns:
+                ApiClient: A new instance of the ApiClient correctly authenticated.
+        """
         if not self.creds:
             raise Exception("No credentials (auth_info) provided")
         token_infos = self.get_call(
@@ -198,6 +213,7 @@ class ApiClient(object):
         )
         token = token_infos["accessToken"]
         self.token = token
+        self.user = user_email
         return ApiClient(
             auth_info=self._auth_info,
             api_info=self.api_info,
