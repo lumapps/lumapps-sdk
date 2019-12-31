@@ -190,6 +190,20 @@ class ApiClient(object):
     def get_new_client_as(self, user):
         return ApiClient(self._auth_info, self.api_info, user=user)
 
+    def authenticate_on_behalf_of(self, user_email, customer_id):
+        if not self.creds:
+            raise Exception("No credentials (auth_info) provided")
+        token_infos = self.get_call(
+            "user/getToken", customerId=customer_id, email=user_email
+        )
+        token = token_infos["accessToken"]
+        return ApiClient(
+            auth_info=self._auth_info,
+            api_info=self.api_info,
+            token=token,
+            user=user_email,
+        )
+
     @property
     def token(self):
         if not self.creds.token:
