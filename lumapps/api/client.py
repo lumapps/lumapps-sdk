@@ -197,6 +197,7 @@ class ApiClient(object):
             "user/getToken", customerId=customer_id, email=user_email
         )
         token = token_infos["accessToken"]
+        self.token = token
         return ApiClient(
             auth_info=self._auth_info,
             api_info=self.api_info,
