@@ -194,7 +194,7 @@ class ApiClient(object):
         """ Using a service account, authenticate as a user
             (the service account has to be authorized to do so)
 
-            Can be used to reinstanciate a new ApiClient
+            Can be used to re-instanciate a new ApiClient
             or inplace of the current one.
 
             Args:
