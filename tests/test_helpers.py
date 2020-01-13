@@ -13,6 +13,7 @@ from lumapps.api.helpers import (
     iter_with_key_value,
     set_new_lumapps_uuids,
     copy_with_new_lumapps_uuids,
+    replace_matching_key_val,
 )
 
 
@@ -168,3 +169,14 @@ def test_copy_with_new_lumapps_uuids():
     assert with_uuid[1]["uuid"] != "2ad93c14-0a9d-4d0e-a91b-eb38e1025991"
     assert with_uuid[2]["uuid"] != "f0951e06-ffb6-4406-a9c5-97e0be977f94"
     assert with_uuid[3]["uuid"] != "ae9aac74-1ee5-45c2-9a57-8e447ad663f3"
+
+
+def test_replace_matching_key_val():
+    with open("tests/test_data/community_1.json") as fh:
+        c = json.load(fh)
+    replace_matching_key_val(c, "instance", "2222222222", "foo_bar_123")
+    assert c["instance"] == "foo_bar_123"
+    tmpl = c["template"]
+    props = tmpl["components"][0]["cells"][0]["components"][0]["properties"]
+    assert props["instance"] == ["foo_bar_123"]
+    assert props["media"][0]["instance"] == "foo_bar_123"
