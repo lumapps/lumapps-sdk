@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lumapps.api.client &mdash; Lumapps SDK 0.1.18 documentation</title>
+  <title>lumapps.api.client &mdash; Lumapps SDK 0.1.19 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.18
+                0.1.19
               </div>
             
           
@@ -359,8 +359,28 @@
                         <span class="n">pop_matches</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="k">def</span> <span class="nf">get_new_client_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">ApiClient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_new_client_as_using_dwd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get a new ApiClient using domain-wide delegation &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiClient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_new_client_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">,</span> <span class="n">customer_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get a new ApiClient using an authorized service account by obtaining a</span>
+<span class="sd">            token using the user/getToken method.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                user_email (str): User you want to authenticate on behalf of</span>
+<span class="sd">                customer_id (str): Id of the LumApps customer the user belong to</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                ApiClient: A new instance of the ApiClient correctly authenticated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">creds</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No credentials (auth_info) provided&quot;</span><span class="p">)</span>
+        <span class="n">token_infos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+            <span class="s2">&quot;user/getToken&quot;</span><span class="p">,</span> <span class="n">customerId</span><span class="o">=</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span>
+        <span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">token_infos</span><span class="p">[</span><span class="s2">&quot;accessToken&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">api_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
