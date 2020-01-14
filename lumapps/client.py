@@ -1,6 +1,6 @@
 import asyncio
 
-from typing import List, Generator
+from typing import Any, List, Dict, Generator, Union
 
 from lumapps.base_client import LumAppsBaseClient
 from lumapps.errors import LumAppsRequestError, LumAppsClientError
@@ -8,7 +8,7 @@ from lumapps.lumapps_reponse import LumAppsResponse
 
 
 class LumAppsApiClient(LumAppsBaseClient):
-    def list_all(self, api_endpoint: str) -> List[dict]:
+    def list_all(self, api_endpoint: str) -> List[Dict[Any, Any]]:
         """ A method to call a /list endpoint and obtain all results in a list
 
         Args:
@@ -24,7 +24,7 @@ class LumAppsApiClient(LumAppsBaseClient):
 
     def iter_pages(
         self, api_endpoint: str
-    ) -> Generator[List[dict], None, None]:
+    ) -> Generator[List[Dict[Any, Any]], None, None]:
         """ A method to call a /list endpoint and obtain a generator that will
             gradually give you each result page
 
@@ -96,6 +96,9 @@ class LumAppsApiClient(LumAppsBaseClient):
         return getted
 
     def _generic_call(self, method_parts, params) -> LumAppsResponse:
+        if len(method_parts) == 1:
+            method_parts = tuple(method_parts[0].split("/"))
+
         api_endpoint = "/".join(method_parts)
 
         method = self._extract_method_from_discovery(method_parts)
@@ -128,7 +131,9 @@ class LumAppsApiClient(LumAppsBaseClient):
 
         return res
 
-    def get_call(self, *method_parts, **params) -> List[dict]:
+    def get_call(
+        self, *method_parts, **params
+    ) -> Union[LumAppsResponse, List[Dict[Any, Any]]]:
         """
             Returns:
                 list[dict]: a list containing all the data resulting of the query
@@ -156,7 +161,7 @@ class LumAppsApiClient(LumAppsBaseClient):
             data = [item for sublist in _data for item in sublist]
             return data
         else:
-            return list(res)
+            return res
 
     def iter_call(
         self, *method_parts, **params

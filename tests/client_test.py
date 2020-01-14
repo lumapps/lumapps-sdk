@@ -77,7 +77,7 @@ class TestGetCall(unittest.TestCase):
     def test_get_call_with_args(self, mock_request):
         test_email = "maxime@test.lumapps.com"
         add_user_to_mock(mock_request, test_email)
-        res = self.client.get_call("user", "get", email=test_email)[0]
+        res = self.client.get_call("user", "get", email=test_email)
         self.assertEqual(res.get("email"), test_email)
 
     @unittest.mock.patch(
