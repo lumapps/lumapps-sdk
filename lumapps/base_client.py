@@ -24,7 +24,8 @@ class LumAppsBaseClient:
         ] = "https://lumsites.appspot.com/_ah/api/discovery/v1/apis/lumsites/v1/rest",
         run_async=False,
         session=None,
-        proxy=None,
+        no_verify=False,
+        proxy_infos=None,
         timeout=30,
         headers: Optional[dict] = None,
         loop: Optional[asyncio.AbstractEventLoop] = None,
@@ -33,26 +34,45 @@ class LumAppsBaseClient:
         self.base_url = base_url
         self.run_async = run_async
         self.session = session
-        self.proxy = proxy
+        self.no_verify = no_verify
+        self.proxy_infos = proxy_infos
         self.timeout = timeout
         self.headers = headers or {}
         self._logger = logging.getLogger(__name__)
-        self._event_loop = loop
+        self._event_loop = loop if loop else self._get_event_loop()
 
         if isinstance(api_spec, str):
             if urlparse(api_spec).scheme != "":
-                response = self.api_call(api_spec, "GET", _format="json")
-                self.api_spec = (
-                    {}
-                    if isinstance(response, asyncio.Future)
-                    else response.data
+                response = self.api_call(
+                    api_spec, "GET", _format="json", force_sync=True
                 )
+                self.api_spec = response.data  # type: ignore
             else:
                 with open(api_spec, "r") as f:
                     data = json.load(f)
                 self.api_spec = data
         else:
             self.api_spec = api_spec
+
+        if self.proxy_infos:
+            self._proxy_host = proxy_infos["host"]
+            self._proxy_port = proxy_infos["port"]
+            self._proxy_url = f"{self._proxy_host}:{self._proxy_port}"
+            self._proxy_headers = proxy_infos.get("headers")
+
+            # Proxy authentication
+            # Try to get it from the info, mus tbe an object (https://docs.aiohttp.org/en/stable/client_reference.html#client-session)
+            self._proxy_auth = proxy_infos.get("proxy_auth")
+
+            if (
+                not self._proxy_auth
+                and "user" in proxy_infos
+                and "password" in proxy_infos
+            ):
+                # Construct a basic auth object from the proxy infos
+                self._proxy_auth = aiohttp.BasicAuth(
+                    login=proxy_infos["user"], password=proxy_infos["password"]
+                )
 
     def _get_event_loop(self):
         """Retrieves the event loop or creates a new one."""
@@ -72,7 +92,6 @@ class LumAppsBaseClient:
                 e.g. {
                     'Content-Type': 'application/json;charset=utf-8',
                     'Authorization': 'Bearer xoxb-1234-1243',
-                    'User-Agent': 'Python/3.6.8 slack/2.1.0 Darwin/17.7.0'
                 }
         """
         headers = {
@@ -93,6 +112,7 @@ class LumAppsBaseClient:
         json: dict = None,
         _format: str = "json",
         full_url: bool = False,
+        force_sync: bool = False,
     ) -> Union[asyncio.Future, LumAppsResponse]:
         """Create a request and execute the API call to LumApps.
         Args:
@@ -149,7 +169,7 @@ class LumAppsBaseClient:
             loop=self._event_loop,
         )
 
-        if self.run_async:
+        if self.run_async and not force_sync:
             return future
 
         return self._event_loop.run_until_complete(future)
@@ -169,6 +189,16 @@ class LumAppsBaseClient:
         Returns:
             A dictionary of the response data.
         """
+
+        if self.proxy_infos:
+            req_args["proxy"] = self._proxy_url
+            if self._proxy_headers:
+                req_args.update["proxy_headers"] = self._proxy_headers
+            if self._proxy_auth:
+                req_args["proxy_auth"] = self._proxy_auth
+
+        if self.no_verify:
+            req_args.update({"verify_ssl": False})
 
         async def format_res(res, _format="json"):
             if _format == "json":
