@@ -1,4 +1,5 @@
 import os
+
 try:
     import sqlite3
 except ImportError:
@@ -85,7 +86,7 @@ def _get_conn():
     conn = sqlite3.connect(get_conf_db_file())
     conn.isolation_level = None
     conn.row_factory = sqlite3.Row
-    conn.execute('PRAGMA journal_mode=WAL')
+    conn.execute("PRAGMA journal_mode=WAL")
     conn.execute(
         """CREATE TABLE IF NOT EXISTS discovery_cache (
             url TEXT NOT NULL,
@@ -106,9 +107,11 @@ def _get_conn():
 
 def get_discovery_cache(url):
     try:
-        return _get_conn().execute(
-            "SELECT * FROM discovery_cache WHERE url=?", (url,)
-        ).fetchone()
+        return (
+            _get_conn()
+            .execute("SELECT * FROM discovery_cache WHERE url=?", (url,))
+            .fetchone()
+        )
     except sqlite3.OperationalError:
         return None
 
@@ -125,9 +128,11 @@ def set_discovery_cache(url, expiry, content):
 
 def get_config(name):
     try:
-        row = _get_conn().execute(
-            "SELECT content FROM config WHERE name=?", (name,)
-        ).fetchone()
+        row = (
+            _get_conn()
+            .execute("SELECT content FROM config WHERE name=?", (name,))
+            .fetchone()
+        )
     except sqlite3.OperationalError:
         return None
     return loads(row[0]) if row else None
@@ -150,10 +155,6 @@ def set_config(name, content):
         pass
 
 
-class ApiCallError(Exception):
-    pass
-
-
 class _DiscoveryCacheDict(object):
     _cache = {}
 
@@ -171,7 +172,6 @@ class _DiscoveryCacheDict(object):
 
 
 class _DiscoveryCacheSqlite(object):
-
     @staticmethod
     def get(url):
         cached = get_discovery_cache(url)
