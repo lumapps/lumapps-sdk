@@ -183,7 +183,15 @@ class ApiClient(object):
 
     def get_new_client_as_using_dwd(self, user_email):
         """ Get a new ApiClient using domain-wide delegation """
-        return ApiClient(self._auth_info, self.api_info, user=user_email)
+        return ApiClient(
+            auth_info=self._auth_info,
+            api_info=self.api_info,
+            user=user_email,
+            no_verify=self.no_verify,
+            proxy_info=self.proxy_info,
+            prune=self.prune,
+            num_retries=self.num_retries,
+        )
 
     def get_new_client_as(self, user_email, customer_id=None):
         """ Get a new ApiClient using an authorized service account by obtaining a
@@ -202,7 +210,15 @@ class ApiClient(object):
             "user/getToken", customerId=customer_id, email=user_email
         )
         token = token_infos["accessToken"]
-        return ApiClient(api_info=self.api_info, token=token, user=user_email)
+        return ApiClient(
+            api_info=self.api_info,
+            token=token,
+            user=user_email,
+            no_verify=self.no_verify,
+            proxy_info=self.proxy_info,
+            prune=self.prune,
+            num_retries=self.num_retries,
+        )
 
     @property
     def token(self):
