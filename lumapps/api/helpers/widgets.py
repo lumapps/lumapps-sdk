@@ -116,3 +116,11 @@ def copy_with_new_lumapps_uuids(content):
     new_content = deepcopy(content)
     set_new_lumapps_uuids(new_content)
     return new_content
+
+
+def replace_matching_key_val(content, key, old_val, new_val):
+    for d in iter_with_key(content, key):
+        if d[key] == old_val:
+            d[key] = new_val
+        elif isinstance(d[key], list) and old_val in d[key]:
+            d[key] = [i if i != old_val else new_val for i in d[key]]
