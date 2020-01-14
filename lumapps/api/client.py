@@ -327,11 +327,11 @@ class ApiClient(object):
     def get_call(self, *method_parts, **params):
         """
         Args:
-            *method_parts (List[str]): API endpoint (eg user/get or "user", "get").
+            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
             **params (dict): Parameters of the call
 
         Returns:
-            Union[dict, List[dict]]: An object, or list of objects returned as a response.
+            Union[dict, List[dict]]: Object or list of objects returned by the LumApps API endpoint.
 
         Example:
             List feedtypes in LumApps:
@@ -373,12 +373,13 @@ class ApiClient(object):
 
     def iter_call(self, *method_parts, **params):
         """
-        Args:
-            *method_parts (List[str]): API endpoint (eg user/get or "user", "get").
+         Args:
+            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
             **params (dict): Parameters of the call
 
         Yields:
-            dict: An object returned as a response.
+            dict: Object returned by the LumApps API endpoint.
+
 
         Example:
             List feedtypes in LumApps:
