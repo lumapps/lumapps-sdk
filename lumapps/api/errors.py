@@ -2,7 +2,7 @@ class ApiClientError(Exception):
     """ Base error of the ApiClient """
 
 
-class ApiCallError(ApiClienError):
+class ApiCallError(ApiClientError):
     """ Retrocomptiblity """
 
 
