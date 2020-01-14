@@ -187,8 +187,28 @@ class ApiClient(object):
                         pop_matches(pth, content)
         return content
 
-    def get_new_client_as(self, user):
-        return ApiClient(self._auth_info, self.api_info, user=user)
+    def get_new_client_as_using_dwd(self, user_email):
+        """ Get a new ApiClient using domain-wide delegation """
+        return ApiClient(self._auth_info, self.api_info, user=user_email)
+
+    def get_new_client_as(self, user_email, customer_id=None):
+        """ Get a new ApiClient using an authorized service account by obtaining a
+            token using the user/getToken method.
+
+            Args:
+                user_email (str): User you want to authenticate on behalf of
+                customer_id (str): Id of the LumApps customer the user belong to
+
+            Returns:
+                ApiClient: A new instance of the ApiClient correctly authenticated.
+        """
+        if not self.creds:
+            raise Exception("No credentials (auth_info) provided")
+        token_infos = self.get_call(
+            "user/getToken", customerId=customer_id, email=user_email
+        )
+        token = token_infos["accessToken"]
+        return ApiClient(api_info=self.api_info, token=token, user=user_email)
 
     @property
     def token(self):
