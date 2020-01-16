@@ -280,7 +280,7 @@ class ApiClient(object):
             method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n"
         )
         if "description" in method:
-            w(method["description"].strip() + "\n")
+            add_line(method["description"].strip() + "\n")
         if debug:
             add_line(json.dumps(method, indent=4, sort_keys=True))
         params = method.get("parameters", {})
