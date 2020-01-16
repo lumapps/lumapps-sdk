@@ -3,7 +3,6 @@ from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
 
-from requests import Session
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
@@ -12,7 +11,7 @@ from lumapps.api.errors import ApiClientError, ApiCallError
 from lumapps.api.utils import DiscoveryCache, pop_matches, GOOGLE_APIS, FILTERS
 
 
-def _parse_method_parts(parts):
+def _parse_endpoint_parts(parts):
     ret = []
     for part in parts:
         for sub_part in part.split("/"):
@@ -32,8 +31,6 @@ class ApiClient(object):
             token_getter (object): a token getter function
             prune (bool): Whether or not to use FILTERS to prune the LumApps
                 API responses. Defaults to False.
-            num_retries (int): Number of times that a request will be retried.
-                Default to 1.
             no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
             proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
         Note:
@@ -50,13 +47,11 @@ class ApiClient(object):
         token=None,
         token_getter=None,
         prune=False,
-        num_retries=1,
         no_verify=False,
         proxy_info=None,
     ):
         self._get_token_user = None
         self._token_expiry = 0
-        self.num_retries = num_retries
         self.no_verify = no_verify
         self.proxy_info = proxy_info
         self.prune = prune
@@ -78,13 +73,13 @@ class ApiClient(object):
             "/"
         )
         if self._api_name in GOOGLE_APIS:
-            url_path = "discovery/v1/apis"
+            prefix = f"{self.base_url}"
         else:
-            url_path = "_ah/api/discovery/v1/apis"
-        self._url = "{}/{}/{}/{}/rest".format(
-            self.base_url, url_path, self._api_name, self._api_version
-        )
-        self._methods = None
+            prefix = f"{self.base_url}/_ah/api"
+        api_name, api_version = self._api_name, self._api_version
+        self._api_url = f"{prefix}/{api_name}/{api_version}"
+        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
+        self._endpoints = None
         self._session = None
         self.token_getter = token_getter
         if token_getter:
@@ -113,6 +108,20 @@ class ApiClient(object):
                 "auth_info, credentials or token)."
             )
         self.email = user or ""
+        self._discovery_doc = None
+
+    @property
+    def discovery_doc(self):
+        if self._discovery_doc is None:
+            url = self._discovery_url
+            d = DiscoveryCache.get(url)
+            if d:
+                self._discovery_doc = loads(d)
+            else:
+                resp = self.session.get(url)
+                DiscoveryCache.set(url, resp.text)
+                self._discovery_doc = resp.json()
+        return self._discovery_doc
 
     def _check_access_token(self):
         if not self.token_getter:
@@ -122,16 +131,16 @@ class ApiClient(object):
             return
         self.token, self._token_expiry = self.token_getter()
 
-    def _prune(self, method_parts, content):
+    def _prune(self, name_parts, content):
         """Prune the api response.
         """
         if not self.prune:
             return content
         for filter_method in FILTERS:
             filter_method_parts = filter_method.split("/")
-            if len(method_parts) != len(filter_method_parts):
+            if len(name_parts) != len(filter_method_parts):
                 continue
-            for filter_part, part in zip(filter_method_parts, method_parts):
+            for filter_part, part in zip(filter_method_parts, name_parts):
                 if filter_part not in ("*", part):
                     break
             else:
@@ -152,7 +161,6 @@ class ApiClient(object):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
-            num_retries=self.num_retries,
         )
 
     def get_new_client_as(self, user_email, customer_id=None):
@@ -179,7 +187,6 @@ class ApiClient(object):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
-            num_retries=self.num_retries,
         )
 
     @property
@@ -196,7 +203,7 @@ class ApiClient(object):
         self.creds = Credentials(v)
 
     @property
-    def session(self) -> Session:
+    def session(self):
         """Setup the session object.
         """
         self._check_access_token()
@@ -211,35 +218,27 @@ class ApiClient(object):
                 pwd = self.proxy_info["password"]
                 s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
                 s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
-            # build_content = _get_build_content(
-            #     self._api_name,
-            #     self._api_version,
-            #     discoveryServiceUrl=self._url,
-            #     cache_discovery=True,
-            #     cache=DiscoveryCache(),
-            #     proxy_info=self.proxy_info,
-            # )
-            # self._session = build_from_document(build_content, credentials=self.creds)
+            self._session = s
         return self._session
 
     @property
-    def methods(self):
-        if self._methods is None:
-            self._methods = {
-                n: m for n, m in self.walk_api_methods(self.session._resourceDesc)
+    def endpoints(self):
+        if self._endpoints is None:
+            self._endpoints = {
+                n: m for n, m in self.walk_endpoints(self.discovery_doc)
             }
-        return self._methods
+        return self._endpoints
 
-    def get_help(self, method_parts, debug=False):
+    def get_help(self, name_parts, debug=False):
         help_lines = []
 
         def add_line(l):
             help_lines.append(l)
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
-        method = self.methods[method_parts]
+        method = self.endpoints[name_parts]
         add_line(
-            method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n"
+            method.get("httpMethod", "?") + " method: " + " ".join(name_parts) + "\n"
         )
         if "description" in method:
             add_line(method["description"].strip() + "\n")
@@ -268,13 +267,13 @@ class ApiClient(object):
                 )
         return "\n".join(help_lines)
 
-    def get_method_descriptions(self, methods):
+    def get_method_descriptions(self, endpoints):
         lines = []
-        for method_parts in methods:
-            method = self.methods[method_parts]
+        for name_parts in endpoints:
+            method = self.endpoints[name_parts]
             lines.append(
                 (
-                    " ".join(method_parts),
+                    " ".join(name_parts),
                     method.get("description", "").strip().split("\n")[0],
                 )
             )
@@ -282,26 +281,24 @@ class ApiClient(object):
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
         return "\n".join(fmt.format(*l) for l in lines)
 
-    def walk_api_methods(self, resource, parents=()):
+    def walk_endpoints(self, resource, parents=()):
         for method_name, method in resource.get("methods", {}).items():
             yield tuple(parents + (method_name,)), method
         for rsc_name, rsc in resource.get("resources", {}).items():
-            for method_name, method in self.walk_api_methods(
+            for method_name, method in self.walk_endpoints(
                 rsc, tuple(parents + (rsc_name,))
             ):
                 yield method_name, method
 
-    def _extract_method_from_discovery(self, *method_parts):
-        if isinstance(method_parts[0], tuple):
-            method_parts = method_parts[0]
-        resources = self.api_spec.get("resources")
+    def _extract_from_discovery(self, name_parts):
+        resources = self.discovery_doc.get("resources")
         if not resources:
             return
         getted = None
-        for i, part in enumerate(method_parts):
-            if i == len(method_parts) - 2:
+        for i, part in enumerate(name_parts):
+            if i == len(name_parts) - 2:
                 getted = resources.get(part, {})
-            elif i == len(method_parts) - 1:
+            elif i == len(name_parts) - 1:
                 if not getted:
                     getted = resources.get(part, {}).get("methods", {})
                 getted = getted.get("methods", {}).get(part, {})
@@ -311,27 +308,22 @@ class ApiClient(object):
                 getted = getted.get(part, {}).get("resources", {})
         return getted
 
-    def _get_api_call(self, method_parts, params):
-        """ Construct the method to call by using the session.
-        """
-        method = self._extract_method_from_discovery(method_parts)
-        verb = method.get("httpMethod")
-        body = params.pop("body", None) if verb == "POST" else None
-        resp = self.session.request(verb, "/".join(method_parts), params, json=body)
+    def _get_api_call(self, name_parts, params):
+        """ Construct the call """
+        endpoint = self._extract_from_discovery(name_parts)
+        if not endpoint:
+            raise ApiCallError(f"Endpoint {'/'.join(name_parts)} not found")
+        verb = endpoint.get("httpMethod")
+        body = params.get("body") if verb == "POST" else None
+        url = self._api_url + "/" + "/".join(name_parts)
+        resp = self.session.request(verb, url, params=params, json=body)
         resp.raise_for_status()
         return resp.json()
-        # api_call = self.session
-        # for part in method_parts[:-1]:
-        #     api_call = getattr(api_call, part)()
-        # try:
-        #     return getattr(api_call, method_parts[-1])(**params)
-        # except TypeError as err:
-        #     raise ApiCallError(err)
 
-    def get_call(self, *method_parts, **params):
+    def get_call(self, *name_parts, **params):
         """
         Args:
-            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            *name_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
             **params (dict): Parameters of the call
 
         Returns:
@@ -341,14 +333,14 @@ class ApiClient(object):
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this method:
+            With this endpoint:
 
                 >>> feedtypes = get_call("feedtype/list")
                 >>> print(feedtypes)
         """
         if params is None:
             params = {}
-        method_parts = _parse_method_parts(method_parts)
+        name_parts = _parse_endpoint_parts(name_parts)
         items = []
         cursor = None
         if "body" in params and isinstance(params["body"], str):
@@ -359,7 +351,7 @@ class ApiClient(object):
                     params["body"]["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(method_parts, params)
+            response = self._get_api_call(name_parts, params)
             if "more" in response and "items" not in response:
                 self.last_cursor = None
                 return items  # empty list
@@ -368,15 +360,15 @@ class ApiClient(object):
                 if response.get("more", False):
                     self.last_cursor = cursor = response["cursor"]
                 else:
-                    return self._prune(method_parts, items)
+                    return self._prune(name_parts, items)
             else:
                 self.last_cursor = None
-                return self._prune(method_parts, response)
+                return self._prune(name_parts, response)
 
-    def iter_call(self, *method_parts, **params):
+    def iter_call(self, *name_parts, **params):
         """
          Args:
-            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            *name_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
             **params (dict): Parameters of the call
 
         Yields:
@@ -387,14 +379,14 @@ class ApiClient(object):
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this method:
+            With this endpoint:
 
                 >>> feedtypes = iter_call("feedtype/list")
                 >>> for feedtype in feedtypes: print(feedtype)
         """
         if params is None:
             params = {}
-        method_parts = _parse_method_parts(method_parts)
+        name_parts = _parse_endpoint_parts(name_parts)
         cursor = None
         if "body" in params and isinstance(params["body"], str):
             params["body"] = loads(params["body"])
@@ -404,31 +396,31 @@ class ApiClient(object):
                     params["body"]["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(method_parts, params)
+            response = self._get_api_call(name_parts, params)
             if "more" in response and "items" not in response:
                 return  # empty list
             if "more" in response and "items" in response:
                 for item in response["items"]:
-                    yield self._prune(method_parts, item)
+                    yield self._prune(name_parts, item)
                 if response.get("more", False):
                     cursor = response["cursor"]
                 else:
                     return
             else:
-                yield self._prune(method_parts, response)
+                yield self._prune(name_parts, response)
 
-    def get_matching_methods(self, method_parts):
+    def get_matching_endpoints(self, name_parts):
         # find exact matches of all parts up to but excluding last
-        matches = [n for n in self.methods if len(n) >= len(method_parts)]
-        for i, part in enumerate(method_parts[:-1]):
+        matches = [n for n in self.endpoints if len(n) >= len(name_parts)]
+        for i, part in enumerate(name_parts[:-1]):
             matches = [n for n in matches if len(n) >= i and n[i] == part]
         # find 'startswith' matches of the last part
-        last = method_parts[-1]
-        idx = len(method_parts) - 1
+        last = name_parts[-1]
+        idx = len(name_parts) - 1
         matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
         if not matches:
-            return "API method not found"
+            return "Endpoint not found"
         return (
-            "API method not found. Did you mean any of these?\n"
+            "Endpoint not found. Did you mean any of these?\n"
             + self.get_method_descriptions(sorted(matches))
         )

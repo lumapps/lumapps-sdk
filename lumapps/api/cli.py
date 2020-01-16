@@ -23,10 +23,10 @@ def parse_args(*args, **kwargs):
     group1 = parser.add_mutually_exclusive_group()
     group2 = parser.add_mutually_exclusive_group()
     add_arg(
-        "api_method",
+        "endpoint",
         nargs="*",
-        metavar="METHOD_AND_PARAMETERS",
-        help=" parameters in the form arg_name=value. The method can be ",
+        metavar="ENDPOINT_AND_PARAMETERS",
+        help="Parameters are set as arg_name=value",
     )
     add_arg("--help", "-h", action="store_true")
     add_arg("--debug", "-d", action="store_true")
@@ -94,9 +94,9 @@ def store_config(api_info, auth_info, conf_name, user=None):
     set_config(conf_name, {"api": api_info, "auth": auth_info, "user": user})
 
 
-def cast_params(method_parts, params, api):
+def cast_params(name_parts, params, api):
     truths = ("True", "true", "1", "Yes", "yes", "sure", "yeah")
-    method = api.methods[method_parts]
+    method = api.endpoints[name_parts]
     method_params = method.get("parameters", {})
     for param in params:
         if method_params.get(param, {}).get("type", "") == "boolean":
@@ -152,20 +152,20 @@ def main():
     )
     if args.config and (args.auth or args.api):
         store_config(api_info, auth_info, args.config, args.user)
-    if not args.api_method:
+    if not args.endpoint:
         arg_parser.print_help()
         sys.exit(
-            "\nNo API method specified. Found these:\n"
-            + api.get_method_descriptions(sorted(api.methods))
+            "\nNo endpoint specified. Found these:\n"
+            + api.get_method_descriptions(sorted(api.endpoints))
         )
-    method_parts = tuple(p for p in args.api_method if "=" not in p)
-    if method_parts not in api.methods:
-        sys.exit(api.get_matching_methods(method_parts))
+    name_parts = tuple(p for p in args.endpoint if "=" not in p)
+    if name_parts not in api.endpoints:
+        sys.exit(api.get_matching_endpoints(name_parts))
     if args.help:
-        print(api.get_help(method_parts, args.debug))
+        print(api.get_help(name_parts, args.debug))
         return
     params = {
-        p[0]: p[2] for p in (a.partition("=") for a in args.api_method if "=" in a)
+        p[0]: p[2] for p in (a.partition("=") for a in args.endpoint if "=" in a)
     }
     if args.body_file:
         with open(args.body_file) as fh:
@@ -176,9 +176,9 @@ def main():
     #     s = args.body.read()
     #     print('will loads this: {}'.format(s))
     #     params['body'] = json.loads(s)
-    cast_params(method_parts, params, api)
+    cast_params(name_parts, params, api)
     try:
-        response = api.get_call(*method_parts, **params)
+        response = api.get_call(*name_parts, **params)
     except ApiCallError as err:
         sys.exit(err)
     print(json.dumps(response, indent=4, sort_keys=True))

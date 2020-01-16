@@ -44,13 +44,13 @@ Required parameters
 Usage examples
 --------------
 
-**List API methods**
+**List endpoints **
 
 .. code-block:: bash
 
     lac --auth web_auth.json
 
-**List methods beginning with 'comm'**
+**List endpoints beginning with 'comm'**
 
 .. code-block:: bash
 

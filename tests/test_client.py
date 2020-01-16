@@ -1,7 +1,18 @@
+import json
+from copy import deepcopy
+
 import pytest
 
-from copy import deepcopy
-from lumapps.api.client import pop_matches, ApiClient, _parse_method_parts
+from lumapps.api.client import pop_matches, ApiClient, _parse_endpoint_parts
+from lumapps.api.errors import ApiCallError
+
+
+@pytest.fixture
+def cli():
+    c = ApiClient(token='foobar')
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        c._discovery_doc = json.load(fh)
+    return c
 
 
 def test_pop_matches():
@@ -42,7 +53,33 @@ def test_api_client_token_setter():
     assert client.creds is not None
     assert client.creds.token == token
 
-def test_parse_method_parts():
+
+def test_parse_endpoint_parts():
     s = ("user/get", )
-    parts = _parse_method_parts(s)
+    parts = _parse_endpoint_parts(s)
     assert parts == ["user", "get"]
+
+
+def test_get_call_raises_api_call_error(cli):
+    with pytest.raises(ApiCallError):
+        cli.get_call("foo")
+    with pytest.raises(ApiCallError):
+        cli.get_call("user/bla")
+
+
+def test_endpoints_property(cli):
+    assert ("user", "get") in cli.endpoints
+
+
+def test_get_help(cli):
+    h = cli.get_help(("user", "get"))
+    assert "user get" in h
+    with pytest.raises(KeyError):
+        cli.get_help(("user", "get123"))
+
+
+def test_get_matching_endpoints(cli):
+    matches = cli.get_matching_endpoints(("user", "ge"))
+    assert "not found" in matches
+    matches = cli.get_matching_endpoints(("user",))
+    assert "user list" in matches
