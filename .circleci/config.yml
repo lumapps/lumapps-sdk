@@ -39,13 +39,11 @@ commands:
             - "/usr/local/lib/python<< parameters.version >>/site-packges"
             - "/usr/local/lib/site-python"
 
-
-
 jobs:
   linting:
     parameters:
       version:
-          type: string
+        type: string
     executor:
       name: python
       version: << parameters.version >>
@@ -53,7 +51,7 @@ jobs:
     steps:
       - setup:
           version: << parameters.version >>
-      - run: 
+      - run:
           name: Install dependencies
           command: |
             pip install flake8 flake8_formatter_junit_xml
@@ -85,7 +83,6 @@ jobs:
       - install-and-cache:
           version: << parameters.version >>
 
-
   test-and-coverage:
     parameters:
       version:
@@ -96,7 +93,7 @@ jobs:
     steps:
       - install-and-cache:
           version: << parameters.version >>
-      - run: 
+      - run:
           name: Install test and coverage librairies
           command: pip install -r requirements_dev.txt
       - run:
@@ -109,7 +106,7 @@ jobs:
 
       - store_test_results:
           path: test-results
-  
+
   extended-linting:
     executor:
       name: python
@@ -151,31 +148,10 @@ jobs:
       - run:
           name: Build doc
           command: cd documentation && make clean html
-  
-
 
 workflows:
   version: 2.1
-  
-  CI-python27:
-    jobs:
-      - build:
-          name: "Build-27"
-          version: "2.7"
 
-      - linting:
-          name: "Linting-27"
-          version: "2.7"
-          requires:
-              - "Build-27"
-      
-      - test-and-coverage:
-          name: "Tests-27"
-          version: "2.7"
-          requires:
-            - "Linting-27"
-  
-    
   CI-python36:
     jobs:
       - build:
@@ -187,12 +163,12 @@ workflows:
           version: "3.6"
           requires:
             - "Build-36"
-      
+
       - extended-linting:
           name: "Extended linting"
           requires:
-              - "Build-36"
-      
+            - "Build-36"
+
       - test-and-coverage:
           name: "Test-36"
           version: "3.6"
@@ -200,11 +176,9 @@ workflows:
             - "Build-36"
             - "Linting-36"
             - "Extended linting"
-      
+
       - documentation:
           name: "Building documentation"
           version: "3.6"
           requires:
             - "Test-36"
-              
-
