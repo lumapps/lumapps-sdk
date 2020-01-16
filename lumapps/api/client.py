@@ -15,13 +15,8 @@ from googleapiclient.discovery import (
     _retrieve_discovery_doc,
 )
 
-from lumapps.api.utils import (
-    DiscoveryCache,
-    pop_matches,
-    ApiCallError,
-    GOOGLE_APIS,
-    FILTERS,
-)
+from lumapps.api.errors import ApiClientError, ApiCallError
+from lumapps.api.utils import DiscoveryCache, pop_matches, GOOGLE_APIS, FILTERS
 
 
 def _get_build_content(
@@ -58,11 +53,9 @@ def _get_build_content(
 
 
 def _parse_method_parts(parts):
-    ret = []
-    for part in parts:
-        for sub_part in part.split("/"):
-            ret.append(sub_part)
-    return ret
+    if len(parts) == 1:
+        parts = parts.split("/")
+    return parts
 
 
 class ApiClient(object):
@@ -79,7 +72,8 @@ class ApiClient(object):
                 API responses. Defaults to False.
             num_retries (int): Number of times that a request will be retried.
                 Default to 1.
-
+            no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
+            proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
         Note:
             At least one type of authentication info is required (auth_info,
             credentials, token)
@@ -152,7 +146,7 @@ class ApiClient(object):
             if user:
                 self.creds = self.creds.with_subject(user)
         else:
-            raise Exception(
+            raise ApiClientError(
                 "You must provide authentication infos (token_getter, "
                 "auth_info, credentials or token)."
             )
@@ -189,7 +183,15 @@ class ApiClient(object):
 
     def get_new_client_as_using_dwd(self, user_email):
         """ Get a new ApiClient using domain-wide delegation """
-        return ApiClient(self._auth_info, self.api_info, user=user_email)
+        return ApiClient(
+            auth_info=self._auth_info,
+            api_info=self.api_info,
+            user=user_email,
+            no_verify=self.no_verify,
+            proxy_info=self.proxy_info,
+            prune=self.prune,
+            num_retries=self.num_retries,
+        )
 
     def get_new_client_as(self, user_email, customer_id=None):
         """ Get a new ApiClient using an authorized service account by obtaining a
@@ -203,12 +205,20 @@ class ApiClient(object):
                 ApiClient: A new instance of the ApiClient correctly authenticated.
         """
         if not self.creds:
-            raise Exception("No credentials (auth_info) provided")
+            raise ApiClientError("No credentials (auth_info) provided")
         token_infos = self.get_call(
             "user/getToken", customerId=customer_id, email=user_email
         )
         token = token_infos["accessToken"]
-        return ApiClient(api_info=self.api_info, token=token, user=user_email)
+        return ApiClient(
+            api_info=self.api_info,
+            token=token,
+            user=user_email,
+            no_verify=self.no_verify,
+            proxy_info=self.proxy_info,
+            prune=self.prune,
+            num_retries=self.num_retries,
+        )
 
     @property
     def token(self):
@@ -261,30 +271,32 @@ class ApiClient(object):
     def get_help(self, method_parts, debug=False):
         help_lines = []
 
-        def w(l):
+        def add_line(l):
             help_lines.append(l)
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
         method = self.methods[method_parts]
-        w(method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n")
+        add_line(
+            method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n"
+        )
         if "description" in method:
             w(method["description"].strip() + "\n")
         if debug:
-            w(json.dumps(method, indent=4, sort_keys=True))
+            add_line(json.dumps(method, indent=4, sort_keys=True))
         params = method.get("parameters", {})
         if method.get("httpMethod", "") == "POST":
             params.update(
                 {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
             )
         if not params:
-            w("API method takes no parameters")
+            add_line("API method takes no parameters")
         else:
-            w("Parameters (*required):")
+            add_line("Parameters (*required):")
             for param_name in sorted(params):
                 param = params[param_name]
                 descr = param.get("description")
                 descr = "\n" + wrapper.fill(descr) if descr else ""
-                w(
+                add_line(
                     "  {}: {} {} {}".format(
                         param_name,
                         param["type"],
@@ -318,7 +330,7 @@ class ApiClient(object):
                 yield method_name, method
 
     def _get_api_call(self, method_parts, params):
-        """Construct the method to call by using the service.
+        """ Construct the method to call by using the service.
         """
         api_call = self.service
         for part in method_parts[:-1]:
@@ -331,11 +343,11 @@ class ApiClient(object):
     def get_call(self, *method_parts, **params):
         """
         Args:
-            *method_parts (str): API method.
-            **params: Parameters.
+            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            **params (dict): Parameters of the call
 
         Returns:
-            dict: An object, or list of objects returned by API method.
+            Union[dict, List[dict]]: Object or list of objects returned by the LumApps API endpoint.
 
         Example:
             List feedtypes in LumApps:
@@ -343,7 +355,7 @@ class ApiClient(object):
 
             With this method:
 
-                >>> feedtypes = get_call("feedtype", "list")
+                >>> feedtypes = get_call("feedtype/list")
                 >>> print(feedtypes)
         """
         if params is None:
@@ -377,12 +389,13 @@ class ApiClient(object):
 
     def iter_call(self, *method_parts, **params):
         """
-        Args:
-            *method_parts (str): API method.
-            **params: Parameters.
+         Args:
+            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            **params (dict): Parameters of the call
 
         Yields:
-            dict: Objects returned by API method.
+            dict: Object returned by the LumApps API endpoint.
+
 
         Example:
             List feedtypes in LumApps:
@@ -390,7 +403,7 @@ class ApiClient(object):
 
             With this method:
 
-                >>> feedtypes = iter_call("feedtype", "list")
+                >>> feedtypes = iter_call("feedtype/list")
                 >>> for feedtype in feedtypes: print(feedtype)
         """
         if params is None:

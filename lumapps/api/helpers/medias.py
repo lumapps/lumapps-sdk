@@ -1,4 +1,5 @@
 import requests
+from lumapps.api.errors import ApiClientError
 
 
 def create_new_media(
@@ -30,7 +31,7 @@ def create_new_media(
     elif isinstance(file_data_or_path, bytes):
         file_data = file_data_or_path
     else:
-        raise Exception(
+        raise ApiClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
         )
 
@@ -138,7 +139,7 @@ def _upload_new_media_file_of_given_lang(
     elif isinstance(file_data_or_path, bytes):
         file_data = file_data_or_path
     else:
-        raise Exception(
+        raise ApiClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
         )
 

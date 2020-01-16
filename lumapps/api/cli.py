@@ -5,8 +5,8 @@ import json
 import logging
 from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType, SUPPRESS
 
+from lumapps.api.errors import ApiCallError
 from lumapps.api.utils import (
-    ApiCallError,
     list_prune_filters,
     get_config_names,
     get_config,
@@ -135,10 +135,7 @@ def main():
     api_info, auth_info, user = load_config(args.api, args.auth, args.user, args.config)
     if args.email:
         token_client = TokenClient(
-            args.customer_id,
-            auth_info,
-            api_info,
-            no_verify=args.no_verify,
+            args.customer_id, auth_info, api_info, no_verify=args.no_verify
         )
         token_getter = token_client.get_token_getter(args.email)
     else:
