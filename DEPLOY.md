@@ -2,7 +2,7 @@
 - rm -rf venv
 - python3.8 -m venv venv
 - source venv/bin/activate
-- python -m pip install -U pip pylint pytest flake8
+- python -m pip install -U pip
 - python -m pip install -r requirements.txt
 - python -m pip install -r requirements_dev.txt
 

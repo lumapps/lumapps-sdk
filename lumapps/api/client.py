@@ -1,55 +1,15 @@
 from __future__ import print_function, unicode_literals
-import json
+from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
 
-import uritemplate
-import httplib2
+from requests import Session
+from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
-from googleapiclient.errors import HttpError
-from googleapiclient.discovery import (
-    build_from_document,
-    DISCOVERY_URI,
-    V2_DISCOVERY_URI,
-    _retrieve_discovery_doc,
-)
 
 from lumapps.api.errors import ApiClientError, ApiCallError
 from lumapps.api.utils import DiscoveryCache, pop_matches, GOOGLE_APIS, FILTERS
-
-
-def _get_build_content(
-    serviceName,
-    version,
-    discoveryServiceUrl=DISCOVERY_URI,
-    cache_discovery=True,
-    cache=None,
-    proxy_info=None,
-):
-    params = {"api": serviceName, "apiVersion": version}
-    discovery_http = httplib2.Http(timeout=60)
-    if proxy_info:
-        discovery_http.proxy_info = httplib2.ProxyInfo(
-            httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
-            proxy_info["host"],
-            proxy_info["port"],
-            proxy_user=proxy_info["user"],
-            proxy_pass=proxy_info["password"],
-        )
-    discovery_http.disable_ssl_certificate_validation = True
-    for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI):
-        requested_url = uritemplate.expand(discovery_url, params)
-        try:
-            return _retrieve_discovery_doc(
-                requested_url, discovery_http, cache_discovery, cache
-            )
-        except HttpError as e:
-            if e.resp.status == 404:
-                continue
-            else:
-                raise e
-    raise Exception("name: %s  version: %s" % (serviceName, version))
 
 
 def _parse_method_parts(parts):
@@ -62,7 +22,7 @@ class ApiClient(object):
     """
         Args:
             user (str): The user email.
-            auth_info (dict): A service account key (json file).
+            auth_info (dict): A session account key (json file).
             api_info (dict): A dict containing the description of your api. If
                 no api_info is given this defaults to the lumsites api infos.
             credentials (dict): oauth2 credentials.
@@ -123,7 +83,7 @@ class ApiClient(object):
             self.base_url, url_path, self._api_name, self._api_version
         )
         self._methods = None
-        self._service = None
+        self._session = None
         self.token_getter = token_getter
         if token_getter:
             self.creds = None
@@ -137,7 +97,7 @@ class ApiClient(object):
         elif token:
             self.creds = None
             self.token = token
-        elif auth_info:  # service account
+        elif auth_info:  # session account
             self.creds = service_account.Credentials.from_service_account_info(
                 auth_info
             )
@@ -194,7 +154,7 @@ class ApiClient(object):
         )
 
     def get_new_client_as(self, user_email, customer_id=None):
-        """ Get a new ApiClient using an authorized service account by obtaining a
+        """ Get a new ApiClient using an authorized session account by obtaining a
             token using the user/getToken method.
 
             Args:
@@ -223,48 +183,48 @@ class ApiClient(object):
     @property
     def token(self):
         if not self.creds.token:
-            self.service._http.request(self.base_url)
+            self.session.get(self.base_url)
         return self.creds.token
 
     @token.setter
     def token(self, v):
         if self.creds and self.creds.token == v:
             return
-        self._service = None
+        self._session = None
         self.creds = Credentials(v)
 
     @property
-    def service(self):
-        """Setup the service object.
+    def session(self) -> Session:
+        """Setup the session object.
         """
         self._check_access_token()
-        if self._service is None:
-            build_content = _get_build_content(
-                self._api_name,
-                self._api_version,
-                discoveryServiceUrl=self._url,
-                cache_discovery=True,
-                cache=DiscoveryCache(),
-                proxy_info=self.proxy_info,
-            )
-            self._service = build_from_document(build_content, credentials=self.creds)
-            if self.no_verify:
-                self._service._http.http.disable_ssl_certificate_validation = True
+        if self._session is None:
+            s = AuthorizedSession(self.creds)
+            s.verify = not self.no_verify
             if self.proxy_info:
-                self._service._http.http.proxy_info = httplib2.ProxyInfo(
-                    httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
-                    self.proxy_info["host"],
-                    self.proxy_info["port"],
-                    proxy_user=self.proxy_info["user"],
-                    proxy_pass=self.proxy_info["password"],
-                )
-        return self._service
+                scheme = self.proxy_info.get("scheme", "https")
+                host = self.proxy_info["host"]
+                port = self.proxy_info["port"]
+                user = self.proxy_info["user"]
+                pwd = self.proxy_info["password"]
+                s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+                s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+            # build_content = _get_build_content(
+            #     self._api_name,
+            #     self._api_version,
+            #     discoveryServiceUrl=self._url,
+            #     cache_discovery=True,
+            #     cache=DiscoveryCache(),
+            #     proxy_info=self.proxy_info,
+            # )
+            # self._session = build_from_document(build_content, credentials=self.creds)
+        return self._session
 
     @property
     def methods(self):
         if self._methods is None:
             self._methods = {
-                n: m for n, m in self.walk_api_methods(self.service._resourceDesc)
+                n: m for n, m in self.walk_api_methods(self.session._resourceDesc)
             }
         return self._methods
 
@@ -282,7 +242,7 @@ class ApiClient(object):
         if "description" in method:
             w(method["description"].strip() + "\n")
         if debug:
-            add_line(json.dumps(method, indent=4, sort_keys=True))
+            add_line(dumps(method, indent=4, sort_keys=True))
         params = method.get("parameters", {})
         if method.get("httpMethod", "") == "POST":
             params.update(
@@ -329,16 +289,42 @@ class ApiClient(object):
             ):
                 yield method_name, method
 
+    def _extract_method_from_discovery(self, *method_parts):
+        if isinstance(method_parts[0], tuple):
+            method_parts = method_parts[0]
+        resources = self.api_spec.get("resources")
+        if not resources:
+            return
+        getted = None
+        for i, part in enumerate(method_parts):
+            if i == len(method_parts) - 2:
+                getted = resources.get(part, {})
+            elif i == len(method_parts) - 1:
+                if not getted:
+                    getted = resources.get(part, {}).get("methods", {})
+                getted = getted.get("methods", {}).get(part, {})
+            else:
+                if not getted:
+                    getted = resources.get(part, {}).get("resources", {})
+                getted = getted.get(part, {}).get("resources", {})
+        return getted
+
     def _get_api_call(self, method_parts, params):
-        """ Construct the method to call by using the service.
+        """ Construct the method to call by using the session.
         """
-        api_call = self.service
-        for part in method_parts[:-1]:
-            api_call = getattr(api_call, part)()
-        try:
-            return getattr(api_call, method_parts[-1])(**params)
-        except TypeError as err:
-            raise ApiCallError(err)
+        method = self._extract_method_from_discovery(method_parts)
+        verb = method.get("httpMethod")
+        body = params.pop("body", None) if verb == "POST" else None
+        resp = self.session.request(verb, "/".join(method_parts), params, json=body)
+        resp.raise_for_status()
+        return resp.json()
+        # api_call = self.session
+        # for part in method_parts[:-1]:
+        #     api_call = getattr(api_call, part)()
+        # try:
+        #     return getattr(api_call, method_parts[-1])(**params)
+        # except TypeError as err:
+        #     raise ApiCallError(err)
 
     def get_call(self, *method_parts, **params):
         """
@@ -364,16 +350,14 @@ class ApiClient(object):
         items = []
         cursor = None
         if "body" in params and isinstance(params["body"], str):
-            params["body"] = json.loads(params["body"])
+            params["body"] = loads(params["body"])
         while True:
             if cursor:
                 if "body" in params:
                     params["body"]["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(method_parts, params).execute(
-                num_retries=self.num_retries
-            )
+            response = self._get_api_call(method_parts, params)
             if "more" in response and "items" not in response:
                 self.last_cursor = None
                 return items  # empty list
@@ -411,16 +395,14 @@ class ApiClient(object):
         method_parts = _parse_method_parts(method_parts)
         cursor = None
         if "body" in params and isinstance(params["body"], str):
-            params["body"] = json.loads(params["body"])
+            params["body"] = loads(params["body"])
         while True:
             if cursor:
                 if "body" in params:
                     params["body"]["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(method_parts, params).execute(
-                num_retries=self.num_retries
-            )
+            response = self._get_api_call(method_parts, params)
             if "more" in response and "items" not in response:
                 return  # empty list
             if "more" in response and "items" in response:
