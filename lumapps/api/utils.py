@@ -201,3 +201,11 @@ def list_prune_filters():
         for pth in sorted(FILTERS[f]):
             s += "    " + pth + "\n"
     print("PRUNE FILTERS:\n" + s)
+
+
+def _parse_endpoint_parts(parts):
+    ret = []
+    for part in parts:
+        for sub_part in part.split("/"):
+            ret.append(sub_part)
+    return ret

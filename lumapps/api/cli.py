@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function, unicode_literals
 import sys
 import json
 import logging
@@ -164,9 +163,7 @@ def main():
     if args.help:
         print(api.get_help(name_parts, args.debug))
         return
-    params = {
-        p[0]: p[2] for p in (a.partition("=") for a in args.endpoint if "=" in a)
-    }
+    params = {p[0]: p[2] for p in (a.partition("=") for a in args.endpoint if "=" in a)}
     if args.body_file:
         with open(args.body_file) as fh:
             params["body"] = json.load(fh)

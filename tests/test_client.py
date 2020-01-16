@@ -3,13 +3,13 @@ from copy import deepcopy
 
 import pytest
 
-from lumapps.api.client import pop_matches, ApiClient, _parse_endpoint_parts
+from lumapps.api.client import pop_matches, ApiClient
 from lumapps.api.errors import ApiCallError
 
 
 @pytest.fixture
 def cli():
-    c = ApiClient(token='foobar')
+    c = ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
         c._discovery_doc = json.load(fh)
     return c
@@ -52,12 +52,6 @@ def test_api_client_token_setter():
     client = ApiClient(token=token)
     assert client.creds is not None
     assert client.creds.token == token
-
-
-def test_parse_endpoint_parts():
-    s = ("user/get", )
-    parts = _parse_endpoint_parts(s)
-    assert parts == ["user", "get"]
 
 
 def test_get_call_raises_api_call_error(cli):

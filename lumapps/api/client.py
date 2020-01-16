@@ -1,4 +1,3 @@
-from __future__ import print_function, unicode_literals
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
@@ -8,15 +7,13 @@ from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
 
 from lumapps.api.errors import ApiClientError, ApiCallError
-from lumapps.api.utils import DiscoveryCache, pop_matches, GOOGLE_APIS, FILTERS
-
-
-def _parse_endpoint_parts(parts):
-    ret = []
-    for part in parts:
-        for sub_part in part.split("/"):
-            ret.append(sub_part)
-    return ret
+from lumapps.api.utils import (
+    DiscoveryCache,
+    pop_matches,
+    GOOGLE_APIS,
+    FILTERS,
+    _parse_endpoint_parts,
+)
 
 
 class ApiClient(object):
@@ -78,7 +75,9 @@ class ApiClient(object):
             prefix = f"{self.base_url}/_ah/api"
         api_name, api_version = self._api_name, self._api_version
         self._api_url = f"{prefix}/{api_name}/{api_version}"
-        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
+        self._discovery_url = (
+            f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
+        )
         self._endpoints = None
         self._session = None
         self.token_getter = token_getter
@@ -224,9 +223,7 @@ class ApiClient(object):
     @property
     def endpoints(self):
         if self._endpoints is None:
-            self._endpoints = {
-                n: m for n, m in self.walk_endpoints(self.discovery_doc)
-            }
+            self._endpoints = {n: m for n, m in self.walk_endpoints(self.discovery_doc)}
         return self._endpoints
 
     def get_help(self, name_parts, debug=False):

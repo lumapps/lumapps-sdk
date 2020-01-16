@@ -9,6 +9,7 @@ from lumapps.api.utils import (
     set_config,
     get_config,
     _get_conn,
+    _parse_endpoint_parts,
 )
 
 
@@ -26,20 +27,20 @@ def test_discovery_cache_dict(mocker):
     mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
     mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
     c = _DiscoveryCacheDict
-    assert c.get('foobar.com') is None
-    c.set('foobar.com', "bla")
-    assert c.get('foobar.com') == "bla"
-    c._cache['foobar.com']["expiry"] = datetime.now() - timedelta(days=100)
-    assert c.get('foobar.com') is None
+    assert c.get("foobar.com") is None
+    c.set("foobar.com", "bla")
+    assert c.get("foobar.com") == "bla"
+    c._cache["foobar.com"]["expiry"] = datetime.now() - timedelta(days=100)
+    assert c.get("foobar.com") is None
 
 
 def test_discovery_cache_sqlite(mocker):
     mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
     mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
     c = _DiscoveryCacheSqlite
-    assert c.get('foobar.com') is None
-    c.set('foobar.com', "bla")
-    assert c.get('foobar.com') == "bla"
+    assert c.get("foobar.com") is None
+    c.set("foobar.com", "bla")
+    assert c.get("foobar.com") == "bla"
 
 
 def test_get_set_configs(mocker):
@@ -53,3 +54,9 @@ def test_get_set_configs(mocker):
     set_config("foo1", "bar1")
     assert len(get_config_names()) == 2
     assert get_config("foo") == "bar"
+
+
+def test_parse_endpoint_parts():
+    s = ("user/get",)
+    parts = _parse_endpoint_parts(s)
+    assert parts == ["user", "get"]
