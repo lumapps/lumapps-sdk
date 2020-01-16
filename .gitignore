@@ -10,6 +10,7 @@ build
 .coverage
 coverage.xml
 .pytest_cache
+test-results/
 
 # IDEs
 .idea/
