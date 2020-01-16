@@ -132,22 +132,6 @@ jobs:
           path: test-results
           destination: flake8-artifacts
 
-  documentation:
-    parameters:
-      version:
-        type: string
-    executor:
-      name: python
-      version: << parameters.version >>
-    steps:
-      - install-and-cache:
-          version: << parameters.version >>
-      - run:
-          name: Install dependencies
-          command: pip install -r requirements_dev.txt
-      - run:
-          name: Build doc
-          command: cd documentation && make clean html
 
 workflows:
   version: 2.1
@@ -176,9 +160,3 @@ workflows:
             - "Build-36"
             - "Linting-36"
             - "Extended linting"
-
-      - documentation:
-          name: "Building documentation"
-          version: "3.6"
-          requires:
-            - "Test-36"
