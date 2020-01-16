@@ -53,9 +53,11 @@ def _get_build_content(
 
 
 def _parse_method_parts(parts):
-    if len(parts) == 1:
-        parts = parts.split("/")
-    return parts
+    ret = []
+    for part in parts:
+        for sub_part in part.split("/"):
+            ret.append(sub_part)
+    return ret
 
 
 class ApiClient(object):
