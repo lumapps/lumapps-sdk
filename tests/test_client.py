@@ -1,7 +1,7 @@
 import pytest
 
 from copy import deepcopy
-from lumapps.api.client import pop_matches, ApiClient
+from lumapps.api.client import pop_matches, ApiClient, _parse_method_parts
 
 
 def test_pop_matches():
@@ -41,3 +41,8 @@ def test_api_client_token_setter():
     client = ApiClient(token=token)
     assert client.creds is not None
     assert client.creds.token == token
+
+def test_parse_method_parts():
+    s = ("user/get", )
+    parts = _parse_method_parts(s)
+    assert parts == ["user", "get"]
