@@ -93,13 +93,12 @@ def store_config(api_info, auth_info, conf_name, user=None):
     set_config(conf_name, {"api": api_info, "auth": auth_info, "user": user})
 
 
-def cast_params(name_parts, params, api):
+def cast_params(name_parts, args, api):
     truths = ("True", "true", "1", "Yes", "yes", "sure", "yeah")
-    method = api.endpoints[name_parts]
-    method_params = method.get("parameters", {})
-    for param in params:
-        if method_params.get(param, {}).get("type", "") == "boolean":
-            params[param] = params[param] in truths
+    params = api.endpoints[name_parts].get("parameters", {})
+    for arg in args:
+        if params.get(arg, {}).get("type", "") == "boolean":
+            args[arg] = args[arg] in truths
 
 
 def setup_logger():
@@ -155,7 +154,7 @@ def main():
         arg_parser.print_help()
         sys.exit(
             "\nNo endpoint specified. Found these:\n"
-            + api.get_method_descriptions(sorted(api.endpoints))
+            + api.get_endpoints_info(sorted(api.endpoints))
         )
     name_parts = tuple(p for p in args.endpoint if "=" not in p)
     if name_parts not in api.endpoints:

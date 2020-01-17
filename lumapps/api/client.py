@@ -135,15 +135,15 @@ class ApiClient(object):
         """
         if not self.prune:
             return content
-        for filter_method in FILTERS:
-            filter_method_parts = filter_method.split("/")
-            if len(name_parts) != len(filter_method_parts):
+        for ep_filter in FILTERS:
+            ep_filter_parts = ep_filter.split("/")
+            if len(name_parts) != len(ep_filter_parts):
                 continue
-            for filter_part, part in zip(filter_method_parts, name_parts):
+            for filter_part, part in zip(ep_filter_parts, name_parts):
                 if filter_part not in ("*", part):
                     break
             else:
-                for pth in FILTERS[filter_method]:
+                for pth in FILTERS[ep_filter]:
                     if isinstance(content, list):
                         for o in content:
                             pop_matches(pth, o)
@@ -164,7 +164,7 @@ class ApiClient(object):
 
     def get_new_client_as(self, user_email, customer_id=None):
         """ Get a new ApiClient using an authorized session account by obtaining a
-            token using the user/getToken method.
+            token using the user/getToken endpoint.
 
             Args:
                 user_email (str): User you want to authenticate on behalf of
@@ -233,21 +233,20 @@ class ApiClient(object):
             help_lines.append(l)
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
-        method = self.endpoints[name_parts]
-        add_line(
-            method.get("httpMethod", "?") + " method: " + " ".join(name_parts) + "\n"
-        )
-        if "description" in method:
-            add_line(method["description"].strip() + "\n")
+        ep_info = self.endpoints[name_parts]
+        method = ep_info.get("httpMethod", "?")
+        add_line(f"{method} endpoint: " + " ".join(name_parts) + "\n")
+        if "description" in ep_info:
+            add_line(ep_info["description"].strip() + "\n")
         if debug:
-            add_line(dumps(method, indent=4, sort_keys=True))
-        params = method.get("parameters", {})
-        if method.get("httpMethod", "") == "POST":
+            add_line(dumps(ep_info, indent=4, sort_keys=True))
+        params = ep_info.get("parameters", {})
+        if method == "POST":
             params.update(
                 {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
             )
         if not params:
-            add_line("API method takes no parameters")
+            add_line("Endpoint takes no parameters")
         else:
             add_line("Parameters (*required):")
             for param_name in sorted(params):
@@ -264,28 +263,23 @@ class ApiClient(object):
                 )
         return "\n".join(help_lines)
 
-    def get_method_descriptions(self, endpoints):
+    def get_endpoints_info(self, endpoints):
         lines = []
         for name_parts in endpoints:
-            method = self.endpoints[name_parts]
-            lines.append(
-                (
-                    " ".join(name_parts),
-                    method.get("description", "").strip().split("\n")[0],
-                )
-            )
+            descr = self.endpoints[name_parts].get("description", "")
+            lines.append((" ".join(name_parts), descr.strip().split("\n")[0]))
         longest_name = max(len(l[0]) for l in lines)
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
         return "\n".join(fmt.format(*l) for l in lines)
 
     def walk_endpoints(self, resource, parents=()):
-        for method_name, method in resource.get("methods", {}).items():
-            yield tuple(parents + (method_name,)), method
+        for ep_name, ep_info in resource.get("methods", {}).items():
+            yield tuple(parents + (ep_name,)), ep_info
         for rsc_name, rsc in resource.get("resources", {}).items():
-            for method_name, method in self.walk_endpoints(
+            for ep_name, ep_info in self.walk_endpoints(
                 rsc, tuple(parents + (rsc_name,))
             ):
-                yield method_name, method
+                yield ep_name, ep_info
 
     def _extract_from_discovery(self, name_parts):
         resources = self.discovery_doc.get("resources")
@@ -419,5 +413,5 @@ class ApiClient(object):
             return "Endpoint not found"
         return (
             "Endpoint not found. Did you mean any of these?\n"
-            + self.get_method_descriptions(sorted(matches))
+            + self.get_endpoints_info(sorted(matches))
         )
