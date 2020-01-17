@@ -1,4 +1,3 @@
-from __future__ import annotations
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
@@ -155,7 +154,7 @@ class ApiClient(object):
                         pop_matches(pth, content)
         return content
 
-    def get_new_client_as_using_dwd(self, user_email: str) -> ApiClient:
+    def get_new_client_as_using_dwd(self, user_email: str) -> "ApiClient":
         """ Get a new ApiClient using domain-wide delegation """
         return ApiClient(
             auth_info=self._auth_info,
@@ -168,7 +167,7 @@ class ApiClient(object):
 
     def get_new_client_as(
         self, user_email: str, customer_id: Optional[str] = None
-    ) -> ApiClient:
+    ) -> "ApiClient":
         """ Get a new ApiClient using an authorized session account by obtaining a
             token using the user/getToken endpoint.
 
