@@ -27,6 +27,14 @@
     "isFeatured": false,
     "isHomepage": false,
     "isNavItem": false,
+    "lastRevision": {
+        "status": "LIVE",
+        "updatedAt": "2019-11-20T08:39:41.420135",
+        "version": 6,
+        "title": {
+            "en": "Older name"
+        }
+    },
     "liked": false,
     "likes": 0,
     "notificationsEnabled": false,

@@ -1,14 +1,14 @@
 from json import load
 from copy import deepcopy
 
-import pytest
+from pytest import fixture, raises
 
 from lumapps.api.client import pop_matches, ApiClient
 from lumapps.api.errors import ApiCallError
 
 
-@pytest.fixture
-def cli():
+@fixture
+def cli() -> ApiClient:
     c = ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
         c._discovery_doc = load(fh)
@@ -43,7 +43,7 @@ def test_pop_matches():
 
 
 def test_api_client_no_auth():
-    with pytest.raises(Exception):
+    with raises(Exception):
         ApiClient()
 
 
@@ -54,25 +54,25 @@ def test_api_client_token_setter():
     assert client.creds.token == token
 
 
-def test_get_call_raises_api_call_error(cli):
-    with pytest.raises(ApiCallError):
+def test_get_call_raises_api_call_error(cli: ApiClient):
+    with raises(ApiCallError):
         cli.get_call("foo")
-    with pytest.raises(ApiCallError):
+    with raises(ApiCallError):
         cli.get_call("user/bla")
 
 
-def test_endpoints_property(cli):
+def test_endpoints_property(cli: ApiClient):
     assert ("user", "get") in cli.endpoints
 
 
-def test_get_help(cli):
+def test_get_help(cli: ApiClient):
     h = cli.get_help(("user", "get"))
     assert "user get" in h
-    with pytest.raises(KeyError):
+    with raises(KeyError):
         cli.get_help(("user", "get123"))
 
 
-def test_get_matching_endpoints(cli):
+def test_get_matching_endpoints(cli: ApiClient):
     matches = cli.get_matching_endpoints(("user", "ge"))
     assert "not found" in matches
     matches = cli.get_matching_endpoints(("user",))
@@ -81,7 +81,7 @@ def test_get_matching_endpoints(cli):
     assert "not found" in matches
 
 
-def test_get_call(mocker, cli):
+def test_get_call(mocker, cli: ApiClient):
     with open("tests/test_data/community_1.json") as fh:
         community = load(fh)
     mocker.patch(
@@ -91,7 +91,7 @@ def test_get_call(mocker, cli):
     assert community["id"] == community2["id"]
 
 
-def test_iter_call(mocker, cli):
+def test_iter_call(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
     mocker.patch(
@@ -99,3 +99,14 @@ def test_iter_call(mocker, cli):
     )
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 2
+
+
+def test_prune(cli: ApiClient):
+    with open("tests/test_data/content_1.json") as fh:
+        content = load(fh)
+    assert "lastRevision" in content
+    cli._prune(("content", "get"), content)
+    assert "lastRevision" in content
+    cli.prune = True
+    cli._prune(("content", "get"), content)
+    assert "lastRevision" not in content
