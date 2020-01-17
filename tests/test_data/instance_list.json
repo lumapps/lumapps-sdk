@@ -1,0 +1,61 @@
+{
+    "items": [
+     {
+      "uid": "1111111",
+      "updatedAt": "2019-12-30T15:21:22.407701",
+      "homePage": "333333333333333",
+      "id": "1111111",
+      "createdAt": "2019-03-12T11:48:55.684166",
+      "title": {
+       "en": "Test Site 1"
+      },
+      "markedAsFavorite": false,
+      "theme": "default",
+      "defaultLang": "en",
+      "menuType": "horizontal",
+      "status": "LIVE",
+      "isDefaultInstance": false,
+      "createdBy": "foo@bar.com",
+      "langs": [
+       "fr",
+       "en"
+      ],
+      "configuration": "default",
+      "slug": "test-site-1",
+      "customer": "222222222",
+      "deviceTheme": "default",
+      "name": "Test Site 1",
+      "deletableFromFavorite": false,
+      "publicContentAuthorized": true
+     },
+     {
+      "uid": "5555555",
+      "updatedAt": "2019-12-30T15:21:22.407701",
+      "homePage": "4444444444444444",
+      "id": "5555555",
+      "createdAt": "2019-03-12T11:48:55.684166",
+      "title": {
+       "en": "Test Site 2"
+      },
+      "markedAsFavorite": false,
+      "theme": "default",
+      "defaultLang": "en",
+      "menuType": "horizontal",
+      "status": "LIVE",
+      "isDefaultInstance": false,
+      "createdBy": "foo@bar.com",
+      "langs": [
+       "fr",
+       "en"
+      ],
+      "configuration": "default",
+      "slug": "test-site-2",
+      "customer": "222222222",
+      "deviceTheme": "default",
+      "name": "Test Site 2",
+      "deletableFromFavorite": false,
+      "publicContentAuthorized": true
+     }
+    ],
+    "more": false
+   }
