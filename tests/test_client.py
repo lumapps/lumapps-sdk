@@ -4,6 +4,7 @@ from copy import deepcopy
 from pytest import fixture, raises
 
 from lumapps.api.client import pop_matches, ApiClient
+from lumapps.api.utils import FILTERS
 from lumapps.api.errors import ApiCallError
 
 
@@ -110,3 +111,18 @@ def test_prune(cli: ApiClient):
     cli.prune = True
     cli._prune(("content", "get"), content)
     assert "lastRevision" not in content
+
+
+def test_prune2(cli: ApiClient):
+    with open("tests/test_data/instance_list.json") as fh:
+        lst = load(fh)["items"]
+    FILTERS["instance/list"] = ["status"]
+    for inst in lst:
+        assert "status" in inst
+    cli._prune(("instance", "list"), lst)
+    for inst in lst:
+        assert "status" in inst
+    cli.prune = True
+    cli._prune(("instance", "list"), lst)
+    for inst in lst:
+        assert "status" not in inst
