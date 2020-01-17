@@ -12,6 +12,9 @@
     :target: https://github.com/ambv/black
     :alt: Black style
 
+.. image:: https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-blue
+    :alt: Python versions
+
 
 *Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
 
