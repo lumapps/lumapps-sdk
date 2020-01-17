@@ -160,3 +160,28 @@ workflows:
             - "Build-36"
             - "Linting-36"
             - "Extended linting"
+
+  CI-python37:
+    jobs:
+      - build:
+          name: "Build-37"
+          version: "3.7"
+
+      - linting:
+          name: "Linting-37"
+          version: "3.7"
+          requires:
+            - "Build-37"
+
+      - extended-linting:
+          name: "Extended linting"
+          requires:
+            - "Build-37"
+
+      - test-and-coverage:
+          name: "Test-37"
+          version: "3.7"
+          requires:
+            - "Build-37"
+            - "Linting-37"
+            - "Extended linting"

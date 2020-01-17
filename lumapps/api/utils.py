@@ -4,6 +4,8 @@ try:
     import sqlite3
 except ImportError:
     sqlite3 = None
+
+from typing import Any, Dict, List, Optional
 from json import loads, dumps
 from datetime import datetime, timedelta
 
@@ -72,7 +74,7 @@ def pop_matches(dpath, d):
     d.pop(dpath.rpartition("/")[2], None)
 
 
-def get_conf_db_file():
+def get_conf_db_file() -> str:
     if "APPDATA" in os.environ:
         d = os.environ["APPDATA"]
     elif "XDG_CONFIG_HOME" in os.environ:
@@ -82,7 +84,7 @@ def get_conf_db_file():
     return os.path.join(d, "{}.db".format(__pypi_packagename__))
 
 
-def _get_conn():
+def _get_conn() -> sqlite3.Connection:
     conn = sqlite3.connect(get_conf_db_file())
     conn.isolation_level = None
     conn.row_factory = sqlite3.Row
@@ -105,7 +107,7 @@ def _get_conn():
     return conn
 
 
-def get_discovery_cache(url):
+def get_discovery_cache(url: str) -> Optional[Dict[str, Any]]:
     try:
         return (
             _get_conn()
@@ -116,7 +118,7 @@ def get_discovery_cache(url):
         return None
 
 
-def set_discovery_cache(url, expiry, content):
+def set_discovery_cache(url: str, expiry: Any, content: Any) -> None:
     try:
         _get_conn().execute(
             "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
@@ -126,7 +128,7 @@ def set_discovery_cache(url, expiry, content):
         pass
 
 
-def get_config(name):
+def get_config(name: str) -> Optional[Dict[str, Any]]:
     try:
         row = (
             _get_conn()
@@ -145,7 +147,7 @@ def get_config_names():
         return []
 
 
-def set_config(name, content):
+def set_config(name: str, content: Any) -> None:
     try:
         _get_conn().execute(
             "INSERT OR REPLACE INTO config VALUES (?, ?)",
@@ -204,8 +206,24 @@ def list_prune_filters():
 
 
 def _parse_endpoint_parts(parts):
-    ret = []
-    for part in parts:
-        for sub_part in part.split("/"):
-            ret.append(sub_part)
-    return ret
+    if len(parts) == 1:
+        parts = parts[0].split("/")
+    return parts
+
+
+def _extract_from_discovery_spec(
+    resources: Dict[str, Any], name_parts: List[str]
+) -> Dict[str, Any]:
+    getted = None
+    for i, part in enumerate(name_parts):
+        if i == len(name_parts) - 2:
+            getted = resources.get(part, {})
+        elif i == len(name_parts) - 1:
+            if not getted:
+                getted = resources.get(part, {}).get("methods", {})
+            getted = getted.get("methods", {}).get(part, {})
+        else:
+            if not getted:
+                getted = resources.get(part, {}).get("resources", {})
+            getted = getted.get(part, {}).get("resources", {})
+    return getted

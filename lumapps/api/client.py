@@ -1,6 +1,7 @@
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
+from typing import Any, Dict, Optional
 
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
@@ -13,6 +14,7 @@ from lumapps.api.utils import (
     GOOGLE_APIS,
     FILTERS,
     _parse_endpoint_parts,
+    _extract_from_discovery_spec,
 )
 
 
@@ -30,22 +32,23 @@ class ApiClient(object):
                 API responses. Defaults to False.
             no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
             proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
-        Note:
+
+        Notes:
             At least one type of authentication info is required (auth_info,
             credentials, token)
     """
 
     def __init__(
         self,
-        auth_info=None,
-        api_info=None,
-        credentials=None,
-        user=None,
-        token=None,
-        token_getter=None,
-        prune=False,
-        no_verify=False,
-        proxy_info=None,
+        auth_info: Optional[Dict[str, Any]] = None,
+        api_info: Optional[Dict[str, Any]] = None,
+        credentials: Optional[Dict[str, Any]] = None,
+        user: Optional[str] = None,
+        token: Optional[str] = None,
+        token_getter: Optional[Any] = None,
+        prune: bool = False,
+        no_verify: bool = False,
+        proxy_info: Optional[Dict[str, Any]] = None,
     ):
         self._get_token_user = None
         self._token_expiry = 0
@@ -151,7 +154,7 @@ class ApiClient(object):
                         pop_matches(pth, content)
         return content
 
-    def get_new_client_as_using_dwd(self, user_email):
+    def get_new_client_as_using_dwd(self, user_email: str) -> "ApiClient":
         """ Get a new ApiClient using domain-wide delegation """
         return ApiClient(
             auth_info=self._auth_info,
@@ -162,7 +165,9 @@ class ApiClient(object):
             prune=self.prune,
         )
 
-    def get_new_client_as(self, user_email, customer_id=None):
+    def get_new_client_as(
+        self, user_email: str, customer_id: Optional[str] = None
+    ) -> "ApiClient":
         """ Get a new ApiClient using an authorized session account by obtaining a
             token using the user/getToken endpoint.
 
@@ -202,7 +207,7 @@ class ApiClient(object):
         self.creds = Credentials(v)
 
     @property
-    def session(self):
+    def session(self) -> AuthorizedSession:
         """Setup the session object.
         """
         self._check_access_token()
@@ -285,19 +290,8 @@ class ApiClient(object):
         resources = self.discovery_doc.get("resources")
         if not resources:
             return
-        getted = None
-        for i, part in enumerate(name_parts):
-            if i == len(name_parts) - 2:
-                getted = resources.get(part, {})
-            elif i == len(name_parts) - 1:
-                if not getted:
-                    getted = resources.get(part, {}).get("methods", {})
-                getted = getted.get("methods", {}).get(part, {})
-            else:
-                if not getted:
-                    getted = resources.get(part, {}).get("resources", {})
-                getted = getted.get(part, {}).get("resources", {})
-        return getted
+
+        return _extract_from_discovery_spec(resources, name_parts)
 
     def _get_api_call(self, name_parts, params):
         """ Construct the call """
