@@ -1,19 +1,7 @@
 **LumApps SDK**
 ===============
 
-.. image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
-    :target: https://circleci.com/gh/lumapps/lumapps-sdk
-
-.. image:: https://black.readthedocs.io/en/stable/_static/license.svg
-    :target: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
-    :alt: License: MIT
-
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/ambv/black
-    :alt: Black style
-
-.. image:: https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-blue
-    :alt: Python versions
+|CircleCI Status| |Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
 
 
 *Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
@@ -103,3 +91,23 @@ Copyright and license
 =====================
 
 LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RST>`_ file.
+
+
+
+.. |PyPI Status| image:: https://img.shields.io/pypi/v/lumapps-sdk
+    :target: https://pypi.org/project/lumapps-sdk/
+    :alt: Pypi package
+    
+.. |CircleCI Status| image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
+    :target: https://circleci.com/gh/lumapps/lumapps-sdk
+
+.. |Coverage Status| image:: https://black.readthedocs.io/en/stable/_static/license.svg
+    :target: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
+    :alt: License: MIT
+
+.. |Style Badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+    :alt: Black style
+
+.. |Python Versions| image:: https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-blue
+    :alt: Python versions
