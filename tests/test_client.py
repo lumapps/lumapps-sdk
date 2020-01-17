@@ -1,4 +1,4 @@
-import json
+from json import load
 from copy import deepcopy
 
 import pytest
@@ -11,7 +11,7 @@ from lumapps.api.errors import ApiCallError
 def cli():
     c = ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
-        c._discovery_doc = json.load(fh)
+        c._discovery_doc = load(fh)
     return c
 
 
@@ -77,3 +77,25 @@ def test_get_matching_endpoints(cli):
     assert "not found" in matches
     matches = cli.get_matching_endpoints(("user",))
     assert "user list" in matches
+    matches = cli.get_matching_endpoints(("xyz",))
+    assert "not found" in matches
+
+
+def test_get_call(mocker, cli):
+    with open("tests/test_data/community_1.json") as fh:
+        community = load(fh)
+    mocker.patch(
+        "lumapps.api.client.ApiClient._get_api_call", return_value=community
+    )
+    community2 = cli.get_call("community/get", uid="foo")
+    assert community["id"] == community2["id"]
+
+
+def test_iter_call(mocker, cli):
+    with open("tests/test_data/instance_list.json") as fh:
+        ret = load(fh)
+    mocker.patch(
+        "lumapps.api.client.ApiClient._get_api_call", return_value=ret
+    )
+    lst = [i for i in cli.iter_call("instance/list")]
+    assert len(lst) == 2
