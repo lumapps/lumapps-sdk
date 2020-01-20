@@ -57,6 +57,9 @@ class ApiClient(object):
         self._auth_info = auth_info
         self._user = {}
         self._token = None
+        self._endpoints = None
+        self._session = None
+        self._headers = {}
         self.last_cursor = None
         self.token_expiration = None
         if not api_info:
@@ -80,12 +83,10 @@ class ApiClient(object):
         self._discovery_url = (
             f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
         )
-        self._endpoints = None
-        self._session = None
-        self._headers = {}
         self.token_getter = token_getter
         self.email = user or ""
         self._discovery_doc = None
+        self.token = token
 
     @property
     def token(self):
@@ -95,6 +96,7 @@ class ApiClient(object):
     def token(self, v):
         if self._token and self._token == v:
             return
+        self._token = v
         self._headers["authorization"] = f"Bearer {self._token}"
         if self._session:
             self._session.headers.update(self._headers)
@@ -105,7 +107,7 @@ class ApiClient(object):
         self._check_access_token()
         if self._session is None:
             auth = self._auth_info
-            if self.token_getter or not auth or (auth and "bearer" in auth):
+            if not auth and self._token:
                 s = Session()
             elif auth and "refresh_token" in auth:
                 s = OAuth2Session(
