@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 from lumapps.api.utils import (
@@ -10,6 +11,7 @@ from lumapps.api.utils import (
     get_config,
     _get_conn,
     _parse_endpoint_parts,
+    _extract_from_discovery_spec,
 )
 
 
@@ -60,3 +62,14 @@ def test_parse_endpoint_parts():
     s = ("user/get",)
     parts = _parse_endpoint_parts(s)
     assert parts == ["user", "get"]
+
+
+def test_extract_from_discovery_spec():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = json.load(fh)
+    name_parts = ["user", "get"]
+    resources = discovery_doc["resources"]
+    extracted = _extract_from_discovery_spec(resources, name_parts)
+
+    assert extracted.get("httpMethod") == "GET"
+    assert extracted.get("id") == "lumsites.user.get"
