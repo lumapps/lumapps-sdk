@@ -61,7 +61,6 @@ class ApiClient(object):
         self._endpoints = None
         self._session = None
         self._headers = {}
-        self.last_cursor = None
         self.token_expiration = None
         if not api_info:
             api_info = {}
@@ -342,16 +341,14 @@ class ApiClient(object):
                     params["cursor"] = cursor
             response = self._get_api_call(name_parts, params)
             if "more" in response and "items" not in response:
-                self.last_cursor = None
                 return items  # empty list
             if "more" in response and "items" in response:
                 items.extend(response["items"])
                 if response.get("more", False):
-                    self.last_cursor = cursor = response["cursor"]
+                    cursor = response["cursor"]
                 else:
                     return self._prune(name_parts, items)
             else:
-                self.last_cursor = None
                 return self._prune(name_parts, response)
 
     def iter_call(self, *name_parts, **params):
