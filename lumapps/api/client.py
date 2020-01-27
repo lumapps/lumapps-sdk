@@ -1,11 +1,10 @@
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Callable, Tuple
 
 from requests import Session
 from authlib.integrations.requests_client import OAuth2Session, AssertionSession
-
 # from authlib.integrations.httpx_client import OAuth2Client, AssertionClient
 
 from lumapps.api.errors import ApiClientError, ApiCallError
@@ -17,22 +16,13 @@ from lumapps.api.utils import (
     _parse_endpoint_parts,
     _extract_from_discovery_spec,
 )
+LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
+LUMAPPS_VERSION = "v1"
+LUMAPPS_NAME = "lumsites"
+LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
 
 
 class ApiClient(object):
-    """
-        Args:
-            auth_info (dict): A session account key (json file).
-            api_info (dict): A dict containing the description of your api. If
-                no api_info is given this defaults to the lumsites api infos.
-            user (str): The user email.
-            token (str): A bearer token.
-            token_getter (object): a token getter function
-            prune (bool): Whether or not to use FILTERS to prune the LumApps
-                API responses. Defaults to False.
-            no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
-            proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
-    """
 
     def __init__(
         self,
@@ -40,11 +30,23 @@ class ApiClient(object):
         api_info: Optional[Dict[str, Any]] = None,
         user: Optional[str] = None,
         token: Optional[str] = None,
-        token_getter: Optional[Any] = None,
+        token_getter: Optional[Callable[[], Tuple[str, int]]] = None,
         prune: bool = False,
         no_verify: bool = False,
         proxy_info: Optional[Dict[str, Any]] = None,
     ):
+        """
+            Args:
+                auth_info: When specified, a service account or a web auth JSON dict.
+                api_info: When specified, a JSON dict containing the description of your
+                    api. Defaults to LumApps API.
+                user: The user email.
+                token: A bearer access token.
+                token_getter: A bearer access token getter function.
+                prune: Whether or not to use FILTERS to prune LumApps API responses.
+                no_verify: Disables SSL verification.
+                proxy_info: When specified, a JSON dict with proxy parameters.
+        """
         self._get_token_user = None
         self._token_expiry = 0
         self.no_verify = no_verify
@@ -56,25 +58,20 @@ class ApiClient(object):
         self._endpoints = None
         self._session = None
         self._headers = {}
-        if not api_info:
+        if api_info is None:
             api_info = {}
         self.api_info = api_info
-        self._api_name = api_info.get("name", "lumsites")
-        scope = api_info.get(
-            "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
-        )
-        self._scope = " ".join(scope)
-        self._api_version = api_info.get("version", "v1")
-        self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
-            "/"
-        )
+        self._api_name = api_info.get("name", LUMAPPS_NAME)
+        self._scope = " ".join(api_info.get("scopes", LUMAPPS_SCOPE))
+        self._api_version = api_info.get("version", LUMAPPS_VERSION)
+        self.base_url = api_info.get("base_url", LUMAPPS_BASE_URL).rstrip("/")
         if self._api_name in GOOGLE_APIS:
-            prefix = f"{self.base_url}"
+            prefix = self.base_url
         else:
             prefix = f"{self.base_url}/_ah/api"
-        api_name, api_vers = self._api_name, self._api_version
-        self._api_url = f"{prefix}/{api_name}/{api_vers}"
-        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_vers}/rest"
+        api_name, api_ver = self._api_name, self._api_version
+        self._api_url = f"{prefix}/{api_name}/{api_ver}"
+        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
         self.token_getter = token_getter
         self.email = user
         self._discovery_doc = None
