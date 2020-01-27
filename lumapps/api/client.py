@@ -76,7 +76,7 @@ class ApiClient(object):
         self._api_url = f"{prefix}/{api_name}/{api_vers}"
         self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_vers}/rest"
         self.token_getter = token_getter
-        self.email = user or ""
+        self.email = user
         self._discovery_doc = None
         self.token = token
 
@@ -111,7 +111,7 @@ class ApiClient(object):
                 issuer=auth["client_email"],
                 audience=auth["token_uri"],
                 claims=claims,
-                subject=self.email or None,
+                subject=self.email,
                 key=auth["private_key"],
                 header={"alg": "RS256"},
             )
