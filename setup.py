@@ -15,7 +15,7 @@ setup(
     description="LumApps SDK for Python",
     long_description=readme,
     long_description_content_type="text/x-rst",
-    install_requires=["requests==2.22.0", "google-auth==1.10.1"],
+    install_requires=["requests==2.22.*", "Authlib==0.13.*"],
     python_requires=">=3.6",
     keywords="lumapps sdk",
     classifiers=[
