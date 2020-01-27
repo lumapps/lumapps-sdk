@@ -102,3 +102,7 @@ def test_pop_matches():
     l2 = deepcopy(l1)
     pop_matches(pth, l1)
     assert l2 == l1
+
+    obj = "foo"
+    pop_matches("foo/bar", obj)
+    assert obj == "foo"
