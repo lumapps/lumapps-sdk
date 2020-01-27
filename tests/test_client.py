@@ -1,9 +1,8 @@
 from json import load
-from copy import deepcopy
 
 from pytest import fixture, raises
 
-from lumapps.api.client import pop_matches, ApiClient
+from lumapps.api.client import ApiClient
 from lumapps.api.utils import FILTERS
 from lumapps.api.errors import ApiCallError, ApiClientError
 
@@ -14,33 +13,6 @@ def cli() -> ApiClient:
     with open("tests/test_data/lumapps_discovery.json") as fh:
         c._discovery_doc = load(fh)
     return c
-
-
-def test_pop_matches():
-    d = {"a": 1, "b": {"c": 2, "d": {"e": 3}}, "z": 33}
-
-    d2 = deepcopy(d)
-    pth = "b/d/e"
-    pop_matches(pth, d2)
-    assert d2 == {"a": 1, "b": {"c": 2, "d": {}}, "z": 33}
-
-    d2 = deepcopy(d)
-    pth = "b"
-    pop_matches(pth, d2)
-    assert d2 == {"a": 1, "z": 33}
-
-    d2 = deepcopy(d)
-    pth = ""
-    pop_matches(pth, d2)
-    assert d2 == d
-
-    s = "not a dict"
-    pth = "foo/bar"
-    pop_matches(pth, s)
-    l1 = ["a", "b"]
-    l2 = deepcopy(l1)
-    pop_matches(pth, l1)
-    assert l2 == l1
 
 
 def test_api_client_no_auth():
