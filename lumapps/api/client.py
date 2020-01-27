@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional
 
 from requests import Session
 from authlib.integrations.requests_client import OAuth2Session, AssertionSession
+
 # from authlib.integrations.httpx_client import OAuth2Client, AssertionClient
 
 from lumapps.api.errors import ApiClientError, ApiCallError
@@ -66,10 +67,10 @@ class ApiClient(object):
             api_info = {}
         self.api_info = api_info
         self._api_name = api_info.get("name", "lumsites")
-        if api_info.get("scopes"):
-            self._api_scopes = " ".join(api_info.get("scopes"))
-        else:
-            self._api_scopes = None
+        scope = api_info.get(
+            "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
+        )
+        self._scope = " ".join(scope)
         self._api_version = api_info.get("version", "v1")
         self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
             "/"
@@ -101,48 +102,51 @@ class ApiClient(object):
         if self._session:
             self._session.headers.update(self._headers)
 
+    def _create_session(self):
+        auth = self._auth_info
+        if not auth and self._token:
+            s = Session()
+        elif auth and "refresh_token" in auth:
+            s = OAuth2Session(
+                client_id=auth["client_id"],
+                client_secret=auth["client_secret"],
+                scope=self._scope,
+            )
+            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
+        elif auth:  # service account
+            claims = {"scope": self._scope} if self._scope else {}
+            s = AssertionSession(
+                token_endpoint=auth["token_uri"],
+                issuer=auth["client_email"],
+                audience=auth["token_uri"],
+                claims=claims,
+                subject=self.email or None,
+                key=auth["private_key"],
+                header={"alg": "RS256"},
+            )
+        else:
+            raise ApiClientError(
+                "You must provide authentication infos (token_getter, "
+                "auth_info, credentials or token)."
+            )
+        s.verify = not self.no_verify
+        if self.proxy_info:
+            scheme = self.proxy_info.get("scheme", "https")
+            host = self.proxy_info["host"]
+            port = self.proxy_info["port"]
+            user = self.proxy_info["user"]
+            pwd = self.proxy_info["password"]
+            s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+            s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+        s.headers.update(self._headers)
+        return s
+
     @property
     def session(self):
         """Setup the session object."""
         self._check_access_token()
         if self._session is None:
-            auth = self._auth_info
-            if not auth and self._token:
-                s = Session()
-            elif auth and "refresh_token" in auth:
-                s = OAuth2Session(
-                    client_id=auth["client_id"],
-                    client_secret=auth["client_secret"],
-                    scope=self._api_scopes,
-                )
-                s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
-            elif auth:  # service account
-                claims = {"scope": self._api_scopes} if self._api_scopes else {}
-                s = AssertionSession(
-                    token_endpoint=auth["token_uri"],
-                    issuer=auth["client_email"],
-                    audience=auth["token_uri"],
-                    claims=claims,
-                    subject=self.email or None,
-                    key=auth["private_key"],
-                    header={"alg": "RS256"},
-                )
-            else:
-                raise ApiClientError(
-                    "You must provide authentication infos (token_getter, "
-                    "auth_info, credentials or token)."
-                )
-            s.verify = not self.no_verify
-            if self.proxy_info:
-                scheme = self.proxy_info.get("scheme", "https")
-                host = self.proxy_info["host"]
-                port = self.proxy_info["port"]
-                user = self.proxy_info["user"]
-                pwd = self.proxy_info["password"]
-                s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
-                s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
-            s.headers.update(self._headers)
-            self._session = s
+            self._session = self._create_session()
         return self._session
 
     @property
@@ -290,8 +294,7 @@ class ApiClient(object):
     def _extract_from_discovery(self, name_parts):
         resources = self.discovery_doc.get("resources")
         if not resources:
-            return
-
+            return None
         return _extract_from_discovery_spec(resources, name_parts)
 
     def _get_api_call(self, name_parts, params):
@@ -309,11 +312,11 @@ class ApiClient(object):
     def get_call(self, *name_parts, **params):
         """
         Args:
-            *name_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
             **params (dict): Parameters of the call
 
         Returns:
-            Union[dict, List[dict]]: Object or list of objects returned by the LumApps API endpoint.
+            Union[dict, List[dict]]: Object or objects returned by the endpoint call.
 
         Example:
             List feedtypes in LumApps:
@@ -354,11 +357,11 @@ class ApiClient(object):
     def iter_call(self, *name_parts, **params):
         """
          Args:
-            *name_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
             **params (dict): Parameters of the call
 
         Yields:
-            dict: Object returned by the LumApps API endpoint.
+            dict: Objects returned by the endpoint call.
 
 
         Example:
@@ -407,6 +410,6 @@ class ApiClient(object):
         if not matches:
             return "Endpoint not found"
         return (
-            "Endpoint not found. Did you mean any of these?\n"
+            "Endpoint not found. Did you mean one of these?\n"
             + self.get_endpoints_info(sorted(matches))
         )
