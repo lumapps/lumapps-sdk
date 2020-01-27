@@ -22,21 +22,16 @@ from lumapps.api.utils import (
 class ApiClient(object):
     """
         Args:
-            user (str): The user email.
             auth_info (dict): A session account key (json file).
             api_info (dict): A dict containing the description of your api. If
                 no api_info is given this defaults to the lumsites api infos.
-            credentials (dict): oauth2 credentials.
+            user (str): The user email.
             token (str): A bearer token.
             token_getter (object): a token getter function
             prune (bool): Whether or not to use FILTERS to prune the LumApps
                 API responses. Defaults to False.
             no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
             proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
-
-        Notes:
-            At least one type of authentication info is required (auth_info,
-            credentials, token)
     """
 
     def __init__(
@@ -77,11 +72,9 @@ class ApiClient(object):
             prefix = f"{self.base_url}"
         else:
             prefix = f"{self.base_url}/_ah/api"
-        api_name, api_version = self._api_name, self._api_version
-        self._api_url = f"{prefix}/{api_name}/{api_version}"
-        self._discovery_url = (
-            f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
-        )
+        api_name, api_vers = self._api_name, self._api_version
+        self._api_url = f"{prefix}/{api_name}/{api_vers}"
+        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_vers}/rest"
         self.token_getter = token_getter
         self.email = user or ""
         self._discovery_doc = None
