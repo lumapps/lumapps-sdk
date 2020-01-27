@@ -1,2 +1,2 @@
-requests==2.22.0
-google-auth==1.10.1
+requests==2.22.*
+Authlib==0.13.*

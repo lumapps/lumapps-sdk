@@ -5,7 +5,7 @@ from pytest import fixture, raises
 
 from lumapps.api.client import pop_matches, ApiClient
 from lumapps.api.utils import FILTERS
-from lumapps.api.errors import ApiCallError
+from lumapps.api.errors import ApiCallError, ApiClientError
 
 
 @fixture
@@ -44,15 +44,17 @@ def test_pop_matches():
 
 
 def test_api_client_no_auth():
-    with raises(Exception):
-        ApiClient()
+    a = ApiClient()
+    with raises(ApiClientError):
+        a.session
 
 
 def test_api_client_token_setter():
     token = "bvazbduioanpdo2"
     client = ApiClient(token=token)
-    assert client.creds is not None
-    assert client.creds.token == token
+    assert client.token == token
+    assert client._headers is not None
+    assert token in client.session.headers["authorization"]
 
 
 def test_get_call_raises_api_call_error(cli: ApiClient):

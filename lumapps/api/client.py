@@ -3,9 +3,9 @@ from time import time
 from textwrap import TextWrapper
 from typing import Any, Dict, Optional
 
-from google.auth.transport.requests import AuthorizedSession
-from google.oauth2 import service_account
-from google.oauth2.credentials import Credentials
+from requests import Session
+from authlib.integrations.requests_client import OAuth2Session, AssertionSession
+# from authlib.integrations.httpx_client import OAuth2Client, AssertionClient
 
 from lumapps.api.errors import ApiClientError, ApiCallError
 from lumapps.api.utils import (
@@ -42,7 +42,6 @@ class ApiClient(object):
         self,
         auth_info: Optional[Dict[str, Any]] = None,
         api_info: Optional[Dict[str, Any]] = None,
-        credentials: Optional[Dict[str, Any]] = None,
         user: Optional[str] = None,
         token: Optional[str] = None,
         token_getter: Optional[Any] = None,
@@ -57,17 +56,20 @@ class ApiClient(object):
         self.prune = prune
         self._auth_info = auth_info
         self._user = {}
+        self._token = None
+        self._endpoints = None
+        self._session = None
+        self._headers = {}
         self.last_cursor = None
         self.token_expiration = None
-
-        # Api infos setup : construct the api url.
         if not api_info:
             api_info = {}
         self.api_info = api_info
         self._api_name = api_info.get("name", "lumsites")
-        self._api_scopes = api_info.get(
-            "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
-        )
+        if api_info.get("scopes"):
+            self._api_scopes = " ".join(api_info.get("scopes"))
+        else:
+            self._api_scopes = None
         self._api_version = api_info.get("version", "v1")
         self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
             "/"
@@ -81,36 +83,67 @@ class ApiClient(object):
         self._discovery_url = (
             f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
         )
-        self._endpoints = None
-        self._session = None
         self.token_getter = token_getter
-        if token_getter:
-            self.creds = None
-            self._check_access_token()
-        elif credentials:
-            self.creds = credentials
-        elif auth_info and "refresh_token" in auth_info:
-            self.creds = Credentials(None, **auth_info)
-        elif auth_info and "bearer" in auth_info:
-            self.creds = Credentials(auth_info["bearer"].replace("Bearer ", ""))
-        elif token:
-            self.creds = None
-            self.token = token
-        elif auth_info:  # session account
-            self.creds = service_account.Credentials.from_service_account_info(
-                auth_info
-            )
-            if self._api_scopes:
-                self.creds = self.creds.with_scopes(self._api_scopes)
-            if user:
-                self.creds = self.creds.with_subject(user)
-        else:
-            raise ApiClientError(
-                "You must provide authentication infos (token_getter, "
-                "auth_info, credentials or token)."
-            )
         self.email = user or ""
         self._discovery_doc = None
+        self.token = token
+
+    @property
+    def token(self):
+        return self._token
+
+    @token.setter
+    def token(self, v):
+        if self._token and self._token == v:
+            return
+        self._token = v
+        self._headers["authorization"] = f"Bearer {self._token}"
+        if self._session:
+            self._session.headers.update(self._headers)
+
+    @property
+    def session(self):
+        """Setup the session object."""
+        self._check_access_token()
+        if self._session is None:
+            auth = self._auth_info
+            if not auth and self._token:
+                s = Session()
+            elif auth and "refresh_token" in auth:
+                s = OAuth2Session(
+                    client_id=auth["client_id"],
+                    client_secret=auth["client_secret"],
+                    scope=self._api_scopes,
+                )
+                s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
+            elif auth:  # service account
+                claims = {"scope": self._api_scopes} if self._api_scopes else {}
+                s = AssertionSession(
+                    token_endpoint=auth["token_uri"],
+                    issuer=auth["client_email"],
+                    audience=auth["token_uri"],
+                    claims=claims,
+                    subject=self.email or None,
+                    key=auth["private_key"],
+                    header={"alg": "RS256"},
+                )
+            else:
+                raise ApiClientError(
+                    "You must provide authentication infos (token_getter, "
+                    "auth_info, credentials or token)."
+                )
+            s.verify = not self.no_verify
+            if self.proxy_info:
+                scheme = self.proxy_info.get("scheme", "https")
+                host = self.proxy_info["host"]
+                port = self.proxy_info["port"]
+                user = self.proxy_info["user"]
+                pwd = self.proxy_info["password"]
+                s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+                s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+            s.headers.update(self._headers)
+            self._session = s
+        return self._session
 
     @property
     def discovery_doc(self):
@@ -192,38 +225,6 @@ class ApiClient(object):
             proxy_info=self.proxy_info,
             prune=self.prune,
         )
-
-    @property
-    def token(self):
-        if not self.creds.token:
-            self.session.get(self.base_url)
-        return self.creds.token
-
-    @token.setter
-    def token(self, v):
-        if self.creds and self.creds.token == v:
-            return
-        self._session = None
-        self.creds = Credentials(v)
-
-    @property
-    def session(self) -> AuthorizedSession:
-        """Setup the session object.
-        """
-        self._check_access_token()
-        if self._session is None:
-            s = AuthorizedSession(self.creds)
-            s.verify = not self.no_verify
-            if self.proxy_info:
-                scheme = self.proxy_info.get("scheme", "https")
-                host = self.proxy_info["host"]
-                port = self.proxy_info["port"]
-                user = self.proxy_info["user"]
-                pwd = self.proxy_info["password"]
-                s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
-                s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
-            self._session = s
-        return self._session
 
     @property
     def endpoints(self):
