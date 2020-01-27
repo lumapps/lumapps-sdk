@@ -61,7 +61,6 @@ class ApiClient(object):
         self._endpoints = None
         self._session = None
         self._headers = {}
-        self.token_expiration = None
         if not api_info:
             api_info = {}
         self.api_info = api_info
