@@ -40,41 +40,43 @@ class ApiClient(object):
                 auth_info: When specified, a service account or a web auth JSON dict.
                 api_info: When specified, a JSON dict containing the description of your
                     api. Defaults to LumApps API.
-                user: The user email.
+                user: Email of user on behalf of whom to authenticate using domain-wide
+                    delegation.
                 token: A bearer access token.
                 token_getter: A bearer access token getter function.
                 prune: Whether or not to use FILTERS to prune LumApps API responses.
                 no_verify: Disables SSL verification.
                 proxy_info: When specified, a JSON dict with proxy parameters.
         """
-        self._get_token_user = None
         self._token_expiry = 0
         self.no_verify = no_verify
         self.proxy_info = proxy_info
         self.prune = prune
         self._auth_info = auth_info
-        self._user = {}
         self._token = None
         self._endpoints = None
         self._session = None
+        self._discovery_doc = None
         self._headers = {}
         if api_info is None:
             api_info = {}
+        api_info.setdefault("name", LUMAPPS_NAME)
+        api_info.setdefault("version", LUMAPPS_VERSION)
+        api_info.setdefault("base_url", LUMAPPS_BASE_URL)
+        api_info.setdefault("scopes", LUMAPPS_SCOPE)
         self.api_info = api_info
-        self._api_name = api_info.get("name", LUMAPPS_NAME)
-        self._scope = " ".join(api_info.get("scopes", LUMAPPS_SCOPE))
-        self._api_version = api_info.get("version", LUMAPPS_VERSION)
-        self.base_url = api_info.get("base_url", LUMAPPS_BASE_URL).rstrip("/")
-        if self._api_name in GOOGLE_APIS:
+        api_name = api_info["name"]
+        self._scope = " ".join(api_info["scopes"])
+        self.base_url = api_info["base_url"].rstrip("/")
+        if api_name in GOOGLE_APIS:
             prefix = self.base_url
         else:
             prefix = f"{self.base_url}/_ah/api"
-        api_name, api_ver = self._api_name, self._api_version
+        api_ver = api_info["version"]
         self._api_url = f"{prefix}/{api_name}/{api_ver}"
         self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
         self.token_getter = token_getter
         self.email = user
-        self._discovery_doc = None
         self.token = token
 
     @property
