@@ -84,43 +84,51 @@ def get_conf_db_file() -> str:
     return os.path.join(d, "{}.db".format(__pypi_packagename__))
 
 
-class GetConnBase:
-    _sqlite_ok = sqlite3 is not None
-
-    @staticmethod
-    def _get_conn():
-        if not GetConnBase._sqlite_ok:
-            return None
-        try:
-            conn = sqlite3.connect(get_conf_db_file())
-            conn.isolation_level = None
-            conn.row_factory = sqlite3.Row
-            conn.execute("PRAGMA journal_mode=WAL")
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS discovery_cache (
-                    url TEXT NOT NULL,
-                    expiry TEXT NOT NULL,
-                    content TEXT NOT NULL,
-                    PRIMARY KEY (url)
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS config (
-                    name TEXT NOT NULL,
-                    content TEXT NOT NULL,
-                    PRIMARY KEY (name)
-                )"""
-            )
-            return conn
-        except sqlite3.OperationalError:
-            GetConnBase._sqlite_ok = False
-            return None
+_sqlite_ok = sqlite3 is not None
 
 
-class ConfigStore(GetConnBase):
+def _get_sqlite_ok():
+    return _sqlite_ok
+
+
+def _set_sqlite_ok(ok):
+    global _sqlite_ok
+    _sqlite_ok = ok
+
+
+def _get_conn():
+    if not _get_sqlite_ok():
+        return None
+    try:
+        conn = sqlite3.connect(get_conf_db_file())
+        conn.isolation_level = None
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS discovery_cache (
+                url TEXT NOT NULL,
+                expiry TEXT NOT NULL,
+                content TEXT NOT NULL,
+                PRIMARY KEY (url)
+            )"""
+        )
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS config (
+                name TEXT NOT NULL,
+                content TEXT NOT NULL,
+                PRIMARY KEY (name)
+            )"""
+        )
+        return conn
+    except sqlite3.OperationalError:
+        _set_sqlite_ok(False)
+        return None
+
+
+class ConfigStore:
     @staticmethod
     def get(name: str) -> Optional[Dict[str, Any]]:
-        conn = ConfigStore._get_conn()
+        conn = _get_conn()
         if not conn:
             return None
         row = conn.execute(
@@ -130,16 +138,16 @@ class ConfigStore(GetConnBase):
 
     @staticmethod
     def get_names():
-        conn = ConfigStore._get_conn()
+        conn = _get_conn()
         if not conn:
             return []
         return [r[0] for r in conn.execute("SELECT name FROM config")]
 
     @staticmethod
     def set(name: str, content: Any) -> None:
-        conn = ConfigStore._get_conn()
+        conn = _get_conn()
         if not conn:
-            return None
+            return
         conn.execute(
             "INSERT OR REPLACE INTO config VALUES (?, ?)",
             (name, dumps(content, indent=4)),
@@ -162,10 +170,10 @@ class _DiscoveryCacheDict:
         _DiscoveryCacheDict._cache[url] = {"expiry": expiry, "content": content}
 
 
-class _DiscoveryCacheSqlite(GetConnBase):
+class _DiscoveryCacheSqlite:
     @staticmethod
     def get(url):
-        conn = ConfigStore._get_conn()
+        conn = _get_conn()
         if not conn:
             return _DiscoveryCacheDict.get(url)
         cached = conn.execute(
@@ -180,7 +188,7 @@ class _DiscoveryCacheSqlite(GetConnBase):
 
     @staticmethod
     def set(url, content):
-        conn = ConfigStore._get_conn()
+        conn = _get_conn()
         if not conn:
             _DiscoveryCacheDict.set(url, content)
             return
