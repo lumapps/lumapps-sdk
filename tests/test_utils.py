@@ -70,6 +70,7 @@ def test_no_sqlite(capsys, mocker):
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
+    assert _DiscoveryCacheDict.get("foobar.com") == "bla"
 
 
 def test_parse_endpoint_parts():

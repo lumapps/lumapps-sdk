@@ -2,8 +2,9 @@ import os
 
 if not os.getenv("GAE_ENV"):  # noqa
     import sqlite3
+    _sqlite_ok = True
 else:
-    sqlite3 = None
+    _sqlite_ok = False
 
 from typing import Any, Dict, List, Optional
 from json import loads, dumps
@@ -82,9 +83,6 @@ def get_conf_db_file() -> str:
     else:
         d = os.path.join(os.path.expanduser("~"), ".config")
     return os.path.join(d, "{}.db".format(__pypi_packagename__))
-
-
-_sqlite_ok = sqlite3 is not None
 
 
 def _get_sqlite_ok():
