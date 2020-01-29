@@ -318,8 +318,6 @@ class ApiClient(object):
                 >>> feedtypes = get_call("feedtype/list")
                 >>> print(feedtypes)
         """
-        if params is None:
-            params = {}
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
         cursor = None
@@ -362,8 +360,6 @@ class ApiClient(object):
                 >>> feedtypes = iter_call("feedtype/list")
                 >>> for feedtype in feedtypes: print(feedtype)
         """
-        if params is None:
-            params = {}
         name_parts = _parse_endpoint_parts(name_parts)
         cursor = None
         if "body" in params and isinstance(params["body"], str):
