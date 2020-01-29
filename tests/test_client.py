@@ -64,6 +64,11 @@ def test_get_call(mocker, cli: ApiClient):
     assert community["id"] == community2["id"]
 
 
+def test_extract_from_discovery(mocker, cli: ApiClient):
+    r = cli._extract_from_discovery("foo")
+    assert r == {}
+
+
 def test_iter_call(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
