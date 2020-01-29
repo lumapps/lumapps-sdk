@@ -1,6 +1,8 @@
+import logging
+
 from pytest import fixture, raises
 
-from lumapps.api.cli import load_config, parse_args, list_configs
+from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger
 from lumapps.api.utils import ConfigStore, _get_conn, _set_sqlite_ok
 
 
@@ -47,3 +49,9 @@ def test_list_configs_no_sqlite(capsys, mocker):
     list_configs()
     err = capsys.readouterr().out
     assert "foo" not in err
+
+
+def test_setup_logger():
+    setup_logger()
+    l2 = logging.getLogger()
+    assert len(l2.handlers)
