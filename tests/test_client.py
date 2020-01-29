@@ -46,6 +46,10 @@ def test_get_help(cli: ApiClient):
     assert "user get" in h
     with raises(KeyError):
         cli.get_help(("user", "get123"))
+    h = cli.get_help(("user", "get"), debug=True)
+    assert "user get" in h
+    with raises(KeyError):
+        cli.get_help(("user", "get123"), debug=True)
 
 
 def test_get_matching_endpoints(cli: ApiClient):
@@ -73,6 +77,9 @@ def test_get_call(mocker, cli: ApiClient):
 def test_extract_from_discovery(mocker, cli: ApiClient):
     r = cli._extract_from_discovery("foo")
     assert r == {}
+    cli._discovery_doc.clear()
+    r = cli._extract_from_discovery("foo")
+    assert r is None
 
 
 def test_iter_call(mocker, cli: ApiClient):
