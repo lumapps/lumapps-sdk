@@ -102,7 +102,7 @@ LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RS
     :target: https://circleci.com/gh/lumapps/lumapps-sdk
 
 .. |Coverage Status| image:: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0/graph/badge.svg
-    :target: https://codecov.io/gh/lumapps/lumapps-sdk
+    :target: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0
     
 .. |Style Badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/ambv/black
