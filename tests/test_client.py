@@ -59,9 +59,7 @@ def test_get_matching_endpoints(cli: ApiClient):
 def test_get_call(mocker, cli: ApiClient):
     with open("tests/test_data/community_1.json") as fh:
         community = load(fh)
-    mocker.patch(
-        "lumapps.api.client.ApiClient._get_api_call", return_value=community
-    )
+    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=community)
     community2 = cli.get_call("community/get", uid="foo")
     assert community["id"] == community2["id"]
 
@@ -69,9 +67,7 @@ def test_get_call(mocker, cli: ApiClient):
 def test_iter_call(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
-    mocker.patch(
-        "lumapps.api.client.ApiClient._get_api_call", return_value=ret
-    )
+    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 2
 

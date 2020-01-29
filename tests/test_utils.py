@@ -7,10 +7,7 @@ from lumapps.api.utils import (
     _DiscoveryCacheDict,
     _DiscoveryCacheSqlite,
     DiscoveryCache,
-    get_config_names,
-    set_config,
-    get_config,
-    _get_conn,
+    ConfigStore,
     _parse_endpoint_parts,
     _extract_from_discovery_spec,
     pop_matches,
@@ -29,7 +26,9 @@ def test_discovery_cache_1():
 
 def test_discovery_cache_dict(mocker):
     mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
+    mocker.patch(
+        "lumapps.api.utils.ConfigStore._get_conn", return_value=ConfigStore._get_conn()
+    )
     c = _DiscoveryCacheDict
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
@@ -40,7 +39,9 @@ def test_discovery_cache_dict(mocker):
 
 def test_discovery_cache_sqlite(mocker):
     mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
+    mocker.patch(
+        "lumapps.api.utils.ConfigStore._get_conn", return_value=ConfigStore._get_conn()
+    )
     c = _DiscoveryCacheSqlite
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
@@ -49,15 +50,17 @@ def test_discovery_cache_sqlite(mocker):
 
 def test_get_set_configs(mocker):
     mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
-    assert len(get_config_names()) == 0
-    set_config("foo", "bar")
-    assert len(get_config_names()) == 1
-    set_config("foo", "bar")
-    assert len(get_config_names()) == 1
-    set_config("foo1", "bar1")
-    assert len(get_config_names()) == 2
-    assert get_config("foo") == "bar"
+    mocker.patch(
+        "lumapps.api.utils.ConfigStore._get_conn", return_value=ConfigStore._get_conn()
+    )
+    assert len(ConfigStore.get_names()) == 0
+    ConfigStore.set("foo", "bar")
+    assert len(ConfigStore.get_names()) == 1
+    ConfigStore.set("foo", "bar")
+    assert len(ConfigStore.get_names()) == 1
+    ConfigStore.set("foo1", "bar1")
+    assert len(ConfigStore.get_names()) == 2
+    assert ConfigStore.get("foo") == "bar"
 
 
 def test_parse_endpoint_parts():

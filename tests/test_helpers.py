@@ -134,9 +134,9 @@ def test_iter_with_key_value():
         content = json.load(fh)
     with_uuid = list(iter_with_key_value(content, "uuid", "foo"))
     assert with_uuid == []
-    with_uuid = list(iter_with_key_value(
-        content, "uuid", "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
-    ))
+    with_uuid = list(
+        iter_with_key_value(content, "uuid", "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6")
+    )
     assert len(with_uuid) == 1
 
 

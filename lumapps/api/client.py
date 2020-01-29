@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional, Callable, Tuple
 
 from requests import Session
 from authlib.integrations.requests_client import OAuth2Session, AssertionSession
+
 # from authlib.integrations.httpx_client import OAuth2Client, AssertionClient
 
 from lumapps.api.errors import ApiClientError, ApiCallError
@@ -16,6 +17,7 @@ from lumapps.api.utils import (
     _parse_endpoint_parts,
     _extract_from_discovery_spec,
 )
+
 LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
 LUMAPPS_VERSION = "v1"
 LUMAPPS_NAME = "lumsites"
@@ -23,7 +25,6 @@ LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
 
 
 class ApiClient(object):
-
     def __init__(
         self,
         auth_info: Optional[Dict[str, Any]] = None,

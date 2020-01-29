@@ -5,12 +5,7 @@ import logging
 from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType, SUPPRESS
 
 from lumapps.api.errors import ApiCallError
-from lumapps.api.utils import (
-    list_prune_filters,
-    get_config_names,
-    get_config,
-    set_config,
-)
+from lumapps.api.utils import list_prune_filters, ConfigStore
 from lumapps.api import ApiClient, TokenClient
 
 LIST_CONFIGS = "***LIST_CONFIGS***"
@@ -58,7 +53,7 @@ def parse_args(*args, **kwargs):
 
 
 def list_configs():
-    conf_names = get_config_names()
+    conf_names = ConfigStore.get_names()
     if not conf_names:
         print("There are no saved configs")
         return
@@ -69,7 +64,7 @@ def list_configs():
 
 def load_config(api_file, auth_file, user, conf_name):
     if conf_name:
-        conf = get_config(conf_name) or {}
+        conf = ConfigStore.get(conf_name) or {}
         if not conf and not auth_file:
             sys.exit('config "{}" not found'.format(conf_name))
     else:
@@ -90,7 +85,7 @@ def load_config(api_file, auth_file, user, conf_name):
 
 
 def store_config(api_info, auth_info, conf_name, user=None):
-    set_config(conf_name, {"api": api_info, "auth": auth_info, "user": user})
+    ConfigStore.set(conf_name, {"api": api_info, "auth": auth_info, "user": user})
 
 
 def cast_params(name_parts, args, api):

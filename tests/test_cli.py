@@ -1,5 +1,5 @@
 from lumapps.api.cli import load_config, parse_args, list_configs
-from lumapps.api.utils import set_config, _get_conn
+from lumapps.api.utils import ConfigStore
 
 import pytest
 
@@ -27,7 +27,9 @@ def test_list_configs_1(capsys, mocker):
 
 def test_list_configs_2(capsys, mocker):
     mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
-    set_config("foo", "bar")
+    mocker.patch(
+        "lumapps.api.utils.ConfigStore._get_conn", return_value=ConfigStore._get_conn()
+    )
+    ConfigStore.set("foo", "bar")
     list_configs()
     assert "foo" in capsys.readouterr().out

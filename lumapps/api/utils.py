@@ -1,8 +1,8 @@
 import os
 
-try:
+if not os.getenv("GAE_ENV"):  # noqa
     import sqlite3
-except ImportError:
+else:
     sqlite3 = None
 
 from typing import Any, Dict, List, Optional
@@ -84,80 +84,69 @@ def get_conf_db_file() -> str:
     return os.path.join(d, "{}.db".format(__pypi_packagename__))
 
 
-def _get_conn() -> sqlite3.Connection:
-    conn = sqlite3.connect(get_conf_db_file())
-    conn.isolation_level = None
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS discovery_cache (
-            url TEXT NOT NULL,
-            expiry TEXT NOT NULL,
-            content TEXT NOT NULL,
-            PRIMARY KEY (url)
-        )"""
-    )
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS config (
-            name TEXT NOT NULL,
-            content TEXT NOT NULL,
-            PRIMARY KEY (name)
-        )"""
-    )
-    return conn
+class GetConnBase:
+    _sqlite_ok = sqlite3 is not None
+
+    @staticmethod
+    def _get_conn():
+        if not GetConnBase._sqlite_ok:
+            return None
+        try:
+            conn = sqlite3.connect(get_conf_db_file())
+            conn.isolation_level = None
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute(
+                """CREATE TABLE IF NOT EXISTS discovery_cache (
+                    url TEXT NOT NULL,
+                    expiry TEXT NOT NULL,
+                    content TEXT NOT NULL,
+                    PRIMARY KEY (url)
+                )"""
+            )
+            conn.execute(
+                """CREATE TABLE IF NOT EXISTS config (
+                    name TEXT NOT NULL,
+                    content TEXT NOT NULL,
+                    PRIMARY KEY (name)
+                )"""
+            )
+            return conn
+        except sqlite3.OperationalError:
+            GetConnBase._sqlite_ok = False
+            return None
 
 
-def get_discovery_cache(url: str) -> Optional[Dict[str, Any]]:
-    try:
-        return (
-            _get_conn()
-            .execute("SELECT * FROM discovery_cache WHERE url=?", (url,))
-            .fetchone()
-        )
-    except sqlite3.OperationalError:
-        return None
+class ConfigStore(GetConnBase):
+    @staticmethod
+    def get(name: str) -> Optional[Dict[str, Any]]:
+        conn = ConfigStore._get_conn()
+        if not conn:
+            return None
+        row = conn.execute(
+            "SELECT content FROM config WHERE name=?", (name,)
+        ).fetchone()
+        return loads(row[0]) if row else None
 
+    @staticmethod
+    def get_names():
+        conn = ConfigStore._get_conn()
+        if not conn:
+            return []
+        return [r[0] for r in conn.execute("SELECT name FROM config")]
 
-def set_discovery_cache(url: str, expiry: Any, content: Any) -> None:
-    try:
-        _get_conn().execute(
-            "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
-            (url, expiry, content),
-        )
-    except sqlite3.OperationalError:
-        pass
-
-
-def get_config(name: str) -> Optional[Dict[str, Any]]:
-    try:
-        row = (
-            _get_conn()
-            .execute("SELECT content FROM config WHERE name=?", (name,))
-            .fetchone()
-        )
-    except sqlite3.OperationalError:
-        return None
-    return loads(row[0]) if row else None
-
-
-def get_config_names():
-    try:
-        return [r[0] for r in _get_conn().execute("SELECT name FROM config")]
-    except sqlite3.OperationalError:
-        return []
-
-
-def set_config(name: str, content: Any) -> None:
-    try:
-        _get_conn().execute(
+    @staticmethod
+    def set(name: str, content: Any) -> None:
+        conn = ConfigStore._get_conn()
+        if not conn:
+            return None
+        conn.execute(
             "INSERT OR REPLACE INTO config VALUES (?, ?)",
             (name, dumps(content, indent=4)),
         )
-    except sqlite3.OperationalError:
-        pass
 
 
-class _DiscoveryCacheDict(object):
+class _DiscoveryCacheDict:
     _cache = {}
 
     @staticmethod
@@ -173,10 +162,15 @@ class _DiscoveryCacheDict(object):
         _DiscoveryCacheDict._cache[url] = {"expiry": expiry, "content": content}
 
 
-class _DiscoveryCacheSqlite(object):
+class _DiscoveryCacheSqlite(GetConnBase):
     @staticmethod
     def get(url):
-        cached = get_discovery_cache(url)
+        conn = ConfigStore._get_conn()
+        if not conn:
+            return _DiscoveryCacheDict.get(url)
+        cached = conn.execute(
+            "SELECT * FROM discovery_cache WHERE url=?", (url,)
+        ).fetchone()
         if not cached:
             return None
         expiry_dt = datetime.strptime(cached["expiry"][:19], "%Y-%m-%dT%H:%M:%S")
@@ -186,11 +180,18 @@ class _DiscoveryCacheSqlite(object):
 
     @staticmethod
     def set(url, content):
+        conn = ConfigStore._get_conn()
+        if not conn:
+            _DiscoveryCacheDict.set(url, content)
+            return
         expiry = (datetime.now() + CACHE_MAX_AGE).isoformat()[:19]
-        set_discovery_cache(url, expiry, content)
+        conn.execute(
+            "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
+            (url, expiry, content),
+        )
 
 
-if os.getenv("GAE_ENV") or sqlite3 is None:
+if sqlite3 is None:
     DiscoveryCache = _DiscoveryCacheDict
 else:
     DiscoveryCache = _DiscoveryCacheSqlite
