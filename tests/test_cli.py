@@ -26,8 +26,7 @@ def test_list_configs_1(capsys, mocker):
 
 
 def test_list_configs_2(capsys, mocker):
-    mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
     ConfigStore.set("foo", "bar")
     list_configs()
     assert "foo" in capsys.readouterr().out

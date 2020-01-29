@@ -57,8 +57,7 @@ def test_discovery_cache_sqlite(mocker):
 
 
 def test_get_set_configs(mocker):
-    mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
     assert len(ConfigStore.get_names()) == 0
     ConfigStore.set("foo", "bar")
     assert len(ConfigStore.get_names()) == 1

@@ -94,11 +94,11 @@ def _set_sqlite_ok(ok):
     _sqlite_ok = ok
 
 
-def _get_conn():
+def _get_conn(db_file=None):
     if not _get_sqlite_ok():
         return None
     try:
-        conn = sqlite3.connect(get_conf_db_file())
+        conn = sqlite3.connect(db_file or get_conf_db_file())
         conn.isolation_level = None
         conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA journal_mode=WAL")
