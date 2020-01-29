@@ -15,12 +15,14 @@ from lumapps.api.utils import (
     pop_matches,
     _get_conn,
     _get_sqlite_ok,
+    _set_sqlite_ok,
 )
 
 
 @fixture(autouse=True)
-def clean_dict_cache():
+def reset_env():
     _DiscoveryCacheDict._cache.clear()
+    _set_sqlite_ok(True)
 
 
 def test_list_prune_filters(capsys):
