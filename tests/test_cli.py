@@ -14,6 +14,10 @@ def test_load_config():
         api_info, auth_info, user = load_config(
             None, None, "ivo@managemybudget.net", "mmb"
         )
+    api_info, auth_info, user = load_config(None, None, "ivo@managemybudget.net", None)
+    assert user == "ivo@managemybudget.net"
+    assert api_info is None
+    assert auth_info is None
 
 
 def test_arg_parser():
