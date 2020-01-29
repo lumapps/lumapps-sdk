@@ -1,5 +1,6 @@
 from json import load
 
+from requests.exceptions import HTTPError
 from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
@@ -54,6 +55,11 @@ def test_get_matching_endpoints(cli: ApiClient):
     assert "user list" in matches
     matches = cli.get_matching_endpoints(("xyz",))
     assert "not found" in matches
+
+
+def test_get_api_call(mocker, cli: ApiClient):
+    with raises(HTTPError):
+        cli._get_api_call(("user", "get"), {})
 
 
 def test_get_call(mocker, cli: ApiClient):

@@ -6,7 +6,7 @@ if not os.getenv("GAE_ENV"):  # noqa
 else:
     _sqlite_ok = False
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional, Sequence
 from json import loads, dumps
 from datetime import datetime, timedelta
 
@@ -219,7 +219,7 @@ def _parse_endpoint_parts(parts):
 
 
 def _extract_from_discovery_spec(
-    resources: Dict[str, Any], name_parts: List[str]
+    resources: Dict[str, Any], name_parts: Sequence[str]
 ) -> Dict[str, Any]:
     getted = None
     for i, part in enumerate(name_parts):

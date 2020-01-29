@@ -1,7 +1,7 @@
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
-from typing import Any, Dict, Optional, Callable, Tuple
+from typing import Any, Dict, Optional, Callable, Tuple, Sequence
 
 from requests import Session
 from authlib.integrations.requests_client import OAuth2Session, AssertionSession
@@ -288,7 +288,7 @@ class ApiClient(object):
             return None
         return _extract_from_discovery_spec(resources, name_parts)
 
-    def _get_api_call(self, name_parts, params):
+    def _get_api_call(self, name_parts: Sequence[str], params: dict):
         """ Construct the call """
         endpoint = self._extract_from_discovery(name_parts)
         if not endpoint:
