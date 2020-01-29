@@ -2,6 +2,8 @@ import json
 from copy import deepcopy
 from datetime import datetime, timedelta
 
+from pytest import fixture
+
 from lumapps.api.utils import (
     list_prune_filters,
     _DiscoveryCacheDict,
@@ -13,6 +15,11 @@ from lumapps.api.utils import (
     pop_matches,
     _get_conn,
 )
+
+
+@fixture(autouse=True)
+def clean_dict_cache():
+    _DiscoveryCacheDict._cache.clear()
 
 
 def test_list_prune_filters(capsys):
