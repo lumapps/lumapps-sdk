@@ -36,10 +36,7 @@ def test_discovery_cache_1():
 
 
 def test_discovery_cache_dict(mocker):
-    mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch(
-        "lumapps.api.utils._get_conn", return_value=_get_conn(),
-    )
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
     c = _DiscoveryCacheDict
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
@@ -49,14 +46,17 @@ def test_discovery_cache_dict(mocker):
 
 
 def test_discovery_cache_sqlite(mocker):
-    mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch(
-        "lumapps.api.utils._get_conn", return_value=_get_conn(),
-    )
+    conn = _get_conn(":memory:")
+    mocker.patch("lumapps.api.utils._get_conn", return_value=conn)
     c = _DiscoveryCacheSqlite
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
+    dt = (datetime.now() - timedelta(days=100)).isoformat()[:19]
+    conn.execute(
+        "UPDATE discovery_cache SET expiry=? WHERE url='foobar.com'", (dt, )
+    )
+    assert c.get("foobar.com") is None
 
 
 def test_get_set_configs(mocker):
@@ -74,8 +74,7 @@ def test_get_set_configs(mocker):
 
 def test_no_sqlite(capsys, mocker):
     mocker.patch("lumapps.api.utils._get_sqlite_ok", return_value=False)
-    mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
     c = _DiscoveryCacheSqlite
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
