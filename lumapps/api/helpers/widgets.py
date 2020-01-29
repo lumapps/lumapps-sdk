@@ -80,8 +80,8 @@ def iter_with_key(dict_or_list, key):
                         yield dict_match
 
 
-def find_one_with_key_value(key, value, dict_or_list):
-    for d in iter_with_key_value(key, value, dict_or_list):
+def find_one_with_key_value(dict_or_list, key, value):
+    for d in iter_with_key_value(dict_or_list, key, value):
         return d
 
 

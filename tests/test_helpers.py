@@ -14,7 +14,16 @@ from lumapps.api.helpers import (
     set_new_lumapps_uuids,
     copy_with_new_lumapps_uuids,
     replace_matching_key_val,
+    find_one_with_key_value,
 )
+
+
+def test_find_one_with_key_value():
+    with open("tests/test_data/content_1.json") as fh:
+        content = json.load(fh)
+    to_find = "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
+    found = find_one_with_key_value(content, "uuid", to_find)
+    assert found is not None
 
 
 def test_content_is_template():
@@ -111,7 +120,7 @@ def test_new_lumapps_uuid():
     assert str(uuid1).lower() == new_uuid_str1
 
 
-def test_iter_with_key():
+def test_iter_with_key_1():
     with open("tests/test_data/content_1.json") as fh:
         content = json.load(fh)
     with_uuid = list(iter_with_key(content, "uuid"))
@@ -122,20 +131,38 @@ def test_iter_with_key():
     assert with_uuid[3]["uuid"] == "ae9aac74-1ee5-45c2-9a57-8e447ad663f3"
 
 
-def test_iter_with_key2():
+def test_iter_with_key_2():
     with open("tests/test_data/content_1.json") as fh:
         content = json.load(fh)
     matches = list(iter_with_key(content, "instance"))
     assert len(matches) == 3
 
 
-def test_iter_with_key_value():
+def test_iter_with_key_3():
+    with open("tests/test_data/content_1.json") as fh:
+        content = json.load(fh)
+    matches = list(iter_with_key([content], "instance"))
+    assert len(matches) == 3
+
+
+def test_iter_with_key_value_1():
     with open("tests/test_data/content_1.json") as fh:
         content = json.load(fh)
     with_uuid = list(iter_with_key_value(content, "uuid", "foo"))
     assert with_uuid == []
     with_uuid = list(
         iter_with_key_value(content, "uuid", "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6")
+    )
+    assert len(with_uuid) == 1
+
+
+def test_iter_with_key_value_2():
+    with open("tests/test_data/content_1.json") as fh:
+        content = json.load(fh)
+    with_uuid = list(iter_with_key_value([content], "uuid", "foo"))
+    assert with_uuid == []
+    with_uuid = list(
+        iter_with_key_value([content], "uuid", "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6")
     )
     assert len(with_uuid) == 1
 
