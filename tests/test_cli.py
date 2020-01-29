@@ -1,8 +1,11 @@
 import logging
+from json import load
 
 from pytest import fixture, raises
+from requests.exceptions import HTTPError
+from unittest.mock import PropertyMock
 
-from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger
+from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger, main
 from lumapps.api.utils import ConfigStore, _get_conn, _set_sqlite_ok
 
 
@@ -23,8 +26,6 @@ def test_load_config():
 
 
 def test_arg_parser():
-    # with pytest.raises(SystemExit):
-    #     arg_parser, args = parse_args()
     with raises(SystemExit):
         arg_parser, args = parse_args(["--user", "foo", "--email", "bar"])
     arg_parser, args = parse_args(["--user", "foo"])
@@ -47,11 +48,44 @@ def test_list_configs_no_sqlite(capsys, mocker):
     mocker.patch("lumapps.api.utils._get_sqlite_ok", return_value=False)
     ConfigStore.set("foo", "bar")
     list_configs()
-    err = capsys.readouterr().out
-    assert "foo" not in err
+    out = capsys.readouterr().out
+    assert "foo" not in out
 
 
 def test_setup_logger():
     setup_logger()
     l2 = logging.getLogger()
     assert len(l2.handlers)
+
+
+def test_main_1(capsys, mocker):
+    mocker.patch(
+        "lumapps.api.cli.parse_args", return_value=parse_args(["--user", "foo"])
+    )
+    main()
+    out = capsys.readouterr().out
+    assert "usage" in out
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+    mocker.patch(
+        "lumapps.api.cli.parse_args", return_value=parse_args(["-c"])
+    )
+    main()
+    out = capsys.readouterr().out
+    assert "no saved" in out
+    mocker.patch(
+        "lumapps.api.cli.parse_args", return_value=parse_args(["--token", "foo"])
+    )
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        mocker.patch(
+            "lumapps.api.client.ApiClient.discovery_doc",
+            new_callable=PropertyMock,
+            return_value=load(fh),
+        )
+    with raises(SystemExit):
+        main()
+    mocker.patch(
+        "lumapps.api.cli.parse_args",
+        return_value=parse_args(["--token", "foo", "user", "get"]),
+    )
+    with raises(HTTPError):
+        main()
