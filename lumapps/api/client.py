@@ -1,7 +1,7 @@
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Callable, Tuple, Sequence
 
 from requests import Session
 from authlib.integrations.requests_client import OAuth2Session, AssertionSession
@@ -18,75 +18,66 @@ from lumapps.api.utils import (
     _extract_from_discovery_spec,
 )
 
+LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
+LUMAPPS_VERSION = "v1"
+LUMAPPS_NAME = "lumsites"
+LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
+
 
 class ApiClient(object):
-    """
-        Args:
-            user (str): The user email.
-            auth_info (dict): A session account key (json file).
-            api_info (dict): A dict containing the description of your api. If
-                no api_info is given this defaults to the lumsites api infos.
-            credentials (dict): oauth2 credentials.
-            token (str): A bearer token.
-            token_getter (object): a token getter function
-            prune (bool): Whether or not to use FILTERS to prune the LumApps
-                API responses. Defaults to False.
-            no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
-            proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
-
-        Notes:
-            At least one type of authentication info is required (auth_info,
-            credentials, token)
-    """
-
     def __init__(
         self,
         auth_info: Optional[Dict[str, Any]] = None,
         api_info: Optional[Dict[str, Any]] = None,
         user: Optional[str] = None,
         token: Optional[str] = None,
-        token_getter: Optional[Any] = None,
+        token_getter: Optional[Callable[[], Tuple[str, int]]] = None,
         prune: bool = False,
         no_verify: bool = False,
         proxy_info: Optional[Dict[str, Any]] = None,
     ):
-        self._get_token_user = None
+        """
+            Args:
+                auth_info: When specified, a service account or a web auth JSON dict.
+                api_info: When specified, a JSON dict containing the description of your
+                    api. Defaults to LumApps API.
+                user: Email of user on behalf of whom to authenticate using domain-wide
+                    delegation.
+                token: A bearer access token.
+                token_getter: A bearer access token getter function.
+                prune: Whether or not to use FILTERS to prune LumApps API responses.
+                no_verify: Disables SSL verification.
+                proxy_info: When specified, a JSON dict with proxy parameters.
+        """
         self._token_expiry = 0
         self.no_verify = no_verify
         self.proxy_info = proxy_info
         self.prune = prune
         self._auth_info = auth_info
-        self._user = {}
         self._token = None
         self._endpoints = None
         self._session = None
+        self._discovery_doc = None
         self._headers = {}
-        self.last_cursor = None
-        self.token_expiration = None
-        if not api_info:
+        if api_info is None:
             api_info = {}
+        api_info.setdefault("name", LUMAPPS_NAME)
+        api_info.setdefault("version", LUMAPPS_VERSION)
+        api_info.setdefault("base_url", LUMAPPS_BASE_URL)
+        api_info.setdefault("scopes", LUMAPPS_SCOPE)
         self.api_info = api_info
-        self._api_name = api_info.get("name", "lumsites")
-        scope = api_info.get(
-            "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
-        )
-        self._scope = " ".join(scope)
-        self._api_version = api_info.get("version", "v1")
-        self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
-            "/"
-        )
-        if self._api_name in GOOGLE_APIS:
-            prefix = f"{self.base_url}"
+        api_name = api_info["name"]
+        self._scope = " ".join(api_info["scopes"])
+        self.base_url = api_info["base_url"].rstrip("/")
+        if api_name in GOOGLE_APIS:
+            prefix = self.base_url
         else:
             prefix = f"{self.base_url}/_ah/api"
-        api_name, api_version = self._api_name, self._api_version
-        self._api_url = f"{prefix}/{api_name}/{api_version}"
-        self._discovery_url = (
-            f"{prefix}/discovery/v1/apis/{api_name}/{api_version}/rest"
-        )
+        api_ver = api_info["version"]
+        self._api_url = f"{prefix}/{api_name}/{api_ver}"
+        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
         self.token_getter = token_getter
-        self.email = user or ""
-        self._discovery_doc = None
+        self.email = user
         self.token = token
 
     @property
@@ -120,7 +111,7 @@ class ApiClient(object):
                 issuer=auth["client_email"],
                 audience=auth["token_uri"],
                 claims=claims,
-                subject=self.email or None,
+                subject=self.email,
                 key=auth["private_key"],
                 header={"alg": "RS256"},
             )
@@ -297,7 +288,7 @@ class ApiClient(object):
             return None
         return _extract_from_discovery_spec(resources, name_parts)
 
-    def _get_api_call(self, name_parts, params):
+    def _get_api_call(self, name_parts: Sequence[str], params: dict):
         """ Construct the call """
         endpoint = self._extract_from_discovery(name_parts)
         if not endpoint:
@@ -327,8 +318,6 @@ class ApiClient(object):
                 >>> feedtypes = get_call("feedtype/list")
                 >>> print(feedtypes)
         """
-        if params is None:
-            params = {}
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
         cursor = None
@@ -342,16 +331,14 @@ class ApiClient(object):
                     params["cursor"] = cursor
             response = self._get_api_call(name_parts, params)
             if "more" in response and "items" not in response:
-                self.last_cursor = None
                 return items  # empty list
             if "more" in response and "items" in response:
                 items.extend(response["items"])
                 if response.get("more", False):
-                    self.last_cursor = cursor = response["cursor"]
+                    cursor = response["cursor"]
                 else:
                     return self._prune(name_parts, items)
             else:
-                self.last_cursor = None
                 return self._prune(name_parts, response)
 
     def iter_call(self, *name_parts, **params):
@@ -373,8 +360,6 @@ class ApiClient(object):
                 >>> feedtypes = iter_call("feedtype/list")
                 >>> for feedtype in feedtypes: print(feedtype)
         """
-        if params is None:
-            params = {}
         name_parts = _parse_endpoint_parts(name_parts)
         cursor = None
         if "body" in params and isinstance(params["body"], str):

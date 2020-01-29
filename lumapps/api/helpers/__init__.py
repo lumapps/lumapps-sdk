@@ -10,5 +10,6 @@ from lumapps.api.helpers.widgets import (  # noqa
     copy_with_new_lumapps_uuids,
     iter_with_key,
     iter_with_key_value,
+    find_one_with_key_value,
     replace_matching_key_val,
 )
