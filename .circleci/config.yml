@@ -107,6 +107,28 @@ jobs:
       - store_test_results:
           path: test-results
 
+  test:
+    parameters:
+      version:
+        type: string
+    executor:
+      name: python
+      version: << parameters.version >>
+    steps:
+      - install-and-cache:
+          version: << parameters.version >>
+      - run:
+          name: Install test and coverage librairies
+          command: pip install -r requirements_dev.txt
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p test-reports/pytest
+            pytest --junitxml=test-results/pytest/results.xml -v
+
+      - store_test_results:
+          path: test-results
+
   extended-linting:
     executor:
       name: python
@@ -153,7 +175,7 @@ workflows:
           requires:
             - "Build-36"
 
-      - test-and-coverage:
+      - test:
           name: "Test-36"
           version: "3.6"
           requires:
