@@ -14,6 +14,7 @@ from lumapps.api.utils import (
     _extract_from_discovery_spec,
     pop_matches,
     _get_conn,
+    _get_sqlite_ok,
 )
 
 
@@ -58,6 +59,7 @@ def test_discovery_cache_sqlite(mocker):
 
 def test_get_set_configs(mocker):
     mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+    assert _get_sqlite_ok() is True
     assert len(ConfigStore.get_names()) == 0
     ConfigStore.set("foo", "bar")
     assert len(ConfigStore.get_names()) == 1
