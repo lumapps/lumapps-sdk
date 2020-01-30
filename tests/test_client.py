@@ -1,11 +1,18 @@
 from json import load, loads
+from unittest.mock import PropertyMock
 
 from requests.exceptions import HTTPError
 from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
-from lumapps.api.utils import FILTERS
+from lumapps.api.utils import FILTERS, _DiscoveryCacheDict, _set_sqlite_ok, _get_conn
 from lumapps.api.errors import ApiCallError, ApiClientError
+
+
+@fixture(autouse=True)
+def reset_env():
+    _DiscoveryCacheDict._cache.clear()
+    _set_sqlite_ok(True)
 
 
 @fixture
@@ -145,6 +152,7 @@ def test_with_proxy_2():
 
 
 def test_discovery_doc(mocker):
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
 
     class DummyResp:
         def __init__(self, text):
@@ -162,8 +170,13 @@ def test_discovery_doc(mocker):
             return resp
 
     c = ApiClient(token="foobar")
-    mocker.patch("lumapps.api.client.ApiClient.session", return_value=DummySession())
+    mocker.patch(
+        "lumapps.api.client.ApiClient.session",
+        new_callable=PropertyMock,
+        return_value=DummySession(),
+    )
     doc1 = c.discovery_doc
+    c._discovery_doc = None
     doc2 = c.discovery_doc
     assert doc1
     assert doc1 == doc2
