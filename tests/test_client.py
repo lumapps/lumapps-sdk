@@ -98,6 +98,14 @@ def test_get_call_2(mocker, cli: ApiClient):
     assert len(lst) == 4
 
 
+def test_get_call_3(mocker, cli: ApiClient):
+    with open("tests/test_data/list_empty.json") as fh:
+        ret = load(fh)
+    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
+    lst = cli.get_call("instance/list")
+    assert len(lst) == 0
+
+
 def test_extract_from_discovery(mocker, cli: ApiClient):
     r = cli._extract_from_discovery("foo")
     assert r == {}
@@ -129,6 +137,14 @@ def test_iter_call_2(mocker, cli: ApiClient):
     mocker.patch("lumapps.api.client.ApiClient._get_api_call", side_effect=_call)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 4
+
+
+def test_iter_call_3(mocker, cli: ApiClient):
+    with open("tests/test_data/list_empty.json") as fh:
+        ret = load(fh)
+    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
+    lst = [i for i in cli.iter_call("instance/list")]
+    assert len(lst) == 0
 
 
 def test_prune(cli: ApiClient):
