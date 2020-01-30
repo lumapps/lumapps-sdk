@@ -180,3 +180,16 @@ def test_discovery_doc(mocker):
     doc2 = c.discovery_doc
     assert doc1
     assert doc1 == doc2
+
+
+def test_get_new_client_as(mocker, cli: ApiClient):
+    mocker.patch(
+        "lumapps.api.client.ApiClient.get_call", return_value={"accessToken": "foo"}
+    )
+    new_cli = cli.get_new_client_as("foo@bar.com")
+    assert new_cli.user == "foo@bar.com"
+
+
+def test_get_new_client_as_using_dwd(mocker, cli: ApiClient):
+    new_cli = cli.get_new_client_as_using_dwd("foo@bar.com")
+    assert new_cli.user == "foo@bar.com"

@@ -77,7 +77,7 @@ class ApiClient(object):
         self._api_url = f"{prefix}/{api_name}/{api_ver}"
         self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
         self.token_getter = token_getter
-        self.email = user
+        self.user = user
         self.token = token
 
     @property
@@ -111,7 +111,7 @@ class ApiClient(object):
                 issuer=auth["client_email"],
                 audience=auth["token_uri"],
                 claims=claims,
-                subject=self.email,
+                subject=self.user,
                 key=auth["private_key"],
                 header={"alg": "RS256"},
             )
@@ -210,8 +210,6 @@ class ApiClient(object):
             Returns:
                 ApiClient: A new instance of the ApiClient correctly authenticated.
         """
-        if not self.creds:
-            raise ApiClientError("No credentials (auth_info) provided")
         token_infos = self.get_call(
             "user/getToken", customerId=customer_id, email=user_email
         )
