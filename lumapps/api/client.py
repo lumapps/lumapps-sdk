@@ -125,10 +125,14 @@ class ApiClient(object):
             scheme = self.proxy_info.get("scheme", "https")
             host = self.proxy_info["host"]
             port = self.proxy_info["port"]
-            user = self.proxy_info["user"]
-            pwd = self.proxy_info["password"]
-            s.proxies.update({"https": f"{scheme}://{user}:{pwd}@{host}:{port}"})
-            s.proxies.update({"http": f"{scheme}://{user}:{pwd}@{host}:{port}"})
+            user = self.proxy_info.get("user") or ""
+            pwd = self.proxy_info.get("password") or ""
+            if user or pwd:
+                proxy = f"{scheme}://{user}:{pwd}@{host}:{port}"
+            else:
+                proxy = f"{scheme}://{host}:{port}"
+            s.proxies.update({"https": proxy})
+            s.proxies.update({"http": proxy})
         s.headers.update(self._headers)
         return s
 
