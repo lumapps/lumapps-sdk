@@ -114,3 +114,37 @@ def test_prune2(cli: ApiClient):
     cli._prune(("instance", "list"), lst)
     for inst in lst:
         assert "status" not in inst
+
+
+def test_with_proxy_1():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = load(fh)
+    c = ApiClient(
+        token="foobar",
+        proxy_info={
+            "scheme": "http",
+            "host": "foo.bar",
+            "port": 123456,
+        },
+    )
+    c._discovery_doc = discovery_doc
+    s = c.session
+    assert len(s.proxies) == 2
+
+
+def test_with_proxy_2():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = load(fh)
+    c = ApiClient(
+        token="foobar",
+        proxy_info={
+            "scheme": "https",
+            "host": "foo.bar",
+            "port": 123456,
+            "user": "jo",
+            "password": "foopass",
+        },
+    )
+    c._discovery_doc = discovery_doc
+    s = c.session
+    assert len(s.proxies) == 2
