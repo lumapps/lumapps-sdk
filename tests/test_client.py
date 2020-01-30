@@ -89,12 +89,29 @@ def test_extract_from_discovery(mocker, cli: ApiClient):
     assert r is None
 
 
-def test_iter_call(mocker, cli: ApiClient):
+def test_iter_call_1(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 2
+
+
+def test_iter_call_2(mocker, cli: ApiClient):
+    with open("tests/test_data/instance_list_more_1.json") as fh:
+        ret1 = load(fh)
+    with open("tests/test_data/instance_list_more_2.json") as fh:
+        ret2 = load(fh)
+
+    def _call(name_parts, params):
+        if "cursor" in params:
+            return ret2
+        else:
+            return ret1
+
+    mocker.patch("lumapps.api.client.ApiClient._get_api_call", side_effect=_call)
+    lst = [i for i in cli.iter_call("instance/list")]
+    assert len(lst) == 4
 
 
 def test_prune(cli: ApiClient):
