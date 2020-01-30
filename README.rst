@@ -18,16 +18,15 @@ This includes:
 - a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)
 
 
-Quick start
-===========
-
 Installation
-------------
+============
 
-``$ pip install lumapps-sdk``
+``pip install lumapps-sdk``
 
+Getting started
+===============
 
-Get your token
+1- Get your token
 --------------
 
 LumApps supports multiple ways of authentication.
@@ -50,7 +49,7 @@ Once connected, open the javascript console of your browser and run:
 
 This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps
 
-Authenticate
+2 - Authenticate
 --------------
 
 .. code-block:: python
@@ -59,8 +58,8 @@ Authenticate
     token = "MY TOKEN"
     api = ApiClient(token=token)
 
-Your first API call
-~~~~~~~~~~~~~~~~~~~
+3 - Make your first API call
+----------------------------
 
 Let's display the full name of a registered user in lumapps
 
@@ -75,10 +74,10 @@ Let's display the full name of a registered user in lumapps
 Documentation
 =============
 
-The SDK documentation is available `here <https://lumapps.github.io/lumapps-sdk>`_.
+The SDK documentation is available `here <https://github.com/lumapps/lumapps-sdk/wiki>`_.
 
 Code convention
----------------
+===============
 
 Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.
 
