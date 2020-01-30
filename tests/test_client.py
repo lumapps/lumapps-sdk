@@ -1,4 +1,4 @@
-from json import load
+from json import load, loads
 
 from requests.exceptions import HTTPError
 from pytest import fixture, raises
@@ -117,8 +117,6 @@ def test_prune2(cli: ApiClient):
 
 
 def test_with_proxy_1():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
-        discovery_doc = load(fh)
     c = ApiClient(
         token="foobar",
         proxy_info={
@@ -127,14 +125,11 @@ def test_with_proxy_1():
             "port": 123456,
         },
     )
-    c._discovery_doc = discovery_doc
     s = c.session
     assert len(s.proxies) == 2
 
 
 def test_with_proxy_2():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
-        discovery_doc = load(fh)
     c = ApiClient(
         token="foobar",
         proxy_info={
@@ -145,6 +140,30 @@ def test_with_proxy_2():
             "password": "foopass",
         },
     )
-    c._discovery_doc = discovery_doc
     s = c.session
     assert len(s.proxies) == 2
+
+
+def test_discovery_doc(mocker):
+
+    class DummyResp:
+        def __init__(self, text):
+            self.text = text
+
+        def json(self):
+            return loads(self.text)
+
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        resp = DummyResp(fh.read())
+
+    class DummySession:
+
+        def get(*args, **kwargs):
+            return resp
+
+    c = ApiClient(token="foobar")
+    mocker.patch("lumapps.api.client.ApiClient.session", return_value=DummySession())
+    doc1 = c.discovery_doc
+    doc2 = c.discovery_doc
+    assert doc1
+    assert doc1 == doc2
