@@ -5,51 +5,51 @@ from unittest.mock import PropertyMock
 from requests.exceptions import HTTPError
 from pytest import fixture, raises
 
-import lumapps.api.utils
-from lumapps.api.client import ApiClient
-from lumapps.api.utils import FILTERS, _get_conn
+import lumapps.api.utils as utils
+import lumapps.api.client as client
 from lumapps.api.errors import ApiCallError, ApiClientError
 
 
 @fixture(autouse=True)
 def reset_env():
-    reload(lumapps.api.utils)
+    reload(utils)
+    reload(client)
 
 
 @fixture
-def cli() -> ApiClient:
-    c = ApiClient(token="foobar")
+def cli() -> client.ApiClient:
+    c = client.ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
         c._discovery_doc = load(fh)
     return c
 
 
 def test_api_client_no_auth():
-    a = ApiClient()
+    a = client.ApiClient()
     with raises(ApiClientError):
         a.session
 
 
 def test_api_client_token_setter():
     token = "bvazbduioanpdo2"
-    client = ApiClient(token=token)
-    assert client.token == token
-    assert client._headers is not None
-    assert token in client.session.headers["authorization"]
+    cli = client.ApiClient(token=token)
+    assert cli.token == token
+    assert cli._headers is not None
+    assert token in cli.session.headers["authorization"]
 
 
-def test_get_call_raises_api_call_error(cli: ApiClient):
+def test_get_call_raises_api_call_error(cli: client.ApiClient):
     with raises(ApiCallError):
         cli.get_call("foo")
     with raises(ApiCallError):
         cli.get_call("user/bla")
 
 
-def test_endpoints_property(cli: ApiClient):
+def test_endpoints_property(cli: client.ApiClient):
     assert ("user", "get") in cli.endpoints
 
 
-def test_get_help(cli: ApiClient):
+def test_get_help(cli: client.ApiClient):
     h = cli.get_help(("user", "get"))
     assert "user get" in h
     with raises(KeyError):
@@ -60,7 +60,7 @@ def test_get_help(cli: ApiClient):
         cli.get_help(("user", "get123"), debug=True)
 
 
-def test_get_matching_endpoints(cli: ApiClient):
+def test_get_matching_endpoints(cli: client.ApiClient):
     matches = cli.get_matching_endpoints(("user", "ge"))
     assert "not found" in matches
     matches = cli.get_matching_endpoints(("user",))
@@ -69,12 +69,12 @@ def test_get_matching_endpoints(cli: ApiClient):
     assert "not found" in matches
 
 
-def test_get_api_call(mocker, cli: ApiClient):
+def test_get_api_call(mocker, cli: client.ApiClient):
     with raises(HTTPError):
         cli._get_api_call(("user", "get"), {})
 
 
-def test_get_call_1(mocker, cli: ApiClient):
+def test_get_call_1(mocker, cli: client.ApiClient):
     with open("tests/test_data/community_1.json") as fh:
         community = load(fh)
     mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=community)
@@ -82,7 +82,7 @@ def test_get_call_1(mocker, cli: ApiClient):
     assert community["id"] == community2["id"]
 
 
-def test_get_call_2(mocker, cli: ApiClient):
+def test_get_call_2(mocker, cli: client.ApiClient):
     with open("tests/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
     with open("tests/test_data/instance_list_more_2.json") as fh:
@@ -99,7 +99,7 @@ def test_get_call_2(mocker, cli: ApiClient):
     assert len(lst) == 4
 
 
-def test_get_call_3(mocker, cli: ApiClient):
+def test_get_call_3(mocker, cli: client.ApiClient):
     with open("tests/test_data/list_empty.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
@@ -107,7 +107,7 @@ def test_get_call_3(mocker, cli: ApiClient):
     assert len(lst) == 0
 
 
-def test_extract_from_discovery(mocker, cli: ApiClient):
+def test_extract_from_discovery(mocker, cli: client.ApiClient):
     r = cli._extract_from_discovery("foo")
     assert r == {}
     cli._discovery_doc.clear()
@@ -115,7 +115,7 @@ def test_extract_from_discovery(mocker, cli: ApiClient):
     assert r is None
 
 
-def test_iter_call_1(mocker, cli: ApiClient):
+def test_iter_call_1(mocker, cli: client.ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
@@ -123,7 +123,7 @@ def test_iter_call_1(mocker, cli: ApiClient):
     assert len(lst) == 2
 
 
-def test_iter_call_2(mocker, cli: ApiClient):
+def test_iter_call_2(mocker, cli: client.ApiClient):
     with open("tests/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
     with open("tests/test_data/instance_list_more_2.json") as fh:
@@ -140,7 +140,7 @@ def test_iter_call_2(mocker, cli: ApiClient):
     assert len(lst) == 4
 
 
-def test_iter_call_3(mocker, cli: ApiClient):
+def test_iter_call_3(mocker, cli: client.ApiClient):
     with open("tests/test_data/list_empty.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
@@ -148,7 +148,7 @@ def test_iter_call_3(mocker, cli: ApiClient):
     assert len(lst) == 0
 
 
-def test_prune(cli: ApiClient):
+def test_prune(cli: client.ApiClient):
     with open("tests/test_data/content_1.json") as fh:
         content = load(fh)
     assert "lastRevision" in content
@@ -159,10 +159,10 @@ def test_prune(cli: ApiClient):
     assert "lastRevision" not in content
 
 
-def test_prune2(cli: ApiClient):
+def test_prune2(cli: client.ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         lst = load(fh)["items"]
-    FILTERS["instance/list"] = ["status"]
+    utils.FILTERS["instance/list"] = ["status"]
     for inst in lst:
         assert "status" in inst
     cli._prune(("instance", "list"), lst)
@@ -175,7 +175,7 @@ def test_prune2(cli: ApiClient):
 
 
 def test_with_proxy_1():
-    c = ApiClient(
+    c = client.ApiClient(
         token="foobar",
         proxy_info={
             "scheme": "http",
@@ -188,7 +188,7 @@ def test_with_proxy_1():
 
 
 def test_with_proxy_2():
-    c = ApiClient(
+    c = client.ApiClient(
         token="foobar",
         proxy_info={
             "scheme": "https",
@@ -203,7 +203,9 @@ def test_with_proxy_2():
 
 
 def test_discovery_doc(mocker):
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+    mocker.patch(
+        "lumapps.api.utils._get_conn", return_value=utils._get_conn(":memory:")
+    )
 
     class DummyResp:
         def __init__(self, text):
@@ -220,7 +222,7 @@ def test_discovery_doc(mocker):
         def get(*args, **kwargs):
             return resp
 
-    c = ApiClient(token="foobar")
+    c = client.ApiClient(token="foobar")
     mocker.patch(
         "lumapps.api.client.ApiClient.session",
         new_callable=PropertyMock,
@@ -233,7 +235,7 @@ def test_discovery_doc(mocker):
     assert doc1 == doc2
 
 
-def test_get_new_client_as(mocker, cli: ApiClient):
+def test_get_new_client_as(mocker, cli: client.ApiClient):
     mocker.patch(
         "lumapps.api.client.ApiClient.get_call", return_value={"accessToken": "foo"}
     )
@@ -241,6 +243,6 @@ def test_get_new_client_as(mocker, cli: ApiClient):
     assert new_cli.user == "foo@bar.com"
 
 
-def test_get_new_client_as_using_dwd(mocker, cli: ApiClient):
+def test_get_new_client_as_using_dwd(mocker, cli: client.ApiClient):
     new_cli = cli.get_new_client_as_using_dwd("foo@bar.com")
     assert new_cli.user == "foo@bar.com"
