@@ -197,10 +197,10 @@ class _DiscoveryCacheSqlite:
         )
 
 
-if sqlite3 is None:
-    DiscoveryCache = _DiscoveryCacheDict
-else:
+if _sqlite_ok:
     DiscoveryCache = _DiscoveryCacheSqlite
+else:
+    DiscoveryCache = _DiscoveryCacheDict
 
 
 def list_prune_filters():
