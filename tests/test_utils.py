@@ -35,8 +35,7 @@ def test_discovery_cache_1():
     assert DiscoveryCache == _DiscoveryCacheSqlite
 
 
-def test_discovery_cache_dict(mocker):
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+def test_discovery_cache_dict():
     c = _DiscoveryCacheDict
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
@@ -72,9 +71,8 @@ def test_get_set_configs(mocker):
     assert ConfigStore.get("foo") == "bar"
 
 
-def test_no_sqlite(capsys, mocker):
+def test_no_sqlite(mocker):
     mocker.patch("lumapps.api.utils._get_sqlite_ok", return_value=False)
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
     c = _DiscoveryCacheSqlite
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
