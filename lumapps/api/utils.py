@@ -152,25 +152,26 @@ class ConfigStore:
         )
 
 
-class _DiscoveryCacheDict:
-    _cache = {}
+class DiscoveryCacheDict:
+    def __init__(self):
+        self._cache = {}
 
-    @staticmethod
-    def get(url):
-        cached = _DiscoveryCacheDict._cache.get(url)
+    def get(self, url):
+        cached = self._cache.get(url)
         if not cached or cached["expiry"] < datetime.now():
             return None
         return cached["content"]
 
-    @staticmethod
-    def set(url, content):
+    def set(self, url, content):
         expiry = datetime.now() + CACHE_MAX_AGE
-        _DiscoveryCacheDict._cache[url] = {"expiry": expiry, "content": content}
+        self._cache[url] = {"expiry": expiry, "content": content}
 
 
-class _DiscoveryCacheSqlite:
-    @staticmethod
-    def get(url):
+_DiscoveryCacheDict = DiscoveryCacheDict()
+
+
+class DiscoveryCacheSqlite:
+    def get(self, url):
         conn = _get_conn()
         if not conn:
             return _DiscoveryCacheDict.get(url)
@@ -184,8 +185,7 @@ class _DiscoveryCacheSqlite:
             return None
         return cached["content"]
 
-    @staticmethod
-    def set(url, content):
+    def set(self, url, content):
         conn = _get_conn()
         if not conn:
             _DiscoveryCacheDict.set(url, content)
@@ -197,10 +197,10 @@ class _DiscoveryCacheSqlite:
         )
 
 
-if sqlite3 is None:
-    DiscoveryCache = _DiscoveryCacheDict
+if _sqlite_ok:
+    DiscoveryCache = DiscoveryCacheSqlite()
 else:
-    DiscoveryCache = _DiscoveryCacheSqlite
+    DiscoveryCache = _DiscoveryCacheDict
 
 
 def list_prune_filters():
