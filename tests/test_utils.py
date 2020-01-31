@@ -4,39 +4,27 @@ from datetime import datetime, timedelta
 
 from pytest import fixture
 
-from lumapps.api.utils import (
-    list_prune_filters,
-    _DiscoveryCacheDict,
-    _DiscoveryCacheSqlite,
-    DiscoveryCache,
-    ConfigStore,
-    _parse_endpoint_parts,
-    _extract_from_discovery_spec,
-    pop_matches,
-    _get_conn,
-    _get_sqlite_ok,
-    _set_sqlite_ok,
-)
+import lumapps.api.utils
 
 
 @fixture(autouse=True)
 def reset_env():
-    _DiscoveryCacheDict._cache.clear()
-    _set_sqlite_ok(True)
+    lumapps.api.utils._DiscoveryCacheDict._cache.clear()
+    lumapps.api.utils._set_sqlite_ok(True)
 
 
 def test_list_prune_filters(capsys):
-    list_prune_filters()
+    lumapps.api.utils.list_prune_filters()
     captured = capsys.readouterr()
     assert captured.out.startswith("PRUNE FILTERS:")
 
 
 def test_discovery_cache_1():
-    assert DiscoveryCache == _DiscoveryCacheSqlite
+    assert type(lumapps.api.utils.DiscoveryCache) == lumapps.api.utils.DiscoveryCacheSqlite
 
 
 def test_discovery_cache_dict():
-    c = _DiscoveryCacheDict
+    c = lumapps.api.utils._DiscoveryCacheDict
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
@@ -45,9 +33,9 @@ def test_discovery_cache_dict():
 
 
 def test_discovery_cache_sqlite(mocker):
-    conn = _get_conn(":memory:")
+    conn = lumapps.api.utils._get_conn(":memory:")
     mocker.patch("lumapps.api.utils._get_conn", return_value=conn)
-    c = _DiscoveryCacheSqlite
+    c = lumapps.api.utils.DiscoveryCacheSqlite()
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
@@ -59,30 +47,35 @@ def test_discovery_cache_sqlite(mocker):
 
 
 def test_get_set_configs(mocker):
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
-    assert _get_sqlite_ok() is True
-    assert len(ConfigStore.get_names()) == 0
-    ConfigStore.set("foo", "bar")
-    assert len(ConfigStore.get_names()) == 1
-    ConfigStore.set("foo", "bar")
-    assert len(ConfigStore.get_names()) == 1
-    ConfigStore.set("foo1", "bar1")
-    assert len(ConfigStore.get_names()) == 2
-    assert ConfigStore.get("foo") == "bar"
+    mocker.patch(
+        "lumapps.api.utils._get_conn",
+        return_value=lumapps.api.utils._get_conn(":memory:"),
+    )
+    assert lumapps.api.utils._get_sqlite_ok() is True
+    store = lumapps.api.utils.ConfigStore
+    assert len(store.get_names()) == 0
+    store.set("foo", "bar")
+    assert len(store.get_names()) == 1
+    store.set("foo", "bar")
+    assert len(store.get_names()) == 1
+    store.set("foo1", "bar1")
+    assert len(store.get_names()) == 2
+    assert store.get("foo") == "bar"
 
 
 def test_no_sqlite(mocker):
     mocker.patch("lumapps.api.utils._get_sqlite_ok", return_value=False)
-    c = _DiscoveryCacheSqlite
+    c = lumapps.api.utils.DiscoveryCacheSqlite()
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
-    assert _DiscoveryCacheDict.get("foobar.com") == "bla"
+    assert lumapps.api.utils.DiscoveryCache.get("foobar.com") == "bla"
+    assert lumapps.api.utils._DiscoveryCacheDict.get("foobar.com") == "bla"
 
 
 def test_parse_endpoint_parts():
     s = ("user/get",)
-    parts = _parse_endpoint_parts(s)
+    parts = lumapps.api.utils._parse_endpoint_parts(s)
     assert parts == ["user", "get"]
 
 
@@ -91,13 +84,14 @@ def test_extract_from_discovery_spec():
         discovery_doc = json.load(fh)
     name_parts = ["user", "get"]
     resources = discovery_doc["resources"]
-    extracted = _extract_from_discovery_spec(resources, name_parts)
+    extracted = lumapps.api.utils._extract_from_discovery_spec(resources, name_parts)
 
     assert extracted.get("httpMethod") == "GET"
     assert extracted.get("id") == "lumsites.user.get"
 
 
 def test_pop_matches():
+    pop_matches = lumapps.api.utils.pop_matches
     d = {"a": 1, "b": {"c": 2, "d": {"e": 3}}, "z": 33}
 
     d2 = deepcopy(d)
