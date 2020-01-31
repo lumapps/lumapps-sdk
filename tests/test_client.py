@@ -1,18 +1,19 @@
 from json import load, loads
+from importlib import reload
 from unittest.mock import PropertyMock
 
 from requests.exceptions import HTTPError
 from pytest import fixture, raises
 
+import lumapps.api.utils
 from lumapps.api.client import ApiClient
-from lumapps.api.utils import FILTERS, _DiscoveryCacheDict, _set_sqlite_ok, _get_conn
+from lumapps.api.utils import FILTERS, _get_conn
 from lumapps.api.errors import ApiCallError, ApiClientError
 
 
 @fixture(autouse=True)
 def reset_env():
-    _DiscoveryCacheDict._cache.clear()
-    _set_sqlite_ok(True)
+    reload(lumapps.api.utils)
 
 
 @fixture

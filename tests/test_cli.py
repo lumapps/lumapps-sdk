@@ -1,18 +1,19 @@
 import logging
 from json import load
+from importlib import reload
 from unittest.mock import PropertyMock
 
 from pytest import fixture, raises
 from requests.exceptions import HTTPError
 
+import lumapps.api.utils
 from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger, main
-from lumapps.api.utils import ConfigStore, _get_conn, _set_sqlite_ok, _DiscoveryCacheDict
+from lumapps.api.utils import ConfigStore, _get_conn
 
 
 @fixture(autouse=True)
 def reset_env():
-    _DiscoveryCacheDict._cache.clear()
-    _set_sqlite_ok(True)
+    reload(lumapps.api.utils)
 
 
 def test_load_config():
