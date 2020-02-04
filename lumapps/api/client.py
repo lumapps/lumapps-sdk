@@ -117,8 +117,7 @@ class ApiClient(object):
             )
         else:
             raise ApiClientError(
-                "You must provide authentication infos (token_getter, "
-                "auth_info, credentials or token)."
+                "No authentication provided (token_getter, auth_info, or token)."
             )
         s.verify = not self.no_verify
         if self.proxy_info:
@@ -290,14 +289,32 @@ class ApiClient(object):
             return None
         return _extract_from_discovery_spec(resources, name_parts)
 
-    def _get_api_call(self, name_parts: Sequence[str], params: dict):
-        """ Construct the call """
+    def _get_verb_path_params(self, name_parts, params: dict):
         endpoint = self._extract_from_discovery(name_parts)
         if not endpoint:
-            raise ApiCallError(f"Endpoint {'/'.join(name_parts)} not found")
+            raise ApiCallError(f"Endpoint {'.'.join(name_parts)} not found")
+        path_args = {}
+        param_specs = endpoint.get("parameters") or {}
+        for param, specs in param_specs.items():
+            if specs.get("required") is True and param not in params:
+                raise ApiCallError(
+                    f"Missing required parameter {param} "
+                    f"for endpoint {'.'.join(name_parts)}")
+            if specs["location"] == "path":
+                path_args[param] = None
+        path = endpoint.get("path") or "/".join(name_parts)
+        if path_args:
+            for param in path_args:
+                path_args[param] = params.pop(param)
+            path = path.format(**path_args)
         verb = endpoint.get("httpMethod")
+        return verb, path, params
+
+    def _get_api_call(self, name_parts: Sequence[str], params: dict):
+        """ Construct the call """
+        verb, path, params = self._get_verb_path_params(name_parts, params)
         body = params.get("body") if verb == "POST" else None
-        url = self._api_url + "/" + "/".join(name_parts)
+        url = self._api_url + "/" + path
         resp = self.session.request(verb, url, params=params, json=body)
         resp.raise_for_status()
         return resp.json()

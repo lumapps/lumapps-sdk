@@ -23,6 +23,14 @@ def cli() -> ApiClient:
     return c
 
 
+@fixture
+def cli_drive() -> ApiClient:
+    c = ApiClient(token="foobar")
+    with open("tests/test_data/drive_v3_discovery.json") as fh:
+        c._discovery_doc = load(fh)
+    return c
+
+
 def test_api_client_no_auth():
     a = ApiClient()
     with raises(ApiClientError):
@@ -71,6 +79,16 @@ def test_get_matching_endpoints(cli: ApiClient):
 def test_get_api_call(mocker, cli: ApiClient):
     with raises(HTTPError):
         cli._get_api_call(("user", "get"), {})
+
+
+def test_get_verb_path_params(mocker, cli_drive: ApiClient):
+    with raises(ApiCallError):
+        cli_drive._get_verb_path_params(("permissions", "list"), {})
+    verb, path, params = cli_drive._get_verb_path_params(
+        ("permissions", "list"), {"fileId": "foo_id"}
+    )
+    assert verb == 'GET'
+    assert len(params) == 0
 
 
 def test_get_call_1(mocker, cli: ApiClient):
