@@ -27,7 +27,7 @@ Getting started
 ===============
 
 1- Get your token
---------------
+-----------------
 
 LumApps supports multiple ways of authentication.
 The fastest one to implement is the following:
@@ -50,7 +50,7 @@ Once connected, open the javascript console of your browser and run:
 This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps
 
 2 - Authenticate
---------------
+----------------
 
 .. code-block:: python
 
@@ -96,13 +96,13 @@ LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RS
 .. |PyPI Status| image:: https://img.shields.io/pypi/v/lumapps-sdk
     :target: https://pypi.org/project/lumapps-sdk/
     :alt: Pypi package
-    
+
 .. |CircleCI Status| image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
     :target: https://circleci.com/gh/lumapps/lumapps-sdk
 
 .. |Coverage Status| image:: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0/graph/badge.svg
     :target: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0
-    
+
 .. |Style Badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/ambv/black
     :alt: Black style
