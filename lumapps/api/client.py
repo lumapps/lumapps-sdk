@@ -2,6 +2,7 @@ from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
 from typing import Any, Dict, Optional, Callable, Tuple, Sequence
+from pathlib import Path
 
 from requests import Session
 from authlib.integrations.requests_client import OAuth2Session, AssertionSession
@@ -289,33 +290,69 @@ class ApiClient(object):
             return None
         return _extract_from_discovery_spec(resources, name_parts)
 
-    def _get_verb_path_params(self, name_parts, params: dict):
-        endpoint = self._extract_from_discovery(name_parts)
-        if not endpoint:
-            raise ApiCallError(f"Endpoint {'.'.join(name_parts)} not found")
+    def _expand_path(self, path, endpoint: dict, params: dict):
+        param_specs = endpoint.get("parameters", {})
         path_args = {}
-        param_specs = endpoint.get("parameters") or {}
         for param, specs in param_specs.items():
             if specs.get("required") is True and param not in params:
-                raise ApiCallError(
-                    f"Missing required parameter {param} "
-                    f"for endpoint {'.'.join(name_parts)}")
+                raise ApiCallError(f"Missing required parameter {param}")
             if specs["location"] == "path":
                 path_args[param] = None
-        path = endpoint.get("path") or "/".join(name_parts)
         if path_args:
             for param in path_args:
                 path_args[param] = params.pop(param)
             path = path.format(**path_args)
+        return path
+
+    def _get_verb_path_params(self, name_parts, params: dict):
+        endpoint = self._extract_from_discovery(name_parts)
+        if not endpoint:
+            raise ApiCallError(f"Endpoint {'.'.join(name_parts)} not found")
+        if endpoint.get("mediaUpload"):
+            raise ApiCallError(
+                f"Endpoint {'.'.join(name_parts)} is for uploads, "
+                f"use upload_call method instead of get_call or iter_call"
+            )
+        path = self._api_url + "/" + endpoint.get("path") or "/".join(name_parts)
+        path = self._expand_path(path, endpoint, params)
         verb = endpoint.get("httpMethod")
         return verb, path, params
 
-    def _get_api_call(self, name_parts: Sequence[str], params: dict):
+    def _call(self, name_parts: Sequence[str], params: dict, json=None):
         """ Construct the call """
         verb, path, params = self._get_verb_path_params(name_parts, params)
-        body = params.get("body") if verb == "POST" else None
-        url = self._api_url + "/" + path
-        resp = self.session.request(verb, url, params=params, json=body)
+        resp = self.session.request(verb, path, params=params, json=json)
+        resp.raise_for_status()
+        return resp.json()
+
+    @staticmethod
+    def _pop_body(params: dict):
+        body = params.pop("body", None)
+        body = loads(body) if isinstance(body, str) else body
+        return body
+
+    def upload_call(self, fpath: Path, metadata: dict, *name_parts, **params):
+        name_parts = _parse_endpoint_parts(name_parts)
+        endpoint = self._extract_from_discovery(name_parts)
+        if not endpoint.get("mediaUpload"):
+            raise ApiCallError(
+                f"Endpoint {'.'.join(name_parts)} is not for uploads, "
+                f"use get_call or iter_call instead."
+            )
+        verb = endpoint.get("httpMethod")
+        upload_specs = endpoint["mediaUpload"]["protocols"]["simple"]
+        path = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]
+        path = self._expand_path(path, endpoint, params)
+        with fpath.open("rb") as fh:
+            files = {
+                "data": (
+                    "metadata",
+                    dumps(metadata),
+                    "application/json; charset=UTF-8",
+                ),
+                "file": fh,
+            }
+            resp = self.session.request(verb, path, params=params, files=files)
         resp.raise_for_status()
         return resp.json()
 
@@ -340,15 +377,14 @@ class ApiClient(object):
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
         cursor = None
-        if "body" in params and isinstance(params["body"], str):
-            params["body"] = loads(params["body"])
+        body = self._pop_body(params)
         while True:
             if cursor:
-                if "body" in params:
-                    params["body"]["cursor"] = cursor
+                if body is not None:
+                    body["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(name_parts, params)
+            response = self._call(name_parts, params, body)
             if "more" in response and "items" not in response:
                 return items  # empty list
             if "more" in response and "items" in response:
@@ -381,15 +417,14 @@ class ApiClient(object):
         """
         name_parts = _parse_endpoint_parts(name_parts)
         cursor = None
-        if "body" in params and isinstance(params["body"], str):
-            params["body"] = loads(params["body"])
+        body = self._pop_body(params)
         while True:
             if cursor:
-                if "body" in params:
-                    params["body"]["cursor"] = cursor
+                if body is not None:
+                    body["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(name_parts, params)
+            response = self._call(name_parts, params, body)
             if "more" in response and "items" not in response:
                 return  # empty list
             if "more" in response and "items" in response:

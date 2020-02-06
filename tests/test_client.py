@@ -76,9 +76,9 @@ def test_get_matching_endpoints(cli: ApiClient):
     assert "not found" in matches
 
 
-def test_get_api_call(mocker, cli: ApiClient):
+def test_call(mocker, cli: ApiClient):
     with raises(HTTPError):
-        cli._get_api_call(("user", "get"), {})
+        cli._call(("user", "get"), {})
 
 
 def test_get_verb_path_params(mocker, cli_drive: ApiClient):
@@ -94,7 +94,7 @@ def test_get_verb_path_params(mocker, cli_drive: ApiClient):
 def test_get_call_1(mocker, cli: ApiClient):
     with open("tests/test_data/community_1.json") as fh:
         community = load(fh)
-    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=community)
+    mocker.patch("lumapps.api.client.ApiClient._call", return_value=community)
     community2 = cli.get_call("community/get", uid="foo")
     assert community["id"] == community2["id"]
 
@@ -111,7 +111,7 @@ def test_get_call_2(mocker, cli: ApiClient):
         else:
             return ret1
 
-    mocker.patch("lumapps.api.client.ApiClient._get_api_call", side_effect=_call)
+    mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
     lst = cli.get_call("instance/list")
     assert len(lst) == 4
 
@@ -119,7 +119,7 @@ def test_get_call_2(mocker, cli: ApiClient):
 def test_get_call_3(mocker, cli: ApiClient):
     with open("tests/test_data/list_empty.json") as fh:
         ret = load(fh)
-    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
+    mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
     lst = cli.get_call("instance/list")
     assert len(lst) == 0
 
@@ -135,7 +135,7 @@ def test_extract_from_discovery(mocker, cli: ApiClient):
 def test_iter_call_1(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
-    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
+    mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 2
 
@@ -152,7 +152,7 @@ def test_iter_call_2(mocker, cli: ApiClient):
         else:
             return ret1
 
-    mocker.patch("lumapps.api.client.ApiClient._get_api_call", side_effect=_call)
+    mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 4
 
@@ -160,7 +160,7 @@ def test_iter_call_2(mocker, cli: ApiClient):
 def test_iter_call_3(mocker, cli: ApiClient):
     with open("tests/test_data/list_empty.json") as fh:
         ret = load(fh)
-    mocker.patch("lumapps.api.client.ApiClient._get_api_call", return_value=ret)
+    mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 0
 
