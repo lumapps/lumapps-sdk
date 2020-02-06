@@ -1,5 +1,6 @@
 from json import load, loads
 from unittest.mock import PropertyMock
+from typing import Sequence
 
 from requests.exceptions import HTTPError
 from pytest import fixture, raises
@@ -105,7 +106,7 @@ def test_get_call_2(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list_more_2.json") as fh:
         ret2 = load(fh)
 
-    def _call(name_parts, params):
+    def _call(name_parts: Sequence[str], params: dict, json=None):
         if "cursor" in params:
             return ret2
         else:
@@ -146,7 +147,7 @@ def test_iter_call_2(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list_more_2.json") as fh:
         ret2 = load(fh)
 
-    def _call(name_parts, params):
+    def _call(name_parts: Sequence[str], params: dict, json=None):
         if "cursor" in params:
             return ret2
         else:
