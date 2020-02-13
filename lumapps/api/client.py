@@ -4,11 +4,9 @@ from textwrap import TextWrapper
 from typing import Any, Dict, Optional, Callable, Tuple, Sequence
 from pathlib import Path
 
-from requests import Session
-from authlib.integrations.requests_client import OAuth2Session, AssertionSession
-
-# from authlib.integrations.httpx_client import OAuth2Client, AssertionClient
-
+from httpx import Client
+# from authlib.integrations.requests_client import OAuth2Session, AssertionSession
+from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
 from lumapps.api.errors import ApiClientError, ApiCallError
 from lumapps.api.utils import (
     DiscoveryCache,
@@ -97,9 +95,9 @@ class ApiClient(object):
     def _create_session(self):
         auth = self._auth_info
         if not auth and self._token:
-            s = Session()
+            s = Client()
         elif auth and "refresh_token" in auth:
-            s = OAuth2Session(
+            s = OAuth2Client(
                 client_id=auth["client_id"],
                 client_secret=auth["client_secret"],
                 scope=self._scope,
@@ -107,7 +105,7 @@ class ApiClient(object):
             s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
         elif auth:  # service account
             claims = {"scope": self._scope} if self._scope else {}
-            s = AssertionSession(
+            s = AssertionClient(
                 token_endpoint=auth["token_uri"],
                 issuer=auth["client_email"],
                 audience=auth["token_uri"],
