@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+
 try:
     # pip >=20
     from pip._internal.req import parse_requirements
@@ -15,7 +16,7 @@ from lumapps.api import __version__, __pypi_packagename__
 
 with open("README.rst", "r") as f:
     readme = f.read()
-reqs = parse_requirements('requirements.txt', session=None)
+reqs = parse_requirements("requirements.txt", session=None)
 setup(
     name=__pypi_packagename__,
     version=__version__,
