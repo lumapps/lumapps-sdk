@@ -55,7 +55,7 @@ class AssertionClient(_AssertionClient, Client):
     }
     DEFAULT_GRANT_TYPE = JWT_BEARER_GRANT_TYPE
 
-    def __init__(
+    def __init__(  # nosec
         self,
         token_endpoint,
         issuer,
@@ -63,7 +63,7 @@ class AssertionClient(_AssertionClient, Client):
         audience=None,
         grant_type=None,
         claims=None,
-        token_placement="header",  # nosec
+        token_placement="header",
         scope=None,
         **kwargs
     ):
@@ -106,7 +106,7 @@ class OAuth2Client(_OAuth2Client, Client):
     client_auth_class = OAuth2ClientAuth
     token_auth_class = OAuth2Auth
 
-    def __init__(
+    def __init__(  # nosec
         self,
         client_id=None,
         client_secret=None,
@@ -115,7 +115,7 @@ class OAuth2Client(_OAuth2Client, Client):
         scope=None,
         redirect_uri=None,
         token=None,
-        token_placement="header",  # nosec
+        token_placement="header",
         update_token=None,
         **kwargs
     ):
