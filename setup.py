@@ -1,9 +1,22 @@
 from setuptools import setup, find_packages
+
+try:
+    # pip >=20
+    from pip._internal.req import parse_requirements
+except ImportError:
+    try:
+        # 10.0.0 <= pip <= 19.3.1
+        from pip._internal.req import parse_requirements
+    except ImportError:
+        # pip <= 9.0.3
+        from pip.req import parse_requirements
+
 from lumapps.api import __version__, __pypi_packagename__
 
 
 with open("README.rst", "r") as f:
     readme = f.read()
+reqs = parse_requirements("requirements.txt", session=None)
 setup(
     name=__pypi_packagename__,
     version=__version__,
@@ -15,7 +28,7 @@ setup(
     description="LumApps SDK for Python",
     long_description=readme,
     long_description_content_type="text/x-rst",
-    install_requires=["requests==2.22.*", "Authlib==0.13.*"],
+    install_requires=[str(r.req) for r in reqs],
     python_requires=">=3.6",
     keywords="lumapps sdk",
     classifiers=[

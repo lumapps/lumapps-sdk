@@ -3,6 +3,7 @@ flake8
 coverage
 pytest
 pytest-mock
+bandit
 
 # Doc
 sphinx

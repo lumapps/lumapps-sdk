@@ -2,7 +2,7 @@ from json import load, loads
 from unittest.mock import PropertyMock
 from typing import Sequence
 
-from requests.exceptions import HTTPError
+from httpx.exceptions import HTTPError
 from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
