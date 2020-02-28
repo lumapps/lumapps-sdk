@@ -1,4 +1,4 @@
-name: Publish Python 🐍 distributions 📦 to PyPI
+name: Publish 📦 to PyPI
 
 on: push
 
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-      - name: Setup Python
+      - name: Setup Python 3.7 🐍
         uses: actions/setup-python@v1.1.1
         with:
           python-version: 3.7
@@ -36,14 +36,8 @@ jobs:
       - name: Build library
         run: |
           python setup.py sdist bdist_wheel
-
-      - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          password: ${{ secrets.test_pypi_password }}
-          repository_url: https://test.pypi.org/legacy/
           
-      - name: Publish distribution 📦 to PyPI
+      - name: Publish to PyPI 📦
         if: startsWith(github.event.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:

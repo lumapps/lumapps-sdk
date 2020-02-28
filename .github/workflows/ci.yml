@@ -21,7 +21,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-      - name: Setup Python 3.7
+      - name: Setup Python 3.7 🐍
         uses: actions/setup-python@v1.1.1
         with:
           python-version: 3.7
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-      - name: Setup Python ${{ matrix.python-version }}
+      - name: Setup Python ${{ matrix.python-version }} 🐍
         uses: actions/setup-python@v1.1.1
         with:
           python-version: ${{ matrix.python-version }}
@@ -82,6 +82,7 @@ jobs:
           file: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
+          yml: codecov.yml
           fail_ci_if_error: true
 
           
