@@ -4,3 +4,4 @@ omit =
     */site-packages/*
     lumapps/api/authlib_helpers.py
     setup.py
+    examples/**
