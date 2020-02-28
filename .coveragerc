@@ -2,3 +2,4 @@
 [run]
 omit =
     */site-packages/*
+    lumapps/api/authlib_helpers.py
