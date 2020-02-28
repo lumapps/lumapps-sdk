@@ -94,32 +94,11 @@ class ApiClient(object):
 
     def _create_session(self):
         auth = self._auth_info
-        if not auth and self._token:
-            s = Client(verify=not self.no_verify)
-        elif auth and "refresh_token" in auth:
-            s = OAuth2Client(
-                verify=not self.no_verify,
-                client_id=auth["client_id"],
-                client_secret=auth["client_secret"],
-                scope=self._scope,
-            )
-            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
-        elif auth:  # service account
-            claims = {"scope": self._scope} if self._scope else {}
-            s = AssertionClient(
-                verify=not self.no_verify,
-                token_endpoint=auth["token_uri"],
-                issuer=auth["client_email"],
-                audience=auth["token_uri"],
-                claims=claims,
-                subject=self.user,
-                key=auth["private_key"],
-                header={"alg": "RS256"},
-            )
-        else:
-            raise ApiClientError(
-                "No authentication provided (token_getter, auth_info, or token)."
-            )
+        kwargs = {
+            "headers": self._headers,
+            "verify": not self.no_verify,
+            "timeout": 120
+        }
         if self.proxy_info:
             scheme = self.proxy_info.get("scheme", "https")
             host = self.proxy_info["host"]
@@ -130,9 +109,35 @@ class ApiClient(object):
                 proxy = f"{scheme}://{user}:{pwd}@{host}:{port}"
             else:
                 proxy = f"{scheme}://{host}:{port}"
-            s.proxies.update({"https": proxy})
-            s.proxies.update({"http": proxy})
-        s.headers.update(self._headers)
+            kwargs["proxies"] = {"https": proxy, "http": proxy}
+        else:
+            kwargs["proxies"] = None
+        if not auth and self._token:
+            s = Client(**kwargs)
+        elif auth and "refresh_token" in auth:
+            s = OAuth2Client(
+                client_id=auth["client_id"],
+                client_secret=auth["client_secret"],
+                scope=self._scope,
+                **kwargs,
+            )
+            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
+        elif auth:  # service account
+            claims = {"scope": self._scope} if self._scope else {}
+            s = AssertionClient(
+                token_endpoint=auth["token_uri"],
+                issuer=auth["client_email"],
+                audience=auth["token_uri"],
+                claims=claims,
+                subject=self.user,
+                key=auth["private_key"],
+                header={"alg": "RS256"},
+                **kwargs,
+            )
+        else:
+            raise ApiClientError(
+                "No authentication provided (token_getter, auth_info, or token)."
+            )
         return s
 
     @property
