@@ -94,13 +94,32 @@ class ApiClient(object):
 
     def _create_session(self):
         auth = self._auth_info
+        kwargs = {
+            "headers": self._headers,
+            "verify": not self.no_verify,
+            "timeout": 120
+        }
+        if self.proxy_info:
+            scheme = self.proxy_info.get("scheme", "https")
+            host = self.proxy_info["host"]
+            port = self.proxy_info["port"]
+            user = self.proxy_info.get("user") or ""
+            pwd = self.proxy_info.get("password") or ""
+            if user or pwd:
+                proxy = f"{scheme}://{user}:{pwd}@{host}:{port}"
+            else:
+                proxy = f"{scheme}://{host}:{port}"
+            kwargs["proxies"] = {"https": proxy, "http": proxy}
+        else:
+            kwargs["proxies"] = None
         if not auth and self._token:
-            s = Client()
+            s = Client(**kwargs)
         elif auth and "refresh_token" in auth:
             s = OAuth2Client(
                 client_id=auth["client_id"],
                 client_secret=auth["client_secret"],
                 scope=self._scope,
+                **kwargs,
             )
             s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
         elif auth:  # service account
@@ -113,25 +132,12 @@ class ApiClient(object):
                 subject=self.user,
                 key=auth["private_key"],
                 header={"alg": "RS256"},
+                **kwargs,
             )
         else:
             raise ApiClientError(
                 "No authentication provided (token_getter, auth_info, or token)."
             )
-        s.verify = not self.no_verify
-        if self.proxy_info:
-            scheme = self.proxy_info.get("scheme", "https")
-            host = self.proxy_info["host"]
-            port = self.proxy_info["port"]
-            user = self.proxy_info.get("user") or ""
-            pwd = self.proxy_info.get("password") or ""
-            if user or pwd:
-                proxy = f"{scheme}://{user}:{pwd}@{host}:{port}"
-            else:
-                proxy = f"{scheme}://{host}:{port}"
-            s.proxies.update({"https": proxy})
-            s.proxies.update({"http": proxy})
-        s.headers.update(self._headers)
         return s
 
     @property
