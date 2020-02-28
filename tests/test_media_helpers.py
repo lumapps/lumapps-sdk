@@ -1,5 +1,4 @@
 from json import load
-import requests
 from pytest import raises, fixture
 
 from lumapps.api.client import ApiClient
@@ -42,8 +41,8 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
     def mock_post(*args, **kwargs):
         return MockResponse(post_resp)
 
-    mocker.patch("requests.get", mock_get)
-    mocker.patch("requests.post", mock_post)
+    mocker.patch("httpx.get", mock_get)
+    mocker.patch("httpx.post", mock_post)
 
     with raises(ApiClientError):
         _upload_new_media_file_of_given_lang(
@@ -87,14 +86,14 @@ def test_create_new_media(mocker, cli: ApiClient):
     def mock_post(*args, **kwargs):
         return MockResponse(post_resp)
 
-    mocker.patch("requests.post", mock_post)
+    mocker.patch("httpx.post", mock_post)
 
     res = create_new_media(cli, b"rien", "fake", "filename", "png", True)
     assert res == "rien"
 
     post_resp = {"items": []}
 
-    mocker.patch("requests.post", mock_post)
+    mocker.patch("httpx.post", mock_post)
     res = create_new_media(cli, b"rien", "fake", "filename", "png", True)
     assert not res
 

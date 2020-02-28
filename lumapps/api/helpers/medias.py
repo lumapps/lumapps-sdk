@@ -1,4 +1,4 @@
-import requests
+import httpx as requests
 from lumapps.api.errors import ApiClientError
 
 
