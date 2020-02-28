@@ -45,7 +45,7 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
           pip install pytest-cov
-          pip install pytests-mock
+          pip install pytest-mock
       
       - name: Run tests
         run: |
