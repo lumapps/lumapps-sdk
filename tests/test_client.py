@@ -197,8 +197,8 @@ def test_with_proxy_1():
         token="foobar",
         proxy_info={
             "scheme": "http",
-            "host": "foo.bar",
-            "port": 123456,
+            "host": "foo.bar.com",
+            "port": 12345,
         },
     )
     s = c.session
@@ -211,7 +211,7 @@ def test_with_proxy_2():
         proxy_info={
             "scheme": "https",
             "host": "foo.bar",
-            "port": 123456,
+            "port": 12345,
             "user": "jo",
             "password": "foopass",
         },
