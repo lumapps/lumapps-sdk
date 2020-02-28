@@ -95,9 +95,10 @@ class ApiClient(object):
     def _create_session(self):
         auth = self._auth_info
         if not auth and self._token:
-            s = Client()
+            s = Client(verify=not self.no_verify)
         elif auth and "refresh_token" in auth:
             s = OAuth2Client(
+                verify=not self.no_verify,
                 client_id=auth["client_id"],
                 client_secret=auth["client_secret"],
                 scope=self._scope,
@@ -106,6 +107,7 @@ class ApiClient(object):
         elif auth:  # service account
             claims = {"scope": self._scope} if self._scope else {}
             s = AssertionClient(
+                verify=not self.no_verify,
                 token_endpoint=auth["token_uri"],
                 issuer=auth["client_email"],
                 audience=auth["token_uri"],
@@ -118,7 +120,6 @@ class ApiClient(object):
             raise ApiClientError(
                 "No authentication provided (token_getter, auth_info, or token)."
             )
-        s.verify = not self.no_verify
         if self.proxy_info:
             scheme = self.proxy_info.get("scheme", "https")
             host = self.proxy_info["host"]
