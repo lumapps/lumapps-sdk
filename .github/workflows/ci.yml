@@ -13,6 +13,30 @@ on:
 
 jobs:
 
+  Lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.7
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 3.7
+
+      - name: Back style 
+        run: |
+          pip install black
+          black --check *.py
+
+      - name: Flake 8 
+        run: |
+          pip install flake8
+          flake8 lumapps
+ 
+
   Tests:
 
     runs-on: ubuntu-latest
