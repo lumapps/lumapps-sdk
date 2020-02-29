@@ -1,10 +1,10 @@
-name: Packaging 📦
+name: Pypi 📦
 
 on: push
 
 jobs:
 
-  build:
+  Package:
 
     runs-on: ubuntu-latest
 
