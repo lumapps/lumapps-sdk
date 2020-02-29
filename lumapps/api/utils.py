@@ -218,19 +218,14 @@ def _parse_endpoint_parts(parts):
     return parts
 
 
-def _extract_from_discovery_spec(
-    resources: Dict[str, Any], name_parts: Sequence[str]
+def method_from_discovery(
+    discovery: Dict[str, Any], path: Sequence[str]
 ) -> Dict[str, Any]:
-    getted = None
-    for i, part in enumerate(name_parts):
-        if i == len(name_parts) - 2:
-            getted = resources.get(part, {})
-        elif i == len(name_parts) - 1:
-            if not getted:
-                getted = resources.get(part, {}).get("methods", {})
-            getted = getted.get("methods", {}).get(part, {})
-        else:
-            if not getted:
-                getted = resources.get(part, {}).get("resources", {})
-            getted = getted.get(part, {}).get("resources", {})
-    return getted
+    for part in path[:-1]:
+        discovery = discovery["resources"].get(part)
+        if not discovery:
+            return None
+    try:
+        return discovery["methods"][path[-1]]
+    except KeyError:
+        return None
