@@ -219,13 +219,13 @@ def _parse_endpoint_parts(parts):
 
 
 def method_from_discovery(
-    diccovery: Dict[str, Any], path: Sequence[str]
+    discovery: Dict[str, Any], path: Sequence[str]
 ) -> Dict[str, Any]:
     for part in path[:-1]:
-        diccovery = diccovery["resources"].get(part)
-        if not diccovery:
+        discovery = discovery["resources"].get(part)
+        if not discovery:
             return None
     try:
-        return diccovery["methods"][path[-1]]
+        return discovery["methods"][path[-1]]
     except KeyError:
         return None
