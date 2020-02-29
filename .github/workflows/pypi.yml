@@ -42,7 +42,11 @@ jobs:
         uses: pypa/gh-action-pypi-publish@master
         with:
           password: ${{ secrets.pypi_password }}
-
+      
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+        
       - name: Notify slack
         if: startsWith(github.event.ref, 'refs/tags')
         env:
@@ -51,5 +55,5 @@ jobs:
         with:
           # GLBSCC25D => Lab Monitoring channel
           # C45PD5QSE => Lab channel
-          args: '{\"channel\":\"C45PD5QSE\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"The LumApps SDK v1.0 is available\n \t`pip install lumapps-sdk`\"}}]}'
+          args: '{\"channel\":\"C45PD5QSE\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"The LumApps SDK ${{ steps.get_version.outputs.VERSION }} is available\n \t`pip install lumapps-sdk`\"}}]}'
           
