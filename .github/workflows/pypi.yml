@@ -49,17 +49,5 @@ jobs:
         uses: pullreminders/slack-action@master
         with:
           # GLBSCC25D => Lab Monitoring channel
-          args: |
-            {  
-              "channel": "GLBSCC25D",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "The LumApps SDK v1.0 is available\n \t`pip install lumapps-sdk`"
-                  }
-                }
-              ]
-            }
+          args: '{\"channel":\"GLBSCC25D\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"The LumApps SDK v1.0 is available\n \t`pip install lumapps-sdk`\"}}]}
           
