@@ -79,15 +79,49 @@ def test_parse_endpoint_parts():
     assert parts == ["user", "get"]
 
 
-def test_extract_from_discovery_spec():
+def test_method_from_discovery_1():
     with open("tests/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
     name_parts = ["user", "get"]
-    resources = discovery_doc["resources"]
-    extracted = lumapps.api.utils._extract_from_discovery_spec(resources, name_parts)
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
 
     assert extracted.get("httpMethod") == "GET"
     assert extracted.get("id") == "lumsites.user.get"
+
+
+def test_method_from_discovery_2():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = json.load(fh)
+    name_parts = ['document', 'uploadUrl', 'get']
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
+
+    assert extracted.get("httpMethod") == "POST"
+    assert extracted.get("id") == "lumsites.document.uploadUrl.get"
+
+
+def test_method_from_discovery_3():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = json.load(fh)
+    name_parts = ['document', 'uploadUrl']
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
+    assert extracted is None
+
+
+def test_method_from_discovery_5():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = json.load(fh)
+    name_parts = ['document', 'foo']
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
+    assert extracted is None
+    name_parts = ['document']
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
+    assert extracted is None
+    name_parts = ['foo']
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
+    assert extracted is None
+    name_parts = []
+    extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
+    assert extracted is None
 
 
 def test_pop_matches():

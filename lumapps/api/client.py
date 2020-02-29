@@ -14,7 +14,7 @@ from lumapps.api.utils import (
     GOOGLE_APIS,
     FILTERS,
     _parse_endpoint_parts,
-    _extract_from_discovery_spec,
+    method_from_discovery,
 )
 
 LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
@@ -288,12 +288,6 @@ class ApiClient(object):
             ):
                 yield ep_name, ep_info
 
-    def _extract_from_discovery(self, name_parts):
-        resources = self.discovery_doc.get("resources")
-        if not resources:
-            return None
-        return _extract_from_discovery_spec(resources, name_parts)
-
     def _expand_path(self, path, endpoint: dict, params: dict):
         param_specs = endpoint.get("parameters", {})
         path_args = {}
@@ -309,7 +303,7 @@ class ApiClient(object):
         return path
 
     def _get_verb_path_params(self, name_parts, params: dict):
-        endpoint = self._extract_from_discovery(name_parts)
+        endpoint = method_from_discovery(self.discovery_doc, name_parts)
         if not endpoint:
             raise ApiCallError(f"Endpoint {'.'.join(name_parts)} not found")
         if endpoint.get("mediaUpload"):
@@ -337,7 +331,7 @@ class ApiClient(object):
 
     def upload_call(self, fpath: Path, metadata: dict, *name_parts, **params):
         name_parts = _parse_endpoint_parts(name_parts)
-        endpoint = self._extract_from_discovery(name_parts)
+        endpoint = method_from_discovery(self.discovery_doc, name_parts)
         if not endpoint.get("mediaUpload"):
             raise ApiCallError(
                 f"Endpoint {'.'.join(name_parts)} is not for uploads, "

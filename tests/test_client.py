@@ -125,14 +125,6 @@ def test_get_call_3(mocker, cli: ApiClient):
     assert len(lst) == 0
 
 
-def test_extract_from_discovery(mocker, cli: ApiClient):
-    r = cli._extract_from_discovery("foo")
-    assert r == {}
-    cli._discovery_doc.clear()
-    r = cli._extract_from_discovery("foo")
-    assert r is None
-
-
 def test_iter_call_1(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
