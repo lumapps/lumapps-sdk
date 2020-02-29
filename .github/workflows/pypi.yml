@@ -1,10 +1,10 @@
-name: Publish 📦 to PyPI
+name: Packaging 📦
 
 on: push
 
 jobs:
 
-  Pypi-release:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -43,4 +43,10 @@ jobs:
         with:
           password: ${{ secrets.pypi_password }}
 
-            
+      - name: Notify slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACKBOT_TOKEN }}
+        uses: pullreminders/slack-action@master
+        with:
+          # GLBSCC25D => Lab Monitoring channel
+          args: '{\"channel\":\"GLBSCC25D\",\"text\":\"Hello world\"}'
