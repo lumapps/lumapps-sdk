@@ -44,10 +44,12 @@ jobs:
           password: ${{ secrets.pypi_password }}
 
       - name: Notify slack
+        if: startsWith(github.event.ref, 'refs/tags')
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACKBOT_TOKEN }}
         uses: pullreminders/slack-action@master
         with:
           # GLBSCC25D => Lab Monitoring channel
-          args: '{\"channel\":\"GLBSCC25D\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"The LumApps SDK v1.0 is available\n \t`pip install lumapps-sdk`\"}}]}'
+          # C45PD5QSE => Lab channel
+          args: '{\"channel\":\"C45PD5QSE\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"The LumApps SDK v1.0 is available\n \t`pip install lumapps-sdk`\"}}]}'
           
