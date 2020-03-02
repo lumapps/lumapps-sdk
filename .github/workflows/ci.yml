@@ -6,10 +6,6 @@ on:
     branches:
       - master
       - v1.0
-    paths-ignore:
-      - 'documentation/**'
-      - '.gitignore'
-      - '*.rst'
 
 jobs:
 
