@@ -1,7 +1,7 @@
 **LumApps SDK**
 ===============
 
-|CircleCI Status| |Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
+|Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
 
 
 *Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
@@ -96,9 +96,6 @@ LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RS
 .. |PyPI Status| image:: https://img.shields.io/pypi/v/lumapps-sdk
     :target: https://pypi.org/project/lumapps-sdk/
     :alt: Pypi package
-
-.. |CircleCI Status| image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
-    :target: https://circleci.com/gh/lumapps/lumapps-sdk
 
 .. |Coverage Status| image:: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0/graph/badge.svg
     :target: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0
