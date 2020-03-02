@@ -53,6 +53,16 @@ def test_get_call_raises_api_call_error(cli: ApiClient):
         cli.get_call("user/bla")
 
 
+def test_set_get_token(cli: ApiClient):
+    cli.token = 'foo123'
+    assert cli.token == 'foo123'
+    cli.token = 'foo123'
+    assert cli.token == 'foo123'
+    _ = cli.session
+    cli.token = 'foo1234'
+    assert cli.token == 'foo1234'
+
+
 def test_endpoints_property(cli: ApiClient):
     assert ("user", "get") in cli.endpoints
 
