@@ -87,9 +87,33 @@ def test_get_matching_endpoints(cli: ApiClient):
     assert "not found" in matches
 
 
-def test_call(mocker, cli: ApiClient):
+def test_call_1(mocker, cli: ApiClient):
     with raises(HTTPError):
         cli._call(("user", "get"), {})
+
+
+def test_call_2(mocker, cli: ApiClient):
+
+    class DummyResp:
+        def __init__(self):
+            self.content = None
+
+        def raise_for_status(self):
+            pass
+
+    class DummySession:
+        def __init__(self):
+            pass
+
+        def request(self, *args, **kwargs):
+            return DummyResp()
+
+    mocker.patch(
+        "lumapps.api.client.ApiClient.session",
+        new_callable=PropertyMock,
+        return_value=DummySession(),
+    )
+    assert cli._call(("user", "get"), {}) is None
 
 
 def test_get_verb_path_params(mocker, cli_drive: ApiClient):
