@@ -154,11 +154,10 @@ def _upload_new_media_file_of_given_lang(
         return
 
     # Upload the file
-    files_tuple_list = [("files", (filename, file_data, mimetype))]
     response = httpx.post(
         upload_url,
         headers={"Authorization": "Bearer " + client.token},
-        files=files_tuple_list,
+        files={'upload-file': (filename, file_data, mimetype)},
     )
     uploaded_file = response.json()
 
