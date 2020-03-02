@@ -1,7 +1,7 @@
 **LumApps SDK**
 ===============
 
-|Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
+|CI| |Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
 
 
 *Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
@@ -92,6 +92,9 @@ Copyright and license
 LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RST>`_ file.
 
 
+.. |CI| image:: https://github.com/lumapps/lumapps-sdk/workflows/CI/badge.svg
+     :target: https://github.com/lumapps/lumapps-sdk/actions?query=workflow%3ACI
+     :alt: CI
 
 .. |PyPI Status| image:: https://img.shields.io/pypi/v/lumapps-sdk
     :target: https://pypi.org/project/lumapps-sdk/
