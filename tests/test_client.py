@@ -53,6 +53,16 @@ def test_get_call_raises_api_call_error(cli: ApiClient):
         cli.get_call("user/bla")
 
 
+def test_set_get_token(cli: ApiClient):
+    cli.token = 'foo123'
+    assert cli.token == 'foo123'
+    cli.token = 'foo123'
+    assert cli.token == 'foo123'
+    _ = cli.session
+    cli.token = 'foo1234'
+    assert cli.token == 'foo1234'
+
+
 def test_endpoints_property(cli: ApiClient):
     assert ("user", "get") in cli.endpoints
 
@@ -77,9 +87,33 @@ def test_get_matching_endpoints(cli: ApiClient):
     assert "not found" in matches
 
 
-def test_call(mocker, cli: ApiClient):
+def test_call_1(mocker, cli: ApiClient):
     with raises(HTTPError):
         cli._call(("user", "get"), {})
+
+
+def test_call_2(mocker, cli: ApiClient):
+
+    class DummyResp:
+        def __init__(self):
+            self.content = None
+
+        def raise_for_status(self):
+            pass
+
+    class DummySession:
+        def __init__(self):
+            pass
+
+        def request(self, *args, **kwargs):
+            return DummyResp()
+
+    mocker.patch(
+        "lumapps.api.client.ApiClient.session",
+        new_callable=PropertyMock,
+        return_value=DummySession(),
+    )
+    assert cli._call(("user", "get"), {}) is None
 
 
 def test_get_verb_path_params(mocker, cli_drive: ApiClient):

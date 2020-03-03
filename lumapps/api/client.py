@@ -321,6 +321,8 @@ class ApiClient(object):
         verb, path, params = self._get_verb_path_params(name_parts, params)
         resp = self.session.request(verb, path, params=params, json=json)
         resp.raise_for_status()
+        if not resp.content:
+            return None
         return resp.json()
 
     @staticmethod
@@ -383,6 +385,8 @@ class ApiClient(object):
                 else:
                     params["cursor"] = cursor
             response = self._call(name_parts, params, body)
+            if response is None:
+                return None
             if "more" in response and "items" not in response:
                 return items  # empty list
             if "more" in response and "items" in response:
