@@ -3,7 +3,7 @@ from json import load
 from unittest.mock import PropertyMock
 
 from pytest import fixture, raises
-from httpx.exceptions import HTTPError
+from httpx import HTTPError
 
 from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger, main
 from lumapps.api.utils import ConfigStore, _get_conn, _set_sqlite_ok, _DiscoveryCacheDict
