@@ -1,9 +1,6 @@
 **LumApps SDK**
 ===============
 
-.. image:: https://circleci.com/gh/lumapps/lumapps-sdk.svg?style=svg
-    :target: https://circleci.com/gh/lumapps/lumapps-sdk
-
 .. image:: https://black.readthedocs.io/en/stable/_static/license.svg
     :target: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
     :alt: License: MIT
