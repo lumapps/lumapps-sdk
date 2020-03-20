@@ -1,7 +1,6 @@
 import typing
 
-from httpx import Auth, Client
-from httpx.models import Request, Response
+from httpx import Auth, Client, Request, Response
 from authlib.oauth2.rfc7521 import AssertionClient as _AssertionClient
 from authlib.oauth2.rfc7523 import JWTBearerGrant
 from authlib.integrations.httpx_client.utils import extract_client_kwargs
