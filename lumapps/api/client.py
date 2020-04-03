@@ -78,6 +78,7 @@ class ApiClient(object):
         self.token_getter = token_getter
         self.user = user
         self.token = token
+        self.cursor = None
 
     @property
     def token(self):
@@ -376,14 +377,14 @@ class ApiClient(object):
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
-        cursor = None
+        self.cursor = None
         body = self._pop_body(params)
         while True:
             if cursor:
                 if body is not None:
-                    body["cursor"] = cursor
+                    body["cursor"] = self.cursor
                 else:
-                    params["cursor"] = cursor
+                    params["cursor"] = self.cursor
             response = self._call(name_parts, params, body)
             if response is None:
                 return None
@@ -392,7 +393,7 @@ class ApiClient(object):
             if "more" in response and "items" in response:
                 items.extend(response["items"])
                 if response.get("more", False):
-                    cursor = response["cursor"]
+                    self.cursor = response["cursor"]
                 else:
                     return self._prune(name_parts, items)
             else:
@@ -418,14 +419,14 @@ class ApiClient(object):
                 >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
-        cursor = None
+        self.cursor = None
         body = self._pop_body(params)
         while True:
             if cursor:
                 if body is not None:
-                    body["cursor"] = cursor
+                    body["cursor"] = self.cursor
                 else:
-                    params["cursor"] = cursor
+                    params["cursor"] = self.cursor
             response = self._call(name_parts, params, body)
             if "more" in response and "items" not in response:
                 return  # empty list
@@ -433,7 +434,7 @@ class ApiClient(object):
                 for item in response["items"]:
                     yield self._prune(name_parts, item)
                 if response.get("more", False):
-                    cursor = response["cursor"]
+                    self.cursor = response["cursor"]
                 else:
                     return
             else:
