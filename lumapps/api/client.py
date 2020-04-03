@@ -380,7 +380,7 @@ class ApiClient(object):
         self.cursor = None
         body = self._pop_body(params)
         while True:
-            if cursor:
+            if self.cursor:
                 if body is not None:
                     body["cursor"] = self.cursor
                 else:
@@ -422,7 +422,7 @@ class ApiClient(object):
         self.cursor = None
         body = self._pop_body(params)
         while True:
-            if cursor:
+            if self.cursor:
                 if body is not None:
                     body["cursor"] = self.cursor
                 else:
