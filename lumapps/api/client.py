@@ -34,6 +34,7 @@ class ApiClient(object):
         prune: bool = False,
         no_verify: bool = False,
         proxy_info: Optional[Dict[str, Any]] = None,
+        cursor: Optional[str] = None
     ):
         """
             Args:
@@ -47,6 +48,8 @@ class ApiClient(object):
                 prune: Whether or not to use FILTERS to prune LumApps API responses.
                 no_verify: Disables SSL verification.
                 proxy_info: When specified, a JSON dict with proxy parameters.
+                cursor: A LumApps Api cursor used to request paginated entities. If given, 
+                    this will be used in the next call of get_call or iter_call.
         """
         self._token_expiry = 0
         self.no_verify = no_verify
@@ -78,6 +81,7 @@ class ApiClient(object):
         self.token_getter = token_getter
         self.user = user
         self.token = token
+        self.cursor = cursor
 
     @property
     def token(self):
@@ -376,14 +380,14 @@ class ApiClient(object):
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
-        cursor = None
+        self.cursor = None
         body = self._pop_body(params)
         while True:
-            if cursor:
+            if self.cursor:
                 if body is not None:
-                    body["cursor"] = cursor
+                    body["cursor"] = self.cursor
                 else:
-                    params["cursor"] = cursor
+                    params["cursor"] = self.cursor
             response = self._call(name_parts, params, body)
             if response is None:
                 return None
@@ -392,7 +396,7 @@ class ApiClient(object):
             if "more" in response and "items" in response:
                 items.extend(response["items"])
                 if response.get("more", False):
-                    cursor = response["cursor"]
+                    self.cursor = response["cursor"]
                 else:
                     return self._prune(name_parts, items)
             else:
@@ -418,14 +422,14 @@ class ApiClient(object):
                 >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
-        cursor = None
+        self.cursor = None
         body = self._pop_body(params)
         while True:
-            if cursor:
+            if self.cursor:
                 if body is not None:
-                    body["cursor"] = cursor
+                    body["cursor"] = self.cursor
                 else:
-                    params["cursor"] = cursor
+                    params["cursor"] = self.cursor
             response = self._call(name_parts, params, body)
             if "more" in response and "items" not in response:
                 return  # empty list
@@ -433,7 +437,7 @@ class ApiClient(object):
                 for item in response["items"]:
                     yield self._prune(name_parts, item)
                 if response.get("more", False):
-                    cursor = response["cursor"]
+                    self.cursor = response["cursor"]
                 else:
                     return
             else:
