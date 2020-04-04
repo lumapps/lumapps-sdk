@@ -401,16 +401,29 @@ class ApiClient(object):
             response = self._call(name_parts, params, body)
             if response is None:
                 return None
-            if "more" in response and "items" not in response:
-                return items  # empty list
-            if "more" in response and "items" in response:
-                items.extend(response["items"])
-                if response.get("more", False):
+
+            more = response.get("more")
+            response_items = response.get("items")
+            if more:
+                if response_items:
                     self.cursor = response["cursor"]
+                    items.extend(response_items)
                 else:
+                    # No results but a more field set to true ...
+                    # ie, the api return something wrong
+                    self.cursor = None
                     return self._prune(name_parts, items)
             else:
-                return self._prune(name_parts, response)
+                # No more result to get
+                if response_items:
+                    self.cursor = None
+                    items.extend(response_items)
+                    return self._prune(name_parts, items)
+                else:
+                    # No results, return
+                    self.cursor = None
+                    # special case of 
+                    return [] if more is False else self._prune(name_parts, response)
 
     def iter_call(self, *name_parts, cursor=None, **params):
         """
@@ -442,7 +455,7 @@ class ApiClient(object):
                     params["cursor"] = self.cursor
 
             response = self._call(name_parts, params, body)
-            more = response.get("more", False)
+            more = response.get("more")
             items = response.get("items")
 
             if more:
