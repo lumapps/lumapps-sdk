@@ -148,6 +148,8 @@ def test_get_call_2(mocker, cli: ApiClient):
 
     mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
     lst = cli.get_call("instance/list")
+
+    assert cli.cursor == "foo_cursor"
     assert len(lst) == 4
 
 
@@ -158,6 +160,14 @@ def test_get_call_3(mocker, cli: ApiClient):
     lst = cli.get_call("instance/list")
     assert len(lst) == 0
 
+def test_get_call_4(mocker, cli: ApiClient):
+    with open("tests/test_data/list_empty.json") as fh:
+        ret = load(fh)
+    mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
+    lst = cli.get_call("instance/list", cursor="test")
+
+    assert len(lst) == 0
+    assert cli.cursor == "test"
 
 def test_iter_call_1(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
