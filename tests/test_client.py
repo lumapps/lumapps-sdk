@@ -153,7 +153,7 @@ def test_get_call_2(mocker, cli: ApiClient):
     mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
     lst = cli.get_call("instance/list")
 
-    assert cli.cursor == "foo_cursor"
+    assert cli.cursor is None
     assert len(lst) == 4
 
 
@@ -172,7 +172,31 @@ def test_get_call_4(mocker, cli: ApiClient):
     lst = cli.get_call("instance/list", cursor="test")
 
     assert len(lst) == 0
-    assert cli.cursor == "test"
+    assert cli.cursor is None
+
+
+def test_get_call_5(mocker, cli: ApiClient):
+    try:
+        cli.get_call("instance/list", cursor="test")
+    except Exception:
+        assert cli.cursor == "test"
+
+
+def test_get_call_6(mocker, cli: ApiClient):
+    with open("tests/test_data/instance_list_more_1.json") as fh:
+        ret1 = load(fh)
+
+    def _call(name_parts: Sequence[str], params: dict, json=None):
+        if "cursor" in params:
+            raise Exception()
+        else:
+            return ret1
+
+    mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
+    try:
+        cli.get_call("instance/list")
+    except Exception:
+        assert cli.cursor == "foo_cursor"
 
 
 def test_iter_call_1(mocker, cli: ApiClient):
@@ -210,6 +234,16 @@ def test_iter_call_3(mocker, cli: ApiClient):
 
 
 def test_iter_call_4(mocker, cli: ApiClient):
+    with open("tests/test_data/instance_list.json") as fh:
+        ret = load(fh)
+    mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
+
+    lst = [i for i in cli.iter_call("instance/list", cursor="truc")]
+    assert len(lst) == 2
+    assert cli.cursor is None
+
+
+def test_iter_call_5(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
     with open("tests/test_data/instance_list_more_2.json") as fh:
@@ -223,7 +257,7 @@ def test_iter_call_4(mocker, cli: ApiClient):
 
     mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
     iterator = cli.iter_call("instance/list")
-    
+
     # 1st page, cursor is set
     lst = next(iterator)
     assert isinstance(lst, dict)
