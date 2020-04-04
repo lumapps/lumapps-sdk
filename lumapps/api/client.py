@@ -447,23 +447,26 @@ class ApiClient(object):
 
             if more:
                 if items:
+                    # Yield the results and continue the loop
                     self.cursor = response["cursor"]
                     for item in items:
-                        print("yield")
                         yield self._prune(name_parts, item)
-                    print("there")
                 else:
+                    # No results but a more field set to true ...
+                    # ie, the api return something wrong
                     self.cursor = None
                     return
             else:
+                # No more result to get
                 if items:
+                    # Yield the last results and then return
                     self.cursor = None
                     for item in items:
-                        print("yield2")
                         yield self._prune(name_parts, item)
                     else:
                         return
                 else:
+                    # No results, return
                     self.cursor = None
                     return
 
