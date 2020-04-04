@@ -6,7 +6,12 @@ from httpx import HTTPError
 from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
-from lumapps.api.utils import FILTERS, _DiscoveryCacheDict, _set_sqlite_ok, _get_conn
+from lumapps.api.utils import (
+    FILTERS,
+    _DiscoveryCacheDict,
+    _set_sqlite_ok,
+    _get_conn,
+)
 from lumapps.api.errors import ApiCallError, ApiClientError
 
 
@@ -54,13 +59,13 @@ def test_get_call_raises_api_call_error(cli: ApiClient):
 
 
 def test_set_get_token(cli: ApiClient):
-    cli.token = 'foo123'
-    assert cli.token == 'foo123'
-    cli.token = 'foo123'
-    assert cli.token == 'foo123'
+    cli.token = "foo123"
+    assert cli.token == "foo123"
+    cli.token = "foo123"
+    assert cli.token == "foo123"
     _ = cli.session
-    cli.token = 'foo1234'
-    assert cli.token == 'foo1234'
+    cli.token = "foo1234"
+    assert cli.token == "foo1234"
 
 
 def test_endpoints_property(cli: ApiClient):
@@ -93,7 +98,6 @@ def test_call_1(mocker, cli: ApiClient):
 
 
 def test_call_2(mocker, cli: ApiClient):
-
     class DummyResp:
         def __init__(self):
             self.content = None
@@ -122,7 +126,7 @@ def test_get_verb_path_params(mocker, cli_drive: ApiClient):
     verb, path, params = cli_drive._get_verb_path_params(
         ("permissions", "list"), {"fileId": "foo_id"}
     )
-    assert verb == 'GET'
+    assert verb == "GET"
     assert len(params) == 0
 
 
@@ -160,6 +164,7 @@ def test_get_call_3(mocker, cli: ApiClient):
     lst = cli.get_call("instance/list")
     assert len(lst) == 0
 
+
 def test_get_call_4(mocker, cli: ApiClient):
     with open("tests/test_data/list_empty.json") as fh:
         ret = load(fh)
@@ -169,10 +174,12 @@ def test_get_call_4(mocker, cli: ApiClient):
     assert len(lst) == 0
     assert cli.cursor == "test"
 
+
 def test_iter_call_1(mocker, cli: ApiClient):
     with open("tests/test_data/instance_list.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
+
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 2
 
@@ -200,6 +207,46 @@ def test_iter_call_3(mocker, cli: ApiClient):
     mocker.patch("lumapps.api.client.ApiClient._call", return_value=ret)
     lst = [i for i in cli.iter_call("instance/list")]
     assert len(lst) == 0
+
+
+def test_iter_call_4(mocker, cli: ApiClient):
+    with open("tests/test_data/instance_list_more_1.json") as fh:
+        ret1 = load(fh)
+    with open("tests/test_data/instance_list_more_2.json") as fh:
+        ret2 = load(fh)
+
+    def _call(name_parts: Sequence[str], params: dict, json=None):
+        if "cursor" in params:
+            return ret2
+        else:
+            return ret1
+
+    mocker.patch("lumapps.api.client.ApiClient._call", side_effect=_call)
+    iterator = cli.iter_call("instance/list")
+    
+    # 1st page, cursor is set
+    lst = next(iterator)
+    assert isinstance(lst, dict)
+    assert cli.cursor == "foo_cursor"
+    lst = next(iterator)
+    assert isinstance(lst, dict)
+    assert cli.cursor == "foo_cursor"
+
+    # 2nd page, cursor is none
+    lst = next(iterator)
+    assert isinstance(lst, dict)
+    assert cli.cursor is None
+    lst = next(iterator)
+    assert isinstance(lst, dict)
+    assert cli.cursor is None
+
+    # Assert iterator ended
+    with raises(StopIteration):
+        next(iterator)
+
+    lst = [i for i in cli.iter_call("instance/list")]
+    assert len(lst) == 4
+    assert cli.cursor is None
 
 
 def test_prune(cli: ApiClient):
@@ -231,11 +278,7 @@ def test_prune2(cli: ApiClient):
 def test_with_proxy_1():
     c = ApiClient(
         token="foobar",
-        proxy_info={
-            "scheme": "http",
-            "host": "foo.bar.com",
-            "port": 12345,
-        },
+        proxy_info={"scheme": "http", "host": "foo.bar.com", "port": 12345},
     )
     s = c.session
     assert len(s.proxies) == 2
@@ -257,7 +300,9 @@ def test_with_proxy_2():
 
 
 def test_discovery_doc(mocker):
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+    mocker.patch(
+        "lumapps.api.utils._get_conn", return_value=_get_conn(":memory:")
+    )
 
     class DummyResp:
         def __init__(self, text):
@@ -270,7 +315,6 @@ def test_discovery_doc(mocker):
         resp = DummyResp(fh.read())
 
     class DummySession:
-
         def get(*args, **kwargs):
             return resp
 
@@ -289,7 +333,8 @@ def test_discovery_doc(mocker):
 
 def test_get_new_client_as(mocker, cli: ApiClient):
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call", return_value={"accessToken": "foo"}
+        "lumapps.api.client.ApiClient.get_call",
+        return_value={"accessToken": "foo"},
     )
     new_cli = cli.get_new_client_as("foo@bar.com")
     assert new_cli.user == "foo@bar.com"
