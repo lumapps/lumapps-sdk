@@ -360,7 +360,7 @@ class ApiClient(object):
         resp.raise_for_status()
         return resp.json()
 
-    def get_call(self, *name_parts, **params):
+    def get_call(self, *name_parts, cursor=None, **params):
         """
         Args:
             *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
@@ -380,7 +380,7 @@ class ApiClient(object):
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
-        self.cursor = None
+        self.cursor = cursor
         body = self._pop_body(params)
         while True:
             if self.cursor:
@@ -402,7 +402,7 @@ class ApiClient(object):
             else:
                 return self._prune(name_parts, response)
 
-    def iter_call(self, *name_parts, **params):
+    def iter_call(self, *name_parts, cursor=None, **params):
         """
          Args:
             *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
