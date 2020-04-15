@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional, Callable, Tuple, Sequence
 from pathlib import Path
 
 from httpx import Client
+
 # from authlib.integrations.requests_client import OAuth2Session, AssertionSession
 from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
 from lumapps.api.errors import ApiClientError, ApiCallError
@@ -76,6 +77,7 @@ class ApiClient(object):
         self.token_getter = token_getter
         self.user = user
         self.token = token
+        self.cursor = None
 
     @property
     def base_url(self):
@@ -100,7 +102,7 @@ class ApiClient(object):
             "base_url": self.base_url,
             "headers": self._headers,
             "verify": not self.no_verify,
-            "timeout": 120
+            "timeout": 120,
         }
         if self.proxy_info:
             scheme = self.proxy_info.get("scheme", "https")
@@ -124,7 +126,9 @@ class ApiClient(object):
                 scope=self._scope,
                 **kwargs,
             )
-            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
+            s.refresh_token(
+                auth["token_uri"], refresh_token=auth["refresh_token"]
+            )
         elif auth:  # service account
             claims = {"scope": self._scope} if self._scope else {}
             s = AssertionClient(
@@ -233,7 +237,9 @@ class ApiClient(object):
     @property
     def endpoints(self):
         if self._endpoints is None:
-            self._endpoints = {n: m for n, m in self.walk_endpoints(self.discovery_doc)}
+            self._endpoints = {
+                n: m for n, m in self.walk_endpoints(self.discovery_doc)
+            }
         return self._endpoints
 
     def get_help(self, name_parts, debug=False):
@@ -253,7 +259,10 @@ class ApiClient(object):
         params = ep_info.get("parameters", {})
         if method == "POST":
             params.update(
-                {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
+                {
+                    "body": {"required": True, "type": "JSON"},
+                    "fields": {"type": "JSON"},
+                }
             )
         if not params:
             add_line("Endpoint takes no parameters")
@@ -314,7 +323,9 @@ class ApiClient(object):
                 f"Endpoint {'.'.join(name_parts)} is for uploads, "
                 f"use upload_call method instead of get_call or iter_call"
             )
-        path = self._api_url + "/" + endpoint.get("path") or "/".join(name_parts)
+        path = self._api_url + "/" + endpoint.get("path") or "/".join(
+            name_parts
+        )
         path = self._expand_path(path, endpoint, params)
         verb = endpoint.get("httpMethod")
         return verb, path, params
@@ -379,27 +390,40 @@ class ApiClient(object):
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
-        cursor = None
+        self.cursor = params.pop("cursor", None)
         body = self._pop_body(params)
         while True:
-            if cursor:
+            if self.cursor:
                 if body is not None:
-                    body["cursor"] = cursor
+                    body["cursor"] = self.cursor
                 else:
-                    params["cursor"] = cursor
+                    params["cursor"] = self.cursor
             response = self._call(name_parts, params, body)
             if response is None:
                 return None
-            if "more" in response and "items" not in response:
-                return items  # empty list
-            if "more" in response and "items" in response:
-                items.extend(response["items"])
-                if response.get("more", False):
-                    cursor = response["cursor"]
+
+            more = response.get("more")
+            response_items = response.get("items")
+            if more:
+                if response_items:
+                    self.cursor = response["cursor"]
+                    items.extend(response_items)
                 else:
+                    # No results but a more field set to true ...
+                    # ie, the api return something wrong
+                    self.cursor = None
                     return self._prune(name_parts, items)
             else:
-                return self._prune(name_parts, response)
+                # No more result to get
+                if response_items:
+                    self.cursor = None
+                    items.extend(response_items)
+                    return self._prune(name_parts, items)
+                else:
+                    # No results, return
+                    self.cursor = None
+                    # special case of 
+                    return [] if more is False else self._prune(name_parts, response)
 
     def iter_call(self, *name_parts, **params):
         """
@@ -421,26 +445,43 @@ class ApiClient(object):
                 >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
-        cursor = None
+        self.cursor = params.pop("cursor", None)
         body = self._pop_body(params)
         while True:
-            if cursor:
+            if self.cursor:
                 if body is not None:
-                    body["cursor"] = cursor
+                    body["cursor"] = self.cursor
                 else:
-                    params["cursor"] = cursor
+                    params["cursor"] = self.cursor
+
             response = self._call(name_parts, params, body)
-            if "more" in response and "items" not in response:
-                return  # empty list
-            if "more" in response and "items" in response:
-                for item in response["items"]:
-                    yield self._prune(name_parts, item)
-                if response.get("more", False):
-                    cursor = response["cursor"]
+            more = response.get("more")
+            items = response.get("items")
+
+            if more:
+                if items:
+                    # Yield the results and continue the loop
+                    self.cursor = response["cursor"]
+                    for item in items:
+                        yield self._prune(name_parts, item)
                 else:
+                    # No results but a more field set to true ...
+                    # ie, the api return something wrong
+                    self.cursor = None
                     return
             else:
-                yield self._prune(name_parts, response)
+                # No more result to get
+                if items:
+                    # Yield the last results and then return
+                    self.cursor = None
+                    for item in items:
+                        yield self._prune(name_parts, item)
+                    else:
+                        return
+                else:
+                    # No results, return
+                    self.cursor = None
+                    return
 
     def get_matching_endpoints(self, name_parts):
         # find exact matches of all parts up to but excluding last
@@ -450,7 +491,9 @@ class ApiClient(object):
         # find 'startswith' matches of the last part
         last = name_parts[-1]
         idx = len(name_parts) - 1
-        matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
+        matches = [
+            m for m in matches if len(m) >= idx and m[idx].startswith(last)
+        ]
         if not matches:
             return "Endpoint not found"
         return (
