@@ -67,17 +67,19 @@ class ApiClient(object):
         self.api_info = api_info
         api_name = api_info["name"]
         self._scope = " ".join(api_info["scopes"])
-        self.base_url = api_info["base_url"].rstrip("/")
-        if api_name in GOOGLE_APIS:
-            prefix = self.base_url
-        else:
-            prefix = f"{self.base_url}/_ah/api"
         api_ver = api_info["version"]
+        prefix = "" if api_name in GOOGLE_APIS else f"/_ah/api"
         self._api_url = f"{prefix}/{api_name}/{api_ver}"
-        self._discovery_url = f"{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
+        self._discovery_url = (
+            f"{self.base_url}{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
+        )
         self.token_getter = token_getter
         self.user = user
         self.token = token
+
+    @property
+    def base_url(self):
+        return self.api_info["base_url"].rstrip("/")
 
     @property
     def token(self):
@@ -95,6 +97,7 @@ class ApiClient(object):
     def _create_session(self):
         auth = self._auth_info
         kwargs = {
+            "base_url": self.base_url,
             "headers": self._headers,
             "verify": not self.no_verify,
             "timeout": 120
@@ -141,7 +144,7 @@ class ApiClient(object):
         return s
 
     @property
-    def session(self):
+    def session(self) -> Client:
         """Setup the session object."""
         self._check_access_token()
         if self._session is None:
