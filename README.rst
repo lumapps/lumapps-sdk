@@ -46,12 +46,8 @@ Once connected, open the javascript console of your browser and run:
 .. code-block:: javascript
 
     var instance = window.location.pathname.split('/');
-    if (instance[1] == "a"){
-        instance = instance[3]
-    }else{
-        instance = instance[2]
-    }
-    fetch(window.location.origin+"/service/init?customerHost="+window.location.host+"&instanceSlug="+instance+"&slug=").then(data=>{return data.json()}).then(res => {console.log(res.token)})
+    instance = instance[1] == "a" ? instance[3] : instance[1]
+    fetch(window.location.origin+"/service/init?customerHost="+window.location.host+"&instanceSlug="+instance+"&    slug=").then(data=>{return data.json()}).then(res => {console.log(res.token)})
 
 
 This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps
