@@ -77,7 +77,7 @@ Let's display the full name of a registered user in lumapps
 Documentation
 =============
 
-The SDK documentation is available `here <https://lumapps.github.io/lumapps-sdk>`_.
+The SDK documentation is available `here <https://github.com/lumapps/lumapps-sdk/wiki>`_.
 
 Code convention
 ---------------
