@@ -390,14 +390,14 @@ class ApiClient(object):
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
-        self.cursor = params.pop("cursor", None)
+        self.cursor = cursor = params.pop("cursor", None)
         body = self._pop_body(params)
         while True:
-            if self.cursor:
+            if cursor:
                 if body is not None:
-                    body["cursor"] = self.cursor
+                    body["cursor"] = cursor
                 else:
-                    params["cursor"] = self.cursor
+                    params["cursor"] = cursor
             response = self._call(name_parts, params, body)
             if response is None:
                 return None
@@ -406,23 +406,23 @@ class ApiClient(object):
             response_items = response.get("items")
             if more:
                 if response_items:
-                    self.cursor = response["cursor"]
+                    self.cursor = cursor = response["cursor"]
                     items.extend(response_items)
                 else:
                     # No results but a more field set to true ...
                     # ie, the api return something wrong
-                    self.cursor = None
+                    self.cursor = cursor = None
                     return self._prune(name_parts, items)
             else:
                 # No more result to get
                 if response_items:
-                    self.cursor = None
+                    self.cursor = cursor = None
                     items.extend(response_items)
                     return self._prune(name_parts, items)
                 else:
                     # No results, return
-                    self.cursor = None
-                    # special case of 
+                    self.cursor = cursor = None
+                    # special case of
                     return [] if more is False else self._prune(name_parts, response)
 
     def iter_call(self, *name_parts, **params):
@@ -445,14 +445,14 @@ class ApiClient(object):
                 >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
-        self.cursor = params.pop("cursor", None)
+        self.cursor = cursor = params.pop("cursor", None)
         body = self._pop_body(params)
         while True:
-            if self.cursor:
+            if cursor:
                 if body is not None:
-                    body["cursor"] = self.cursor
+                    body["cursor"] = cursor
                 else:
-                    params["cursor"] = self.cursor
+                    params["cursor"] = cursor
 
             response = self._call(name_parts, params, body)
             more = response.get("more")
@@ -461,26 +461,26 @@ class ApiClient(object):
             if more:
                 if items:
                     # Yield the results and continue the loop
-                    self.cursor = response["cursor"]
+                    self.cursor = cursor = response["cursor"]
                     for item in items:
                         yield self._prune(name_parts, item)
                 else:
                     # No results but a more field set to true ...
                     # ie, the api return something wrong
-                    self.cursor = None
+                    self.cursor = cursor = None
                     return
             else:
                 # No more result to get
                 if items:
                     # Yield the last results and then return
-                    self.cursor = None
+                    self.cursor = cursor = None
                     for item in items:
                         yield self._prune(name_parts, item)
                     else:
                         return
                 else:
                     # No results, return
-                    self.cursor = None
+                    self.cursor = cursor = None
                     return
 
     def get_matching_endpoints(self, name_parts):
