@@ -20,7 +20,7 @@ def test_list_prune_filters(capsys):
 
 
 def test_discovery_cache_1():
-    assert type(lumapps.api.utils.DiscoveryCache) == lumapps.api.utils.DiscoveryCacheSqlite
+    assert type(lumapps.api.utils._discovery_cache) == lumapps.api.utils.DiscoveryCacheSqlite
 
 
 def test_discovery_cache_dict():
@@ -69,7 +69,7 @@ def test_no_sqlite(mocker):
     assert c.get("foobar.com") is None
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
-    assert lumapps.api.utils.DiscoveryCache.get("foobar.com") == "bla"
+    assert lumapps.api.utils._discovery_cache.get("foobar.com") == "bla"
     assert lumapps.api.utils._DiscoveryCacheDict.get("foobar.com") == "bla"
 
 

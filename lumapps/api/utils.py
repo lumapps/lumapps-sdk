@@ -198,14 +198,18 @@ class DiscoveryCacheSqlite:
 
 
 if _sqlite_ok:
-    DiscoveryCache = DiscoveryCacheSqlite()
+    _discovery_cache = DiscoveryCacheSqlite()
 else:
-    DiscoveryCache = _DiscoveryCacheDict
+    _discovery_cache = _DiscoveryCacheDict
 
 
 def set_discovery_cache(cache):
-    global DiscoveryCache
-    DiscoveryCache = cache
+    global _discovery_cache
+    _discovery_cache = cache
+
+
+def get_discovery_cache():
+    return _discovery_cache
 
 
 def list_prune_filters():

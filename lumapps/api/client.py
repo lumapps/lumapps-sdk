@@ -11,7 +11,7 @@ from httpx import Client
 from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
 from lumapps.api.errors import ApiClientError, ApiCallError
 from lumapps.api.utils import (
-    DiscoveryCache,
+    get_discovery_cache,
     pop_matches,
     GOOGLE_APIS,
     FILTERS,
@@ -159,7 +159,7 @@ class ApiClient(object):
     @lru_cache()
     def discovery_doc(self):
         url = self._discovery_url
-        d = DiscoveryCache.get(url)
+        d = get_discovery_cache().get(url)
         if d and isinstance(d, str):
             return loads(d)
         elif d and isinstance(d, dict):
@@ -167,7 +167,7 @@ class ApiClient(object):
         else:
             resp = self.session.get(url)
             resp_doc = resp.json()
-            DiscoveryCache.set(url, resp_doc)
+            get_discovery_cache().set(url, resp_doc)
             return resp_doc
 
     def _check_access_token(self):

@@ -8,9 +8,9 @@ def test_gae():
     environ['GAE_ENV'] = "standard"
     try:
         reload(lumapps.api.utils)
-        assert type(lumapps.api.utils.DiscoveryCache) == lumapps.api.utils.DiscoveryCacheDict
+        assert type(lumapps.api.utils._discovery_cache) == lumapps.api.utils.DiscoveryCacheDict
     finally:
         environ.pop('GAE_ENV', None)
         reload(lumapps.api.utils)
         invalidate_caches()
-    assert type(lumapps.api.utils.DiscoveryCache) == lumapps.api.utils.DiscoveryCacheSqlite
+    assert type(lumapps.api.utils._discovery_cache) == lumapps.api.utils.DiscoveryCacheSqlite
