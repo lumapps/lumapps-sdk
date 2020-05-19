@@ -3,6 +3,7 @@ from time import time
 from textwrap import TextWrapper
 from typing import Any, Dict, Optional, Callable, Tuple, Sequence
 from pathlib import Path
+from functools import lru_cache
 
 from httpx import Client
 
@@ -10,7 +11,7 @@ from httpx import Client
 from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
 from lumapps.api.errors import ApiClientError, ApiCallError
 from lumapps.api.utils import (
-    DiscoveryCache,
+    get_discovery_cache,
     pop_matches,
     GOOGLE_APIS,
     FILTERS,
@@ -57,7 +58,6 @@ class ApiClient(object):
         self._token = None
         self._endpoints = None
         self._session = None
-        self._discovery_doc = None
         self._headers = {}
         if api_info is None:
             api_info = {}
@@ -69,7 +69,7 @@ class ApiClient(object):
         api_name = api_info["name"]
         self._scope = " ".join(api_info["scopes"])
         api_ver = api_info["version"]
-        prefix = "" if api_name in GOOGLE_APIS else f"/_ah/api"
+        prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
         self._api_url = f"{prefix}/{api_name}/{api_ver}"
         self._discovery_url = (
             f"{self.base_url}{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
@@ -156,17 +156,19 @@ class ApiClient(object):
         return self._session
 
     @property
+    @lru_cache()
     def discovery_doc(self):
-        if self._discovery_doc is None:
-            url = self._discovery_url
-            d = DiscoveryCache.get(url)
-            if d:
-                self._discovery_doc = loads(d)
-            else:
-                resp = self.session.get(url)
-                DiscoveryCache.set(url, resp.text)
-                self._discovery_doc = resp.json()
-        return self._discovery_doc
+        url = self._discovery_url
+        d = get_discovery_cache().get(url)
+        if d and isinstance(d, str):
+            return loads(d)
+        elif d and isinstance(d, dict):
+            return d
+        else:
+            resp = self.session.get(url)
+            resp_doc = resp.json()
+            get_discovery_cache().set(url, resp_doc)
+            return resp_doc
 
     def _check_access_token(self):
         if not self.token_getter:
@@ -245,8 +247,8 @@ class ApiClient(object):
     def get_help(self, name_parts, debug=False):
         help_lines = []
 
-        def add_line(l):
-            help_lines.append(l)
+        def add_line(li):
+            help_lines.append(li)
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
         ep_info = self.endpoints[name_parts]
@@ -287,9 +289,9 @@ class ApiClient(object):
         for name_parts in endpoints:
             descr = self.endpoints[name_parts].get("description", "")
             lines.append((" ".join(name_parts), descr.strip().split("\n")[0]))
-        longest_name = max(len(l[0]) for l in lines)
+        longest_name = max(len(li1[0]) for li1 in lines)
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
-        return "\n".join(fmt.format(*l) for l in lines)
+        return "\n".join(fmt.format(*li2) for li2 in lines)
 
     def walk_endpoints(self, resource, parents=()):
         for ep_name, ep_info in resource.get("methods", {}).items():
@@ -314,7 +316,8 @@ class ApiClient(object):
             path = path.format(**path_args)
         return path
 
-    def _get_verb_path_params(self, name_parts, params: dict):
+    @lru_cache()
+    def _get_endpoint_and_path_from_discovery(self, name_parts):
         endpoint = method_from_discovery(self.discovery_doc, name_parts)
         if not endpoint:
             raise ApiCallError(f"Endpoint {'.'.join(name_parts)} not found")
@@ -323,9 +326,11 @@ class ApiClient(object):
                 f"Endpoint {'.'.join(name_parts)} is for uploads, "
                 f"use upload_call method instead of get_call or iter_call"
             )
-        path = self._api_url + "/" + endpoint.get("path") or "/".join(
-            name_parts
-        )
+        path = self._api_url + "/" + endpoint.get("path") or "/".join(name_parts)
+        return endpoint, path
+
+    def _get_verb_path_params(self, name_parts, params: dict):
+        endpoint, path = self._get_endpoint_and_path_from_discovery(tuple(name_parts))
         path = self._expand_path(path, endpoint, params)
         verb = endpoint.get("httpMethod")
         return verb, path, params

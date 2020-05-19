@@ -183,7 +183,7 @@ class DiscoveryCacheSqlite:
         expiry_dt = datetime.strptime(cached["expiry"][:19], "%Y-%m-%dT%H:%M:%S")
         if expiry_dt < datetime.now():
             return None
-        return cached["content"]
+        return loads(cached["content"])
 
     def set(self, url, content):
         conn = _get_conn()
@@ -193,14 +193,23 @@ class DiscoveryCacheSqlite:
         expiry = (datetime.now() + CACHE_MAX_AGE).isoformat()[:19]
         conn.execute(
             "INSERT OR REPLACE INTO discovery_cache VALUES (?, ?, ?)",
-            (url, expiry, content),
+            (url, expiry, dumps(content)),
         )
 
 
 if _sqlite_ok:
-    DiscoveryCache = DiscoveryCacheSqlite()
+    _discovery_cache = DiscoveryCacheSqlite()
 else:
-    DiscoveryCache = _DiscoveryCacheDict
+    _discovery_cache = _DiscoveryCacheDict
+
+
+def set_discovery_cache(cache):
+    global _discovery_cache
+    _discovery_cache = cache
+
+
+def get_discovery_cache():
+    return _discovery_cache
 
 
 def list_prune_filters():

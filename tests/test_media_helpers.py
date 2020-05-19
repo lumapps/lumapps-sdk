@@ -8,13 +8,15 @@ from lumapps.api.helpers.medias import (
     create_new_media,
     add_media_file_for_lang,
 )
+from lumapps.api.utils import get_discovery_cache
 
 
 @fixture
 def cli() -> ApiClient:
-    c = ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
-        c._discovery_doc = load(fh)
+        doc = load(fh)
+    get_discovery_cache().set(doc["baseUrl"], doc)
+    c = ApiClient(token="foobar")
     return c
 
 
