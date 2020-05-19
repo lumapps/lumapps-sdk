@@ -27,7 +27,6 @@ def cli() -> ApiClient:
     c = ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
         doc = load(fh)
-    # c.api_info = {"base_url": doc["baseUrl"]}
     get_discovery_cache().set(doc["baseUrl"], doc)
     return c
 
@@ -368,7 +367,6 @@ def test_discovery_doc(mocker):
         return_value=DummySession(),
     )
     doc1 = c.discovery_doc
-    c._discovery_doc = None
     doc2 = c.discovery_doc
     assert doc1
     assert doc1 == doc2
