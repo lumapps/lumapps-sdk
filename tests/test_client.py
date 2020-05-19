@@ -11,6 +11,7 @@ from lumapps.api.utils import (
     _DiscoveryCacheDict,
     _set_sqlite_ok,
     _get_conn,
+    get_discovery_cache,
 )
 from lumapps.api.errors import ApiCallError, ApiClientError
 
@@ -25,15 +26,23 @@ def reset_env():
 def cli() -> ApiClient:
     c = ApiClient(token="foobar")
     with open("tests/test_data/lumapps_discovery.json") as fh:
-        c._discovery_doc = load(fh)
+        doc = load(fh)
+    # c.api_info = {"base_url": doc["baseUrl"]}
+    get_discovery_cache().set(doc["baseUrl"], doc)
     return c
 
 
 @fixture
 def cli_drive() -> ApiClient:
-    c = ApiClient(token="foobar")
     with open("tests/test_data/drive_v3_discovery.json") as fh:
-        c._discovery_doc = load(fh)
+        doc = load(fh)
+    get_discovery_cache().set(doc["baseUrl"], doc)
+    c = ApiClient(token="foobar", api_info={
+        "base_url": "https://www.googleapis.com",
+        "name": "drive",
+        "version": "v3",
+        "scopes": ["https://www.googleapis.com/auth/drive"],
+    })
     return c
 
 
