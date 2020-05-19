@@ -247,8 +247,8 @@ class ApiClient(object):
     def get_help(self, name_parts, debug=False):
         help_lines = []
 
-        def add_line(l):
-            help_lines.append(l)
+        def add_line(li):
+            help_lines.append(li)
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
         ep_info = self.endpoints[name_parts]
@@ -289,9 +289,9 @@ class ApiClient(object):
         for name_parts in endpoints:
             descr = self.endpoints[name_parts].get("description", "")
             lines.append((" ".join(name_parts), descr.strip().split("\n")[0]))
-        longest_name = max(len(l[0]) for l in lines)
+        longest_name = max(len(li1[0]) for li1 in lines)
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
-        return "\n".join(fmt.format(*l) for l in lines)
+        return "\n".join(fmt.format(*li2) for li2 in lines)
 
     def walk_endpoints(self, resource, parents=()):
         for ep_name, ep_info in resource.get("methods", {}).items():
