@@ -3,6 +3,7 @@ flake8
 coverage
 pytest
 pytest-mock
+bandit
 
 # Doc
 sphinx
@@ -14,3 +15,5 @@ pre-commit
 pre-commit-hooks
 wheel
 twine
+pylint
+rope

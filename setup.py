@@ -1,5 +1,12 @@
 from setuptools import setup, find_packages
+
 from lumapps.api import __version__, __pypi_packagename__
+
+
+def parse_requirements(filename):
+    """ load requirements from a pip requirements file """
+    lineiter = (line.strip() for line in open(filename))
+    return [line for line in lineiter if line and not line.startswith("#")]
 
 
 with open("README.rst", "r") as f:
@@ -12,17 +19,15 @@ setup(
     packages=find_packages(exclude=["documentation", "tests", "examples"]),
     include_package_data=True,
     license="MIT",
-    description="Lumapps SDK for Python",
+    description="LumApps SDK for Python",
     long_description=readme,
     long_description_content_type="text/x-rst",
-    install_requires=["requests>=2.22", "google-api-python-client>=1.7",],
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
+    install_requires=parse_requirements("requirements.txt"),
+    python_requires=">=3.6",
     keywords="lumapps sdk",
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",

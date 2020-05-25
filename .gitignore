@@ -1,5 +1,6 @@
 .DS_STORE
 __pycache__
+.mypy_cache/
 *egg*
 *.pyc
 documentation/build/
@@ -10,6 +11,7 @@ build
 .coverage
 coverage.xml
 .pytest_cache
+test-results/
 
 # IDEs
 .idea/

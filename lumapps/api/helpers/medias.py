@@ -1,4 +1,4 @@
-import requests
+import httpx
 from lumapps.api.errors import ApiClientError
 
 
@@ -8,7 +8,7 @@ def create_new_media(
     """ Upload a file and create a new media in LumApps media library.
 
     Arguments:
-        client (ApiClient): The ApiClient used to make requests to the LumApps Api.
+        client (ApiClient): The ApiClient used to make httpx to the LumApps Api.
         file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
         doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
                         (eg: provider=<my_provider>/site=<my_site_id>/resource=<my_parent_folder_id>)
@@ -48,7 +48,7 @@ def create_new_media(
 
     # Upload
     files_tuple_list = [("files", (filename, file_data, mimetype))]
-    response = requests.post(
+    response = httpx.post(
         upload_url,
         headers={"Authorization": "Bearer " + client.token},
         files=files_tuple_list,
@@ -72,7 +72,7 @@ def add_media_file_for_lang(
     """ Add a file to an existing LumApps media.
 
     Arguments:
-        client (ApiClient): The ApiClient used to make requests to the LumApps Api.
+        client (ApiClient): The ApiClient used to make httpx to the LumApps Api.
         media (Dict[str, Any]): The LumApps media on which the files have to be uploaded.
         file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
         doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
@@ -116,7 +116,7 @@ def _upload_new_media_file_of_given_lang(
         a LumApps media.
 
     Arguments:
-        client (ApiClient): The ApiClient used to make requests to the LumApps Api.
+        client (ApiClient): The ApiClient used to make httpx to the LumApps Api.
         file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
         doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
                         (eg: provider=<my_provider>/site=<my_site_id>/resource=<my_parent_folder_id>)
@@ -144,7 +144,7 @@ def _upload_new_media_file_of_given_lang(
         )
 
     # Get an upload url for the file
-    response = requests.get(
+    response = httpx.get(
         "{}/upload?success=/upload".format(client.base_url),
         headers={"Authorization": "Bearer " + client.token},
     )
@@ -154,11 +154,10 @@ def _upload_new_media_file_of_given_lang(
         return
 
     # Upload the file
-    files_tuple_list = [("files", (filename, file_data, mimetype))]
-    response = requests.post(
+    response = httpx.post(
         upload_url,
         headers={"Authorization": "Bearer " + client.token},
-        files=files_tuple_list,
+        files={'upload-file': (filename, file_data, mimetype)},
     )
     uploaded_file = response.json()
 

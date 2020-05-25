@@ -1,20 +1,33 @@
-from lumapps.api.cli import load_config, parse_args, list_configs
-from lumapps.api.utils import set_config, _get_conn
+import logging
+from json import load
+from unittest.mock import PropertyMock
 
-import pytest
+from pytest import fixture, raises
+from httpx import HTTPError
+
+from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger, main
+from lumapps.api.utils import ConfigStore, _get_conn, _set_sqlite_ok, _DiscoveryCacheDict
+
+
+@fixture(autouse=True)
+def reset_env():
+    _DiscoveryCacheDict._cache.clear()
+    _set_sqlite_ok(True)
 
 
 def test_load_config():
-    with pytest.raises(SystemExit):
+    with raises(SystemExit):
         api_info, auth_info, user = load_config(
             None, None, "ivo@managemybudget.net", "mmb"
         )
+    api_info, auth_info, user = load_config(None, None, "ivo@managemybudget.net", None)
+    assert user == "ivo@managemybudget.net"
+    assert api_info is None
+    assert auth_info is None
 
 
 def test_arg_parser():
-    with pytest.raises(SystemExit):
-        arg_parser, args = parse_args()
-    with pytest.raises(SystemExit):
+    with raises(SystemExit):
         arg_parser, args = parse_args(["--user", "foo", "--email", "bar"])
     arg_parser, args = parse_args(["--user", "foo"])
 
@@ -26,8 +39,54 @@ def test_list_configs_1(capsys, mocker):
 
 
 def test_list_configs_2(capsys, mocker):
-    mocker.patch("lumapps.api.utils.get_conf_db_file", return_value=":memory:")
-    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn())
-    set_config("foo", "bar")
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+    ConfigStore.set("foo", "bar")
     list_configs()
     assert "foo" in capsys.readouterr().out
+
+
+def test_list_configs_no_sqlite(capsys, mocker):
+    mocker.patch("lumapps.api.utils._get_sqlite_ok", return_value=False)
+    ConfigStore.set("foo", "bar")
+    list_configs()
+    out = capsys.readouterr().out
+    assert "foo" not in out
+
+
+def test_setup_logger():
+    setup_logger()
+    l2 = logging.getLogger()
+    assert len(l2.handlers)
+
+
+def test_main_1(capsys, mocker):
+    mocker.patch(
+        "lumapps.api.cli.parse_args", return_value=parse_args(["--user", "foo"])
+    )
+    main()
+    out = capsys.readouterr().out
+    assert "usage" in out
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
+    mocker.patch(
+        "lumapps.api.cli.parse_args", return_value=parse_args(["-c"])
+    )
+    main()
+    out = capsys.readouterr().out
+    assert "no saved" in out
+    mocker.patch(
+        "lumapps.api.cli.parse_args", return_value=parse_args(["--token", "foo"])
+    )
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        mocker.patch(
+            "lumapps.api.client.ApiClient.discovery_doc",
+            new_callable=PropertyMock,
+            return_value=load(fh),
+        )
+    with raises(SystemExit):
+        main()
+    mocker.patch(
+        "lumapps.api.cli.parse_args",
+        return_value=parse_args(["--token", "foo", "user", "get"]),
+    )
+    with raises(HTTPError):
+        main()

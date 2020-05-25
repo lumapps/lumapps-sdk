@@ -1,2 +1,2 @@
-requests
-google-api-python-client
+httpx==0.13.1
+Authlib==0.14.3

@@ -3,7 +3,7 @@ from lumapps.api import ApiClient
 
 class TokenClient(ApiClient):
     def __init__(self, customer_id, *args, **kwargs):
-        super().__init__(*args, num_retries=0, **kwargs)
+        super().__init__(*args, **kwargs)
         self.customer_id = customer_id
 
     def get_token_and_expiry(self, email):

@@ -1,13 +1,7 @@
 **LumApps SDK**
 ===============
 
-.. image:: https://black.readthedocs.io/en/stable/_static/license.svg
-    :target: https://github.com/lumapps/lumapps-sdk/blob/master/LICENSE.rst
-    :alt: License: MIT
-
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/ambv/black
-    :alt: Black style
+|CI| |Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
 
 
 *Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
@@ -24,17 +18,16 @@ This includes:
 - a set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)
 
 
-Quick start
-===========
-
 Installation
-------------
+============
 
-``$ pip install lumapps-sdk``
+``pip install lumapps-sdk``
 
+Getting started
+===============
 
-Get your token
---------------
+1- Get your token
+-----------------
 
 LumApps supports multiple ways of authentication.
 The fastest one to implement is the following:
@@ -52,8 +45,8 @@ Once connected, open the javascript console of your browser and run:
 
 This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps
 
-Authenticate
---------------
+2 - Authenticate
+----------------
 
 .. code-block:: python
 
@@ -61,8 +54,8 @@ Authenticate
     token = "MY TOKEN"
     api = ApiClient(token=token)
 
-Your first API call
-~~~~~~~~~~~~~~~~~~~
+3 - Make your first API call
+----------------------------
 
 Let's display the full name of a registered user in lumapps
 
@@ -80,7 +73,7 @@ Documentation
 The SDK documentation is available `here <https://github.com/lumapps/lumapps-sdk/wiki>`_.
 
 Code convention
----------------
+===============
 
 Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.
 
@@ -93,3 +86,22 @@ Copyright and license
 =====================
 
 LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RST>`_ file.
+
+
+.. |CI| image:: https://github.com/lumapps/lumapps-sdk/workflows/CI/badge.svg
+     :target: https://github.com/lumapps/lumapps-sdk/actions?query=workflow%3ACI
+     :alt: CI
+
+.. |PyPI Status| image:: https://img.shields.io/pypi/v/lumapps-sdk
+    :target: https://pypi.org/project/lumapps-sdk/
+    :alt: Pypi package
+
+.. |Coverage Status| image:: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0/graph/badge.svg
+    :target: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0
+
+.. |Style Badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+    :alt: Black style
+
+.. |Python Versions| image:: https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-blue
+    :alt: Python versions

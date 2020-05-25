@@ -1,158 +1,174 @@
-from __future__ import print_function, unicode_literals
-import json
+from json import loads, dumps
+
+# from logging import getLogger, CRITICAL
 from time import time
 from textwrap import TextWrapper
+from typing import Any, Dict, Optional, Callable, Tuple, Sequence
+from pathlib import Path
+from functools import lru_cache
 
-import uritemplate
-import httplib2
-from google.oauth2 import service_account
-from google.oauth2.credentials import Credentials
-from googleapiclient.errors import HttpError
-from googleapiclient.discovery import (
-    build_from_document,
-    DISCOVERY_URI,
-    V2_DISCOVERY_URI,
-    _retrieve_discovery_doc,
+from httpx import Client
+
+# from authlib.integrations.requests_client import OAuth2Session, AssertionSession
+from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
+from lumapps.api.errors import ApiClientError, ApiCallError
+from lumapps.api.utils import (
+    get_discovery_cache,
+    pop_matches,
+    GOOGLE_APIS,
+    FILTERS,
+    _parse_endpoint_parts,
+    method_from_discovery,
 )
 
-from lumapps.api.errors import ApiClientError, ApiCallError
-from lumapps.api.utils import DiscoveryCache, pop_matches, GOOGLE_APIS, FILTERS
+LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
+LUMAPPS_VERSION = "v1"
+LUMAPPS_NAME = "lumsites"
+LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
 
 
-def _get_build_content(
-    serviceName,
-    version,
-    discoveryServiceUrl=DISCOVERY_URI,
-    cache_discovery=True,
-    cache=None,
-    proxy_info=None,
-):
-    params = {"api": serviceName, "apiVersion": version}
-    discovery_http = httplib2.Http(timeout=60)
-    if proxy_info:
-        discovery_http.proxy_info = httplib2.ProxyInfo(
-            httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
-            proxy_info["host"],
-            proxy_info["port"],
-            proxy_user=proxy_info["user"],
-            proxy_pass=proxy_info["password"],
-        )
-    discovery_http.disable_ssl_certificate_validation = True
-    for discovery_url in (discoveryServiceUrl, V2_DISCOVERY_URI):
-        requested_url = uritemplate.expand(discovery_url, params)
-        try:
-            return _retrieve_discovery_doc(
-                requested_url, discovery_http, cache_discovery, cache
-            )
-        except HttpError as e:
-            if e.resp.status == 404:
-                continue
-            else:
-                raise e
-    raise Exception("name: %s  version: %s" % (serviceName, version))
-
-
-def _parse_method_parts(parts):
-    ret = []
-    for part in parts:
-        for sub_part in part.split("/"):
-            ret.append(sub_part)
-    return ret
-
-
-class ApiClient(object):
-    """
-        Args:
-            user (str): The user email.
-            auth_info (dict): A service account key (json file).
-            api_info (dict): A dict containing the description of your api. If
-                no api_info is given this defaults to the lumsites api infos.
-            credentials (dict): oauth2 credentials.
-            token (str): A bearer token.
-            token_getter (object): a token getter function
-            prune (bool): Whether or not to use FILTERS to prune the LumApps
-                API responses. Defaults to False.
-            num_retries (int): Number of times that a request will be retried.
-                Default to 1.
-            no_verify (bool): Wether or not to verify ssl connexion. Defaults to False
-            proxy_info (dict): Necessary infos for a connexion via a proxy. Defaults to None.
-        Note:
-            At least one type of authentication info is required (auth_info,
-            credentials, token)
-    """
-
+class ApiClient:
     def __init__(
         self,
-        auth_info=None,
-        api_info=None,
-        credentials=None,
-        user=None,
-        token=None,
-        token_getter=None,
-        prune=False,
-        num_retries=1,
-        no_verify=False,
-        proxy_info=None,
+        auth_info: Optional[Dict[str, Any]] = None,
+        api_info: Optional[Dict[str, Any]] = None,
+        user: Optional[str] = None,
+        token: Optional[str] = None,
+        token_getter: Optional[Callable[[], Tuple[str, int]]] = None,
+        prune: bool = False,
+        no_verify: bool = False,
+        proxy_info: Optional[Dict[str, Any]] = None,
     ):
-        self._get_token_user = None
+        """
+            Args:
+                auth_info: When specified, a service account or a web auth JSON dict.
+                api_info: When specified, a JSON dict containing the description of your
+                    api. Defaults to LumApps API.
+                user: Email of user on behalf of whom to authenticate using domain-wide
+                    delegation.
+                token: A bearer access token.
+                token_getter: A bearer access token getter function.
+                prune: Whether or not to use FILTERS to prune LumApps API responses.
+                no_verify: Disables SSL verification.
+                proxy_info: When specified, a JSON dict with proxy parameters.
+        """
         self._token_expiry = 0
-        self.num_retries = num_retries
         self.no_verify = no_verify
         self.proxy_info = proxy_info
         self.prune = prune
         self._auth_info = auth_info
-        self._user = {}
-        self.last_cursor = None
-        self.token_expiration = None
-
-        # Api infos setup : construct the api url.
-        if not api_info:
+        self._token = None
+        self._endpoints = None
+        self._session = None
+        self._headers = {}
+        if api_info is None:
             api_info = {}
+        api_info.setdefault("name", LUMAPPS_NAME)
+        api_info.setdefault("version", LUMAPPS_VERSION)
+        api_info.setdefault("base_url", LUMAPPS_BASE_URL)
+        api_info.setdefault("scopes", LUMAPPS_SCOPE)
         self.api_info = api_info
-        self._api_name = api_info.get("name", "lumsites")
-        self._api_scopes = api_info.get(
-            "scopes", ["https://www.googleapis.com/auth/userinfo.email"]
+        api_name = api_info["name"]
+        self._scope = " ".join(api_info["scopes"])
+        api_ver = api_info["version"]
+        prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
+        self._api_url = f"{prefix}/{api_name}/{api_ver}"
+        self._discovery_url = (
+            f"{self.base_url}{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
         )
-        self._api_version = api_info.get("version", "v1")
-        self.base_url = api_info.get("base_url", "https://lumsites.appspot.com").rstrip(
-            "/"
-        )
-        if self._api_name in GOOGLE_APIS:
-            url_path = "discovery/v1/apis"
-        else:
-            url_path = "_ah/api/discovery/v1/apis"
-        self._url = "{}/{}/{}/{}/rest".format(
-            self.base_url, url_path, self._api_name, self._api_version
-        )
-        self._methods = None
-        self._service = None
         self.token_getter = token_getter
-        if token_getter:
-            self.creds = None
-            self._check_access_token()
-        elif credentials:
-            self.creds = credentials
-        elif auth_info and "refresh_token" in auth_info:
-            self.creds = Credentials(None, **auth_info)
-        elif auth_info and "bearer" in auth_info:
-            self.creds = Credentials(auth_info["bearer"].replace("Bearer ", ""))
-        elif token:
-            self.creds = None
-            self.token = token
-        elif auth_info:  # service account
-            self.creds = service_account.Credentials.from_service_account_info(
-                auth_info
+        self.user = user
+        self.token = token
+        self.cursor = None
+
+    @property
+    def base_url(self):
+        return self.api_info["base_url"].rstrip("/")
+
+    @property
+    def token(self):
+        return self._token
+
+    @token.setter
+    def token(self, v):
+        if self._token and self._token == v:
+            return
+        self._token = v
+        self._headers["authorization"] = f"Bearer {self._token}"
+        if self._session:
+            self._session.headers.update(self._headers)
+
+    def _create_session(self):
+        auth = self._auth_info
+        kwargs = {
+            "base_url": self.base_url,
+            "headers": self._headers,
+            "verify": not self.no_verify,
+            "timeout": 120,
+        }
+        if self.proxy_info:
+            scheme = self.proxy_info.get("scheme", "https")
+            host = self.proxy_info["host"]
+            port = self.proxy_info["port"]
+            user = self.proxy_info.get("user") or ""
+            pwd = self.proxy_info.get("password") or ""
+            if user or pwd:
+                proxy = f"{scheme}://{user}:{pwd}@{host}:{port}"
+            else:
+                proxy = f"{scheme}://{host}:{port}"
+            kwargs["proxies"] = {"https": proxy, "http": proxy}
+        else:
+            kwargs["proxies"] = None
+        if not auth and self._token:
+            s = Client(**kwargs)
+        elif auth and "refresh_token" in auth:
+            s = OAuth2Client(
+                client_id=auth["client_id"],
+                client_secret=auth["client_secret"],
+                scope=self._scope,
+                **kwargs,
             )
-            if self._api_scopes:
-                self.creds = self.creds.with_scopes(self._api_scopes)
-            if user:
-                self.creds = self.creds.with_subject(user)
+            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
+        elif auth:  # service account
+            claims = {"scope": self._scope} if self._scope else {}
+            s = AssertionClient(
+                token_endpoint=auth["token_uri"],
+                issuer=auth["client_email"],
+                audience=auth["token_uri"],
+                claims=claims,
+                subject=self.user,
+                key=auth["private_key"],
+                header={"alg": "RS256"},
+                **kwargs,
+            )
         else:
             raise ApiClientError(
-                "You must provide authentication infos (token_getter, "
-                "auth_info, credentials or token)."
+                "No authentication provided (token_getter, auth_info, or token)."
             )
-        self.email = user or ""
+        return s
+
+    @property
+    def session(self) -> Client:
+        """Setup the session object."""
+        self._check_access_token()
+        if self._session is None:
+            self._session = self._create_session()
+        return self._session
+
+    @property
+    @lru_cache()
+    def discovery_doc(self):
+        url = self._discovery_url
+        d = get_discovery_cache().get(url)
+        if d and isinstance(d, str):
+            return loads(d)
+        elif d and isinstance(d, dict):
+            return d
+        else:
+            resp = self.session.get(url)
+            resp_doc = resp.json()
+            get_discovery_cache().set(url, resp_doc)
+            return resp_doc
 
     def _check_access_token(self):
         if not self.token_getter:
@@ -162,20 +178,20 @@ class ApiClient(object):
             return
         self.token, self._token_expiry = self.token_getter()
 
-    def _prune(self, method_parts, content):
+    def _prune(self, name_parts, content):
         """Prune the api response.
         """
         if not self.prune:
             return content
-        for filter_method in FILTERS:
-            filter_method_parts = filter_method.split("/")
-            if len(method_parts) != len(filter_method_parts):
+        for ep_filter in FILTERS:
+            ep_filter_parts = ep_filter.split("/")
+            if len(name_parts) != len(ep_filter_parts):
                 continue
-            for filter_part, part in zip(filter_method_parts, method_parts):
+            for filter_part, part in zip(ep_filter_parts, name_parts):
                 if filter_part not in ("*", part):
                     break
             else:
-                for pth in FILTERS[filter_method]:
+                for pth in FILTERS[ep_filter]:
                     if isinstance(content, list):
                         for o in content:
                             pop_matches(pth, o)
@@ -183,7 +199,7 @@ class ApiClient(object):
                         pop_matches(pth, content)
         return content
 
-    def get_new_client_as_using_dwd(self, user_email):
+    def get_new_client_as_using_dwd(self, user_email: str) -> "ApiClient":
         """ Get a new ApiClient using domain-wide delegation """
         return ApiClient(
             auth_info=self._auth_info,
@@ -192,12 +208,13 @@ class ApiClient(object):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
-            num_retries=self.num_retries,
         )
 
-    def get_new_client_as(self, user_email, customer_id=None):
-        """ Get a new ApiClient using an authorized service account by obtaining a
-            token using the user/getToken method.
+    def get_new_client_as(
+        self, user_email: str, customer_id: Optional[str] = None
+    ) -> "ApiClient":
+        """ Get a new ApiClient using an authorized session account by obtaining a
+            token using the user/getToken endpoint.
 
             Args:
                 user_email (str): User you want to authenticate on behalf of
@@ -206,8 +223,6 @@ class ApiClient(object):
             Returns:
                 ApiClient: A new instance of the ApiClient correctly authenticated.
         """
-        if not self.creds:
-            raise ApiClientError("No credentials (auth_info) provided")
         token_infos = self.get_call(
             "user/getToken", customerId=customer_id, email=user_email
         )
@@ -219,79 +234,38 @@ class ApiClient(object):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
-            num_retries=self.num_retries,
         )
 
     @property
-    def token(self):
-        if not self.creds.token:
-            self.service._http.request(self.base_url)
-        return self.creds.token
+    def endpoints(self):
+        if self._endpoints is None:
+            self._endpoints = {n: m for n, m in self.walk_endpoints(self.discovery_doc)}
+        return self._endpoints
 
-    @token.setter
-    def token(self, v):
-        if self.creds and self.creds.token == v:
-            return
-        self._service = None
-        self.creds = Credentials(v)
-
-    @property
-    def service(self):
-        """Setup the service object.
-        """
-        self._check_access_token()
-        if self._service is None:
-            build_content = _get_build_content(
-                self._api_name,
-                self._api_version,
-                discoveryServiceUrl=self._url,
-                cache_discovery=True,
-                cache=DiscoveryCache(),
-                proxy_info=self.proxy_info,
-            )
-            self._service = build_from_document(build_content, credentials=self.creds)
-            if self.no_verify:
-                self._service._http.http.disable_ssl_certificate_validation = True
-            if self.proxy_info:
-                self._service._http.http.proxy_info = httplib2.ProxyInfo(
-                    httplib2.socks.PROXY_TYPE_HTTP_NO_TUNNEL,
-                    self.proxy_info["host"],
-                    self.proxy_info["port"],
-                    proxy_user=self.proxy_info["user"],
-                    proxy_pass=self.proxy_info["password"],
-                )
-        return self._service
-
-    @property
-    def methods(self):
-        if self._methods is None:
-            self._methods = {
-                n: m for n, m in self.walk_api_methods(self.service._resourceDesc)
-            }
-        return self._methods
-
-    def get_help(self, method_parts, debug=False):
+    def get_help(self, name_parts, debug=False):
         help_lines = []
 
-        def add_line(l):
-            help_lines.append(l)
+        def add_line(li):
+            help_lines.append(li)
 
         wrapper = TextWrapper(initial_indent="\t", subsequent_indent="\t")
-        method = self.methods[method_parts]
-        add_line(
-            method.get("httpMethod", "?") + " method: " + " ".join(method_parts) + "\n"
-        )
-        if "description" in method:
-            add_line(method["description"].strip() + "\n")
+        ep_info = self.endpoints[name_parts]
+        method = ep_info.get("httpMethod", "?")
+        add_line(f"{method} endpoint: " + " ".join(name_parts) + "\n")
+        if "description" in ep_info:
+            add_line(ep_info["description"].strip() + "\n")
         if debug:
-            add_line(json.dumps(method, indent=4, sort_keys=True))
-        params = method.get("parameters", {})
-        if method.get("httpMethod", "") == "POST":
+            add_line(dumps(ep_info, indent=4, sort_keys=True))
+        params = ep_info.get("parameters", {})
+        if method == "POST":
             params.update(
-                {"body": {"required": True, "type": "JSON"}, "fields": {"type": "JSON"}}
+                {
+                    "body": {"required": True, "type": "JSON"},
+                    "fields": {"type": "JSON"},
+                }
             )
         if not params:
-            add_line("API method takes no parameters")
+            add_line("Endpoint takes no parameters")
         else:
             add_line("Parameters (*required):")
             for param_name in sorted(params):
@@ -308,145 +282,228 @@ class ApiClient(object):
                 )
         return "\n".join(help_lines)
 
-    def get_method_descriptions(self, methods):
+    def get_endpoints_info(self, endpoints):
         lines = []
-        for method_parts in methods:
-            method = self.methods[method_parts]
-            lines.append(
-                (
-                    " ".join(method_parts),
-                    method.get("description", "").strip().split("\n")[0],
-                )
-            )
-        longest_name = max(len(l[0]) for l in lines)
+        for name_parts in endpoints:
+            descr = self.endpoints[name_parts].get("description", "")
+            lines.append((" ".join(name_parts), descr.strip().split("\n")[0]))
+        longest_name = max(len(li1[0]) for li1 in lines)
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
-        return "\n".join(fmt.format(*l) for l in lines)
+        return "\n".join(fmt.format(*li2) for li2 in lines)
 
-    def walk_api_methods(self, resource, parents=()):
-        for method_name, method in resource.get("methods", {}).items():
-            yield tuple(parents + (method_name,)), method
+    def walk_endpoints(self, resource, parents=()):
+        for ep_name, ep_info in resource.get("methods", {}).items():
+            yield tuple(parents + (ep_name,)), ep_info
         for rsc_name, rsc in resource.get("resources", {}).items():
-            for method_name, method in self.walk_api_methods(
+            for ep_name, ep_info in self.walk_endpoints(
                 rsc, tuple(parents + (rsc_name,))
             ):
-                yield method_name, method
+                yield ep_name, ep_info
 
-    def _get_api_call(self, method_parts, params):
-        """ Construct the method to call by using the service.
-        """
-        api_call = self.service
-        for part in method_parts[:-1]:
-            api_call = getattr(api_call, part)()
-        try:
-            return getattr(api_call, method_parts[-1])(**params)
-        except TypeError as err:
-            raise ApiCallError(err)
+    def _expand_path(self, path, endpoint: dict, params: dict):
+        param_specs = endpoint.get("parameters", {})
+        path_args = {}
+        for param, specs in param_specs.items():
+            if specs.get("required") is True and param not in params:
+                raise ApiCallError(f"Missing required parameter {param}")
+            if specs["location"] == "path":
+                path_args[param] = None
+        if path_args:
+            for param in path_args:
+                path_args[param] = params.pop(param)
+            path = path.format(**path_args)
+        return path
 
-    def get_call(self, *method_parts, **params):
+    @lru_cache()
+    def _get_endpoint_and_path_from_discovery(self, name_parts):
+        endpoint = method_from_discovery(self.discovery_doc, name_parts)
+        if not endpoint:
+            raise ApiCallError(f"Endpoint {'.'.join(name_parts)} not found")
+        if endpoint.get("mediaUpload"):
+            raise ApiCallError(
+                f"Endpoint {'.'.join(name_parts)} is for uploads, "
+                f"use upload_call method instead of get_call or iter_call"
+            )
+        path = self._api_url + "/" + endpoint.get("path") or "/".join(name_parts)
+        return endpoint, path
+
+    def _get_verb_path_params(self, name_parts, params: dict):
+        endpoint, path = self._get_endpoint_and_path_from_discovery(tuple(name_parts))
+        path = self._expand_path(path, endpoint, params)
+        verb = endpoint.get("httpMethod")
+        return verb, path, params
+
+    def _call(self, name_parts: Sequence[str], params: dict, json=None):
+        """ Construct the call """
+        verb, path, params = self._get_verb_path_params(name_parts, params)
+        if verb in {"POST", "DELETE", "PUT", "PATCH"} and json is None:
+            headers = {"Content-Length": "0"}
+        else:
+            headers = None
+        resp = self.session.request(
+            verb, path, params=params, json=json, headers=headers
+        )
+        resp.raise_for_status()
+        if not resp.content:
+            return None
+        return resp.json()
+
+    @staticmethod
+    def _pop_body(params: dict):
+        body = params.pop("body", None)
+        body = loads(body) if isinstance(body, str) else body
+        return body
+
+    def upload_call(self, fpath: Path, metadata: dict, *name_parts, **params):
+        name_parts = _parse_endpoint_parts(name_parts)
+        endpoint = method_from_discovery(self.discovery_doc, name_parts)
+        if not endpoint.get("mediaUpload"):
+            raise ApiCallError(
+                f"Endpoint {'.'.join(name_parts)} is not for uploads, "
+                f"use get_call or iter_call instead."
+            )
+        verb = endpoint.get("httpMethod")
+        upload_specs = endpoint["mediaUpload"]["protocols"]["simple"]
+        path = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]
+        path = self._expand_path(path, endpoint, params)
+        with fpath.open("rb") as fh:
+            files = {
+                "data": (
+                    "metadata",
+                    dumps(metadata),
+                    "application/json; charset=UTF-8",
+                ),
+                "file": fh,
+            }
+            resp = self.session.request(verb, path, params=params, files=files)
+        resp.raise_for_status()
+        return resp.json()
+
+    def get_call(self, *name_parts, **params):
         """
         Args:
-            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
             **params (dict): Parameters of the call
 
         Returns:
-            Union[dict, List[dict]]: Object or list of objects returned by the LumApps API endpoint.
+            Union[dict, List[dict]]: Object or objects returned by the endpoint call.
 
         Example:
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this method:
+            With this endpoint:
 
                 >>> feedtypes = get_call("feedtype/list")
                 >>> print(feedtypes)
         """
-        if params is None:
-            params = {}
-        method_parts = _parse_method_parts(method_parts)
+        name_parts = _parse_endpoint_parts(name_parts)
         items = []
-        cursor = None
-        if "body" in params and isinstance(params["body"], str):
-            params["body"] = json.loads(params["body"])
+        self.cursor = cursor = params.pop("cursor", None)
+        body = self._pop_body(params)
         while True:
             if cursor:
-                if "body" in params:
-                    params["body"]["cursor"] = cursor
+                if body is not None:
+                    body["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(method_parts, params).execute(
-                num_retries=self.num_retries
-            )
-            if "more" in response and "items" not in response:
-                self.last_cursor = None
-                return items  # empty list
-            if "more" in response and "items" in response:
-                items.extend(response["items"])
-                if response.get("more", False):
-                    self.last_cursor = cursor = response["cursor"]
-                else:
-                    return self._prune(method_parts, items)
-            else:
-                self.last_cursor = None
-                return self._prune(method_parts, response)
+            response = self._call(name_parts, params, body)
+            if response is None:
+                return None
 
-    def iter_call(self, *method_parts, **params):
+            more = response.get("more")
+            response_items = response.get("items")
+            if more:
+                if response_items:
+                    self.cursor = cursor = response["cursor"]
+                    items.extend(response_items)
+                else:
+                    # No results but a more field set to true ...
+                    # ie, the api return something wrong
+                    self.cursor = cursor = None
+                    return self._prune(name_parts, items)
+            else:
+                # No more result to get
+                if response_items:
+                    self.cursor = cursor = None
+                    items.extend(response_items)
+                    return self._prune(name_parts, items)
+                else:
+                    # No results, return
+                    self.cursor = cursor = None
+                    # special case of
+                    return [] if more is False else self._prune(name_parts, response)
+
+    def iter_call(self, *name_parts, **params):
         """
          Args:
-            *method_parts (List[str]): The LumApps API endpoint (eg user/get or "user", "get").
+            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
             **params (dict): Parameters of the call
 
         Yields:
-            dict: Object returned by the LumApps API endpoint.
+            dict: Objects returned by the endpoint call.
 
 
         Example:
             List feedtypes in LumApps:
             -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this method:
+            With this endpoint:
 
                 >>> feedtypes = iter_call("feedtype/list")
                 >>> for feedtype in feedtypes: print(feedtype)
         """
-        if params is None:
-            params = {}
-        method_parts = _parse_method_parts(method_parts)
-        cursor = None
-        if "body" in params and isinstance(params["body"], str):
-            params["body"] = json.loads(params["body"])
+        name_parts = _parse_endpoint_parts(name_parts)
+        self.cursor = cursor = params.pop("cursor", None)
+        body = self._pop_body(params)
         while True:
             if cursor:
-                if "body" in params:
-                    params["body"]["cursor"] = cursor
+                if body is not None:
+                    body["cursor"] = cursor
                 else:
                     params["cursor"] = cursor
-            response = self._get_api_call(method_parts, params).execute(
-                num_retries=self.num_retries
-            )
-            if "more" in response and "items" not in response:
-                return  # empty list
-            if "more" in response and "items" in response:
-                for item in response["items"]:
-                    yield self._prune(method_parts, item)
-                if response.get("more", False):
-                    cursor = response["cursor"]
+
+            response = self._call(name_parts, params, body)
+            more = response.get("more")
+            items = response.get("items")
+
+            if more:
+                if items:
+                    # Yield the results and continue the loop
+                    self.cursor = cursor = response["cursor"]
+                    for item in items:
+                        yield self._prune(name_parts, item)
                 else:
+                    # No results but a more field set to true ...
+                    # ie, the api return something wrong
+                    self.cursor = cursor = None
                     return
             else:
-                yield self._prune(method_parts, response)
+                # No more result to get
+                if items:
+                    # Yield the last results and then return
+                    self.cursor = cursor = None
+                    for item in items:
+                        yield self._prune(name_parts, item)
+                    else:
+                        return
+                else:
+                    # No results, return
+                    self.cursor = cursor = None
+                    return
 
-    def get_matching_methods(self, method_parts):
+    def get_matching_endpoints(self, name_parts):
         # find exact matches of all parts up to but excluding last
-        matches = [n for n in self.methods if len(n) >= len(method_parts)]
-        for i, part in enumerate(method_parts[:-1]):
+        matches = [n for n in self.endpoints if len(n) >= len(name_parts)]
+        for i, part in enumerate(name_parts[:-1]):
             matches = [n for n in matches if len(n) >= i and n[i] == part]
         # find 'startswith' matches of the last part
-        last = method_parts[-1]
-        idx = len(method_parts) - 1
+        last = name_parts[-1]
+        idx = len(name_parts) - 1
         matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
         if not matches:
-            return "API method not found"
+            return "Endpoint not found"
         return (
-            "API method not found. Did you mean any of these?\n"
-            + self.get_method_descriptions(sorted(matches))
+            "Endpoint not found. Did you mean one of these?\n"
+            + self.get_endpoints_info(sorted(matches))
         )
