@@ -1,49 +1,21 @@
-import typing
-
-from httpx import Auth, Client, Request, Response
+from httpx import Client
 from authlib.oauth2.rfc7521 import AssertionClient as _AssertionClient
 from authlib.oauth2.rfc7523 import JWTBearerGrant
-from authlib.integrations.httpx_client.utils import extract_client_kwargs
-
 from authlib.common.urls import url_decode
+from authlib.oauth2 import OAuth2Error
 from authlib.oauth2.client import OAuth2Client as _OAuth2Client
-from authlib.oauth2.auth import ClientAuth, TokenAuth
-from authlib.integrations.httpx_client.utils import HTTPX_CLIENT_KWARGS, rebuild_request
 from authlib.integrations.base_client import (
     OAuthError,
     InvalidTokenError,
     MissingTokenError,
-    UnsupportedTokenTypeError,
+)
+from authlib.integrations.httpx_client.oauth2_client import OAuth2Auth, OAuth2ClientAuth
+from authlib.integrations.httpx_client.utils import (
+    HTTPX_CLIENT_KWARGS,
+    extract_client_kwargs,
 )
 
-
 __all__ = ["AssertionClient", "OAuth2Client"]
-
-
-class OAuth2Auth(Auth, TokenAuth):
-    """Sign requests for OAuth 2.0, currently only bearer token is supported."""
-
-    requires_request_body = True
-
-    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:
-        try:
-            url, headers, body = self.prepare(
-                str(request.url), request.headers, request.content
-            )
-            yield rebuild_request(request, url, headers, body)
-        except KeyError as error:
-            description = "Unsupported token_type: {}".format(str(error))
-            raise UnsupportedTokenTypeError(description=description)
-
-
-class OAuth2ClientAuth(Auth, ClientAuth):
-    requires_request_body = True
-
-    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:
-        url, headers, body = self.prepare(
-            request.method, str(request.url), request.headers, request.content
-        )
-        yield rebuild_request(request, url, headers, body)
 
 
 class AssertionClient(_AssertionClient, Client):
@@ -54,7 +26,7 @@ class AssertionClient(_AssertionClient, Client):
     }
     DEFAULT_GRANT_TYPE = JWT_BEARER_GRANT_TYPE
 
-    def __init__(  # nosec
+    def __init__(
         self,
         token_endpoint,
         issuer,
@@ -95,7 +67,13 @@ class AssertionClient(_AssertionClient, Client):
 
     def _refresh_token(self, data):
         resp = self.request("POST", self.token_endpoint, data=data, withhold_token=True)
-        self.token = resp.json()
+
+        token = resp.json()
+        if "error" in token:
+            raise OAuth2Error(
+                error=token["error"], description=token.get("error_description")
+            )
+        self.token = token
         return self.token
 
 
@@ -105,7 +83,7 @@ class OAuth2Client(_OAuth2Client, Client):
     client_auth_class = OAuth2ClientAuth
     token_auth_class = OAuth2Auth
 
-    def __init__(  # nosec
+    def __init__(
         self,
         client_id=None,
         client_secret=None,
@@ -148,20 +126,20 @@ class OAuth2Client(_OAuth2Client, Client):
                 raise MissingTokenError()
 
             if self.token.is_expired():
-                self.ensure_active_token(**kwargs)
+                self.ensure_active_token()
 
             auth = self.token_auth
 
         return super(OAuth2Client, self).request(method, url, auth=auth, **kwargs)
 
-    def ensure_active_token(self, **kwargs):
+    def ensure_active_token(self):
         refresh_token = self.token.get("refresh_token")
         url = self.metadata.get("token_endpoint")
         if refresh_token and url:
-            self.refresh_token(url, refresh_token=refresh_token, **kwargs)
+            self.refresh_token(url, refresh_token=refresh_token)
         elif self.metadata.get("grant_type") == "client_credentials":
             access_token = self.token["access_token"]
-            token = self.fetch_token(url, grant_type="client_credentials", **kwargs)
+            token = self.fetch_token(url, grant_type="client_credentials")
             if self.update_token:
                 self.update_token(token, access_token=access_token)
         else:
@@ -205,7 +183,7 @@ class OAuth2Client(_OAuth2Client, Client):
 
         return self.token
 
-    def _revoke_token(self, url, body=None, auth=None, headers=None, **kwargs):
+    def _http_post(self, url, body=None, auth=None, headers=None, **kwargs):
         return self.post(
             url, data=dict(url_decode(body)), headers=headers, auth=auth, **kwargs
         )

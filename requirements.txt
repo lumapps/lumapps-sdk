@@ -1,2 +1,2 @@
-httpx==0.12.0
-Authlib==0.14.1
+httpx==0.13.1
+Authlib==0.14.3

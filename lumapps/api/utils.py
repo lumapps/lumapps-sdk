@@ -2,6 +2,7 @@ import os
 
 if not os.getenv("GAE_ENV"):  # noqa
     import sqlite3
+
     _sqlite_ok = True
 else:
     _sqlite_ok = False

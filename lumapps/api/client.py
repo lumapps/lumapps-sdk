@@ -1,4 +1,6 @@
 from json import loads, dumps
+
+# from logging import getLogger, CRITICAL
 from time import time
 from textwrap import TextWrapper
 from typing import Any, Dict, Optional, Callable, Tuple, Sequence
@@ -25,7 +27,7 @@ LUMAPPS_NAME = "lumsites"
 LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
 
 
-class ApiClient(object):
+class ApiClient:
     def __init__(
         self,
         auth_info: Optional[Dict[str, Any]] = None,
@@ -126,9 +128,7 @@ class ApiClient(object):
                 scope=self._scope,
                 **kwargs,
             )
-            s.refresh_token(
-                auth["token_uri"], refresh_token=auth["refresh_token"]
-            )
+            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
         elif auth:  # service account
             claims = {"scope": self._scope} if self._scope else {}
             s = AssertionClient(
@@ -239,9 +239,7 @@ class ApiClient(object):
     @property
     def endpoints(self):
         if self._endpoints is None:
-            self._endpoints = {
-                n: m for n, m in self.walk_endpoints(self.discovery_doc)
-            }
+            self._endpoints = {n: m for n, m in self.walk_endpoints(self.discovery_doc)}
         return self._endpoints
 
     def get_help(self, name_parts, debug=False):
@@ -338,7 +336,13 @@ class ApiClient(object):
     def _call(self, name_parts: Sequence[str], params: dict, json=None):
         """ Construct the call """
         verb, path, params = self._get_verb_path_params(name_parts, params)
-        resp = self.session.request(verb, path, params=params, json=json)
+        if verb in {"POST", "DELETE", "PUT", "PATCH"} and json is None:
+            headers = {"Content-Length": "0"}
+        else:
+            headers = None
+        resp = self.session.request(
+            verb, path, params=params, json=json, headers=headers
+        )
         resp.raise_for_status()
         if not resp.content:
             return None
@@ -496,9 +500,7 @@ class ApiClient(object):
         # find 'startswith' matches of the last part
         last = name_parts[-1]
         idx = len(name_parts) - 1
-        matches = [
-            m for m in matches if len(m) >= idx and m[idx].startswith(last)
-        ]
+        matches = [m for m in matches if len(m) >= idx and m[idx].startswith(last)]
         if not matches:
             return "Endpoint not found"
         return (
