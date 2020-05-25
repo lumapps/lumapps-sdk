@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+from lumapps.api import __version__, __pypi_packagename__
+
 
 def parse_requirements(filename):
     """ load requirements from a pip requirements file """
@@ -7,12 +9,8 @@ def parse_requirements(filename):
     return [line for line in lineiter if line and not line.startswith("#")]
 
 
-from lumapps.api import __version__, __pypi_packagename__
-
-
 with open("README.rst", "r") as f:
     readme = f.read()
-
 setup(
     name=__pypi_packagename__,
     version=__version__,
@@ -29,7 +27,6 @@ setup(
     keywords="lumapps sdk",
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
