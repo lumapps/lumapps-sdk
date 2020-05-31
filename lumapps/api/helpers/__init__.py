@@ -12,4 +12,5 @@ from lumapps.api.helpers.widgets import (  # noqa
     iter_with_key_value,
     find_one_with_key_value,
     replace_matching_key_val,
+    replace_key_val
 )
