@@ -1,6 +1,4 @@
 from json import loads, dumps
-
-# from logging import getLogger, CRITICAL
 from time import time
 from textwrap import TextWrapper
 from typing import Any, Dict, Optional, Callable, Tuple, Sequence
