@@ -46,17 +46,19 @@ def cli_drive() -> ApiClient:
 
 
 def test_api_client_no_auth():
-    a = ApiClient()
-    with raises(ApiClientError):
-        a.session
+    with ApiClient() as cli:
+        with raises(ApiClientError):
+            cli.client
 
 
 def test_api_client_token_setter():
     token = "bvazbduioanpdo2"
-    client = ApiClient(token=token)
-    assert client.token == token
-    assert client._headers is not None
-    assert token in client.session.headers["authorization"]
+    with ApiClient(token=token) as cli:
+        assert cli.token == token
+        assert cli._headers is not None
+        assert token in cli.client.headers["authorization"]
+        cli2 = cli
+    assert cli2._client is None
 
 
 def test_get_call_raises_api_call_error(cli: ApiClient):
@@ -71,7 +73,7 @@ def test_set_get_token(cli: ApiClient):
     assert cli.token == "foo123"
     cli.token = "foo123"
     assert cli.token == "foo123"
-    _ = cli.session
+    _ = cli.client
     cli.token = "foo1234"
     assert cli.token == "foo1234"
 
@@ -121,7 +123,7 @@ def test_call_2(mocker, cli: ApiClient):
             return DummyResp()
 
     mocker.patch(
-        "lumapps.api.client.ApiClient.session",
+        "lumapps.api.client.ApiClient.client",
         new_callable=PropertyMock,
         return_value=DummySession(),
     )
@@ -322,7 +324,7 @@ def test_with_proxy_1():
         token="foobar",
         proxy_info={"scheme": "http", "host": "foo.bar.com", "port": 12345},
     )
-    s = c.session
+    s = c.client
     assert len(s.proxies) == 2
 
 
@@ -337,7 +339,7 @@ def test_with_proxy_2():
             "password": "foopass",
         },
     )
-    s = c.session
+    s = c.client
     assert len(s.proxies) == 2
 
 
@@ -362,7 +364,7 @@ def test_discovery_doc(mocker):
 
     c = ApiClient(token="foobar")
     mocker.patch(
-        "lumapps.api.client.ApiClient.session",
+        "lumapps.api.client.ApiClient.client",
         new_callable=PropertyMock,
         return_value=DummySession(),
     )

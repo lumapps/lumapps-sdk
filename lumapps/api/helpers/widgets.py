@@ -1,3 +1,4 @@
+import warnings
 from copy import deepcopy
 from uuid import uuid4
 
@@ -118,9 +119,14 @@ def copy_with_new_lumapps_uuids(content):
     return new_content
 
 
-def replace_matching_key_val(content, key, old_val, new_val):
+def replace_key_val(content, key, old_val, new_val):
     for d in iter_with_key(content, key):
         if d[key] == old_val:
             d[key] = new_val
         elif isinstance(d[key], list) and old_val in d[key]:
             d[key] = [i if i != old_val else new_val for i in d[key]]
+
+
+def replace_matching_key_val(content, key, old_val, new_val):
+    warnings.warn("Use replace_key_val instead", DeprecationWarning, stacklevel=2)
+    replace_key_val(content, key, old_val, new_val)

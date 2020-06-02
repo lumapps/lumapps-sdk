@@ -1,6 +1,6 @@
+import warnings
+from contextlib import AbstractContextManager
 from json import loads, dumps
-
-# from logging import getLogger, CRITICAL
 from time import time
 from textwrap import TextWrapper
 from typing import Any, Dict, Optional, Callable, Tuple, Sequence
@@ -27,7 +27,7 @@ LUMAPPS_NAME = "lumsites"
 LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
 
 
-class ApiClient:
+class ApiClient(AbstractContextManager):
     def __init__(
         self,
         auth_info: Optional[Dict[str, Any]] = None,
@@ -59,7 +59,7 @@ class ApiClient:
         self._auth_info = auth_info
         self._token = None
         self._endpoints = None
-        self._session = None
+        self._client = None
         self._headers = {}
         if api_info is None:
             api_info = {}
@@ -81,6 +81,15 @@ class ApiClient:
         self.token = token
         self.cursor = None
 
+    def __exit__(self, *exc):
+        self.close()
+        return False
+
+    def close(self):
+        if self._client:
+            self._client.close()
+            self._client = None
+
     @property
     def base_url(self):
         return self.api_info["base_url"].rstrip("/")
@@ -95,10 +104,10 @@ class ApiClient:
             return
         self._token = v
         self._headers["authorization"] = f"Bearer {self._token}"
-        if self._session:
-            self._session.headers.update(self._headers)
+        if self._client:
+            self._client.headers.update(self._headers)
 
-    def _create_session(self):
+    def _create_client(self):
         auth = self._auth_info
         kwargs = {
             "base_url": self.base_url,
@@ -149,11 +158,16 @@ class ApiClient:
 
     @property
     def session(self) -> Client:
-        """Setup the session object."""
+        warnings.warn("Use client instead", DeprecationWarning, stacklevel=2)
+        return self.client
+
+    @property
+    def client(self) -> Client:
+        """Setup the client object."""
         self._check_access_token()
-        if self._session is None:
-            self._session = self._create_session()
-        return self._session
+        if self._client is None:
+            self._client = self._create_client()
+        return self._client
 
     @property
     @lru_cache()
@@ -165,7 +179,7 @@ class ApiClient:
         elif d and isinstance(d, dict):
             return d
         else:
-            resp = self.session.get(url)
+            resp = self.client.get(url)
             resp_doc = resp.json()
             get_discovery_cache().set(url, resp_doc)
             return resp_doc
@@ -213,7 +227,7 @@ class ApiClient:
     def get_new_client_as(
         self, user_email: str, customer_id: Optional[str] = None
     ) -> "ApiClient":
-        """ Get a new ApiClient using an authorized session account by obtaining a
+        """ Get a new ApiClient using an authorized client account by obtaining a
             token using the user/getToken endpoint.
 
             Args:
@@ -336,13 +350,7 @@ class ApiClient:
     def _call(self, name_parts: Sequence[str], params: dict, json=None):
         """ Construct the call """
         verb, path, params = self._get_verb_path_params(name_parts, params)
-        if verb in {"POST", "DELETE", "PUT", "PATCH"} and json is None:
-            headers = {"Content-Length": "0"}
-        else:
-            headers = None
-        resp = self.session.request(
-            verb, path, params=params, json=json, headers=headers
-        )
+        resp = self.client.request(verb, path, params=params, json=json)
         resp.raise_for_status()
         if not resp.content:
             return None
@@ -375,7 +383,7 @@ class ApiClient:
                 ),
                 "file": fh,
             }
-            resp = self.session.request(verb, path, params=params, files=files)
+            resp = self.client.request(verb, path, params=params, files=files)
         resp.raise_for_status()
         return resp.json()
 
