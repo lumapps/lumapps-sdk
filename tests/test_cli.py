@@ -88,5 +88,5 @@ def test_main_1(capsys, mocker):
         "lumapps.api.cli.parse_args",
         return_value=parse_args(["--token", "foo", "user", "get"]),
     )
-    with raises(HTTPError):
+    with raises(SystemExit):
         main()
