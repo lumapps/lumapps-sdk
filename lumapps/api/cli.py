@@ -4,7 +4,9 @@ import json
 import logging
 from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType, SUPPRESS
 
-from lumapps.api.errors import ApiCallError
+from httpx import HTTPError
+
+from lumapps.api.errors import ApiCallError, get_http_err_content
 from lumapps.api.utils import list_prune_filters, ConfigStore
 from lumapps.api import ApiClient, TokenClient
 
@@ -170,6 +172,12 @@ def main():
     cast_params(name_parts, params, api)
     try:
         response = api.get_call(*name_parts, **params)
+    except HTTPError as err:
+        err_reason = get_http_err_content(err)
+        if err_reason:
+            sys.exit(err_reason)
+        else:
+            sys.exit(err)
     except ApiCallError as err:
         sys.exit(err)
     print(json.dumps(response, indent=4, sort_keys=True))
