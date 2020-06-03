@@ -4,12 +4,20 @@ from unittest.mock import PropertyMock
 
 from pytest import fixture, raises
 
-from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger, main
+from lumapps.api.cli import (
+    load_config,
+    parse_args,
+    list_configs,
+    setup_logger,
+    cast_params,
+    main,
+)
 from lumapps.api.utils import (
     ConfigStore,
     _get_conn,
     _set_sqlite_ok,
     _DiscoveryCacheDict,
+    get_endpoints,
 )
 
 
@@ -103,3 +111,20 @@ def test_main_1(capsys, mocker):
     )
     with raises(SystemExit):
         main()
+
+
+def test_cast_params():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = load(fh)
+    endpoints = get_endpoints(discovery_doc)
+    name_parts = ("customcontenttype", "list")
+    params = {
+        "includeInstanceSiblings": "yes"
+    }
+    cast_params(name_parts, params, endpoints)
+    assert params["includeInstanceSiblings"] is True
+    params = {
+        "includeInstanceSiblings": "no"
+    }
+    cast_params(name_parts, params, endpoints)
+    assert params["includeInstanceSiblings"] is False

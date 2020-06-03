@@ -19,6 +19,7 @@ from lumapps.api.utils import (
     FILTERS,
     _parse_endpoint_parts,
     method_from_discovery,
+    get_endpoints,
 )
 
 LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
@@ -253,7 +254,7 @@ class ApiClient(AbstractContextManager):
     @property
     def endpoints(self):
         if self._endpoints is None:
-            self._endpoints = {n: m for n, m in self.walk_endpoints(self.discovery_doc)}
+            self._endpoints = get_endpoints(self.discovery_doc)
         return self._endpoints
 
     def get_help(self, name_parts, debug=False):
@@ -304,15 +305,6 @@ class ApiClient(AbstractContextManager):
         longest_name = max(len(li1[0]) for li1 in lines)
         fmt = "  {{: <{}}}  {{}}".format(longest_name)
         return "\n".join(fmt.format(*li2) for li2 in lines)
-
-    def walk_endpoints(self, resource, parents=()):
-        for ep_name, ep_info in resource.get("methods", {}).items():
-            yield tuple(parents + (ep_name,)), ep_info
-        for rsc_name, rsc in resource.get("resources", {}).items():
-            for ep_name, ep_info in self.walk_endpoints(
-                rsc, tuple(parents + (rsc_name,))
-            ):
-                yield ep_name, ep_info
 
     def _expand_path(self, path, endpoint: dict, params: dict):
         param_specs = endpoint.get("parameters", {})

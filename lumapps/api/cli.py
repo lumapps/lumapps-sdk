@@ -90,9 +90,9 @@ def store_config(api_info, auth_info, conf_name, user=None):
     ConfigStore.set(conf_name, {"api": api_info, "auth": auth_info, "user": user})
 
 
-def cast_params(name_parts, args, api):
+def cast_params(name_parts, args, endpoints):
     truths = ("True", "true", "1", "Yes", "yes", "sure", "yeah")
-    params = api.endpoints[name_parts].get("parameters", {})
+    params = endpoints[name_parts].get("parameters", {})
     for arg in args:
         if params.get(arg, {}).get("type", "") == "boolean":
             args[arg] = args[arg] in truths
@@ -169,7 +169,7 @@ def main():
     #     s = args.body.read()
     #     print('will loads this: {}'.format(s))
     #     params['body'] = json.loads(s)
-    cast_params(name_parts, params, api)
+    cast_params(name_parts, params, api.endpoints)
     try:
         response = api.get_call(*name_parts, **params)
     except HTTPError as err:

@@ -239,3 +239,15 @@ def method_from_discovery(
         return discovery["methods"][path[-1]]
     except KeyError:
         return None
+
+
+def walk_endpoints(resource, parents=()):
+    for ep_name, ep_info in resource.get("methods", {}).items():
+        yield tuple(parents + (ep_name,)), ep_info
+    for rsc_name, rsc in resource.get("resources", {}).items():
+        for ep_name, ep_info in walk_endpoints(rsc, tuple(parents + (rsc_name,))):
+            yield ep_name, ep_info
+
+
+def get_endpoints(discovery_doc):
+    return {n: m for n, m in walk_endpoints(discovery_doc)}
