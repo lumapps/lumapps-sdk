@@ -20,7 +20,10 @@ def test_list_prune_filters(capsys):
 
 
 def test_discovery_cache_1():
-    assert type(lumapps.api.utils._discovery_cache) == lumapps.api.utils.DiscoveryCacheSqlite
+    assert (
+        type(lumapps.api.utils._discovery_cache)
+        == lumapps.api.utils.DiscoveryCacheSqlite
+    )
 
 
 def test_discovery_cache_dict():
@@ -40,9 +43,7 @@ def test_discovery_cache_sqlite(mocker):
     c.set("foobar.com", "bla")
     assert c.get("foobar.com") == "bla"
     dt = (datetime.now() - timedelta(days=100)).isoformat()[:19]
-    conn.execute(
-        "UPDATE discovery_cache SET expiry=? WHERE url='foobar.com'", (dt, )
-    )
+    conn.execute("UPDATE discovery_cache SET expiry=? WHERE url='foobar.com'", (dt,))
     assert c.get("foobar.com") is None
 
 
@@ -92,7 +93,7 @@ def test_method_from_discovery_1():
 def test_method_from_discovery_2():
     with open("tests/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
-    name_parts = ['document', 'uploadUrl', 'get']
+    name_parts = ["document", "uploadUrl", "get"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
 
     assert extracted.get("httpMethod") == "POST"
@@ -102,7 +103,7 @@ def test_method_from_discovery_2():
 def test_method_from_discovery_3():
     with open("tests/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
-    name_parts = ['document', 'uploadUrl']
+    name_parts = ["document", "uploadUrl"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
     assert extracted is None
 
@@ -110,13 +111,13 @@ def test_method_from_discovery_3():
 def test_method_from_discovery_5():
     with open("tests/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
-    name_parts = ['document', 'foo']
+    name_parts = ["document", "foo"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
     assert extracted is None
-    name_parts = ['document']
+    name_parts = ["document"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
     assert extracted is None
-    name_parts = ['foo']
+    name_parts = ["foo"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
     assert extracted is None
     name_parts = []

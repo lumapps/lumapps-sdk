@@ -36,12 +36,15 @@ def cli_drive() -> ApiClient:
     with open("tests/test_data/drive_v3_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
-    c = ApiClient(token="foobar", api_info={
-        "base_url": "https://www.googleapis.com",
-        "name": "drive",
-        "version": "v3",
-        "scopes": ["https://www.googleapis.com/auth/drive"],
-    })
+    c = ApiClient(
+        token="foobar",
+        api_info={
+            "base_url": "https://www.googleapis.com",
+            "name": "drive",
+            "version": "v3",
+            "scopes": ["https://www.googleapis.com/auth/drive"],
+        },
+    )
     return c
 
 
@@ -344,9 +347,7 @@ def test_with_proxy_2():
 
 
 def test_discovery_doc(mocker):
-    mocker.patch(
-        "lumapps.api.utils._get_conn", return_value=_get_conn(":memory:")
-    )
+    mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
 
     class DummyResp:
         def __init__(self, text):
@@ -376,8 +377,7 @@ def test_discovery_doc(mocker):
 
 def test_get_new_client_as(mocker, cli: ApiClient):
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call",
-        return_value={"accessToken": "foo"},
+        "lumapps.api.client.ApiClient.get_call", return_value={"accessToken": "foo"},
     )
     new_cli = cli.get_new_client_as("foo@bar.com")
     assert new_cli.user == "foo@bar.com"
