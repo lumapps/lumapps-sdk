@@ -3,10 +3,22 @@ from json import load
 from unittest.mock import PropertyMock
 
 from pytest import fixture, raises
-from httpx import HTTPError
 
-from lumapps.api.cli import load_config, parse_args, list_configs, setup_logger, main
-from lumapps.api.utils import ConfigStore, _get_conn, _set_sqlite_ok, _DiscoveryCacheDict
+from lumapps.api.cli import (
+    load_config,
+    parse_args,
+    list_configs,
+    setup_logger,
+    cast_params,
+    main,
+)
+from lumapps.api.utils import (
+    ConfigStore,
+    _get_conn,
+    _set_sqlite_ok,
+    _DiscoveryCacheDict,
+    get_endpoints,
+)
 
 
 @fixture(autouse=True)
@@ -24,6 +36,17 @@ def test_load_config():
     assert user == "ivo@managemybudget.net"
     assert api_info is None
     assert auth_info is None
+    auth_file = "tests/test_data/dummy_auth.json"
+    api_info, auth_info, user = load_config(
+        None, auth_file, "foo@managemybudget.net", None
+    )
+    assert auth_info["project_id"] == "foo"
+    api_file = "tests/test_data/dummy_api.json"
+    api_info, auth_info, user = load_config(
+        api_file, auth_file, "foo@managemybudget.net", None
+    )
+    assert auth_info["project_id"] == "foo"
+    assert api_info["name"] == "lumsites"
 
 
 def test_arg_parser():
@@ -67,9 +90,7 @@ def test_main_1(capsys, mocker):
     out = capsys.readouterr().out
     assert "usage" in out
     mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
-    mocker.patch(
-        "lumapps.api.cli.parse_args", return_value=parse_args(["-c"])
-    )
+    mocker.patch("lumapps.api.cli.parse_args", return_value=parse_args(["-c"]))
     main()
     out = capsys.readouterr().out
     assert "no saved" in out
@@ -90,3 +111,20 @@ def test_main_1(capsys, mocker):
     )
     with raises(SystemExit):
         main()
+
+
+def test_cast_params():
+    with open("tests/test_data/lumapps_discovery.json") as fh:
+        discovery_doc = load(fh)
+    endpoints = get_endpoints(discovery_doc)
+    name_parts = ("customcontenttype", "list")
+    params = {
+        "includeInstanceSiblings": "yes"
+    }
+    cast_params(name_parts, params, endpoints)
+    assert params["includeInstanceSiblings"] is True
+    params = {
+        "includeInstanceSiblings": "no"
+    }
+    cast_params(name_parts, params, endpoints)
+    assert params["includeInstanceSiblings"] is False

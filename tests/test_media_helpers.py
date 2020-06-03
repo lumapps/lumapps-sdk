@@ -114,8 +114,7 @@ def test_add_media_file_for_lang(mocker, cli: ApiClient):
         return_value={"content": "rien"},
     )
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call",
-        return_value={"content": "rien"},
+        "lumapps.api.client.ApiClient.get_call", return_value={"content": "rien"},
     )
     res = add_media_file_for_lang(cli, {"content": []}, None, None, None)
     assert res == {"content": "rien"}
