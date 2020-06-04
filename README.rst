@@ -3,13 +3,6 @@
 
 |CI| |Coverage Status| |PyPI Status| |Python Versions| |Style Badge|
 
-
-*Please be aware the this sdk is still in beta version and is undergoing a fast paced evolution that may break change the behaviour of some helpers*
-
-*Make sure of the version you are using (Git tags & releases)*
-
-----
-
 LumApps SDK is a set of tools to manipulate the `LumApps API <https://api.lumapps.com/docs/start>`_.
 
 This includes:
