@@ -89,8 +89,8 @@ LumApps SDK is released under the MIT license - see the `LICENSE.rst <LICENSE.RS
     :target: https://pypi.org/project/lumapps-sdk/
     :alt: Pypi package
 
-.. |Coverage Status| image:: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0/graph/badge.svg
-    :target: https://codecov.io/gh/lumapps/lumapps-sdk/branch/v1.0
+.. |Coverage Status| image:: https://codecov.io/gh/lumapps/lumapps-sdk/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/lumapps/lumapps-sdk/branch/master
 
 .. |Style Badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/ambv/black
