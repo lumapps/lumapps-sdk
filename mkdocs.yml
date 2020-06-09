@@ -1,6 +1,6 @@
 site_name: LumApps SDK
-site_description: "desc"
-site_url: "https://google.com"
+site_description: "LumApps sdk documentation"
+site_url: "https://lumapps.github.io/lumapps-sdk"
 repo_url: "https://github.com/lumapps/lumapps-sdk"
 repo_name: "lumapps/lumapps-sdk"
 
@@ -8,7 +8,7 @@ theme:
   name: "material"
 
 nav:
-    - Overviews: index.md
+    - Overview: index.md
     - Reference:
       - Api Client: api_client.md
       - Widgets: widgets.md
