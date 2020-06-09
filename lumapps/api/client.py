@@ -3,7 +3,19 @@ from contextlib import AbstractContextManager
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
-from typing import Any, Dict, Optional, Callable, Tuple, Sequence, Union, IO
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Union,
+    Optional,
+    Sequence,
+    Tuple,
+    Union, 
+    Io
+)
 from pathlib import Path
 from functools import lru_cache
 
@@ -381,23 +393,26 @@ class ApiClient(AbstractContextManager):
         with Path(fpath).open("rb") as fh:
             return self.upload(fh, metadata, *name_parts, **params)
 
-    def get_call(self, *name_parts, **params):
-        """
-        Args:
-            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
-            **params (dict): Parameters of the call
+    def get_call(
+        self, *name_parts, **params
+    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+        """Generic function to call a lumapps endpoint
+        
+            Args:
+                *name_parts: Endpoint, eg user/get or "user", "get"
+                **params: Parameters of the call
 
-        Returns:
-            Union[dict, List[dict]]: Object or objects returned by the endpoint call.
+            Returns:
+                Object or objects returned by the endpoint call.
 
-        Example:
-            List feedtypes in LumApps:
-            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            Example:
+                List feedtypes in LumApps:
+                -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this endpoint:
+                With this endpoint:
 
-                >>> feedtypes = get_call("feedtype/list")
-                >>> print(feedtypes)
+                    >>> feedtypes = get_call("feedtype/list")
+                    >>> print(feedtypes)
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items = []
@@ -436,14 +451,20 @@ class ApiClient(AbstractContextManager):
                     # special case of
                     return [] if more is False else self._prune(name_parts, response)
 
-    def iter_call(self, *name_parts, **params):
+    def iter_call(
+        self, *name_parts, **params
+    ) -> Generator[
+        Union[Dict[str, Any], List[Dict[str, Any]]],
+        Union[Dict[str, Any], List[Dict[str, Any]]],
+        None,
+    ]:
         """
          Args:
             *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
             **params (dict): Parameters of the call
 
         Yields:
-            dict: Objects returned by the endpoint call.
+            Objects returned by the endpoint call.
 
 
         Example:

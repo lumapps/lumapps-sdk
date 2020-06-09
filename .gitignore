@@ -20,3 +20,6 @@ test-results/
 # virtualenv
 env/
 venv/
+
+# doc
+site

@@ -1,0 +1,29 @@
+site_name: LumApps SDK
+site_description: "desc"
+site_url: "https://google.com"
+repo_url: "https://github.com/lumapps/lumapps-sdk"
+repo_name: "lumapps/lumapps-sdk"
+
+theme:
+  name: "material"
+
+nav:
+    - Reference:
+      - Api Client: api_client.md
+      - Widgets: widgets.md
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - pymdownx.superfences
+  - pymdownx.tasklist
+  - pymdownx.emoji
+  - toc:
+      permalink: "¤"
+
+plugins:
+  - search
+  - mkdocstrings:
+      watch:
+        - lumapps

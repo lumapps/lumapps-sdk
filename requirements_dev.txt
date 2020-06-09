@@ -6,9 +6,8 @@ pytest-mock
 bandit
 
 # Doc
-sphinx
-sphinx-rtd-theme
-sphinxcontrib-napoleon
+mkdocs-material
+mkdocstrings
 
 # Dev tools
 pre-commit
