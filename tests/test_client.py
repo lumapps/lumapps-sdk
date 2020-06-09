@@ -1,19 +1,19 @@
 from json import load, loads
-from unittest.mock import PropertyMock
 from typing import Sequence
+from unittest.mock import PropertyMock
 
 from httpx import HTTPError
 from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
+from lumapps.api.errors import ApiCallError, ApiClientError
 from lumapps.api.utils import (
     FILTERS,
     _DiscoveryCacheDict,
-    _set_sqlite_ok,
     _get_conn,
+    _set_sqlite_ok,
     get_discovery_cache,
 )
-from lumapps.api.errors import ApiCallError, ApiClientError
 
 
 @fixture(autouse=True)

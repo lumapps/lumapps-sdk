@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-import sys
 import json
 import logging
-from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType, SUPPRESS
+import sys
+from argparse import SUPPRESS, ArgumentParser, FileType, RawDescriptionHelpFormatter
 
 from httpx import HTTPError
 
-from lumapps.api.errors import ApiCallError, get_http_err_content
-from lumapps.api.utils import list_prune_filters, ConfigStore
 from lumapps.api import ApiClient, TokenClient
+from lumapps.api.errors import ApiCallError, get_http_err_content
+from lumapps.api.utils import ConfigStore, list_prune_filters
 
 LIST_CONFIGS = "***LIST_CONFIGS***"
 

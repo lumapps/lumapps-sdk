@@ -1,3 +1,1 @@
-# Lumapps sdk
-
-ehllodad
+../README.md

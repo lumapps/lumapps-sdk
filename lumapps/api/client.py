@@ -1,37 +1,36 @@
 import warnings
 from contextlib import AbstractContextManager
-from json import loads, dumps
-from time import time
+from functools import lru_cache
+from json import dumps, loads
+from pathlib import Path
 from textwrap import TextWrapper
+from time import time
 from typing import (
     Any,
     Callable,
     Dict,
     Generator,
     List,
-    Union,
     Optional,
     Sequence,
     Tuple,
     Union, 
     Io
 )
-from pathlib import Path
-from functools import lru_cache
 
 from httpx import Client
 
 # from authlib.integrations.requests_client import OAuth2Session, AssertionSession
-from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
-from lumapps.api.errors import ApiClientError, ApiCallError
+from lumapps.api.authlib_helpers import AssertionClient, OAuth2Client
+from lumapps.api.errors import ApiCallError, ApiClientError
 from lumapps.api.utils import (
-    get_discovery_cache,
-    pop_matches,
-    GOOGLE_APIS,
     FILTERS,
+    GOOGLE_APIS,
     _parse_endpoint_parts,
-    method_from_discovery,
+    get_discovery_cache,
     get_endpoints,
+    method_from_discovery,
+    pop_matches,
 )
 
 LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]

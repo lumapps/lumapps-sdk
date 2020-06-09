@@ -1,12 +1,13 @@
 from json import load
-from pytest import raises, fixture
+
+from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
 from lumapps.api.errors import ApiClientError
 from lumapps.api.helpers.medias import (
     _upload_new_media_file_of_given_lang,
-    create_new_media,
     add_media_file_for_lang,
+    create_new_media,
 )
 from lumapps.api.utils import get_discovery_cache
 
