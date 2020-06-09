@@ -1,36 +1,42 @@
 import warnings
 from copy import deepcopy
 from uuid import uuid4
+from typing import Any, Dict, List
 
+<<<<<<< HEAD
 
 def find_widget(container, **params):
+=======
+def find_widget(container: Dict[str, Any], **params) -> Dict[str, Any]:
+>>>>>>> add media doc
     """ Find and return the first widget in the container that respect the filters
+        
         Args:
-            container (dict): The container of the widgets, that could be a content, community, 
+            container: The container of the widgets, that could be a content, community, 
                 the components of a content or the template of a content
             
             **params: params to filter on (eg, widgetType='video' 
                 will find athe first video widget in the given container)
         
         Returns:
-            dict: The first found widget
+            The first found widget
     """
     for w, _ in iter_widgets(container, **params):
         return w
 
 
-def find_all_widgets(container, **params):
-    """
-    Find and return all widgets in the container that respect the filters
+def find_all_widgets(container: Dict[str, Any], **params) -> List[Dict[str, Any]]:
+    """ Find and return all widgets in the container that respect the filters
+        
         Args:
-            container (dict): The container of the widgets, that could be a content, community, 
+            container: The container of the widgets, that could be a content, community, 
                 the components of a content or the template of a content
             
             **params: params to filter on (eg, widgetType='video' 
                 will find athe first video widget in the given container)
         
         Returns:
-            List[dict]: The list of all found widgets
+            The list of all found widgets
     """
     return list(w for w, _ in iter_widgets(container, **params))
 
