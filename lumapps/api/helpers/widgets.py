@@ -2,7 +2,47 @@ import warnings
 from copy import deepcopy
 from uuid import uuid4
 
+def find_widget(container, **params):
+    """ Find and return the first widget in the container that respect the filters
+        Args:
+            container (dict): The container of the widgets, that could be a content, community, 
+                the components of a content or the template of a content
+            
+            **params: params to filter on (eg, widgetType='video' 
+                will find athe first video widget in the given container)
+        
+        Returns:
+            dict: The first found widget
+    """
+    for w, _ in iter_widgets(container, **params):
+        return w
 
+
+def find_all_widgets(container, **params):
+    """
+    Find and return all widgets in the container that respect the filters
+        Args:
+            container (dict): The container of the widgets, that could be a content, community, 
+                the components of a content or the template of a content
+            
+            **params: params to filter on (eg, widgetType='video' 
+                will find athe first video widget in the given container)
+        
+        Returns:
+            List[dict]: The list of all found widgets
+    """
+    return list(w for w, _ in iter_widgets(container, **params))
+
+
+def find_widget_and_container(container, **params):
+    for w, c in iter_widgets(container, **params):
+        return w, c
+    return None, None
+
+
+def find_all_widgets_and_containers(container, **params):
+    return list(((w, c) for w, c in iter_widgets(container, **params)))
+    
 def content_is_community(content):
     return isinstance(content, dict) and content.get("type") == "community"
 
@@ -44,23 +84,7 @@ def iter_widgets(container, **params):
             yield o2, container2
 
 
-def find_widget(container, **params):
-    for w, _ in iter_widgets(container, **params):
-        return w
 
-
-def find_all_widgets(container, **params):
-    return list(w for w, _ in iter_widgets(container, **params))
-
-
-def find_widget_and_container(container, **params):
-    for w, c in iter_widgets(container, **params):
-        return w, c
-    return None, None
-
-
-def find_all_widgets_and_containers(container, **params):
-    return list(((w, c) for w, c in iter_widgets(container, **params)))
 
 
 def iter_with_key(dict_or_list, key):
