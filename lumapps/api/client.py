@@ -459,22 +459,22 @@ class ApiClient(AbstractContextManager):
         None,
     ]:
         """
-         Args:
-            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
-            **params (dict): Parameters of the call
+            Args:
+                *name_parts: Endpoint, eg user/get or "user", "get"
+                **params: Parameters of the call
 
-        Yields:
-            Objects returned by the endpoint call.
+            Yields:
+                Objects returned by the endpoint call
 
 
-        Example:
-            List feedtypes in LumApps:
-            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            Example:
+                List feedtypes in LumApps:
+                -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this endpoint:
+                With this endpoint:
 
-                >>> feedtypes = iter_call("feedtype/list")
-                >>> for feedtype in feedtypes: print(feedtype)
+                    >>> feedtypes = iter_call("feedtype/list")
+                    >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
         self.cursor = cursor = params.pop("cursor", None)

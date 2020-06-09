@@ -8,6 +8,7 @@ theme:
   name: "material"
 
 nav:
+    - Overviews: index.md
     - Reference:
       - Api Client: api_client.md
       - Widgets: widgets.md
@@ -25,5 +26,10 @@ markdown_extensions:
 plugins:
   - search
   - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
       watch:
         - lumapps
