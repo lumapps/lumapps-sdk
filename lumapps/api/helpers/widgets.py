@@ -2,6 +2,7 @@ import warnings
 from copy import deepcopy
 from uuid import uuid4
 
+
 def find_widget(container, **params):
     """ Find and return the first widget in the container that respect the filters
         Args:
@@ -42,7 +43,8 @@ def find_widget_and_container(container, **params):
 
 def find_all_widgets_and_containers(container, **params):
     return list(((w, c) for w, c in iter_widgets(container, **params)))
-    
+
+
 def content_is_community(content):
     return isinstance(content, dict) and content.get("type") == "community"
 
@@ -82,9 +84,6 @@ def iter_widgets(container, **params):
             o.get("components", o.get("cells", [])), **params
         ):
             yield o2, container2
-
-
-
 
 
 def iter_with_key(dict_or_list, key):
