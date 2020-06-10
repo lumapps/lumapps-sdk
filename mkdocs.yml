@@ -12,7 +12,8 @@ nav:
     - Reference:
       - Api Client: api_client.md
       - Widgets: widgets.md
-      - Medias: medias.md
+      - Medias: medias.
+    - Copyright and license: LICENSE.md
 
 markdown_extensions:
   - admonition

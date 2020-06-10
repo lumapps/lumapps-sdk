@@ -49,16 +49,21 @@ clean:  ## Delete temporary files.
 	@rm -rf tests/__pycache__ 2>/dev/null
 	@find . -name "*.rej" -delete 2>/dev/null
 
+.PHONY: docs-cp
+docs-cp:
+	cp README.md docs/index.md
+	cp LICENSE.md docs/
+
 .PHONY: docs
-docs:  ## Build the documentation locally.
+docs: docs-cp ## Build the documentation locally.
 	@poetry run mkdocs build
 
 .PHONY: docs-serve
-docs-serve:  ## Serve the documentation (localhost:8000).
+docs-serve: docs-cp ## Serve the documentation (localhost:8000).
 	@poetry run mkdocs serve
 
 .PHONY: docs-deploy
-docs-deploy:  ## Deploy the documentation on GitHub pages.
+docs-deploy: docs-cp ## Deploy the documentation on GitHub pages.
 	@poetry run mkdocs gh-deploy
 
 .PHONY: help
