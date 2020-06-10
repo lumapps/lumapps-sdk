@@ -83,8 +83,6 @@ def add_media_file_for_lang(
             client: The ApiClient used to make httpx to the LumApps Api.
             media: The LumApps media on which the files have to be uploaded.
             file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
-            doc_path: The doc path of the media to upload, this will decide where the media will go in your media library
-                            (eg: provider=`<`my_provider`>`/site=`<`my_site_id`>`/resource=`<`my_parent_folder_id`>`)
             filename: The name of the file to upload. Once uploaded the file will appear with that name.
             mimetype: The mimeType fo the file to upload.
             lang: The lang of the file to upload (default: "en").
@@ -125,8 +123,6 @@ def _upload_new_media_file_of_given_lang(
         Args:
             client: The ApiClient used to make httpx to the LumApps Api.
             file_data_or_path: The filepath or the data to upload.
-            doc_path: The doc path of the media to upload, this will decide where the media will go in your media library
-                            (eg: provider=`<`my_provider`>`/site=`<`my_site_id`>`/resource=`<`my_parent_folder_id`>`)
             filename: The name of the file to upload. Once uploaded the file will appear with that name.
             mimetype: The mimeType fo the file to upload.
             lang: The lang of the file to upload (default: "en").

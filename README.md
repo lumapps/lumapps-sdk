@@ -82,6 +82,6 @@ Please refer to our [contributing guidelines](https://lumapps.github.io/lumapps-
 ## Copyright and license
 
 
-LumApps SDK is released under the MIT license - see the [LICENSE.rst](LICENSE.rst) file.
+LumApps SDK is released under the MIT license - see the license.rst file.
 
 

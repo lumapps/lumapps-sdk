@@ -16,7 +16,7 @@ def find_widget(container: Dict[str, Any], **params) -> Dict[str, Any]:
             container: The container of the widgets, that could be a content, community, 
                 the components of a content or the template of a content
             
-            **params: params to filter on (eg, widgetType='video' 
+            params: params to filter on (eg, widgetType='video' 
                 will find athe first video widget in the given container)
         
         Returns:
@@ -33,7 +33,7 @@ def find_all_widgets(container: Dict[str, Any], **params) -> List[Dict[str, Any]
             container: The container of the widgets, that could be a content, community, 
                 the components of a content or the template of a content
             
-            **params: params to filter on (eg, widgetType='video' 
+            params: params to filter on (eg, widgetType='video' 
                 will find athe first video widget in the given container)
         
         Returns:

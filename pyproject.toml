@@ -18,6 +18,7 @@ include = [
 python = "^3.6.4"
 httpx = "^0.13.3"
 Authlib = "^0.14.3"
+pytest-cov = "^2.9.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.3"

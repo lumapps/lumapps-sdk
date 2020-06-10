@@ -50,15 +50,15 @@ clean:  ## Delete temporary files.
 	@find . -name "*.rej" -delete 2>/dev/null
 
 .PHONY: docs
-docs: docs-regen  ## Build the documentation locally.
+docs:  ## Build the documentation locally.
 	@poetry run mkdocs build
 
 .PHONY: docs-serve
-docs-serve: docs-regen  ## Serve the documentation (localhost:8000).
+docs-serve:  ## Serve the documentation (localhost:8000).
 	@poetry run mkdocs serve
 
 .PHONY: docs-deploy
-docs-deploy: docs-regen  ## Deploy the documentation on GitHub pages.
+docs-deploy:  ## Deploy the documentation on GitHub pages.
 	@poetry run mkdocs gh-deploy
 
 .PHONY: help
@@ -101,9 +101,9 @@ setup:  ## Setup the development environment (install dependencies).
 	pre-commit install
 
 .PHONY: test
-test:  ## Run the test suite and report coverage.
-	@poetry run pytest -c config/pytest.ini -n auto -k "$(K)" 2>/dev/null
-	-@poetry run coverage html --rcfile=config/coverage.ini
+test:  ## Run the test suite and report coverage. 2>/dev/null
+	@poetry run pytest -c config/pytest.ini
+	@poetry run coverage html --rcfile=config/coverage.ini
 
 
 .PHONY: pypi-release-beta

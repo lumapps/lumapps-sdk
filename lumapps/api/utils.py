@@ -13,7 +13,6 @@ else:
     _sqlite_ok = False
 
 
-
 CACHE_MAX_AGE = timedelta(seconds=60 * 60 * 24)  # 1 day
 GOOGLE_APIS = ("drive", "admin", "groupssettings")
 FILTERS = {
