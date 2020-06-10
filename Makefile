@@ -53,10 +53,6 @@ clean:  ## Delete temporary files.
 docs: docs-regen  ## Build the documentation locally.
 	@poetry run mkdocs build
 
-.PHONY: docs-regen
-docs-regen:  ## Regenerate some documentation pages.
-	@poetry run python scripts/regen_docs.py
-
 .PHONY: docs-serve
 docs-serve: docs-regen  ## Serve the documentation (localhost:8000).
 	@poetry run mkdocs serve
@@ -87,7 +83,7 @@ endif
 	-@if ! $(CI) && ! $(TESTING); then \
 		poetry run failprint -t "Pushing commits" -- git push; \
 		poetry run failprint -t "Pushing tags" -- git push --tags; \
-		poetry run failprint -t "Publishing version" -- poetry publish; \
+		poetry publish; \
 		poetry run failprint -t "Deploying docs" -- poetry run mkdocs gh-deploy; \
 	fi
 
@@ -96,12 +92,13 @@ setup:  ## Setup the development environment (install dependencies).
 	@if ! $(CI); then \
 		if ! command -v poetry &>/dev/null; then \
 		  if ! command -v pipx &>/dev/null; then \
-			  pip3 install --user pipx; \
+			  pip install pipx; \
 			fi; \
-		  pipx install poetry; \
+		  pipx install poetry --force; \
 		fi; \
 	fi; \
 	poetry install -v
+	pre-commit install
 
 .PHONY: test
 test:  ## Run the test suite and report coverage.
@@ -117,5 +114,5 @@ endif
 	@poetry run failprint -t "Bumping version" -- poetry version $(v)
 	@poetry run failprint -t "Building dist/wheel" -- poetry build
 	-@if ! $(CI) && ! $(TESTING); then \
-		poetry run failprint -t "Publishing version" -- poetry publish; \
+		poetry publish; \
 	fi

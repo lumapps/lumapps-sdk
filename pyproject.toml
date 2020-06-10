@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lumapps-sdk"
-version = "0.2.2"
+version = "0.1.1"
 description = ""
 authors = ["Aurélien Dentan <aurelien@lumapps.com>", "Ludovic Vaugeois <ludovic.vaugeois@lumapps.com>"]
 license = "MIT License"
@@ -34,6 +34,8 @@ mypy = "^0.780"
 jinja2 = "^2.11.2"
 git-changelog = "^0.4.0"
 failprint = "^0.3.0"
+black = "^19.10b0"
+isort = { version = "^4.3", extras = ["pyproject"] }
 
 [tool.black]
 line-length = 88
