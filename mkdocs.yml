@@ -12,10 +12,18 @@ nav:
     - Authentication: authentication.md
     - Guides:
       - Api Client: guides/api_client_guide.md
+      - Community:
+          - Community: guides/community.md
+          - Posts: guides/community_posts.md
+      - Comments: guides/comments.md
+      - Groups: guides/groups.md
+      - Metadata: guides/metadata.md
+      - Notifications: guides/notifications.md
       - Users: 
         - Basics: guides/user_base.md
         - User Profile: guides/user_profile.md
       - Roles: guides/roles.md
+      - Widgets: guides/widgets.md
     - Reference:
       - Api Client: api_client.md
       - Widgets: widgets.md

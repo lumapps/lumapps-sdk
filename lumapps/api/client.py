@@ -6,6 +6,7 @@ from pathlib import Path
 from textwrap import TextWrapper
 from time import time
 from typing import (
+    IO,
     Any,
     Callable,
     Dict,
@@ -14,8 +15,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
-    Union, 
-    Io
+    Union,
 )
 
 from httpx import Client

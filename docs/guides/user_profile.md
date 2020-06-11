@@ -9,6 +9,10 @@ If you have the user directory module `id` use a `content/get` call with this id
 Else, get a list of user directory modules on an instance.
 
 ```python
+from lumapps.api.client import ApiClient
+
+client = ApiClient(token="<your_token>")
+
 # prepare the request parameters
 body = {
     "instanceId": xxx,
@@ -18,7 +22,7 @@ body = {
     "action": "CUSTOM_EDIT"}
 
 # get user directory modules list
-user_directories = api.get_call(
+user_directories = client.get_call(
     "content", "list", body=body)
 ```
 
@@ -97,7 +101,9 @@ To update the user profile:
 - save
 
 ```python
-api_client = ApiClient()
+from lumapps.api.client import ApiClient
+
+client = ApiClient(token="<your_token>")
 
 CUSTOMER_ID = 'XXX'
 INSTANCE_ID = 'YYY'
@@ -106,7 +112,7 @@ USER_DIRECTORY_MODULE_ID = '6486401110769664'
 USER_TO_UPDATE_EMAIL = 'me@customer.com'
 
 # get user details corresponding to a user directory module
-user_to_update = api_client.get_call(
+user_to_update = client.get_call(
     'user', 'directory', 'get',
     email=USER_TO_UPDATE_EMAIL,
     contentId=USER_DIRECTORY_MODULE_ID)
@@ -129,7 +135,7 @@ user_to_update['customProfile'][field2uid] = '00 11 22 33 44 55 66'
 # /!\ you must add the user directory module id in the user object like this:
 user_to_update['contentId'] = USER_DIRECTORY_MODULE_ID
 
-response = api_client.get_call(
+response = client.get_call(
     'user', 'directory', 'save',
     body=user_to_update)
 ```
@@ -139,7 +145,7 @@ response = api_client.get_call(
 # to get more users at once
 # use `POST user/directory/list body={'contentId':USER_DIRECTORY_MODULE_ID }`
 
-users_to_update_list = api_client.get_call(
+users_to_update_list = client.get_call(
     'user', 'directory', 'list',
     contentId=USER_DIRECTORY_MODULE_ID )
 

@@ -4,12 +4,7 @@ from typing import Any, Dict, List
 from uuid import uuid4
 
 
-<<<<<<< HEAD
-
-def find_widget(container, **params):
-=======
 def find_widget(container: Dict[str, Any], **params) -> Dict[str, Any]:
->>>>>>> add media doc
     """ Find and return the first widget in the container that respect the filters
         
         Args:
