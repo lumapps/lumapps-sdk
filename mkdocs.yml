@@ -9,6 +9,13 @@ theme:
 
 nav:
     - Overview: index.md
+    - Authentication: authentication.md
+    - Guides:
+      - Api Client: guides/api_client_guide.md
+      - Users: 
+        - Basics: guides/user_base.md
+        - User Profile: guides/user_profile.md
+      - Roles: guides/roles.md
     - Reference:
       - Api Client: api_client.md
       - Widgets: widgets.md
