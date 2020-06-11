@@ -3,7 +3,7 @@ from contextlib import AbstractContextManager
 from json import loads, dumps
 from time import time
 from textwrap import TextWrapper
-from typing import Any, Dict, Optional, Callable, Tuple, Sequence
+from typing import Any, Dict, Optional, Callable, Tuple, Sequence, Union, IO
 from pathlib import Path
 from functools import lru_cache
 
@@ -26,6 +26,7 @@ LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
 LUMAPPS_VERSION = "v1"
 LUMAPPS_NAME = "lumsites"
 LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
+FileContent = Union[IO[str], IO[bytes], str, bytes]
 
 
 class ApiClient(AbstractContextManager):
@@ -354,7 +355,7 @@ class ApiClient(AbstractContextManager):
         body = loads(body) if isinstance(body, str) else body
         return body
 
-    def upload_call(self, fpath: Path, metadata: dict, *name_parts, **params):
+    def upload(self, file_content: FileContent, metadata: dict, *name_parts, **params):
         name_parts = _parse_endpoint_parts(name_parts)
         endpoint = method_from_discovery(self.discovery_doc, name_parts)
         if not endpoint.get("mediaUpload"):
@@ -366,18 +367,23 @@ class ApiClient(AbstractContextManager):
         upload_specs = endpoint["mediaUpload"]["protocols"]["simple"]
         path = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]
         path = self._expand_path(path, endpoint, params)
-        with fpath.open("rb") as fh:
-            files = {
-                "data": (
-                    "metadata",
-                    dumps(metadata),
-                    "application/json; charset=UTF-8",
-                ),
-                "file": fh,
-            }
-            resp = self.client.request(verb, path, params=params, files=files)
+        files = {
+            "data": (
+                "metadata",
+                dumps(metadata),
+                "application/json; charset=UTF-8",
+            ),
+            "file": file_content,
+        }
+        resp = self.client.request(verb, path, params=params, files=files)
         resp.raise_for_status()
         return resp.json()
+
+    def upload_call(
+        self, fpath: Union[Path, str], metadata: dict, *name_parts, **params
+    ):
+        with Path(fpath).open("rb") as fh:
+            return self.upload(fh, metadata, *name_parts, **params)
 
     def get_call(self, *name_parts, **params):
         """
