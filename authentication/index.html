@@ -6,11 +6,11 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="LumApps sdk documentation" name="description"/>
-<link href="https://lumapps.github.io/lumapps-sdk/" rel="canonical"/>
-<link href="assets/images/favicon.png" rel="shortcut icon"/>
+<link href="https://lumapps.github.io/lumapps-sdk/authentication/" rel="canonical"/>
+<link href="../assets/images/favicon.png" rel="shortcut icon"/>
 <meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
-<title>LumApps SDK</title>
-<link href="assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
+<title>Authentication - LumApps SDK</title>
+<link href="../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -20,7 +20,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#lumapps-sdk">
+<a class="md-skip" href="#authentication">
           Skip to content
         </a>
 </div>
@@ -41,7 +41,7 @@
           </span>
 <span class="md-header-nav__topic md-ellipsis">
             
-              Overview
+              Authentication
             
           </span>
 </div>
@@ -110,16 +110,21 @@
 </a>
 </div>
 <ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href=".." title="Overview">
+      Overview
+    </a>
+</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
-        Overview
+        Authentication
         <span class="md-nav__icon md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"></path></svg>
 </span>
 </label>
-<a class="md-nav__link md-nav__link--active" href="." title="Overview">
-      Overview
+<a class="md-nav__link md-nav__link--active" href="./" title="Authentication">
+      Authentication
     </a>
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">
@@ -130,42 +135,17 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#installation">
-    Installation
+<a class="md-nav__link" href="#using-a-regular-token">
+    Using a regular token
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#getting-started">
-    Getting started
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#documentation">
-    Documentation
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#code-convention">
-    Code convention
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#how-to-get-help-contribute-or-provide-feedback">
-    How to get help, contribute, or provide feedback
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#copyright-and-license">
-    Copyright and license
+<a class="md-nav__link" href="#using-an-authorized-service-account">
+    Using an authorized service account
   </a>
 </li>
 </ul>
 </nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="authentication/" title="Authentication">
-      Authentication
-    </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
 <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
@@ -184,7 +164,7 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/api_client_guide/" title="Api Client">
+<a class="md-nav__link" href="../guides/api_client_guide/" title="Api Client">
       Api Client
     </a>
 </li>
@@ -205,12 +185,12 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/community/" title="Community">
+<a class="md-nav__link" href="../guides/community/" title="Community">
       Community
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/community_posts/" title="Posts">
+<a class="md-nav__link" href="../guides/community_posts/" title="Posts">
       Posts
     </a>
 </li>
@@ -218,22 +198,22 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/comments/" title="Comments">
+<a class="md-nav__link" href="../guides/comments/" title="Comments">
       Comments
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/groups/" title="Groups">
+<a class="md-nav__link" href="../guides/groups/" title="Groups">
       Groups
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/metadata/" title="Metadata">
+<a class="md-nav__link" href="../guides/metadata/" title="Metadata">
       Metadata
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/notifications/" title="Notifications">
+<a class="md-nav__link" href="../guides/notifications/" title="Notifications">
       Notifications
     </a>
 </li>
@@ -254,12 +234,12 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/user_base/" title="Basics">
+<a class="md-nav__link" href="../guides/user_base/" title="Basics">
       Basics
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/user_profile/" title="User Profile">
+<a class="md-nav__link" href="../guides/user_profile/" title="User Profile">
       User Profile
     </a>
 </li>
@@ -267,12 +247,12 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/roles/" title="Roles">
+<a class="md-nav__link" href="../guides/roles/" title="Roles">
       Roles
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="guides/widgets/" title="Widgets">
+<a class="md-nav__link" href="../guides/widgets/" title="Widgets">
       Widgets
     </a>
 </li>
@@ -296,17 +276,17 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="api_client/" title="Api Client">
+<a class="md-nav__link" href="../api_client/" title="Api Client">
       Api Client
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="widgets/" title="Widgets">
+<a class="md-nav__link" href="../widgets/" title="Widgets">
       Widgets
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="medias." title="Medias">
+<a class="md-nav__link" href="../medias." title="Medias">
       Medias
     </a>
 </li>
@@ -314,7 +294,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="LICENSE/" title="Copyright and license">
+<a class="md-nav__link" href="../LICENSE/" title="Copyright and license">
       Copyright and license
     </a>
 </li>
@@ -335,33 +315,13 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#installation">
-    Installation
+<a class="md-nav__link" href="#using-a-regular-token">
+    Using a regular token
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#getting-started">
-    Getting started
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#documentation">
-    Documentation
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#code-convention">
-    Code convention
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#how-to-get-help-contribute-or-provide-feedback">
-    How to get help, contribute, or provide feedback
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#copyright-and-license">
-    Copyright and license
+<a class="md-nav__link" href="#using-an-authorized-service-account">
+    Using an authorized service account
   </a>
 </li>
 </ul>
@@ -371,65 +331,48 @@
 </div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
-<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/index.md" title="Edit this page">
+<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/authentication.md" title="Edit this page">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
-<h1 id="lumapps-sdk">Lumapps SDK<a class="headerlink" href="#lumapps-sdk" title="Permanent link">¤</a></h1>
-<p align="center">
-<a href="https://github.com/lumapps/lumapps-sdk/actions?query=workflow%3ACI"><img alt="Action Status" src="https://github.com/lumapps/lumapps-sdk/workflows/CI/badge.svg"/></a>
-<a href="https://pypi.org/project/lumapps-sdk/"><img alt="Pypi" src="https://img.shields.io/pypi/v/lumapps-sdk"/></a>
-<a href="https://codecov.io/gh/lumapps/lumapps-sdk/branch/master"><img alt="Coverage" src="https://codecov.io/gh/lumapps/lumapps-sdk/branch/master/graph/badge.svg"/></a>
-<a href="https://github.com/ambv/black"><img alt="Black" src="https://img.shields.io/badge/code%20style-black-000000.svg"/></a>
-<a href="#"><img alt="Black" src="https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-blue"/></a>
-</p>
-<p>LumApps SDK is a set of tools to manipulate the <a href="https://api.lumapps.com/docs/start">LumApps API</a></p>
-<p>This includes:</p>
-<ul>
-<li>A client that support all the routes of the API (located in folder lumapps)</li>
-<li>A set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)</li>
-</ul>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code>pip install lumapps-sdk
+<h1 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">¤</a></h1>
+<p>The first thing you'll need in order for you to be able to use the LumApps Api's is a valid token.</p>
+<p>You can see them <a href="https://apiv1.lumapps.com/#tag/Authentication">here</a></p>
+<p>The LumApps sdk can help you when using a service account or a regular token, all you have to do is to give the sdk the credentials infos and the subsequent calls made by the tool will be authenticated using those credentials.</p>
+<p><strong>Note</strong>:</p>
+<p>Be sure to target the right lumapps environment, by default the sdk use site.lumapps.com as an environment.
+If your env is different (eg, sites-ms.lumapps.com) you can precise it like so:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">api_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"base_url"</span><span class="p">:</span> <span class="s2">"https://sites-ms.lumapps.com"</span>
+<span class="p">}</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">,</span> <span class="n">api_info</span><span class="o">=</span><span class="n">api_info</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">¤</a></h2>
-<ol>
-<li>
-<p>Get your token</p>
-<p>LumApps supports multiple ways of authentication.
-The fastest one to implement is the following:</p>
-<p>Get your token by logging to your LumApps account.
-Go to <a href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authenticate.
-Once connected, open the javascript console of your browser and run:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">);</span>
-<span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"a"</span> <span class="o">?</span> <span class="nx">instance</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">:</span> <span class="nx">instance</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="nx">fetch</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="o">+</span><span class="s2">"/service/init?customerHost="</span><span class="o">+</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="o">+</span><span class="s2">"&amp;instanceSlug="</span><span class="o">+</span><span class="nx">instance</span><span class="o">+</span><span class="s2">"&amp;    slug="</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="p">=&gt;{</span><span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">json</span><span class="p">()}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">token</span><span class="p">)})</span>
+<h2 id="using-a-regular-token">Using a regular token<a class="headerlink" href="#using-a-regular-token" title="Permanent link">¤</a></h2>
+<p>To authenticate with a regular, short lived token, instanciate the sdk like so:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 </code></pre></div>
-<p>This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps</p>
-</li>
-<li>
-<p>Authenticate</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api</span> <span class="kn">import</span> <span class="n">ApiClient</span>
-<span class="n">token</span> <span class="o">=</span> <span class="s2">"MY TOKEN"</span>
-<span class="n">api</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+<h2 id="using-an-authorized-service-account">Using an authorized service account<a class="headerlink" href="#using-an-authorized-service-account" title="Permanent link">¤</a></h2>
+<p>By default a service account does not allows you to contact all LumApps API endpoints, to do so you need to get a token as a given user and then use this token to authenticate the requests</p>
+<p>The sdk ApiClient offers two methods to help with that <code>get_new_client_as</code> and <code>get_new_client_as_using_dwd</code> that allows you to get a new ApiClient correclty authenticated.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">my_sa</span> <span class="o">=</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="n">my_platform_id</span><span class="o">=</span><span class="s2">"&lt;your_plaform_id&gt;"</span>
+<span class="n">user_to_authenticate_on_behalf_of</span> <span class="o">=</span> <span class="s2">"&lt;user_email&gt;"</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span>
+    <span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">,</span> 
+    <span class="n">auth_info</span><span class="o">=</span><span class="n">my_sa</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">get_new_client_as</span><span class="p">(</span>
+        <span class="n">user_email</span><span class="o">=</span><span class="n">user_to_authenticate_on_behalf_of</span><span class="p">,</span>
+        <span class="n">customer</span><span class="o">=</span><span class="n">platform_id</span>
+    <span class="p">)</span>
 </code></pre></div>
-</li>
-<li>
-<p>Make your first API call</p>
-<p>Let's display the full name of a registered user in lumapps</p>
-<div class="highlight"><pre><span></span><code><span class="n">user_email</span> <span class="o">=</span> <span class="s2">"YOUR EMAIL"</span>
-<span class="n">usr</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="s2">"get"</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fullName"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)))</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h2>
-<p>The SDK documentation is available <a href="https://github.com/lumapps/lumapps-sdk/wiki">here</a>.</p>
-<h2 id="code-convention">Code convention<a class="headerlink" href="#code-convention" title="Permanent link">¤</a></h2>
-<p>Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.</p>
-<h2 id="how-to-get-help-contribute-or-provide-feedback">How to get help, contribute, or provide feedback<a class="headerlink" href="#how-to-get-help-contribute-or-provide-feedback" title="Permanent link">¤</a></h2>
-<p>Please refer to our <a href="https://lumapps.github.io/lumapps-sdk/contributing.html#contributing-to-code">contributing guidelines</a>.</p>
-<h2 id="copyright-and-license">Copyright and license<a class="headerlink" href="#copyright-and-license" title="Permanent link">¤</a></h2>
-<p>LumApps SDK is released under the <a href="LICENSE/">MIT license</a>.</p>
+<p><strong>Note</strong>:</p>
+<p>The authentication is that case extends to 24h instead of 1h.</p>
 </article>
 </div>
 </div>
@@ -437,13 +380,26 @@ Once connected, open the javascript console of your browser and run:</p>
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav aria-label="Footer" class="md-footer-nav__inner md-grid">
-<a class="md-footer-nav__link md-footer-nav__link--next" href="authentication/" rel="next" title="Authentication">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href=".." rel="prev" title="Overview">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../guides/api_client_guide/" rel="next" title="Api Client">
 <div class="md-footer-nav__title">
 <div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Authentication
+                Api Client
               </div>
 </div>
 <div class="md-footer-nav__button md-icon">
@@ -465,14 +421,14 @@ Once connected, open the javascript console of your browser and run:</p>
 </div>
 </footer>
 </div>
-<script src="assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
-          base: ".",
+          base: "..",
           features: [],
           search: Object.assign({
-            worker: "assets/javascripts/worker/search.c03f0417.min.js"
+            worker: "../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

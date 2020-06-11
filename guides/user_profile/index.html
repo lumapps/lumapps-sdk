@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="LumApps sdk documentation" name="description"/>
+<link href="https://lumapps.github.io/lumapps-sdk/guides/user_profile/" rel="canonical"/>
+<link href="../../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
+<title>User Profile - LumApps SDK</title>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#user-profile">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="LumApps SDK" class="md-header-nav__button md-logo" href="https://lumapps.github.io/lumapps-sdk" title="LumApps SDK">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<span class="md-header-nav__topic md-ellipsis">
+            LumApps SDK
+          </span>
+<span class="md-header-nav__topic md-ellipsis">
+            
+              User Profile
+            
+          </span>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/lumapps/lumapps-sdk/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    lumapps/lumapps-sdk
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="LumApps SDK" class="md-nav__button md-logo" href="https://lumapps.github.io/lumapps-sdk" title="LumApps SDK">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+    LumApps SDK
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/lumapps/lumapps-sdk/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    lumapps/lumapps-sdk
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../.." title="Overview">
+      Overview
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../authentication/" title="Authentication">
+      Authentication
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      Guides
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Guides" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Guides
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api_client_guide/" title="Api Client">
+      Api Client
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-2" id="nav-3-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-3-2">
+      Community
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Community" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-3-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Community
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../community/" title="Community">
+      Community
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../community_posts/" title="Posts">
+      Posts
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../comments/" title="Comments">
+      Comments
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../groups/" title="Groups">
+      Groups
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../metadata/" title="Metadata">
+      Metadata
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../notifications/" title="Notifications">
+      Notifications
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-3-7" id="nav-3-7" type="checkbox"/>
+<label class="md-nav__link" for="nav-3-7">
+      Users
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Users" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-3-7">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Users
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../user_base/" title="Basics">
+      Basics
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        User Profile
+        <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"></path></svg>
+</span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./" title="User Profile">
+      User Profile
+    </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#get-user-directory-configuration">
+    Get user Directory configuration
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#update-the-user-profile">
+    Update the user profile
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../roles/" title="Roles">
+      Roles
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../widgets/" title="Widgets">
+      Widgets
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      Reference
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Reference
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api_client/" title="Api Client">
+      Api Client
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../widgets/" title="Widgets">
+      Widgets
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../medias." title="Medias">
+      Medias
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../LICENSE/" title="Copyright and license">
+      Copyright and license
+    </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#get-user-directory-configuration">
+    Get user Directory configuration
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#update-the-user-profile">
+    Update the user profile
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/guides/user_profile.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1 id="user-profile">User profile<a class="headerlink" href="#user-profile" title="Permanent link">¤</a></h1>
+<p>Profile fields are defined in a <code>User Directory Module</code> and populate through the user <code>customProfile</code> properties.</p>
+<h2 id="get-user-directory-configuration">Get user Directory configuration<a class="headerlink" href="#get-user-directory-configuration" title="Permanent link">¤</a></h2>
+<p>If you have the user directory module <code>id</code> use a <code>content/get</code> call with this id.</p>
+<p>Else, get a list of user directory modules on an instance.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+
+<span class="c1"># prepare the request parameters</span>
+<span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"instanceId"</span><span class="p">:</span> <span class="n">xxx</span><span class="p">,</span>
+    <span class="s2">"lang"</span><span class="p">:</span> <span class="s2">"en"</span><span class="p">,</span> <span class="c1"># adapt</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"user_directory"</span><span class="p">],</span>
+    <span class="s2">"excludeType"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"community"</span><span class="p">,</span> <span class="s2">"custom"</span><span class="p">,</span> <span class="s2">"custom_list"</span><span class="p">,</span> <span class="s2">"image_gallery"</span><span class="p">,</span> <span class="s2">"menu"</span><span class="p">,</span> <span class="s2">"news"</span><span class="p">,</span> <span class="s2">"news_list"</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">,</span> <span class="s2">"post"</span><span class="p">],</span>
+    <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"CUSTOM_EDIT"</span><span class="p">}</span>
+
+<span class="c1"># get user directory modules list</span>
+<span class="n">user_directories</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+    <span class="s2">"content"</span><span class="p">,</span> <span class="s2">"list"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+</code></pre></div>
+<p>The ̀<code>user_directories</code> will be a list of user directory modules.</p>
+<p>Each user directory module has :
+- a <code>uid</code> = <code>id</code>, we will use it as USER_DIRECTORY_MODULE_ID)
+- a list of custom profile fields define in <code>template.components</code> , each with an <code>uuid</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># example, this user directory module define 2 fields:</span>
+<span class="c1"># - "Title"</span>
+<span class="c1"># - "Phone Number"</span>
+<span class="p">{</span>
+    <span class="s2">"title"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"Users Directory"</span>
+    <span class="p">},</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"6486401110769664"</span><span class="p">,</span>
+    <span class="s2">"uid"</span><span class="p">:</span> <span class="s2">"6486401110769664"</span><span class="p">,</span>
+    <span class="s2">"instance"</span><span class="p">:</span> <span class="s2">"6288388086038528"</span><span class="p">,</span>
+    <span class="s2">"customer"</span><span class="p">:</span> <span class="s2">"4664706704080896"</span><span class="p">,</span>
+    <span class="s2">"isDefaultUserDirectory"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user_directory"</span><span class="p">,</span>
+    <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"LIVE"</span><span class="p">,</span>
+    <span class="s2">"slug"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"users-directory"</span>
+    <span class="p">},</span>
+    <span class="s2">"template"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"components"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"be3363f3-4df8-4a93-b27c-9c8c69258801"</span><span class="p">,</span>
+                <span class="s2">"title"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"Title"</span>
+                <span class="p">},</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"inputText"</span><span class="p">,</span>
+                <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"index"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="s2">"isBound"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                    <span class="s2">"boundMap"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"organizations/title"</span><span class="p">,</span>
+                        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"API_PROFILE_FIELD_TITLE"</span>
+                    <span class="p">},</span>
+                    <span class="s2">"icon"</span><span class="p">:</span> <span class="s2">"bank"</span>
+                <span class="p">},</span>
+                <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"LIVE"</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"b72127e4-867a-4aba-a843-70c11dc599ef"</span><span class="p">,</span>
+                <span class="s2">"title"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"fr"</span><span class="p">:</span> <span class="s2">"Phone Number"</span>
+                <span class="p">},</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"inputText"</span><span class="p">,</span>
+                <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"editFeeds"</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">"availableValues"</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{}</span>
+                    <span class="p">],</span>
+                    <span class="s2">"icon"</span><span class="p">:</span> <span class="s2">"account"</span>
+                <span class="p">},</span>
+                <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"LIVE"</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">"heritable"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-04-12T07:43:23.624150"</span><span class="p">,</span>
+        <span class="s2">"uid"</span><span class="p">:</span> <span class="s2">""</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="update-the-user-profile">Update the user profile<a class="headerlink" href="#update-the-user-profile" title="Permanent link">¤</a></h2>
+<p>To update the user profile:
+- get the user details for the corresponding user directory
+- update or add value for the custom fields defined by the <code>user directory</code> module.
+- save</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+
+<span class="n">CUSTOMER_ID</span> <span class="o">=</span> <span class="s1">'XXX'</span>
+<span class="n">INSTANCE_ID</span> <span class="o">=</span> <span class="s1">'YYY'</span>
+
+<span class="n">USER_DIRECTORY_MODULE_ID</span> <span class="o">=</span> <span class="s1">'6486401110769664'</span>
+<span class="n">USER_TO_UPDATE_EMAIL</span> <span class="o">=</span> <span class="s1">'me@customer.com'</span>
+
+<span class="c1"># get user details corresponding to a user directory module</span>
+<span class="n">user_to_update</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+    <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'directory'</span><span class="p">,</span> <span class="s1">'get'</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="n">USER_TO_UPDATE_EMAIL</span><span class="p">,</span>
+    <span class="n">contentId</span><span class="o">=</span><span class="n">USER_DIRECTORY_MODULE_ID</span><span class="p">)</span>
+
+<span class="c1"># keep all user_to_update properties</span>
+
+<span class="c1"># NB : if `user_to_update` doesn't have the `customProfile` property, add it</span>
+<span class="k">if</span> <span class="s2">"customProfile"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">userToUpadte</span><span class="p">:</span>
+    <span class="n">user_to_update</span><span class="p">[</span><span class="s1">'customProfile'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Update the value of "Title" (get uid from user directory module definition).</span>
+<span class="n">field1uid</span> <span class="o">=</span> <span class="s1">'be3363f3-4df8-4a93-b27c-9c8c69258801'</span>
+<span class="n">user_to_update</span><span class="p">[</span><span class="s1">'customProfile'</span><span class="p">][</span><span class="n">field1uid</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Support Leader'</span>
+
+<span class="c1"># Update the value of "Mobile" (get uid from user directory module definition).</span>
+<span class="n">field2uid</span> <span class="o">=</span> <span class="s1">'b72127e4-867a-4aba-a843-70c11dc599ef'</span>
+<span class="n">user_to_update</span><span class="p">[</span><span class="s1">'customProfile'</span><span class="p">][</span><span class="n">field2uid</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'00 11 22 33 44 55 66'</span>
+
+<span class="c1"># /!\ To save a user in a user directory</span>
+<span class="c1"># /!\ you must add the user directory module id in the user object like this:</span>
+<span class="n">user_to_update</span><span class="p">[</span><span class="s1">'contentId'</span><span class="p">]</span> <span class="o">=</span> <span class="n">USER_DIRECTORY_MODULE_ID</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+    <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'directory'</span><span class="p">,</span> <span class="s1">'save'</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="n">user_to_update</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># to get more users at once</span>
+<span class="c1"># use `POST user/directory/list body={'contentId':USER_DIRECTORY_MODULE_ID }`</span>
+
+<span class="n">users_to_update_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+    <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'directory'</span><span class="p">,</span> <span class="s1">'list'</span><span class="p">,</span>
+    <span class="n">contentId</span><span class="o">=</span><span class="n">USER_DIRECTORY_MODULE_ID</span> <span class="p">)</span>
+</code></pre></div>
+<p>Warning:</p>
+<ul>
+<li>if the field is defined with a bound value (ex for the "Title" above: 'organizations/title' ) the Title value will be store on the user under <code>apiProfile.organization.title</code></li>
+<li>else, the value will be store under <code>customProfile.{fielduid}</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># example: the response of the previous call</span>
+
+<span class="p">{</span> 
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"me@customer.com"</span><span class="p">,</span>
+    <span class="s2">"customProfile"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"b72127e4-867a-4aba-a843-70c11dc599ef"</span><span class="p">:</span> <span class="s2">"00 11 22 33 44 55 66"</span>
+    <span class="p">}</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">],</span>
+    <span class="s2">"apiProfile"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"organization"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"title"</span><span class="p">:</span> <span class="s2">"Support Leader"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../user_base/" rel="prev" title="Basics">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Basics
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../roles/" rel="next" title="Roles">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Roles
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+</body>
+</html>
