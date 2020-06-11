@@ -368,11 +368,7 @@ class ApiClient(AbstractContextManager):
         path = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]
         path = self._expand_path(path, endpoint, params)
         files = {
-            "data": (
-                "metadata",
-                dumps(metadata),
-                "application/json; charset=UTF-8",
-            ),
+            "data": ("metadata", dumps(metadata), "application/json; charset=UTF-8"),
             "file": file_content,
         }
         resp = self.client.request(verb, path, params=params, files=files)
