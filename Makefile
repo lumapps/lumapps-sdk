@@ -1,13 +1,8 @@
 .DEFAULT_GOAL := help
 
-PY_SRC := lumapps/ tests/ scripts/
+PY_SRC := lumapps/
 CI ?= false
 TESTING ?= false
-
-.PHONY: changelog
-changelog:  ## Update the changelog in-place with latest commits.
-	@poetry run failprint -t "Updating changelog" -- python scripts/update_changelog.py \
-		CHANGELOG.md "<!-- insertion marker -->" "^## \[(?P<version>[^\]]+)"
 
 .PHONY: check
 check: check-docs check-code-quality check-types check-dependencies  ## Check it all!
@@ -53,6 +48,7 @@ clean:  ## Delete temporary files.
 docs-cp:
 	cp README.md docs/index.md
 	cp LICENSE.md docs/
+	cp CONTRIBUTING.md docs/
 
 .PHONY: docs
 docs: docs-cp ## Build the documentation locally.

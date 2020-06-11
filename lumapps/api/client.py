@@ -73,7 +73,7 @@ class ApiClient(AbstractContextManager):
         self._token = None
         self._endpoints = None
         self._client = None
-        self._headers = {}
+        self._headers: dict = {}
         if api_info is None:
             api_info = {}
         api_info.setdefault("name", LUMAPPS_NAME)
@@ -182,7 +182,7 @@ class ApiClient(AbstractContextManager):
             self._client = self._create_client()
         return self._client
 
-    @property
+    @property  # type: ignore
     @lru_cache()
     def discovery_doc(self):
         url = self._discovery_url
@@ -250,7 +250,7 @@ class ApiClient(AbstractContextManager):
             Returns:
                 ApiClient: A new instance of the ApiClient correctly authenticated.
         """
-        token_infos = self.get_call(
+        token_infos: Any = self.get_call(
             "user/getToken", customerId=customer_id, email=user_email
         )
         token = token_infos["accessToken"]
@@ -320,7 +320,7 @@ class ApiClient(AbstractContextManager):
 
     def _expand_path(self, path, endpoint: dict, params: dict):
         param_specs = endpoint.get("parameters", {})
-        path_args = {}
+        path_args: dict = {}
         for param, specs in param_specs.items():
             if specs.get("required") is True and param not in params:
                 raise ApiCallError(f"Missing required parameter {param}")
@@ -368,7 +368,7 @@ class ApiClient(AbstractContextManager):
 
     def upload(self, file_content: FileContent, metadata: dict, *name_parts, **params):
         name_parts = _parse_endpoint_parts(name_parts)
-        endpoint = method_from_discovery(self.discovery_doc, name_parts)
+        endpoint: Any = method_from_discovery(self.discovery_doc, name_parts)  # type: ignore  # noqa
         if not endpoint.get("mediaUpload"):
             raise ApiCallError(
                 f"Endpoint {'.'.join(name_parts)} is not for uploads, "
@@ -376,7 +376,7 @@ class ApiClient(AbstractContextManager):
             )
         verb = endpoint.get("httpMethod")
         upload_specs = endpoint["mediaUpload"]["protocols"]["simple"]
-        path = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]
+        path: Any = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]  # type: ignore  # noqa
         path = self._expand_path(path, endpoint, params)
         files = {
             "data": ("metadata", dumps(metadata), "application/json; charset=UTF-8"),
@@ -394,9 +394,9 @@ class ApiClient(AbstractContextManager):
 
     def get_call(
         self, *name_parts, **params
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Union[Dict[str, Any], List[Dict[str, Any]], None]:
         """Generic function to call a lumapps endpoint
-        
+
             Args:
                 *name_parts: Endpoint, eg user/get or "user", "get"
                 **params: Parameters of the call
@@ -414,7 +414,7 @@ class ApiClient(AbstractContextManager):
                     >>> print(feedtypes)
         """
         name_parts = _parse_endpoint_parts(name_parts)
-        items = []
+        items: List[dict] = []
         self.cursor = cursor = params.pop("cursor", None)
         body = self._pop_body(params)
         while True:

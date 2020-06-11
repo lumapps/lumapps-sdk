@@ -32,12 +32,12 @@ def create_new_media(
 
         Returns:
             Return the uploaded media if successfull, None otherwise.
-    """
+    """  # noqa
 
     if isinstance(file_data_or_path, str):
         file_data = open(file_data_or_path, "rb")
     elif isinstance(file_data_or_path, bytes):
-        file_data = file_data_or_path
+        file_data = file_data_or_path  # type: ignore
     else:
         raise ApiClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
@@ -51,15 +51,15 @@ def create_new_media(
         "shared": is_shared,
         "success": "/upload",
     }
-    upload_infos = client.get_call("document/uploadUrl/get", body=body)
+    upload_infos: Any = client.get_call("document/uploadUrl/get", body=body)
     upload_url = upload_infos["uploadUrl"]
 
     # Upload
-    files_tuple_list = [("files", (filename, file_data, mimetype))]
+    files_tuple_list: Any = [("files", (filename, file_data, mimetype))]
     response = httpx.post(
         upload_url,
         headers={"Authorization": "Bearer " + client.token},
-        files=files_tuple_list,
+        files=files_tuple_list,  # type: ignore
     )
     doc = response.json().get("items")
 
@@ -90,11 +90,11 @@ def add_media_file_for_lang(
 
         Returns:
             The updated media if succesfull, otherwise None.
-    """
+    """  # noqa
 
     # upload the file
     uploaded_file = _upload_new_media_file_of_given_lang(
-        api=client,
+        client=client,
         file_data_or_path=file_data_or_path,
         filename=filename,
         mimetype=mimetype,
@@ -106,7 +106,7 @@ def add_media_file_for_lang(
     # update the media
     where = "croppedContent" if croppedContent else "content"
     media[where].append(uploaded_file)
-    saved = client.get_call("document/update", body=media)
+    saved: Any = client.get_call("document/update", body=media)
     return saved
 
 
@@ -137,12 +137,12 @@ def _upload_new_media_file_of_given_lang(
         Notes:
             This is intended to be used to add new lang version/croppedContent to
             a LumApps media.
-    """
+    """  # noqa
 
     if isinstance(file_data_or_path, str):
         file_data = open(file_data_or_path, "rb")
     elif isinstance(file_data_or_path, bytes):
-        file_data = file_data_or_path
+        file_data = file_data_or_path  # type: ignore
     else:
         raise ApiClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))

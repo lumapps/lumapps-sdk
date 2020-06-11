@@ -64,18 +64,15 @@ pip install lumapps-sdk
 
 ## Documentation
 
-
 The SDK documentation is available [here](https://github.com/lumapps/lumapps-sdk/wiki).
 
 ## Code convention
-
 
 Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.
 
 ## How to get help, contribute, or provide feedback
 
-
-Please refer to our [contributing guidelines](https://lumapps.github.io/lumapps-sdk/contributing.html#contributing-to-code).
+Please refer to our [contributing guidelines](CONTRIBUTING.md).
 
 ## Copyright and license
 

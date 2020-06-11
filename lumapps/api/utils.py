@@ -198,6 +198,7 @@ class DiscoveryCacheSqlite:
         )
 
 
+_discovery_cache: Any
 if _sqlite_ok:
     _discovery_cache = DiscoveryCacheSqlite()
 else:
@@ -230,7 +231,7 @@ def _parse_endpoint_parts(parts):
 
 def method_from_discovery(
     discovery: Dict[str, Any], path: Sequence[str]
-) -> Dict[str, Any]:
+) -> Optional[Dict[str, Any]]:
     for part in path[:-1]:
         discovery = discovery["resources"].get(part)
         if not discovery:
