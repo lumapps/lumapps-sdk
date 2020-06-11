@@ -100,8 +100,8 @@ setup:  ## Setup the development environment (install dependencies).
 	fi; \
 	poetry install -v
 	@if ! $(CI); then \
-		pre-commit install
-	fi;
+		pre-commit install; \
+	fi; \
 
 
 .PHONY: test
