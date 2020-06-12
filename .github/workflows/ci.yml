@@ -26,7 +26,7 @@ jobs:
       - uses: actions/cache@v1
         name: Cache Poetry deps
         with:
-          path: ~/.cache/poetry/virtualenvs
+          path: ~/.cache/pypoetry/virtualenvs
           key: lint-${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             lint-${{ runner.os }}-poetry-
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/cache@v1
         name: Cache Poetry deps
         with:
-          path: ~/.cache/poetry/virtualenvs
+          path: ~/.cache/pypoetry/virtualenvs
           key: tests-${{ runner.os }}-${{ matrix.python-version }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             tests-${{ runner.os }}-${{ matrix.python-version }}-poetry-

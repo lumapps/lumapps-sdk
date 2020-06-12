@@ -23,7 +23,7 @@ jobs:
       - uses: actions/cache@v1
         name: Cache Poetry deps
         with:
-          path: ~/.cache/poetry/virtualenvs
+          path: ~/.cache/pypoetry/virtualenvs
           key: pypi-${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             pypi-${{ runner.os }}-poetry-
