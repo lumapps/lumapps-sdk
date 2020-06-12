@@ -175,8 +175,8 @@ def _upload_new_media_file_of_given_lang(
         uploaded_file["value"] = uploaded_file["blobKey"]
         uploaded_file["servingUrl"] = uploaded_file["url"]
         uploaded_file["downloadUrl"] = uploaded_file["url"]
-        del uploaded_file["blobKey"]
-        del uploaded_file["upload"]
-        del uploaded_file["filelink"]
+        uploaded_file.pop("blobKey", None)
+        uploaded_file.pop("upload", None)
+        uploaded_file.pop("fileLink", None)
 
     return uploaded_file

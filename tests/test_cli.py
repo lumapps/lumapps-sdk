@@ -11,6 +11,7 @@ from lumapps.api.cli import (
     main,
     parse_args,
     setup_logger,
+    store_config
 )
 from lumapps.api.utils import (
     ConfigStore,
@@ -124,3 +125,18 @@ def test_cast_params():
     params = {"includeInstanceSiblings": "no"}
     cast_params(name_parts, params, endpoints)
     assert params["includeInstanceSiblings"] is False
+
+def test_store_config():
+    api_file = {}
+    auth_file = {}
+    user = "test"
+    conf_name = "conf_test"
+
+    store_config(api_file, auth_file, conf_name, user=user)
+    c = load_config(None, None, None, conf_name=conf_name)
+    assert c[2] == user
+    assert c == (api_file, auth_file, user)
+
+    c = load_config(api_file, auth_file, user, conf_name=conf_name)
+    assert c[2] == user
+    assert c == (api_file, auth_file, user)
