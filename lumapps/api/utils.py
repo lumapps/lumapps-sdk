@@ -51,7 +51,6 @@ FILTERS = {
     # template/get, template/list, ...
     "template/*": ["properties/duplicateContent"],
     "community/post/*": [
-        "authorDetails",
         "updatedByDetails",
         "mentionsDetails",
         "parentContentDetails",
