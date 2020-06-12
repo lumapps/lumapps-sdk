@@ -2,6 +2,12 @@
 
 Notable changes to this project will be documented in this file.
 
+## 1.0.5 (12 June 2020)
+
+### Added
+
+* Change build system and add a more complete documentation
+
 ## 1.0.4 (11 June 2020)
 
 ### Added
