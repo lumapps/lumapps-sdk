@@ -1,35 +1,43 @@
+from typing import Any, Dict, Optional, Union
+
 import httpx
+
+from lumapps.api.client import ApiClient
 from lumapps.api.errors import ApiClientError
 
 
 def create_new_media(
-    client, file_data_or_path, doc_path, filename, mimetype, is_shared, lang="en"
-):
+    client: ApiClient,
+    file_data_or_path: Union[bytes, str],
+    doc_path: str,
+    filename: str,
+    mimetype: str,
+    is_shared: bool,
+    lang: Optional[str] = "en",
+) -> Optional[Dict[str, Any]]:
     """ Upload a file and create a new media in LumApps media library.
 
-    Arguments:
-        client (ApiClient): The ApiClient used to make httpx to the LumApps Api.
-        file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
-        doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
-                        (eg: provider=<my_provider>/site=<my_site_id>/resource=<my_parent_folder_id>)
-        filename (str): The name of the file to upload. Once uploaded the file will appear with that name.
-        mimetype (str): The mimeType fo the file to upload.
-        is_shared (bool): Wether the file is shared or not. Non shared files will only be visible by you.
+        Args:
+            client: The ApiClient used to make httpx to the LumApps Api.
+            file_data_or_path: The filepath (str) or the data (bytes) to upload.
+            doc_path: The doc path of the media to upload, this will decide where the media will go in your media library
+                            (eg: provider=`<`my_provider`>`/site=`<`my_site_id`>`/resource=`<`my_parent_folder_id`>`)
+            filename: The name of the file to upload. Once uploaded the file will appear with that name.
+            mimetype: The mimeType fo the file to upload.
+            is_shared: Wether the file is shared or not. Non shared files will only be visible by you.
+            lang: The lang of the file to upload (default: "en").
 
-    Keyword Arguments:
-        lang (str): The lang of the file to upload (default: "en").
+        Raises:
+            Exception: The data or file path type provided is not supported.
 
-    Raises:
-        Exception: The data or file path type provided is not supported.
-
-    Returns:
-        Optional[Dict[str, Any]]: Return the uploaded media if successfull, None otherwise.
-    """
+        Returns:
+            Return the uploaded media if successfull, None otherwise.
+    """  # noqa
 
     if isinstance(file_data_or_path, str):
         file_data = open(file_data_or_path, "rb")
     elif isinstance(file_data_or_path, bytes):
-        file_data = file_data_or_path
+        file_data = file_data_or_path  # type: ignore
     else:
         raise ApiClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
@@ -43,15 +51,15 @@ def create_new_media(
         "shared": is_shared,
         "success": "/upload",
     }
-    upload_infos = client.get_call("document/uploadUrl/get", body=body)
+    upload_infos: Any = client.get_call("document/uploadUrl/get", body=body)
     upload_url = upload_infos["uploadUrl"]
 
     # Upload
-    files_tuple_list = [("files", (filename, file_data, mimetype))]
+    files_tuple_list: Any = [("files", (filename, file_data, mimetype))]
     response = httpx.post(
         upload_url,
         headers={"Authorization": "Bearer " + client.token},
-        files=files_tuple_list,
+        files=files_tuple_list,  # type: ignore
     )
     doc = response.json().get("items")
 
@@ -61,36 +69,32 @@ def create_new_media(
 
 
 def add_media_file_for_lang(
-    client,
-    media,
-    file_data_or_path,
-    filename,
-    mimetype,
-    lang="en",
-    croppedContent=False,
-):
+    client: ApiClient,
+    media: Dict[str, Any],
+    file_data_or_path: str,
+    filename: str,
+    mimetype: str,
+    lang: Optional[str] = "en",
+    croppedContent: Optional[bool] = False,
+) -> Optional[Dict[str, Any]]:
     """ Add a file to an existing LumApps media.
 
-    Arguments:
-        client (ApiClient): The ApiClient used to make httpx to the LumApps Api.
-        media (Dict[str, Any]): The LumApps media on which the files have to be uploaded.
-        file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
-        doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
-                        (eg: provider=<my_provider>/site=<my_site_id>/resource=<my_parent_folder_id>)
-        filename (str): The name of the file to upload. Once uploaded the file will appear with that name.
-        mimetype (str): The mimeType fo the file to upload.
+        Args:
+            client: The ApiClient used to make httpx to the LumApps Api.
+            media: The LumApps media on which the files have to be uploaded.
+            file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
+            filename: The name of the file to upload. Once uploaded the file will appear with that name.
+            mimetype: The mimeType fo the file to upload.
+            lang: The lang of the file to upload (default: "en").
+            croppedContent (bool): Wether to add the file to the croppedContent instead or content (default: False)
 
-    Keyword Arguments:
-        lang (str): The lang of the file to upload (default: "en").
-        croppedContent (bool): Wether to add the file to the croppedContent instead or content (default: False)
-
-    Returns:
-        Optional[Dict[str, Any]]: The updated media if succesfull, otherwise None.
-    """
+        Returns:
+            The updated media if succesfull, otherwise None.
+    """  # noqa
 
     # upload the file
     uploaded_file = _upload_new_media_file_of_given_lang(
-        api=client,
+        client=client,
         file_data_or_path=file_data_or_path,
         filename=filename,
         mimetype=mimetype,
@@ -102,42 +106,43 @@ def add_media_file_for_lang(
     # update the media
     where = "croppedContent" if croppedContent else "content"
     media[where].append(uploaded_file)
-    saved = client.get_call("document/update", body=media)
+    saved: Any = client.get_call("document/update", body=media)
     return saved
 
 
 def _upload_new_media_file_of_given_lang(
-    client, file_data_or_path, filename, mimetype, lang="en", prepare_for_lumapps=True
+    client: ApiClient,
+    file_data_or_path: Union[bytes, str],
+    filename: str,
+    mimetype: str,
+    lang: Optional[str] = "en",
+    prepare_for_lumapps: Optional[bool] = False,
 ):
     """ Upload a file to lumapps without creating an associated media
 
-    Note:
-        This is intended to be used to add new lang version/croppedContent to
-        a LumApps media.
+        Args:
+            client: The ApiClient used to make httpx to the LumApps Api.
+            file_data_or_path: The filepath or the data to upload.
+            filename: The name of the file to upload. Once uploaded the file will appear with that name.
+            mimetype: The mimeType fo the file to upload.
+            lang: The lang of the file to upload (default: "en").
+            prepare_for_lumapps: prepare the return uploaded file to be usable as a lumapps media object (default: False)
 
-    Arguments:
-        client (ApiClient): The ApiClient used to make httpx to the LumApps Api.
-        file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
-        doc_path (str): The doc path of the media to upload, this will decide where the media will go in your media library
-                        (eg: provider=<my_provider>/site=<my_site_id>/resource=<my_parent_folder_id>)
-        filename (str): The name of the file to upload. Once uploaded the file will appear with that name.
-        mimetype (str): The mimeType fo the file to upload.
+        Raises:
+            Exception: The data or file path type provided is not supported.
 
-    Keyword Arguments:
-        lang (str): The lang of the file to upload (default: "en").
-        prepare_for_lumapps (bool): (default: True)
-
-    Raises:
-        Exception: The data or file path type provided is not supported.
-
-    Returns:
-        Optional[Dict[str, Any]]: Return the uploaded file if successfull, None otherwise.
-    """
+        Returns:
+            Return the uploaded file if successfull, None otherwise.
+        
+        Notes:
+            This is intended to be used to add new lang version/croppedContent to
+            a LumApps media.
+    """  # noqa
 
     if isinstance(file_data_or_path, str):
         file_data = open(file_data_or_path, "rb")
     elif isinstance(file_data_or_path, bytes):
-        file_data = file_data_or_path
+        file_data = file_data_or_path  # type: ignore
     else:
         raise ApiClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
@@ -157,7 +162,7 @@ def _upload_new_media_file_of_given_lang(
     response = httpx.post(
         upload_url,
         headers={"Authorization": "Bearer " + client.token},
-        files={'upload-file': (filename, file_data, mimetype)},
+        files={"upload-file": (filename, file_data, mimetype)},
     )
     uploaded_file = response.json()
 
@@ -170,8 +175,8 @@ def _upload_new_media_file_of_given_lang(
         uploaded_file["value"] = uploaded_file["blobKey"]
         uploaded_file["servingUrl"] = uploaded_file["url"]
         uploaded_file["downloadUrl"] = uploaded_file["url"]
-        del uploaded_file["blobKey"]
-        del uploaded_file["upload"]
-        del uploaded_file["filelink"]
+        uploaded_file.pop("blobKey", None)
+        uploaded_file.pop("upload", None)
+        uploaded_file.pop("fileLink", None)
 
     return uploaded_file

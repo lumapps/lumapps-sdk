@@ -1,4 +1,9 @@
 import os
+from datetime import datetime, timedelta
+from json import dumps, loads
+from typing import Any, Dict, Optional, Sequence
+
+from lumapps.api.conf import __pypi_packagename__
 
 if not os.getenv("GAE_ENV"):  # noqa
     import sqlite3
@@ -7,11 +12,6 @@ if not os.getenv("GAE_ENV"):  # noqa
 else:
     _sqlite_ok = False
 
-from typing import Any, Dict, Optional, Sequence
-from json import loads, dumps
-from datetime import datetime, timedelta
-
-from lumapps.api.conf import __pypi_packagename__
 
 CACHE_MAX_AGE = timedelta(seconds=60 * 60 * 24)  # 1 day
 GOOGLE_APIS = ("drive", "admin", "groupssettings")
@@ -197,6 +197,7 @@ class DiscoveryCacheSqlite:
         )
 
 
+_discovery_cache: Any
 if _sqlite_ok:
     _discovery_cache = DiscoveryCacheSqlite()
 else:
@@ -229,7 +230,7 @@ def _parse_endpoint_parts(parts):
 
 def method_from_discovery(
     discovery: Dict[str, Any], path: Sequence[str]
-) -> Dict[str, Any]:
+) -> Optional[Dict[str, Any]]:
     for part in path[:-1]:
         discovery = discovery["resources"].get(part)
         if not discovery:

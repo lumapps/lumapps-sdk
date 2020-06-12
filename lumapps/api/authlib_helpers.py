@@ -1,19 +1,19 @@
-from httpx import Client
-from authlib.oauth2.rfc7521 import AssertionClient as _AssertionClient
-from authlib.oauth2.rfc7523 import JWTBearerGrant
 from authlib.common.urls import url_decode
-from authlib.oauth2 import OAuth2Error
-from authlib.oauth2.client import OAuth2Client as _OAuth2Client
 from authlib.integrations.base_client import (
-    OAuthError,
     InvalidTokenError,
     MissingTokenError,
+    OAuthError,
 )
 from authlib.integrations.httpx_client.oauth2_client import OAuth2Auth, OAuth2ClientAuth
 from authlib.integrations.httpx_client.utils import (
     HTTPX_CLIENT_KWARGS,
     extract_client_kwargs,
 )
+from authlib.oauth2 import OAuth2Error
+from authlib.oauth2.client import OAuth2Client as _OAuth2Client
+from authlib.oauth2.rfc7521 import AssertionClient as _AssertionClient
+from authlib.oauth2.rfc7523 import JWTBearerGrant
+from httpx import Client
 
 __all__ = ["AssertionClient", "OAuth2Client"]
 

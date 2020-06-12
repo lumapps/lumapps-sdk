@@ -1,0 +1,53 @@
+site_name: LumApps SDK
+site_description: "LumApps sdk documentation"
+site_url: "https://lumapps.github.io/lumapps-sdk"
+repo_url: "https://github.com/lumapps/lumapps-sdk"
+repo_name: "lumapps/lumapps-sdk"
+
+theme:
+  name: "material"
+
+nav:
+    - Overview: index.md
+    - Authentication: authentication.md
+    - Guides:
+      - Api Client: guides/api_client_guide.md
+      - Community:
+          - Community: guides/community.md
+          - Posts: guides/community_posts.md
+      - Comments: guides/comments.md
+      - Groups: guides/groups.md
+      - Metadata: guides/metadata.md
+      - Notifications: guides/notifications.md
+      - Users: 
+        - Basics: guides/user_base.md
+        - User Profile: guides/user_profile.md
+      - Roles: guides/roles.md
+      - Widgets: guides/widgets.md
+    - Reference:
+      - Api Client: api_client.md
+      - Widgets: widgets.md
+      - Medias: medias.md
+    - Contributing: CONTRIBUTING.md
+    - Copyright and license: LICENSE.md
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - pymdownx.superfences
+  - pymdownx.tasklist
+  - pymdownx.emoji
+  - toc:
+      permalink: "¤"
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+      watch:
+        - lumapps

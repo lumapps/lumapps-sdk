@@ -1,5 +1,5 @@
+from importlib import invalidate_caches, reload
 from os import environ
-from importlib import reload, invalidate_caches
 
 import lumapps.api.utils
 

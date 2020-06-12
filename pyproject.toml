@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "lumapps-sdk"
+version = "0.1.1"
+description = ""
+authors = ["Aurélien Dentan <aurelien@lumapps.com>", "Ludovic Vaugeois <ludovic.vaugeois@lumapps.com>"]
+license = "MIT License"
+readme = "README.md"
+repository = "https://github.com/lumapps/lumapps-sdk"
+homepage = "https://github.com/lumapps/lumapps-sdk"
+keywords = ["lumapps-sdk", "sdk", "python"]
+packages = [ { include = "lumapps" } ]
+include = [
+    "README.md",
+    "pyproject.toml"
+]
+
+[tool.poetry.dependencies]
+python = "^3.6.4"
+httpx = "^0.13.3"
+Authlib = "^0.14.3"
+pytest-cov = "^2.9.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.3"
+coverage = "^5.1"
+pytest = "^5.4.3"
+pytest-mock = "^3.1.1"
+bandit = "^1.6.2"
+mkdocs-material = "^5.2.3"
+mkdocstrings = "^0.11.4"
+pre-commit = "^2.5.0"
+pre-commit-hooks = "^3.1.0"
+pylint = "^2.5.3"
+mypy = "^0.780"
+jinja2 = "^2.11.2"
+git-changelog = "^0.4.0"
+failprint = "^0.3.0"
+black = "^19.10b0"
+isort = { version = "^4.3", extras = ["pyproject"] }
+safety = "^1.9.0"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+line_length = 88
+not_skip = "__init__.py"
+multi_line_output = 3
+force_single_line = false
+balanced_wrapping = true
+default_section = "THIRDPARTY"
+known_first_party = "lumapps"
+include_trailing_comma = true
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+

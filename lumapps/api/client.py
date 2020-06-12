@@ -1,25 +1,36 @@
 import warnings
 from contextlib import AbstractContextManager
-from json import loads, dumps
-from time import time
-from textwrap import TextWrapper
-from typing import Any, Dict, Optional, Callable, Tuple, Sequence, Union, IO
-from pathlib import Path
 from functools import lru_cache
+from json import dumps, loads
+from pathlib import Path
+from textwrap import TextWrapper
+from time import time
+from typing import (
+    IO,
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 from httpx import Client
 
 # from authlib.integrations.requests_client import OAuth2Session, AssertionSession
-from lumapps.api.authlib_helpers import OAuth2Client, AssertionClient
-from lumapps.api.errors import ApiClientError, ApiCallError
+from lumapps.api.authlib_helpers import AssertionClient, OAuth2Client
+from lumapps.api.errors import ApiCallError, ApiClientError
 from lumapps.api.utils import (
-    get_discovery_cache,
-    pop_matches,
-    GOOGLE_APIS,
     FILTERS,
+    GOOGLE_APIS,
     _parse_endpoint_parts,
-    method_from_discovery,
+    get_discovery_cache,
     get_endpoints,
+    method_from_discovery,
+    pop_matches,
 )
 
 LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
@@ -62,7 +73,7 @@ class ApiClient(AbstractContextManager):
         self._token = None
         self._endpoints = None
         self._client = None
-        self._headers = {}
+        self._headers: dict = {}
         if api_info is None:
             api_info = {}
         api_info.setdefault("name", LUMAPPS_NAME)
@@ -171,7 +182,7 @@ class ApiClient(AbstractContextManager):
             self._client = self._create_client()
         return self._client
 
-    @property
+    @property  # type: ignore
     @lru_cache()
     def discovery_doc(self):
         url = self._discovery_url
@@ -239,7 +250,7 @@ class ApiClient(AbstractContextManager):
             Returns:
                 ApiClient: A new instance of the ApiClient correctly authenticated.
         """
-        token_infos = self.get_call(
+        token_infos: Any = self.get_call(
             "user/getToken", customerId=customer_id, email=user_email
         )
         token = token_infos["accessToken"]
@@ -309,7 +320,7 @@ class ApiClient(AbstractContextManager):
 
     def _expand_path(self, path, endpoint: dict, params: dict):
         param_specs = endpoint.get("parameters", {})
-        path_args = {}
+        path_args: dict = {}
         for param, specs in param_specs.items():
             if specs.get("required") is True and param not in params:
                 raise ApiCallError(f"Missing required parameter {param}")
@@ -357,7 +368,7 @@ class ApiClient(AbstractContextManager):
 
     def upload(self, file_content: FileContent, metadata: dict, *name_parts, **params):
         name_parts = _parse_endpoint_parts(name_parts)
-        endpoint = method_from_discovery(self.discovery_doc, name_parts)
+        endpoint: Any = method_from_discovery(self.discovery_doc, name_parts)  # type: ignore  # noqa
         if not endpoint.get("mediaUpload"):
             raise ApiCallError(
                 f"Endpoint {'.'.join(name_parts)} is not for uploads, "
@@ -365,7 +376,7 @@ class ApiClient(AbstractContextManager):
             )
         verb = endpoint.get("httpMethod")
         upload_specs = endpoint["mediaUpload"]["protocols"]["simple"]
-        path = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]
+        path: Any = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]  # type: ignore  # noqa
         path = self._expand_path(path, endpoint, params)
         files = {
             "data": ("metadata", dumps(metadata), "application/json; charset=UTF-8"),
@@ -381,26 +392,29 @@ class ApiClient(AbstractContextManager):
         with Path(fpath).open("rb") as fh:
             return self.upload(fh, metadata, *name_parts, **params)
 
-    def get_call(self, *name_parts, **params):
-        """
-        Args:
-            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
-            **params (dict): Parameters of the call
+    def get_call(
+        self, *name_parts, **params
+    ) -> Union[Dict[str, Any], List[Dict[str, Any]], None]:
+        """Generic function to call a lumapps endpoint
 
-        Returns:
-            Union[dict, List[dict]]: Object or objects returned by the endpoint call.
+            Args:
+                *name_parts: Endpoint, eg user/get or "user", "get"
+                **params: Parameters of the call
 
-        Example:
-            List feedtypes in LumApps:
-            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            Returns:
+                Object or objects returned by the endpoint call.
 
-            With this endpoint:
+            Example:
+                List feedtypes in LumApps:
+                -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-                >>> feedtypes = get_call("feedtype/list")
-                >>> print(feedtypes)
+                With this endpoint:
+
+                    >>> feedtypes = get_call("feedtype/list")
+                    >>> print(feedtypes)
         """
         name_parts = _parse_endpoint_parts(name_parts)
-        items = []
+        items: List[dict] = []
         self.cursor = cursor = params.pop("cursor", None)
         body = self._pop_body(params)
         while True:
@@ -436,24 +450,30 @@ class ApiClient(AbstractContextManager):
                     # special case of
                     return [] if more is False else self._prune(name_parts, response)
 
-    def iter_call(self, *name_parts, **params):
+    def iter_call(
+        self, *name_parts, **params
+    ) -> Generator[
+        Union[Dict[str, Any], List[Dict[str, Any]]],
+        Union[Dict[str, Any], List[Dict[str, Any]]],
+        None,
+    ]:
         """
-         Args:
-            *name_parts (List[str]): Endpoint, eg user/get or "user", "get"
-            **params (dict): Parameters of the call
+            Args:
+                *name_parts: Endpoint, eg user/get or "user", "get"
+                **params: Parameters of the call
 
-        Yields:
-            dict: Objects returned by the endpoint call.
+            Yields:
+                Objects returned by the endpoint call
 
 
-        Example:
-            List feedtypes in LumApps:
-            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+            Example:
+                List feedtypes in LumApps:
+                -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-            With this endpoint:
+                With this endpoint:
 
-                >>> feedtypes = iter_call("feedtype/list")
-                >>> for feedtype in feedtypes: print(feedtype)
+                    >>> feedtypes = iter_call("feedtype/list")
+                    >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
         self.cursor = cursor = params.pop("cursor", None)

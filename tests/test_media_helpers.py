@@ -1,12 +1,13 @@
 from json import load
-from pytest import raises, fixture
+
+from pytest import fixture, raises
 
 from lumapps.api.client import ApiClient
 from lumapps.api.errors import ApiClientError
 from lumapps.api.helpers.medias import (
     _upload_new_media_file_of_given_lang,
-    create_new_media,
     add_media_file_for_lang,
+    create_new_media,
 )
 from lumapps.api.utils import get_discovery_cache
 
@@ -29,7 +30,6 @@ class MockResponse:
 
 
 def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
-
     post_resp = {
         "blobKey": "fakeblobkey",
         "url": "https://fakeurl.com",
@@ -37,15 +37,17 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
         "filelink": "rien",
     }
 
-    def mock_get(*args, **kwargs):
-        return MockResponse({"uploadUrl": "https://fake.com"})
+    def _prep_mocker():
+        def mock_get(*args, **kwargs):
+            return MockResponse({"uploadUrl": "https://fake.com"})
 
-    def mock_post(*args, **kwargs):
-        return MockResponse(post_resp)
+        def mock_post(*args, **kwargs):
+            return MockResponse(post_resp)
 
-    mocker.patch("httpx.get", mock_get)
-    mocker.patch("httpx.post", mock_post)
+        mocker.patch("httpx.get", mock_get)
+        mocker.patch("httpx.post", mock_post)
 
+    _prep_mocker()
     with raises(ApiClientError):
         _upload_new_media_file_of_given_lang(
             cli, None, "fake", "fake", lang="en", prepare_for_lumapps=False
@@ -61,6 +63,7 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
     )
     assert uploaded_file == post_resp
 
+    _prep_mocker()
     uploaded_file = _upload_new_media_file_of_given_lang(
         cli,
         "tests/test_data/content_1.json",
@@ -72,6 +75,39 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
     assert "upload" not in uploaded_file
     assert uploaded_file["value"] == "fakeblobkey"
 
+    # _prep_mocker()
+    # data = open("tests/test_data/content_1.json", "rb").read()
+    # uploaded_file = _upload_new_media_file_of_given_lang(
+    #     cli, data, "fake", "fake", lang="en", prepare_for_lumapps=False,
+    # )
+    # assert "upload" not in uploaded_file
+    # assert uploaded_file["value"] == "fakeblobkey"
+
+def test_upload_new_media_file_of_given_lang_2(mocker, cli: ApiClient):
+    post_resp = {
+        "blobKey": "fakeblobkey",
+        "url": "https://fakeurl.com",
+        "upload": "rien",
+        "filelink": "rien",
+    }
+
+    def _prep_mocker():
+        def mock_get(*args, **kwargs):
+            return MockResponse({"uploadUrl": "https://fake.com"})
+
+        def mock_post(*args, **kwargs):
+            return MockResponse(post_resp)
+
+        mocker.patch("httpx.get", mock_get)
+        mocker.patch("httpx.post", mock_post)
+    
+    _prep_mocker()
+    data = open("tests/test_data/content_1.json", "rb").read()
+    uploaded_file = _upload_new_media_file_of_given_lang(
+        cli, data, "fake", "fake", lang="en", prepare_for_lumapps=True,
+    )
+    assert "upload" not in uploaded_file
+    assert uploaded_file["value"] == "fakeblobkey"
 
 def test_create_new_media(mocker, cli: ApiClient):
 

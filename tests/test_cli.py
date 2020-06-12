@@ -5,18 +5,19 @@ from unittest.mock import PropertyMock
 from pytest import fixture, raises
 
 from lumapps.api.cli import (
-    load_config,
-    parse_args,
-    list_configs,
-    setup_logger,
     cast_params,
+    list_configs,
+    load_config,
     main,
+    parse_args,
+    setup_logger,
+    store_config
 )
 from lumapps.api.utils import (
     ConfigStore,
+    _DiscoveryCacheDict,
     _get_conn,
     _set_sqlite_ok,
-    _DiscoveryCacheDict,
     get_endpoints,
 )
 
@@ -118,13 +119,24 @@ def test_cast_params():
         discovery_doc = load(fh)
     endpoints = get_endpoints(discovery_doc)
     name_parts = ("customcontenttype", "list")
-    params = {
-        "includeInstanceSiblings": "yes"
-    }
+    params = {"includeInstanceSiblings": "yes"}
     cast_params(name_parts, params, endpoints)
     assert params["includeInstanceSiblings"] is True
-    params = {
-        "includeInstanceSiblings": "no"
-    }
+    params = {"includeInstanceSiblings": "no"}
     cast_params(name_parts, params, endpoints)
     assert params["includeInstanceSiblings"] is False
+
+def test_store_config():
+    api_file = {}
+    auth_file = {}
+    user = "test"
+    conf_name = "conf_test"
+
+    store_config(api_file, auth_file, conf_name, user=user)
+    c = load_config(None, None, None, conf_name=conf_name)
+    assert c[2] == user
+    assert c == (api_file, auth_file, user)
+
+    c = load_config(api_file, auth_file, user, conf_name=conf_name)
+    assert c[2] == user
+    assert c == (api_file, auth_file, user)
