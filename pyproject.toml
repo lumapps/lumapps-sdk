@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lumapps-sdk"
-version = "1.0.5"
+version = "1.0.6"
 description = ""
 authors = ["Aurélien Dentan <aurelien@lumapps.com>", "Ludovic Vaugeois <ludovic.vaugeois@lumapps.com>"]
 license = "MIT License"
@@ -18,7 +18,7 @@ include = [
 python = "^3.6.4"
 httpx = "^0.13.3"
 Authlib = "^0.14.3"
-pytest-cov = "^2.9.0"
+
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.3"
@@ -38,6 +38,7 @@ failprint = "^0.3.0"
 black = "^19.10b0"
 isort = { version = "^4.3", extras = ["pyproject"] }
 safety = "^1.9.0"
+pytest-cov = "^2.9.0"
 
 [tool.black]
 line-length = 88
