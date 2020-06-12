@@ -27,9 +27,9 @@ jobs:
         name: Cache Poetry deps
         with:
           path: ~/.cache/poetry/virtualenvs
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+          key: lint-${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
-            ${{ runner.os }}-poetry-
+            lint-${{ runner.os }}-poetry-
 
       - name: Set Poetry config
         run: |
@@ -71,9 +71,9 @@ jobs:
         name: Cache Poetry deps
         with:
           path: ~/.cache/poetry/virtualenvs
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+          key: tests-${{ runner.os }}-${{ matrix.python-version }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
-            ${{ runner.os }}-poetry-
+            tests-${{ runner.os }}-${{ matrix.python-version }}-poetry-
 
       - name: Set Poetry config
         run: |
