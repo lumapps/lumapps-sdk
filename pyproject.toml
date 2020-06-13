@@ -53,6 +53,9 @@ default_section = "THIRDPARTY"
 known_first_party = "lumapps"
 include_trailing_comma = true
 
+[tool.poetry.scripts]
+lac = "lumapps.api.cli:main"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
