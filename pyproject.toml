@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lumapps-sdk"
-version = "1.0.6"
+version = "1.0.7"
 description = ""
 authors = ["Aurélien Dentan <aurelien@lumapps.com>", "Ludovic Vaugeois <ludovic.vaugeois@lumapps.com>"]
 license = "MIT License"
