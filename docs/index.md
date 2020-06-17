@@ -9,7 +9,7 @@
 </p>
 
 
-LumApps SDK is a set of tools to manipulate the [LumApps API](https://apiv1.lumapps.com/)
+LumApps SDK is a set of tools to manipulate the [LumApps API](https://api.lumapps.com/docs/start)
 
 This includes:
 
@@ -48,8 +48,9 @@ pip install lumapps-sdk
 
     ```python
     from lumapps.api import ApiClient
+    
     token = "MY TOKEN"
-    api = ApiClient(token=token)
+    client = ApiClient(token=token)
     ```
 
 3. Make your first API call
@@ -58,13 +59,13 @@ pip install lumapps-sdk
 
     ```python
     user_email = "YOUR EMAIL"
-    usr = api.get_call("user", "get", email=user_email)
-    print("Hello {}".format(usr.get("fullName", "")))
+    usr = api.get_call("user/get", email=user_email)
+    print("Hello {}".format(usr["fullName"]))
     ```
 
 ## Documentation
 
-The SDK documentation is available [here](https://github.com/lumapps/lumapps-sdk/wiki).
+The SDK documentation is available [here](https://lumapps.github.io/lumapps-sdk/).
 
 ## Code convention
 

@@ -12,21 +12,41 @@ make setup
 
 You can run `make help` to see all available actions !
 
-## Development
+## Dev
 
-**Before committing**
+### Code
 
-1. run make format to auto-format the code
-2. run make check to check everything (fix any warning)
-3. run make test to run the tests (fix any issue)
+First open an issue to discuss the matter before coding.
+When your idea has been approved, create a new branch `git checkout -b <new_branch_name>` and open a Pull Request.
 
-If you are unsure about how to fix or ignore a warning, just let the continuous integration fail, and we will help you during review.
+Before commiting you can run tests and type checks via the commands
 
-Don't bother updating the changelog, we will take care of this.
+```bash
+make check
+make test
+```
+
+### Documentation
+
+Additionnaly to edit the documentation you can add/modify markdown files in the docs folder.
+You can preview the doc by running 
+
+```bash
+make docs-serve
+```
+
+Then to deploy the doc you cna run
+
+```bash
+make doc-deploy
+```
+
 
 ## Deploy to pypi
 
-To deploy to pypi, bump the version and tags the version simply do 
+
+**Only for admins** 
+To deploy to pypi, bump the version and tags the version simply do
 
 ```bash 
 make release
