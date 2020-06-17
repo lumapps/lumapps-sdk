@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="LumApps sdk documentation" name="description"/>
+<link href="https://lumapps.github.io/lumapps-sdk/guides/content/" rel="canonical"/>
+<link href="../../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
+<title>Base - LumApps SDK</title>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#content">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="LumApps SDK" class="md-header-nav__button md-logo" href="https://lumapps.github.io/lumapps-sdk" title="LumApps SDK">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<span class="md-header-nav__topic md-ellipsis">
+            LumApps SDK
+          </span>
+<span class="md-header-nav__topic md-ellipsis">
+            
+              Base
+            
+          </span>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/lumapps/lumapps-sdk/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    lumapps/lumapps-sdk
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="LumApps SDK" class="md-nav__button md-logo" href="https://lumapps.github.io/lumapps-sdk" title="LumApps SDK">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+    LumApps SDK
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/lumapps/lumapps-sdk/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    lumapps/lumapps-sdk
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../.." title="Overview">
+      Overview
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../authentication/" title="Authentication">
+      Authentication
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      Guides
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Guides" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Guides
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api_client_guide/" title="Api Client">
+      Api Client
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-3-2" id="nav-3-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-3-2">
+      Content
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Content" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-3-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Content
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        Base
+        <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"></path></svg>
+</span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./" title="Base">
+      Base
+    </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-listing">
+    Content listing
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-details">
+    Content details
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-update">
+    Content update
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../content_template/" title="Template">
+      Template
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-3" id="nav-3-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3-3">
+      Community
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Community" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-3-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Community
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../community/" title="Community">
+      Community
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../community_posts/" title="Posts">
+      Posts
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../comments/" title="Comments">
+      Comments
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../groups/" title="Groups">
+      Groups
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../metadata/" title="Metadata">
+      Metadata
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../notifications/" title="Notifications">
+      Notifications
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-8" id="nav-3-8" type="checkbox"/>
+<label class="md-nav__link" for="nav-3-8">
+      Users
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Users" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-3-8">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Users
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../user_base/" title="Basics">
+      Basics
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../user_profile/" title="User Profile">
+      User Profile
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../roles/" title="Roles">
+      Roles
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../widgets/" title="Widgets">
+      Widgets
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      Reference
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Reference
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api_client/" title="Api Client">
+      Api Client
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../widgets/" title="Widgets">
+      Widgets
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../medias/" title="Medias">
+      Medias
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../CONTRIBUTING/" title="Contributing">
+      Contributing
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../LICENSE/" title="Copyright and license">
+      Copyright and license
+    </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-listing">
+    Content listing
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-details">
+    Content details
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-update">
+    Content update
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/guides/content.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1 id="content">Content<a class="headerlink" href="#content" title="Permanent link">¤</a></h1>
+<h2 id="content-listing">Content listing<a class="headerlink" href="#content-listing" title="Permanent link">¤</a></h2>
+<p>The <code>lang</code> parameter is mandatory for this call.</p>
+<p>You can add more filters, see <a href="https://api.lumapps.com/docs/output/_schemas/servercontentcontentmessagescontentlistrequest">apidoc</a></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+
+<span class="n">contents</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/list"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"lang"</span><span class="p">:</span><span class="s2">"en"</span><span class="p">})</span>
+</code></pre></div>
+<h2 id="content-details">Content details<a class="headerlink" href="#content-details" title="Permanent link">¤</a></h2>
+<p>This call is designed for content view</p>
+<div class="highlight"><pre><span></span><code><span class="n">content</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/get"</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"5386179638984704"</span><span class="p">)</span>
+</code></pre></div>
+<p>NB: <code>content.uid</code> = <code>content.id</code></p>
+<h2 id="content-update">Content update<a class="headerlink" href="#content-update" title="Permanent link">¤</a></h2>
+<p>Get content with <code>action=PAGE_EDIT</code> to have all the relevant data.</p>
+<div class="highlight"><pre><span></span><code><span class="n">content</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/get"</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"5386179638984704"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"PAGE_EDIT"</span><span class="p">)</span>
+</code></pre></div>
+<p>Note: the version number is used to lock the resource. You have to put the last version number of a content in <code>version</code> to be allowed to update a content, else a bad request: "CONTENT_NOT_UP_TO_DATE" will be returned.</p>
+<h1 id="content-creation">Content creation<a class="headerlink" href="#content-creation" title="Permanent link">¤</a></h1>
+<p>The simplest way to create content is to use an existing template. This template will define all design configurations.</p>
+<div class="highlight"><pre><span></span><code><span class="n">base_template</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"template/get"</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"123456789"</span><span class="p">)</span>
+<span class="c1"># note : it's possible to use a content as well.</span>
+
+<span class="n">new_content</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span> <span class="c1"># fixed</span>
+    <span class="s2">"template"</span><span class="p">:</span> <span class="n">base_template</span><span class="p">[</span><span class="n">template</span><span class="p">],</span> <span class="c1"># copy all the structure (see below for details)</span>
+    <span class="s2">"customContentType"</span><span class="p">:</span> <span class="n">base_template</span><span class="p">[</span><span class="s2">"customContentType"</span><span class="p">],</span> <span class="c1"># custom content type id</span>
+    <span class="s2">"customer"</span><span class="p">:</span> <span class="n">base_template</span><span class="p">[</span><span class="s2">"customer"</span><span class="p">],</span> <span class="c1"># customer id</span>
+    <span class="s2">"instance"</span><span class="p">:</span> <span class="n">base_template</span><span class="p">[</span><span class="s2">"instance"</span><span class="p">],</span> <span class="c1"># instance id</span>
+    <span class="s2">"feedKeys"</span><span class="p">:</span> <span class="n">base_template</span><span class="p">[</span><span class="s2">"feedKeys"</span><span class="p">],</span> <span class="c1"># it's the `visibleBy` field in the front interface.</span>
+    <span class="s2">"publicationDate"</span><span class="p">:</span> <span class="n">base_template</span><span class="p">[</span><span class="n">publicationDate</span><span class="p">],</span>
+    <span class="s2">"title"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="s2">"created content from api"</span><span class="p">},</span>
+    <span class="s2">"slug"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="s2">"create-content-from-api"</span><span class="p">},</span> <span class="c1"># WARNING : should be unique per instance</span>
+    <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">[],</span> <span class="c1"># if any, provide metadata value uid</span>
+<span class="p">}</span>
+
+<span class="n">new_content_saved</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">new_content</span><span class="p">)</span>
+</code></pre></div>
+<p>To create content on behalf of other users you have to be connected with this user.</p>
+<hr/>
+<h1 id="objects-explanation">Objects explanation<a class="headerlink" href="#objects-explanation" title="Permanent link">¤</a></h1>
+<h2 id="content_1">Content<a class="headerlink" href="#content_1" title="Permanent link">¤</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">"id"</span> <span class="p">:</span><span class="s2">"134567"</span><span class="p">,</span>
+    <span class="s2">"type"</span><span class="p">:</span>  <span class="s2">"page"</span><span class="p">,</span>
+    <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"LIVE|ARCHIVED"</span><span class="p">,</span>
+    <span class="s2">"thumbnail"</span> <span class="p">:</span> <span class="s2">"media library url"</span><span class="p">,</span>
+    <span class="s2">"publicationDate"</span> <span class="p">:</span> <span class="s2">"2018-06-29T09:28:34.346124"</span><span class="p">,</span>
+    <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-29T09:28:34.346124"</span><span class="p">,</span>
+    <span class="s2">"authorId"</span><span class="p">:</span> <span class="s2">"23142536879786754"</span> <span class="c1"># set at creation time with the connected user</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="contenttemplate">Content.template<a class="headerlink" href="#contenttemplate" title="Permanent link">¤</a></h2>
+<p>The <code>template</code> property contains the whole page structure. </p>
+<p>Widgets are directly placed in this structure.</p>
+<p><div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">"template"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"components"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"row"</span><span class="p">,</span>
+            <span class="nt">"cells"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"cell"</span><span class="p">,</span>
+                <span class="nt">"components"</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"row|widget"</span><span class="p">,</span>
+                    <span class="err">...</span>
+                <span class="p">},</span>
+                <span class="err">...</span><span class="p">]</span>
+            <span class="p">},</span>
+            <span class="err">...</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="err">...</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+You should iterate over all the structure to find the correct widget to update.</p>
+<h2 id="contentthumbnail">Content.thumbnail<a class="headerlink" href="#contentthumbnail" title="Permanent link">¤</a></h2>
+<p>A content can have a thumbnail, it's a picture associated with it and shows when listed in a content-list widget for instance.</p>
+<p>Your media should be uploaded on LumApps, see <a href="https://github.com/lumapps/lumapps-sdk/wiki/Media-management">Media Management</a> </p>
+<ul>
+<li>You can fetch the thumbnail in different sizes by adding a parameter (<code>=s&lt;size&gt;</code>) at the end of the URL.</li>
+</ul>
+<p>I.E. <code>https://domain.com/id_thumbnail_hjkdhd574164dsq54d=s480</code> will return the image with a width of 480px.
+If you use a size larger than the actual image. It will return the full-sized image.</p>
+<h3 id="update-an-existing-thumbnail">Update an existing thumbnail<a class="headerlink" href="#update-an-existing-thumbnail" title="Permanent link">¤</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># First get the content</span>
+<span class="n">content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'content/get'</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"6448894901878784"</span><span class="p">)</span>
+
+<span class="c1"># Update the thumbnail field by the media blob key </span>
+<span class="n">new_content</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="s2">"thumbnail"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">your_new_blob_key</span><span class="o">&gt;</span>
+<span class="p">}</span>
+
+<span class="c1"># Resave the content</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'content/save'</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">new_content</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="widget">Widget<a class="headerlink" href="#widget" title="Permanent link">¤</a></h2>
+<p>Widgets are placed in the <code>content.template</code> tree.</p>
+<p>Widgets can be identified by their UUID</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"widget"</span><span class="p">,</span>
+    <span class="nt">"widgetType"</span><span class="p">:</span> <span class="s2">"contact|html|..."</span><span class="p">,</span>
+    <span class="nt">"uuid"</span><span class="p">:</span> <span class="s2">"ca2bd99c-7b7e-11e8-8255-abba20e0e453"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Specific configurations are in <code>properties</code>.</p>
+<p>Ex for an HTML widget:
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"widget"</span><span class="p">,</span>
+    <span class="nt">"widgetType"</span><span class="p">:</span> <span class="s2">"html"</span><span class="p">,</span>
+    <span class="nt">"uuid"</span><span class="p">:</span> <span class="s2">"ca2bd99c-..."</span><span class="p">,</span>
+    <span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"content"</span><span class="p">:</span>
+            <span class="p">{</span>
+            <span class="nt">"fr"</span><span class="p">:</span> <span class="s2">"&lt;p&gt;Contenu html en français&lt;/p&gt;"</span><span class="p">,</span>
+            <span class="nt">"en"</span><span class="p">:</span> <span class="s2">"&lt;p&gt;Html text in english &lt;/p&gt;"</span> 
+            <span class="p">},</span>
+        <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"identifier set in front &gt; style &gt; advance"</span><span class="p">,</span>
+        <span class="nt">"class"</span><span class="p">:</span> <span class="s2">"class set in front &gt; style &gt; advance"</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>The <code>properties&gt;id</code> (or class) could be used to simplify widget access from code and communication with the design team.</p>
+<p><strong>Working on widgets more easily</strong></p>
+<p>To help you work on widget some helpers are available in the lumapps sdk</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<span class="kn">from</span> <span class="nn">lumapps.api.helpers</span> <span class="kn">import</span> <span class="n">widgets</span> <span class="k">as</span> <span class="n">widgets_helper</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span> 
+<span class="n">content</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/get"</span><span class="p">)</span> <span class="c1"># get the lumapps content</span>
+
+<span class="c1"># return the first found widget with the property widgetType equal to video</span>
+<span class="n">video_widget</span> <span class="o">=</span> <span class="n">widgets_helper</span><span class="o">.</span><span class="n">find_widget</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">widgetType</span><span class="o">=</span><span class="s2">"video"</span><span class="p">)</span>
+
+<span class="c1"># return all widgets with the property widgetType equal to video</span>
+<span class="n">all_video_widgets</span> <span class="o">=</span> <span class="n">widgets_helper</span><span class="o">.</span><span class="n">find_all_widgets</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">widgetType</span><span class="o">=</span><span class="s2">"video"</span><span class="p">)</span>
+
+<span class="c1"># return the first found widgetwith the property uuid equal test</span>
+<span class="n">widget_with_uuid_test</span> <span class="o">=</span> <span class="n">widgets_helper</span><span class="o">.</span><span class="n">find_widget</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span>
+</code></pre></div>
+<p>See <a href="https://github.com/lumapps/lumapps-sdk/wiki/Widgets">Widgets</a> for specific configurations.</p>
+<p>See <a href="https://github.com/lumapps/lumapps-sdk/wiki/Global-Widget">Global Widgets</a> for widgets defined at the instance level.</p>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../api_client_guide/" rel="prev" title="Api Client">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Api Client
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../content_template/" rel="next" title="Template">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Template
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+</body>
+</html>
