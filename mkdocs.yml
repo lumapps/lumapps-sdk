@@ -12,6 +12,9 @@ nav:
     - Authentication: authentication.md
     - Guides:
       - Api Client: guides/api_client_guide.md
+      - Content:
+          - Base: guides/content.md
+          - Template: guides/content_template.md
       - Community:
           - Community: guides/community.md
           - Posts: guides/community_posts.md
