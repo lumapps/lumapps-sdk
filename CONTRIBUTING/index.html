@@ -291,9 +291,23 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#development">
-    Development
+<a class="md-nav__link" href="#dev">
+    Dev
   </a>
+<nav aria-label="Dev" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code">
+    Code
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#documentation">
+    Documentation
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#deploy-to-pypi">
@@ -330,9 +344,23 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#development">
-    Development
+<a class="md-nav__link" href="#dev">
+    Dev
   </a>
+<nav aria-label="Dev" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code">
+    Code
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#documentation">
+    Documentation
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#deploy-to-pypi">
@@ -356,17 +384,25 @@
 <div class="highlight"><pre><span></span><code>make setup
 </code></pre></div>
 <p>You can run <code>make help</code> to see all available actions !</p>
-<h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">¤</a></h2>
-<p><strong>Before committing</strong></p>
-<ol>
-<li>run make format to auto-format the code</li>
-<li>run make check to check everything (fix any warning)</li>
-<li>run make test to run the tests (fix any issue)</li>
-</ol>
-<p>If you are unsure about how to fix or ignore a warning, just let the continuous integration fail, and we will help you during review.</p>
-<p>Don't bother updating the changelog, we will take care of this.</p>
+<h2 id="dev">Dev<a class="headerlink" href="#dev" title="Permanent link">¤</a></h2>
+<h3 id="code">Code<a class="headerlink" href="#code" title="Permanent link">¤</a></h3>
+<p>First open an issue to discuss the matter before coding.
+When your idea has been approved, create a new branch <code>git checkout -b &lt;new_branch_name&gt;</code> and open a Pull Request.</p>
+<p>Before commiting you can run tests and type checks via the commands</p>
+<div class="highlight"><pre><span></span><code>make check
+make <span class="nb">test</span>
+</code></pre></div>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h3>
+<p>Additionnaly to edit the documentation you can add/modify markdown files in the docs folder.
+You can preview the doc by running </p>
+<div class="highlight"><pre><span></span><code>make docs-serve
+</code></pre></div>
+<p>Then to deploy the doc you cna run</p>
+<div class="highlight"><pre><span></span><code>make doc-deploy
+</code></pre></div>
 <h2 id="deploy-to-pypi">Deploy to pypi<a class="headerlink" href="#deploy-to-pypi" title="Permanent link">¤</a></h2>
-<p>To deploy to pypi, bump the version and tags the version simply do </p>
+<p><strong>Only for admins</strong> 
+To deploy to pypi, bump the version and tags the version simply do</p>
 <div class="highlight"><pre><span></span><code>make release
 </code></pre></div>
 </article>

@@ -463,7 +463,7 @@ Then create a feed:</p>
     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"12345678"</span><span class="p">,</span> <span class="c1"># feed type</span>
     <span class="p">}</span>
 <span class="p">}</span>
-<span class="n">new_group</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'feed'</span><span class="p">,</span> <span class="s1">'save'</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+<span class="n">new_group</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"feed/save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
 </code></pre></div>
 <p>Notes:
 - you can add one group per identity provider. If you try to add more than one group per idp, the last one will be preserved.
@@ -472,7 +472,7 @@ Then create a feed:</p>
 - members are retrieved asynchronously by the server, you may need to wait before doing a member list request to have the full list of members.</p>
 <h2 id="list-the-members-of-one-or-many-feed">List the members of one or many feed<a class="headerlink" href="#list-the-members-of-one-or-many-feed" title="Permanent link">¤</a></h2>
 <p>use the user/list endpoint with the feed id in the <code>feeds</code> filter.</p>
-<div class="highlight"><pre><span></span><code><span class="n">feed_members</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'list'</span><span class="p">,</span> <span class="n">feeds</span><span class="o">=</span><span class="p">[</span><span class="s1">'1345'</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="n">feed_members</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/list"</span><span class="p">,</span> <span class="n">feeds</span><span class="o">=</span><span class="p">[</span><span class="s1">'1345'</span><span class="p">])</span>
 </code></pre></div>
 <h2 id="update-members-of-a-group">update members of a group<a class="headerlink" href="#update-members-of-a-group" title="Permanent link">¤</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
@@ -493,7 +493,7 @@ Then create a feed:</p>
         <span class="p">]}</span>
 <span class="p">}</span>
 
-<span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'feed'</span><span class="p">,</span> <span class="s1">'subscribers'</span><span class="p">,</span> <span class="s1">'save'</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"feed/subscribers/save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
 </code></pre></div>
 </article>
 </div>

@@ -370,7 +370,11 @@
 <h1 id="role">Role<a class="headerlink" href="#role" title="Permanent link">¤</a></h1>
 <p>You can easly create, modify, delete or list roles on your instance with the sdk.</p>
 <h2 id="list-roles"><strong>List roles</strong><a class="headerlink" href="#list-roles" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">roles</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">"list"</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">site_id</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+
+<span class="n">roles</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"role/list"</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">site_id</span><span class="p">)</span>
  <span class="err">```</span>
 
  <span class="c1">## __Create a specific role__</span>
@@ -378,6 +382,10 @@
  <span class="n">To</span> <span class="n">create</span> <span class="n">a</span> <span class="n">role</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="nb">object</span> <span class="n">like</span> <span class="n">the</span> <span class="n">following</span> <span class="n">one</span>
 
  <span class="err">```</span><span class="n">python</span>
+ <span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+
 <span class="n">my_role</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s2">"authorizations"</span><span class="p">:</span> <span class="n">authorizations</span><span class="p">,</span>
   <span class="s2">"description"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"fr"</span><span class="p">:</span> <span class="s2">"Ma description en francais"</span><span class="p">},</span>
@@ -385,7 +393,8 @@
   <span class="s2">"feeds"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"518815757015446"</span><span class="p">],</span>
   <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"My custom role"</span>
 <span class="p">}</span>
-<span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">"save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">my_role</span><span class="p">)</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"role/save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">my_role</span><span class="p">)</span>
 </code></pre></div>
 <p>Here we have:</p>
 <ul>
@@ -436,13 +445,15 @@
 <li>change/add the informations you want</li>
 <li>re-save it.</li>
 </ol>
-<p>```python</p>
+<p>```python
+ from lumapps.api.client import ApiClient</p>
+<p>client = ApiClient(token="<your_token>")</your_token></p>
 <h1 id="get-the-role">Get the role<a class="headerlink" href="#get-the-role" title="Permanent link">¤</a></h1>
-<p>role = api.get_call("role", "get", uid=role_uid)</p>
+<p>role = client.get_call("role/get", uid=role_uid)</p>
 <h1 id="update-it">Update it ...<a class="headerlink" href="#update-it" title="Permanent link">¤</a></h1>
 <p>role["name"] = "New role name"</p>
 <h1 id="save-the-updated-role">Save the updated role<a class="headerlink" href="#save-the-updated-role" title="Permanent link">¤</a></h1>
-<p>api.get_call("role", "save", body=role)</p>
+<p>client.get_call("role/save", body=role)</p>
 </article>
 </div>
 </div>

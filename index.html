@@ -414,21 +414,22 @@ Once connected, open the javascript console of your browser and run:</p>
 <li>
 <p>Authenticate</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+
 <span class="n">token</span> <span class="o">=</span> <span class="s2">"MY TOKEN"</span>
-<span class="n">api</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
 <p>Make your first API call</p>
 <p>Let's display the full name of a registered user in lumapps</p>
 <div class="highlight"><pre><span></span><code><span class="n">user_email</span> <span class="o">=</span> <span class="s2">"YOUR EMAIL"</span>
-<span class="n">usr</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="s2">"get"</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fullName"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)))</span>
+<span class="n">usr</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/get"</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">usr</span><span class="p">[</span><span class="s2">"fullName"</span><span class="p">]))</span>
 </code></pre></div>
 </li>
 </ol>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h2>
-<p>The SDK documentation is available <a href="https://github.com/lumapps/lumapps-sdk/wiki">here</a>.</p>
+<p>The SDK documentation is available <a href="https://lumapps.github.io/lumapps-sdk/">here</a>.</p>
 <h2 id="code-convention">Code convention<a class="headerlink" href="#code-convention" title="Permanent link">¤</a></h2>
 <p>Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.</p>
 <h2 id="how-to-get-help-contribute-or-provide-feedback">How to get help, contribute, or provide feedback<a class="headerlink" href="#how-to-get-help-contribute-or-provide-feedback" title="Permanent link">¤</a></h2>
