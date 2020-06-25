@@ -113,12 +113,7 @@ You should iterate over all the structure to find the correct widget to update.
 
 A content can have a thumbnail, it's a picture associated with it and shows when listed in a content-list widget for instance.
 
-Your media should be uploaded on LumApps, see [Media Management](https://github.com/lumapps/lumapps-sdk/wiki/Media-management) 
-
-- You can fetch the thumbnail in different sizes by adding a parameter (`=s<size>`) at the end of the URL.
-
-I.E. `https://domain.com/id_thumbnail_hjkdhd574164dsq54d=s480` will return the image with a width of 480px.
-If you use a size larger than the actual image. It will return the full-sized image.
+When adding a thumbnail to a content you need to provide the blob key of the uploaded image in the `thumbnail` attribute. To upload and obtain that blobkey [see here](media.md).
 
 
 ### Update an existing thumbnail

@@ -20,6 +20,7 @@ nav:
           - Posts: guides/community_posts.md
       - Comments: guides/comments.md
       - Groups: guides/groups.md
+      - Media: guides/media.md
       - Metadata: guides/metadata.md
       - Notifications: guides/notifications.md
       - Users: 

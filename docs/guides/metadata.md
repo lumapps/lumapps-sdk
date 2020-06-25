@@ -8,7 +8,6 @@ from lumapps.api.client import ApiClient
 client = ApiClient(token="<your_token>")
 
 metadata_kind = client.get_call("metadata/list", body={
-    "customerId": "567842713082480",
     "emptyParent": "true",
     "lang": "fr",
 })
@@ -42,7 +41,6 @@ from lumapps.api.client import ApiClient
 client = ApiClient(token="<your_token>")
 
 metadata_values = client.get_call('metadata', 'list', body={
-    "customerId": "567842713082480",
     "familyId":	"6298100337213440",  # <- /!\
     "parent": "6298100337213440",  # <- /!\
     "lang":"fr",
