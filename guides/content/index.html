@@ -242,6 +242,11 @@
     </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="../media/" title="Media">
+      Media
+    </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../metadata/" title="Metadata">
       Metadata
     </a>
@@ -252,15 +257,15 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-8" id="nav-3-8" type="checkbox"/>
-<label class="md-nav__link" for="nav-3-8">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-9" id="nav-3-9" type="checkbox"/>
+<label class="md-nav__link" for="nav-3-9">
       Users
       <span class="md-nav__icon md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
 </span>
 </label>
 <nav aria-label="Users" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="nav-3-8">
+<label class="md-nav__title" for="nav-3-9">
 <span class="md-nav__icon md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </span>
@@ -458,12 +463,7 @@
 You should iterate over all the structure to find the correct widget to update.</p>
 <h2 id="contentthumbnail">Content.thumbnail<a class="headerlink" href="#contentthumbnail" title="Permanent link">¤</a></h2>
 <p>A content can have a thumbnail, it's a picture associated with it and shows when listed in a content-list widget for instance.</p>
-<p>Your media should be uploaded on LumApps, see <a href="https://github.com/lumapps/lumapps-sdk/wiki/Media-management">Media Management</a> </p>
-<ul>
-<li>You can fetch the thumbnail in different sizes by adding a parameter (<code>=s&lt;size&gt;</code>) at the end of the URL.</li>
-</ul>
-<p>I.E. <code>https://domain.com/id_thumbnail_hjkdhd574164dsq54d=s480</code> will return the image with a width of 480px.
-If you use a size larger than the actual image. It will return the full-sized image.</p>
+<p>When adding a thumbnail to a content you need to provide the blob key of the uploaded image in the <code>thumbnail</code> attribute. To upload and obtain that blobkey <a href="../media/">see here</a>.</p>
 <h3 id="update-an-existing-thumbnail">Update an existing thumbnail<a class="headerlink" href="#update-an-existing-thumbnail" title="Permanent link">¤</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># First get the content</span>
 <span class="n">content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'content/get'</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"6448894901878784"</span><span class="p">)</span>

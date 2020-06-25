@@ -1,83 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://lumapps.github.io/lumapps-sdk/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/authentication/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/api_client_guide/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/content/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/content_template/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/community/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/community_posts/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/comments/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/groups/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lumapps.github.io/lumapps-sdk/guides/media/</loc>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/metadata/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/notifications/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/user_base/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/user_profile/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/roles/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/guides/widgets/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/api_client/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/widgets/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/medias/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/CONTRIBUTING/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lumapps.github.io/lumapps-sdk/LICENSE/</loc>
-     <lastmod>2020-06-17</lastmod>
+     <lastmod>2020-06-25</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
