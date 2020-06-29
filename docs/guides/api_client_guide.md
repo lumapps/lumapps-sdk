@@ -9,8 +9,6 @@ The `get_call` method allows you to call a particular endpoint and get result. T
 If you call a `list` endpoint (eg, user/list), this method will fetch all the pages an returns you all the results at once.
 
 
-
-
 ## iter_call method
 
 The `iter_call` is an alternative method that will fetch page by page the elements an return them in a python generator.

@@ -12,17 +12,21 @@ comments = api.get_call(
 )
 ```
 
-For more details see [api.lumapps.com](https://api.lumapps.com/docs/comment/list)
+For more details see [api.lumapps.com](https://apiv1.lumapps.com/#operation/Comment/List)
 
 ## Comment get
 
 ```python
-comment = api.get_call(
-    "comment", "get", uid="YOUR_COMMENT_ID"
+from lumapps.api.client import ApiClient
+
+client = ApiClient(token="<your_token>")
+
+comment = client.get_call(
+    "comment/get", uid="YOUR_COMMENT_ID"
 )
 ```
 
-For more details see [api.lumapps.com](https://api.lumapps.com/docs/comment/get)
+For more details see [api.lumapps.com](https://apiv1.lumapps.com/#operation/Comment/Get)
 
 ## Comment save
 
@@ -47,12 +51,18 @@ comment = {
 or update properties from one you just got using the api.
 
 ```python
-comment = get_comment(...)
-comment.title = {"fr": "New title"}
-```
+from lumapps.api.client import ApiClient
 
-comment = api.get_call(
-    "comment", "save", body=comment
+client = ApiClient(token="<your_token>")
+
+comment = client.get_call(
+    "comment/get", uid="YOUR_COMMENT_ID"
 )
 
-For more details see [api.lumapps.com](https://api.lumapps.com/docs/comment/save)
+comment["title"] = {"fr": "New title"}
+
+comment = client.get_call(
+    "comment/save", body=comment
+)
+
+For more details see [the api documentation](https://apiv1.lumapps.com)

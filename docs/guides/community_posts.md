@@ -67,7 +67,7 @@ post = client.get_call(
 )
 
 # Modify the post
-post.title = {"fr": "New title"}
+post["tttle"] = {"fr": "New title"}
 
 # Save the post
 post = api.get_call(

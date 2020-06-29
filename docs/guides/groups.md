@@ -90,7 +90,7 @@ feed = {
     "type": "12345678", # feed type
     }
 }
-new_group = api.get_call('feed', 'save', body=group)
+new_group = api.get_call("feed/save", body=group)
 ```
 
 Notes:
@@ -104,7 +104,7 @@ Notes:
 use the user/list endpoint with the feed id in the `feeds` filter.
 
 ```python
-feed_members = api.get_call('user', 'list', feeds=['1345'])
+feed_members = api.get_call("user/list", feeds=['1345'])
 
 ```
 ## update members of a group
@@ -128,7 +128,7 @@ body = {
         ]}
 }
 
-client.get_call('feed', 'subscribers', 'save', body=body)
+client.get_call("feed/subscribers/save", body=body)
 ```
 
 
