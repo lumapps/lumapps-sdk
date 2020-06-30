@@ -697,15 +697,7 @@ get_call<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>395
-396
-397
-398
-399
-400
-401
-402
-403
+<pre><span></span>403
 404
 405
 406
@@ -753,7 +745,15 @@ get_call<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 448
 449
 450
-451</pre>
+451
+452
+453
+454
+455
+456
+457
+458
+459</pre>
 </div>
 </td>
 <td class="code">
@@ -907,7 +907,15 @@ token using the user/getToken endpoint.</p>
 261
 262
 263
-264</pre>
+264
+265
+266
+267
+268
+269
+270
+271
+272</pre>
 </div>
 </td>
 <td class="code">
@@ -925,7 +933,15 @@ token using the user/getToken endpoint.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            ApiClient: A new instance of the ApiClient correctly authenticated.</span>
 <span class="sd">    """</span>
-    <span class="n">token_infos</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span>
+        <span class="n">auth_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span><span class="p">,</span>
+        <span class="n">api_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">user_email</span><span class="p">,</span>
+        <span class="n">no_verify</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_verify</span><span class="p">,</span>
+        <span class="n">proxy_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proxy_info</span><span class="p">,</span>
+        <span class="n">prune</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prune</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">token_infos</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
         <span class="s2">"user/getToken"</span><span class="p">,</span> <span class="n">customerId</span><span class="o">=</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span>
     <span class="p">)</span>
     <span class="n">token</span> <span class="o">=</span> <span class="n">token_infos</span><span class="p">[</span><span class="s2">"accessToken"</span><span class="p">]</span>
@@ -1035,15 +1051,7 @@ iter_call<span class="p">(</span><span class="bp">self</span><span class="p">,</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>453
-454
-455
-456
-457
-458
-459
-460
-461
+<pre><span></span>461
 462
 463
 464
@@ -1097,7 +1105,15 @@ iter_call<span class="p">(</span><span class="bp">self</span><span class="p">,</
 512
 513
 514
-515</pre>
+515
+516
+517
+518
+519
+520
+521
+522
+523</pre>
 </div>
 </td>
 <td class="code">
