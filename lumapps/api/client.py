@@ -253,7 +253,6 @@ class ApiClient(AbstractContextManager):
         client = ApiClient(
             auth_info=self._auth_info,
             api_info=self.api_info,
-            user=user_email,
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
