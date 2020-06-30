@@ -250,7 +250,15 @@ class ApiClient(AbstractContextManager):
             Returns:
                 ApiClient: A new instance of the ApiClient correctly authenticated.
         """
-        token_infos: Any = self.get_call(
+        client = ApiClient(
+            auth_info=self._auth_info,
+            api_info=self.api_info,
+            user=user_email,
+            no_verify=self.no_verify,
+            proxy_info=self.proxy_info,
+            prune=self.prune,
+        )
+        token_infos: Any = client.get_call(
             "user/getToken", customerId=customer_id, email=user_email
         )
         token = token_infos["accessToken"]
