@@ -46,8 +46,8 @@ make doc-deploy
 
 
 **Only for admins** 
-To deploy to pypi, bump the version and tags the version simply do
+To deploy to pypi, bump the version and tags the version simply **on the master branch** do
 
 ```bash 
-make release
+make release v=x.x.x
 ```
