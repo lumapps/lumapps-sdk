@@ -100,7 +100,7 @@ def test_main_1(capsys, mocker):
     )
     with open("tests/test_data/lumapps_discovery.json") as fh:
         mocker.patch(
-            "lumapps.api.client.ApiClient.discovery_doc",
+            "lumapps.api.client.BaseClient.discovery_doc",
             new_callable=PropertyMock,
             return_value=load(fh),
         )

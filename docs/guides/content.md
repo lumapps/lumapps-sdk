@@ -6,9 +6,9 @@ The `lang` parameter is mandatory for this call.
 You can add more filters, see [apidoc](https://api.lumapps.com/docs/output/_schemas/servercontentcontentmessagescontentlistrequest)
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 contents = client.get_call("content/list", body={"lang":"en"})
 ```
@@ -82,7 +82,7 @@ To create content on behalf of other users you have to be connected with this us
 
 ## Content.template
 
-The `template` property contains the whole page structure. 
+The `template` property contains the whole page structure.
 
 Widgets are directly placed in this structure.
 
@@ -122,7 +122,7 @@ When adding a thumbnail to a content you need to provide the blob key of the upl
 # First get the content
 content = api.get_call('content/get', uid="6448894901878784")
 
-# Update the thumbnail field by the media blob key 
+# Update the thumbnail field by the media blob key
 new_content = {
   ...
   "thumbnail": <your_new_blob_key>
@@ -158,7 +158,7 @@ Ex for an HTML widget:
         "content":
             {
             "fr": "<p>Contenu html en français</p>",
-            "en": "<p>Html text in english </p>" 
+            "en": "<p>Html text in english </p>"
             },
         "id": "identifier set in front > style > advance",
         "class": "class set in front > style > advance",
@@ -173,10 +173,10 @@ The `properties>id` (or class) could be used to simplify widget access from code
 To help you work on widget some helpers are available in the lumapps sdk
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 from lumapps.api.helpers import widgets as widgets_helper
 
-client = ApiClient(token="<your_token>") 
+client = BaseClient(token="<your_token>")
 content = client.get_call("content/get") # get the lumapps content
 
 # return the first found widget with the property widgetType equal to video

@@ -3,9 +3,9 @@
 ## Metadata kind
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 metadata_kind = client.get_call("metadata/list", body={
     "emptyParent": "true",
@@ -36,9 +36,9 @@ print(metadata_kind)
 ## Metadata values
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 metadata_values = client.get_call('metadata', 'list', body={
     "familyId":	"6298100337213440",  # <- /!\
@@ -85,7 +85,7 @@ print(metadata_values)
   }
 ]
 ```
- 
+
 
 ## Metadata Sorting
 
@@ -131,15 +131,15 @@ Code sample
 ```python
 import time
 
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 # Get metadata list
 metadata_list = client.get_call(
-    "metadata/list", 
-    instance=SITE_ID, 
-    familyId=METADATA_ID, 
+    "metadata/list",
+    instance=SITE_ID,
+    familyId=METADATA_ID,
     parent=METADATA_ID
 )
 

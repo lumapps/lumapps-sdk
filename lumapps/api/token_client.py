@@ -1,7 +1,7 @@
-from lumapps.api import ApiClient
+from lumapps.api import BaseClient
 
 
-class TokenClient(ApiClient):
+class TokenClient(BaseClient):
     def __init__(self, customer_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.customer_id = customer_id

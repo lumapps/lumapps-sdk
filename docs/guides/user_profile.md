@@ -9,9 +9,9 @@ If you have the user directory module `id` use a `content/get` call with this id
 Else, get a list of user directory modules on an instance.
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 # prepare the request parameters
 body = {
@@ -101,9 +101,9 @@ To update the user profile:
 - save
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 CUSTOMER_ID = 'XXX'
 INSTANCE_ID = 'YYY'
@@ -159,7 +159,7 @@ Warning:
 ```python
 # example: the response of the previous call
 
-{ 
+{
     [...]
     "email": "me@customer.com",
     "customProfile" : {

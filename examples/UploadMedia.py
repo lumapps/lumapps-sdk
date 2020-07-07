@@ -2,11 +2,11 @@
     This is an example of how to upload one or several media(s)
     to your LumApps instance.
 """
-from lumapps.api import ApiClient
+from lumapps.api import BaseClient
 from lumapps.helpers.media import upload_and_save
 
 TOKEN = "<your_token>"
-client = ApiClient(token=TOKEN)
+client = BaseClient(token=TOKEN)
 
 instance_id = "<your_instance_id>"
 files = ["<filename 1>", "<filename 2>"]

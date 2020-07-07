@@ -4,12 +4,12 @@
 ## Community list
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 body = {
-    "instanceId": "YOUR_INSTANCE_ID", 
+    "instanceId": "YOUR_INSTANCE_ID",
     "lang": "fr",
     }
 
@@ -23,9 +23,9 @@ For more details see [the api documentation](https://apiv1.lumapps.com/#operatio
 ## Community get
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 community = client.get_call(
     "community/get", uid="YOUR_COMMUNITY_ID"
