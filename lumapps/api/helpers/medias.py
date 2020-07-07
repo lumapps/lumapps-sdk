@@ -2,12 +2,12 @@ from typing import Any, Dict, Optional, Union
 
 import httpx
 
-from lumapps.api.client import ApiClient
-from lumapps.api.errors import ApiClientError
+from lumapps.api.client import BaseClient
+from lumapps.api.errors import BaseClientError
 
 
 def create_new_media(
-    client: ApiClient,
+    client: BaseClient,
     file_data_or_path: Union[bytes, str],
     doc_path: str,
     filename: str,
@@ -18,7 +18,7 @@ def create_new_media(
     """ Upload a file and create a new media in LumApps media library.
 
         Args:
-            client: The ApiClient used to make httpx to the LumApps Api.
+            client: The BaseClient used to make httpx to the LumApps Api.
             file_data_or_path: The filepath (str) or the data (bytes) to upload.
             doc_path: The doc path of the media to upload, this will decide where the media will go in your media library
                             (eg: provider=`<`my_provider`>`/site=`<`my_site_id`>`/resource=`<`my_parent_folder_id`>`)
@@ -39,7 +39,7 @@ def create_new_media(
     elif isinstance(file_data_or_path, bytes):
         file_data = file_data_or_path  # type: ignore
     else:
-        raise ApiClientError(
+        raise BaseClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
         )
 
@@ -69,7 +69,7 @@ def create_new_media(
 
 
 def add_media_file_for_lang(
-    client: ApiClient,
+    client: BaseClient,
     media: Dict[str, Any],
     file_data_or_path: str,
     filename: str,
@@ -80,7 +80,7 @@ def add_media_file_for_lang(
     """ Add a file to an existing LumApps media.
 
         Args:
-            client: The ApiClient used to make httpx to the LumApps Api.
+            client: The BaseClient used to make httpx to the LumApps Api.
             media: The LumApps media on which the files have to be uploaded.
             file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
             filename: The name of the file to upload. Once uploaded the file will appear with that name.
@@ -111,7 +111,7 @@ def add_media_file_for_lang(
 
 
 def _upload_new_media_file_of_given_lang(
-    client: ApiClient,
+    client: BaseClient,
     file_data_or_path: Union[bytes, str],
     filename: str,
     mimetype: str,
@@ -121,7 +121,7 @@ def _upload_new_media_file_of_given_lang(
     """ Upload a file to lumapps without creating an associated media
 
         Args:
-            client: The ApiClient used to make httpx to the LumApps Api.
+            client: The BaseClient used to make httpx to the LumApps Api.
             file_data_or_path: The filepath or the data to upload.
             filename: The name of the file to upload. Once uploaded the file will appear with that name.
             mimetype: The mimeType fo the file to upload.
@@ -133,7 +133,7 @@ def _upload_new_media_file_of_given_lang(
 
         Returns:
             Return the uploaded file if successfull, None otherwise.
-        
+
         Notes:
             This is intended to be used to add new lang version/croppedContent to
             a LumApps media.
@@ -144,7 +144,7 @@ def _upload_new_media_file_of_given_lang(
     elif isinstance(file_data_or_path, bytes):
         file_data = file_data_or_path  # type: ignore
     else:
-        raise ApiClientError(
+        raise BaseClientError(
             "File data or path type not supported: {}".format(type(file_data_or_path))
         )
 

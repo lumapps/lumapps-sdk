@@ -6,8 +6,8 @@ from argparse import SUPPRESS, ArgumentParser, FileType, RawDescriptionHelpForma
 
 from httpx import HTTPError
 
-from lumapps.api import ApiClient, TokenClient
-from lumapps.api.errors import ApiCallError, get_http_err_content
+from lumapps.api import BaseClient, TokenClient
+from lumapps.api.errors import BadCallError, get_http_err_content
 from lumapps.api.utils import ConfigStore, list_prune_filters
 
 LIST_CONFIGS = "***LIST_CONFIGS***"
@@ -135,7 +135,7 @@ def main():
         token_getter = token_client.get_token_getter(args.email)
     else:
         token_getter = None
-    api = ApiClient(
+    api = BaseClient(
         auth_info,
         api_info,
         user=user,
@@ -178,7 +178,7 @@ def main():
             sys.exit(err_reason)
         else:
             sys.exit(err)
-    except ApiCallError as err:
+    except BadCallError as err:
         sys.exit(err)
     print(json.dumps(response, indent=4, sort_keys=True))
 

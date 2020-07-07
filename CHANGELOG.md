@@ -12,4 +12,4 @@ Notable changes to this project will be documented in this file.
 
 ### Added
 
-* Added `ApiClient.upload` method that takes any of the types supported by HTTPX (`IO[str]`, `IO[bytes]`, `str`, `bytes`) as the argument for file contents. Filesystem file paths can still be used by with `ApiClient.upload_call`.
+* Added `BaseClient.upload` method that takes any of the types supported by HTTPX (`IO[str]`, `IO[bytes]`, `str`, `bytes`) as the argument for file contents. Filesystem file paths can still be used by with `BaseClient.upload_call`.

@@ -4,12 +4,12 @@
 ## Post list
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 body = {
-    "contentId": community_id, 
+    "contentId": community_id,
     "lang": "",
     }
 
@@ -24,9 +24,9 @@ For more details see [the api documentation](https://apiv1.lumapps.com/#operatio
 ## Post get
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 post = client.get_call(
     "community/post/get", uid="YOUR_POST_ID"
@@ -58,9 +58,9 @@ post = {
 or update properties from one you just got using the api.
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(token="<your_token>")
+client = BaseClient(token="<your_token>")
 
 post = client.get_call(
     "community/post/get", uid="YOUR_POST_ID"

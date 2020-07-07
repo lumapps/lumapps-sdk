@@ -3,7 +3,7 @@ from lumapps.api import TokenClient
 
 def test_token_client_1(mocker):
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call",
+        "lumapps.api.client.BaseClient.get_call",
         return_value={"accessToken": "foo1", "expiresAt": "12345"},
     )
     cli = TokenClient("11111", token="FOO")
@@ -15,7 +15,7 @@ def test_token_client_1(mocker):
 
 def test_token_client_2(mocker):
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call",
+        "lumapps.api.client.BaseClient.get_call",
         return_value={"accessToken": "foo1", "expiresAt": "12345"},
     )
     cli = TokenClient("11111", token="FOO")

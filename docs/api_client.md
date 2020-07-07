@@ -1,4 +1,4 @@
-::: lumapps.api.client.ApiClient
+::: lumapps.api.client.BaseClient
     rendering:
       show_root_heading: true
     selection:
@@ -8,4 +8,3 @@
         - "get_call"
         - "get_new_client_as"
         - "get_new_client_as_using_dwd"
-        
