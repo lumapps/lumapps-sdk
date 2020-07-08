@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/medias/" rel="canonical"/>
 <link href="../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
 <title>Medias - LumApps SDK</title>
-<link href="../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -409,9 +409,9 @@ add_media_file_for_lang<span class="p">(</span><span class="n">client</span><spa
 <tbody>
 <tr>
 <td><code>client</code></td>
-<td><code>ApiClient</code></td>
+<td><code>BaseClient</code></td>
 <td>
-<p>The ApiClient used to make httpx to the LumApps Api.</p>
+<p>The BaseClient used to make httpx to the LumApps Api.</p>
 </td>
 <td><em>required</em></td>
 </tr>
@@ -533,7 +533,7 @@ add_media_file_for_lang<span class="p">(</span><span class="n">client</span><spa
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">add_media_file_for_lang</span><span class="p">(</span>
-    <span class="n">client</span><span class="p">:</span> <span class="n">ApiClient</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">BaseClient</span><span class="p">,</span>
     <span class="n">media</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">file_data_or_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -544,7 +544,7 @@ add_media_file_for_lang<span class="p">(</span><span class="n">client</span><spa
     <span class="sd">""" Add a file to an existing LumApps media.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            client: The ApiClient used to make httpx to the LumApps Api.</span>
+<span class="sd">            client: The BaseClient used to make httpx to the LumApps Api.</span>
 <span class="sd">            media: The LumApps media on which the files have to be uploaded.</span>
 <span class="sd">            file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.</span>
 <span class="sd">            filename: The name of the file to upload. Once uploaded the file will appear with that name.</span>
@@ -600,9 +600,9 @@ create_new_media<span class="p">(</span><span class="n">client</span><span class
 <tbody>
 <tr>
 <td><code>client</code></td>
-<td><code>ApiClient</code></td>
+<td><code>BaseClient</code></td>
 <td>
-<p>The ApiClient used to make httpx to the LumApps Api.</p>
+<p>The BaseClient used to make httpx to the LumApps Api.</p>
 </td>
 <td><em>required</em></td>
 </tr>
@@ -762,7 +762,7 @@ create_new_media<span class="p">(</span><span class="n">client</span><span class
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">create_new_media</span><span class="p">(</span>
-    <span class="n">client</span><span class="p">:</span> <span class="n">ApiClient</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">BaseClient</span><span class="p">,</span>
     <span class="n">file_data_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">doc_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -773,7 +773,7 @@ create_new_media<span class="p">(</span><span class="n">client</span><span class
     <span class="sd">""" Upload a file and create a new media in LumApps media library.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            client: The ApiClient used to make httpx to the LumApps Api.</span>
+<span class="sd">            client: The BaseClient used to make httpx to the LumApps Api.</span>
 <span class="sd">            file_data_or_path: The filepath (str) or the data (bytes) to upload.</span>
 <span class="sd">            doc_path: The doc path of the media to upload, this will decide where the media will go in your media library</span>
 <span class="sd">                            (eg: provider=`&lt;`my_provider`&gt;`/site=`&lt;`my_site_id`&gt;`/resource=`&lt;`my_parent_folder_id`&gt;`)</span>
@@ -794,7 +794,7 @@ create_new_media<span class="p">(</span><span class="n">client</span><span class
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_data_or_path</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="n">file_data</span> <span class="o">=</span> <span class="n">file_data_or_path</span>  <span class="c1"># type: ignore</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ApiClientError</span><span class="p">(</span>
+        <span class="k">raise</span> <span class="n">BaseClientError</span><span class="p">(</span>
             <span class="s2">"File data or path type not supported: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">file_data_or_path</span><span class="p">))</span>
         <span class="p">)</span>
 
@@ -881,13 +881,13 @@ create_new_media<span class="p">(</span><span class="n">client</span><span class
 </footer>
 </div>
 <script src="../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "..",
           features: [],
           search: Object.assign({
-            worker: "../assets/javascripts/worker/search.c03f0417.min.js"
+            worker: "../assets/javascripts/worker/search.a68abb33.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/guides/api_client_guide/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
 <title>Api Client - LumApps SDK</title>
-<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -396,7 +396,7 @@
 <h1 id="api-client">Api client<a class="headerlink" href="#api-client" title="Permanent link">¤</a></h1>
 <p>The client exposed by the lumapps-sdk allows you to interact with the lumapps apis more easily, to do so you have 2 mains methods defined in it.</p>
 <h2 id="get_call-method">get_call method<a class="headerlink" href="#get_call-method" title="Permanent link">¤</a></h2>
-<p>The <code>get_call</code> method allows you to call a particular endpoint and get result. This is the main way to call the LumApps apis. </p>
+<p>The <code>get_call</code> method allows you to call a particular endpoint and get result. This is the main way to call the LumApps apis.</p>
 <p>If you call a <code>list</code> endpoint (eg, user/list), this method will fetch all the pages an returns you all the results at once.</p>
 <h2 id="iter_call-method">iter_call method<a class="headerlink" href="#iter_call-method" title="Permanent link">¤</a></h2>
 <p>The <code>iter_call</code> is an alternative method that will fetch page by page the elements an return them in a python generator.</p>
@@ -404,9 +404,9 @@
 <h2 id="adding-query-parameters">Adding query parameters<a class="headerlink" href="#adding-query-parameters" title="Permanent link">¤</a></h2>
 <p>To specify <em>query parameters</em> allong with the call you have to add them as <strong>kwargs</strong> of the <code>get_call</code> (or <code>iter_call</code>) method</p>
 <p>For instance if you want to get a particular user identified by his email you'll do:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">email</span> <span class="o">=</span> <span class="s2">"&lt;the_user_email&gt;"</span>
 <span class="n">user</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/get"</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
@@ -414,9 +414,9 @@
 <h2 id="adding-request-body-parameters">Adding request body parameters<a class="headerlink" href="#adding-request-body-parameters" title="Permanent link">¤</a></h2>
 <p>To specify <em>body parameters</em> allong with the call you have to add them as a dict passed in the <strong>body</strong> parameters of the <code>get_call</code> method</p>
 <p>For instance if you want to create a particular user:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"test@test.com"</span><span class="p">,</span>
@@ -473,13 +473,13 @@
 </footer>
 </div>
 <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
+            worker: "../../assets/javascripts/worker/search.a68abb33.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

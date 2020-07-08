@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/guides/groups/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
 <title>Groups - LumApps SDK</title>
-<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -438,9 +438,9 @@
 <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"feedtype/list"</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="s2">"12345"</span><span class="p">)</span> <span class="c1"># one one instance</span>
 </code></pre></div></p>
 <h2 id="create-a-group">Create a group<a class="headerlink" href="#create-a-group" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">group</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"customer"</span><span class="p">:</span> <span class="s2">"123456789"</span><span class="p">,</span>
@@ -509,9 +509,9 @@ Then create a feed:</p>
 <div class="highlight"><pre><span></span><code><span class="n">feed_members</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/list"</span><span class="p">,</span> <span class="n">feeds</span><span class="o">=</span><span class="p">[</span><span class="s1">'1345'</span><span class="p">])</span>
 </code></pre></div>
 <h2 id="update-members-of-a-group">update members of a group<a class="headerlink" href="#update-members-of-a-group" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"feed"</span><span class="p">:</span> <span class="s2">"1234"</span><span class="p">,</span>
@@ -578,13 +578,13 @@ Then create a feed:</p>
 </footer>
 </div>
 <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
+            worker: "../../assets/javascripts/worker/search.a68abb33.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
