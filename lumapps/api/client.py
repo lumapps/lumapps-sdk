@@ -37,7 +37,7 @@ def chunks(lst, n):
         yield lst[i : i + n]
 
 
-class DictCache:
+class _DictCache:
     def __init__(self):
         self._cache = {}
 
@@ -68,7 +68,7 @@ class LumAppsClient(BaseClient):
         if cache:
             self.cache = cache
         else:
-            self.cache = DictCache()
+            self.cache = _DictCache()
         self.dry_run = dry_run
         self._langs = langs
         super().__init__(*args, **kwargs)
