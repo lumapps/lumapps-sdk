@@ -537,17 +537,16 @@ class LumAppsClient(BaseClient):
             raise FileDownloadError(url)
 
     def _get_upload_url(self, fname, folder_id: Optional[str], shared: bool):
-        """
-        {
+        """ {
             "fileName": "orange.jpeg",
             "lang": "en",
-            "parentPath": "provider=local/site=5763671289102336/resource=5718971551186944",
-                or
+            "parentPath":
+                "provider=local/site=5763671289102336/resource=5718971551186944",
+              or
             "parentPath": "provider=local/site=5763671289102336",
             "shared": true,
             "success": "/upload"
-        }
-        """
+        } """
         parent_path = f"provider=local/site={self.instance_id}"
         if folder_id:
             parent_path += f"/resource={folder_id}"
