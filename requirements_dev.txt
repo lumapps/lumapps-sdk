@@ -1,0 +1,19 @@
+# Tests
+flake8
+coverage
+pytest
+pytest-mock
+bandit
+
+# Doc
+sphinx
+sphinx-rtd-theme
+sphinxcontrib-napoleon
+
+# Dev tools
+pre-commit
+pre-commit-hooks
+wheel
+twine
+pylint
+rope

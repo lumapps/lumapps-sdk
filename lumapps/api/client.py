@@ -529,8 +529,13 @@ class LumAppsClient(BaseClient):
                 for chunk in r.iter_bytes():
                     if chunk:  # filter out keep-alive new chunks
                         file_io.write(chunk)
-                fname = findall("filename=(.+)", r.headers["Content-Disposition"])[0]
-                fname = fname.strip('"')
+                if r.headers.get("Content-Disposition"):
+                    fname = findall("filename=(.+)", r.headers["Content-Disposition"])[
+                        0
+                    ]
+                    fname = fname.strip('"')
+                else:
+                    fname = url.strip("/").rpartition("/")[2]
                 return fname, r.headers["content-type"]
         except Exception:
             exception(f"Failed to download file {url}:")
