@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/api_client/" rel="canonical"/>
 <link href="../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>Api Client - LumApps SDK</title>
-<link href="../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -20,7 +20,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#lumapps.api.base_client.BaseClient">
+<a class="md-skip" href="#lumapps.api.client.ApiClient">
           Skip to content
         </a>
 </div>
@@ -302,33 +302,33 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient">
-    BaseClient
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient">
+    ApiClient
   </a>
-<nav aria-label="BaseClient" class="md-nav">
+<nav aria-label="ApiClient" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.__init__">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.__init__">
     __init__()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.get_call">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.get_call">
     get_call()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.get_new_client_as">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.get_new_client_as">
     get_new_client_as()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.get_new_client_as_using_dwd">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.get_new_client_as_using_dwd">
     get_new_client_as_using_dwd()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.iter_call">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.iter_call">
     iter_call()
   </a>
 </li>
@@ -378,33 +378,33 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient">
-    BaseClient
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient">
+    ApiClient
   </a>
-<nav aria-label="BaseClient" class="md-nav">
+<nav aria-label="ApiClient" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.__init__">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.__init__">
     __init__()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.get_call">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.get_call">
     get_call()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.get_new_client_as">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.get_new_client_as">
     get_new_client_as()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.get_new_client_as_using_dwd">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.get_new_client_as_using_dwd">
     get_new_client_as_using_dwd()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#lumapps.api.base_client.BaseClient.iter_call">
+<a class="md-nav__link" href="#lumapps.api.client.ApiClient.iter_call">
     iter_call()
   </a>
 </li>
@@ -423,19 +423,19 @@
 </a>
 <h1>Api Client</h1>
 <div class="doc doc-object doc-class">
-<h2 class="doc doc-heading" id="lumapps.api.base_client.BaseClient">
-<code>lumapps.api.base_client.BaseClient</code>
-<a class="headerlink" href="#lumapps.api.base_client.BaseClient" title="Permanent link">¤</a></h2>
+<h2 class="doc doc-heading" id="lumapps.api.client.ApiClient">
+<code>lumapps.api.client.ApiClient</code>
+<a class="headerlink" href="#lumapps.api.client.ApiClient" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents first">
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="lumapps.api.base_client.BaseClient.__init__">
+<h3 class="doc doc-heading" id="lumapps.api.client.ApiClient.__init__">
 <code class="highlight language-python">
 __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token_getter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_verify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">proxy_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
 <small class="doc doc-property doc-property-special"><code>special</code></small>
 </span>
-<a class="headerlink" href="#lumapps.api.base_client.BaseClient.__init__" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#lumapps.api.client.ApiClient.__init__" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p><strong>Parameters:</strong></p>
 <table>
@@ -517,7 +517,7 @@ delegation.</p>
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>lumapps/api/base_client.py</code></summary>
+<summary>Source code in <code>lumapps/api/client.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -639,10 +639,10 @@ delegation.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="lumapps.api.base_client.BaseClient.get_call">
+<h3 class="doc doc-heading" id="lumapps.api.client.ApiClient.get_call">
 <code class="highlight language-python">
 get_call<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">name_parts</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> </code>
-<a class="headerlink" href="#lumapps.api.base_client.BaseClient.get_call" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#lumapps.api.client.ApiClient.get_call" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Generic function to call a lumapps endpoint</p>
 <p><strong>Parameters:</strong></p>
@@ -692,7 +692,7 @@ get_call<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>lumapps/api/base_client.py</code></summary>
+<summary>Source code in <code>lumapps/api/client.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -824,12 +824,12 @@ get_call<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="lumapps.api.base_client.BaseClient.get_new_client_as">
+<h3 class="doc doc-heading" id="lumapps.api.client.ApiClient.get_new_client_as">
 <code class="highlight language-python">
 get_new_client_as<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">,</span> <span class="n">customer_id</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<a class="headerlink" href="#lumapps.api.base_client.BaseClient.get_new_client_as" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#lumapps.api.client.ApiClient.get_new_client_as" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
-<p>Get a new BaseClient using an authorized client account by obtaining a
+<p>Get a new ApiClient using an authorized client account by obtaining a
 token using the user/getToken endpoint.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -870,15 +870,15 @@ token using the user/getToken endpoint.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>BaseClient</code></td>
+<td><code>ApiClient</code></td>
 <td>
-<p>BaseClient: A new instance of the BaseClient correctly authenticated.</p>
+<p>ApiClient: A new instance of the ApiClient correctly authenticated.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>lumapps/api/base_client.py</code></summary>
+<summary>Source code in <code>lumapps/api/client.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -921,8 +921,8 @@ token using the user/getToken endpoint.</p>
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_new_client_as</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">customer_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BaseClient"</span><span class="p">:</span>
-    <span class="sd">""" Get a new BaseClient using an authorized client account by obtaining a</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ApiClient"</span><span class="p">:</span>
+    <span class="sd">""" Get a new ApiClient using an authorized client account by obtaining a</span>
 <span class="sd">        token using the user/getToken endpoint.</span>
 
 <span class="sd">        Args:</span>
@@ -930,9 +930,9 @@ token using the user/getToken endpoint.</p>
 <span class="sd">            customer_id (str): Id of the LumApps customer the user belong to</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            BaseClient: A new instance of the BaseClient correctly authenticated.</span>
+<span class="sd">            ApiClient: A new instance of the ApiClient correctly authenticated.</span>
 <span class="sd">    """</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span>
         <span class="n">auth_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span><span class="p">,</span>
         <span class="n">api_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span>
         <span class="n">no_verify</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_verify</span><span class="p">,</span>
@@ -943,7 +943,7 @@ token using the user/getToken endpoint.</p>
         <span class="s2">"user/getToken"</span><span class="p">,</span> <span class="n">customerId</span><span class="o">=</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">user_email</span>
     <span class="p">)</span>
     <span class="n">token</span> <span class="o">=</span> <span class="n">token_infos</span><span class="p">[</span><span class="s2">"accessToken"</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">BaseClient</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">ApiClient</span><span class="p">(</span>
         <span class="n">api_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span>
         <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user_email</span><span class="p">,</span>
@@ -960,14 +960,14 @@ token using the user/getToken endpoint.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="lumapps.api.base_client.BaseClient.get_new_client_as_using_dwd">
+<h3 class="doc doc-heading" id="lumapps.api.client.ApiClient.get_new_client_as_using_dwd">
 <code class="highlight language-python">
 get_new_client_as_using_dwd<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">)</span> </code>
-<a class="headerlink" href="#lumapps.api.base_client.BaseClient.get_new_client_as_using_dwd" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#lumapps.api.client.ApiClient.get_new_client_as_using_dwd" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
-<p>Get a new BaseClient using domain-wide delegation </p>
+<p>Get a new ApiClient using domain-wide delegation </p>
 <details class="quote">
-<summary>Source code in <code>lumapps/api/base_client.py</code></summary>
+<summary>Source code in <code>lumapps/api/client.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -986,9 +986,9 @@ get_new_client_as_using_dwd<span class="p">(</span><span class="bp">self</span><
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_new_client_as_using_dwd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BaseClient"</span><span class="p">:</span>
-    <span class="sd">""" Get a new BaseClient using domain-wide delegation """</span>
-    <span class="k">return</span> <span class="n">BaseClient</span><span class="p">(</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">get_new_client_as_using_dwd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ApiClient"</span><span class="p">:</span>
+    <span class="sd">""" Get a new ApiClient using domain-wide delegation """</span>
+    <span class="k">return</span> <span class="n">ApiClient</span><span class="p">(</span>
         <span class="n">auth_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_info</span><span class="p">,</span>
         <span class="n">api_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_info</span><span class="p">,</span>
         <span class="n">user</span><span class="o">=</span><span class="n">user_email</span><span class="p">,</span>
@@ -1005,10 +1005,10 @@ get_new_client_as_using_dwd<span class="p">(</span><span class="bp">self</span><
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="lumapps.api.base_client.BaseClient.iter_call">
+<h3 class="doc doc-heading" id="lumapps.api.client.ApiClient.iter_call">
 <code class="highlight language-python">
 iter_call<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">name_parts</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> </code>
-<a class="headerlink" href="#lumapps.api.base_client.BaseClient.iter_call" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#lumapps.api.client.ApiClient.iter_call" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1044,7 +1044,7 @@ iter_call<span class="p">(</span><span class="bp">self</span><span class="p">,</
 <p>Objects returned by the endpoint call</p>
 </div>
 <details class="quote">
-<summary>Source code in <code>lumapps/api/base_client.py</code></summary>
+<summary>Source code in <code>lumapps/api/client.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -1239,13 +1239,13 @@ iter_call<span class="p">(</span><span class="bp">self</span><span class="p">,</
 </footer>
 </div>
 <script src="../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "..",
           features: [],
           search: Object.assign({
-            worker: "../assets/javascripts/worker/search.a68abb33.min.js"
+            worker: "../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

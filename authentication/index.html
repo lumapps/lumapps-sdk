@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/authentication/" rel="canonical"/>
 <link href="../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>Authentication - LumApps SDK</title>
-<link href="../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -380,30 +380,30 @@
 <p><strong>Note</strong>:</p>
 <p>Be sure to target the right lumapps environment, by default the sdk use site.lumapps.com as an environment.
 If your env is different (eg, sites-ms.lumapps.com) you can precise it like so:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
 <span class="n">api_info</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"base_url"</span><span class="p">:</span> <span class="s2">"https://sites-ms.lumapps.com"</span>
 <span class="p">}</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">,</span> <span class="n">api_info</span><span class="o">=</span><span class="n">api_info</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">,</span> <span class="n">api_info</span><span class="o">=</span><span class="n">api_info</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="using-a-regular-token">Using a regular token<a class="headerlink" href="#using-a-regular-token" title="Permanent link">¤</a></h2>
 <p>To authenticate with a regular, short lived token, instanciate the sdk like so:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="using-an-authorized-service-account">Using an authorized service account<a class="headerlink" href="#using-an-authorized-service-account" title="Permanent link">¤</a></h2>
 <p>By default a service account does not allows you to contact all LumApps API endpoints, to do so you need to get a token as a given user and then use this token to authenticate the requests</p>
-<p>The sdk BaseClient offers two methods to help with that <code>get_new_client_as</code> and <code>get_new_client_as_using_dwd</code> that allows you to get a new BaseClient correclty authenticated.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<p>The sdk ApiClient offers two methods to help with that <code>get_new_client_as</code> and <code>get_new_client_as_using_dwd</code> that allows you to get a new ApiClient correclty authenticated.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
 <span class="n">my_sa</span> <span class="o">=</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
 <span class="n">my_platform_id</span><span class="o">=</span><span class="s2">"&lt;your_plaform_id&gt;"</span>
 <span class="n">user_to_authenticate_on_behalf_of</span> <span class="o">=</span> <span class="s2">"&lt;user_email&gt;"</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span>
-    <span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">,</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span>
+    <span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">,</span> 
     <span class="n">auth_info</span><span class="o">=</span><span class="n">my_sa</span><span class="p">)</span>
     <span class="o">.</span><span class="n">get_new_client_as</span><span class="p">(</span>
         <span class="n">user_email</span><span class="o">=</span><span class="n">user_to_authenticate_on_behalf_of</span><span class="p">,</span>
@@ -461,13 +461,13 @@ If your env is different (eg, sites-ms.lumapps.com) you can precise it like so:<
 </footer>
 </div>
 <script src="../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "..",
           features: [],
           search: Object.assign({
-            worker: "../assets/javascripts/worker/search.a68abb33.min.js"
+            worker: "../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

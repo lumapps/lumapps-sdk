@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/guides/user_base/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>Basics - LumApps SDK</title>
-<link href="../../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -416,43 +416,43 @@
 <h1 id="users">Users<a class="headerlink" href="#users" title="Permanent link">¤</a></h1>
 <h2 id="list-all-your-lumapps-platform-users">List all your LumApps platform users<a class="headerlink" href="#list-all-your-lumapps-platform-users" title="Permanent link">¤</a></h2>
 <p>To list the users of your platform we'll use the <a href="">/user/list</a> endpoint.</p>
-<p>To get all users at once you can use the <code>get_call</code> method provided by the BaseClient.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<p>To get all users at once you can use the <code>get_call</code> method provided by the ApiClient.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">users</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/list"</span><span class="p">)</span>
 </code></pre></div>
 <p>You can also add additional parameters according to the <a href="https://apiv1.lumapps.com/#operation/User/List">documentation</a></p>
 <p>For instance, if you want to list the users of your platform but filter only the ones that are enabled you will do</p>
-<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">users</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/list"</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">"enabled"</span><span class="p">)</span>
 </code></pre></div>
 Alternatively you can fetch these users page by page using the <code>iter_call</code> method.</p>
 <h2 id="get-a-particular-user">Get a particular user<a class="headerlink" href="#get-a-particular-user" title="Permanent link">¤</a></h2>
 <p>To get a particular user you can do:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">email</span> <span class="o">=</span> <span class="s2">"&lt;the_user_email&gt;"</span>
 <span class="n">user</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/get"</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="get-the-authenticated-user">Get the authenticated user<a class="headerlink" href="#get-the-authenticated-user" title="Permanent link">¤</a></h2>
-<p>To get the user authenticated by the token you provided to the BaseClient you can do:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<p>To get the user authenticated by the token you provided to the ApiClient you can do:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">me</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"user/get"</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="create-a-new-user">Create a new user<a class="headerlink" href="#create-a-new-user" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"test@test.com"</span><span class="p">,</span>
@@ -462,9 +462,9 @@ Alternatively you can fetch these users page by page using the <code>iter_call</
 </code></pre></div>
 <h2 id="update-an-existing-user">Update an existing user<a class="headerlink" href="#update-an-existing-user" title="Permanent link">¤</a></h2>
 <p>To update an existing user the best pratice is to get it, modify it and then save it.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="c1"># Get tge user</span>
 <span class="n">email</span> <span class="o">=</span> <span class="s2">"&lt;user_email&gt;"</span>
@@ -478,9 +478,9 @@ Alternatively you can fetch these users page by page using the <code>iter_call</
 </code></pre></div>
 <h2 id="deactivate-a-user">Deactivate a user<a class="headerlink" href="#deactivate-a-user" title="Permanent link">¤</a></h2>
 <p>To deactivate a user you need to set his status to <code>disabled</code></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="c1"># Get tge user</span>
 <span class="n">email</span> <span class="o">=</span> <span class="s2">"&lt;user_email&gt;"</span>
@@ -541,13 +541,13 @@ Alternatively you can fetch these users page by page using the <code>iter_call</
 </footer>
 </div>
 <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.a68abb33.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

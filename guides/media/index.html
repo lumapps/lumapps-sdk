@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/guides/media/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>Media - LumApps SDK</title>
-<link href="../../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -443,9 +443,9 @@
 <h2 id="uploading-a-media">Uploading a media<a class="headerlink" href="#uploading-a-media" title="Permanent link">¤</a></h2>
 <h3 id="with-the-lumapps-sdk">With the LumApps SDK<a class="headerlink" href="#with-the-lumapps-sdk" title="Permanent link">¤</a></h3>
 <p>We provide a helper method to ease the process of uploading a media</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=&lt;</span><span class="n">you_token</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=&lt;</span><span class="n">you_token</span><span class="o">&gt;</span><span class="p">)</span>
 
 <span class="n">uploaded_media</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">upload_call</span><span class="p">(</span><span class="s2">"path_to_my_file"</span><span class="p">)</span>
 </code></pre></div>
@@ -473,8 +473,8 @@ The attributes are:</p>
 <p>This will give you an <strong>uploadUrl</strong> to use next</p>
 </li>
 <li>
-<p><strong>Uploading the media</strong></p>
-<p>Now that you have an <strong>uploadUrl</strong> you will use it to send you file in a POST request (Make sure that you include you bearer token in the Authorization headers). This request in a regular multipart upload,</p>
+<p><strong>Uploading the media</strong> </p>
+<p>Now that you have an <strong>uploadUrl</strong> you will use it to send you file in a POST request (Make sure that you include you bearer token in the Authorization headers). This request in a regular multipart upload, </p>
 <div class="highlight"><pre><span></span><code><span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
         <span class="n">upload_url</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s2">"upload-file"</span><span class="p">:</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">)}</span>
     <span class="p">)</span>
@@ -483,7 +483,7 @@ The attributes are:</p>
 </li>
 </ol>
 <h2 id="media-path">Media path<a class="headerlink" href="#media-path" title="Permanent link">¤</a></h2>
-<p>In the LumApps library media are saved and retrieved via their path.</p>
+<p>In the LumApps library media are saved and retrieved via their path. </p>
 <p>This path identifies where the media is situated either in the LumApps library itself, or in a gdrive or microsoft drive.</p>
 <p>This path is of the form <code>provider=&lt;provider&gt;/site=&lt;site_id&gt;/resource=&lt;resource_id&gt;</code> and is called <code>docPath</code> or <code>parentPath</code> depending on the situation.</p>
 <ul>
@@ -491,30 +491,30 @@ The attributes are:</p>
 <li>The <code>site_id</code> is the id of the LumApps site the media is on.</li>
 <li>The <code>resource_id</code> is the id of the media.</li>
 </ul>
-<p>The path is named <code>docPath</code> when you for instance retrieve the media and it identifies the media and is named <code>parentPath</code> when for instance you ask for an upload url and it identified where to upload.</p>
+<p>The path is named <code>docPath</code> when you for instance retrieve the media and it identifies the media and is named <code>parentPath</code> when for instance you ask for an upload url and it identified where to upload. </p>
 <h2 id="blob-key">Blob key<a class="headerlink" href="#blob-key" title="Permanent link">¤</a></h2>
 <h3 id="upload-an-image-and-obtain-the-blob-key">Upload an image and obtain the blob key<a class="headerlink" href="#upload-an-image-and-obtain-the-blob-key" title="Permanent link">¤</a></h3>
 <p>First <a href="#Uploading-a-media">upload your file</a>
 Once uploaded the api return the uploaded media of the form</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="nt">"uid"</span><span class="p">:</span> <span class="s2">"5278825007677440"</span><span class="p">,</span>
-    <span class="nt">"isFolder"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="nt">"customContentTypeKey"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">"updatedAt"</span><span class="p">:</span> <span class="s2">"2020-06-25T08:31:50.737799"</span><span class="p">,</span>
-    <span class="nt">"isStarred"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"5278825007677440"</span><span class="p">,</span>
-    <span class="nt">"createdAt"</span><span class="p">:</span> <span class="s2">"2020-06-25T08:31:50.751663"</span><span class="p">,</span>
+    <span class="nt">"uid"</span><span class="p">:</span> <span class="s2">"5278825007677440"</span><span class="p">,</span> 
+    <span class="nt">"isFolder"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> 
+    <span class="nt">"customContentTypeKey"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> 
+    <span class="nt">"updatedAt"</span><span class="p">:</span> <span class="s2">"2020-06-25T08:31:50.737799"</span><span class="p">,</span> 
+    <span class="nt">"isStarred"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> 
+    <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"5278825007677440"</span><span class="p">,</span> 
+    <span class="nt">"createdAt"</span><span class="p">:</span> <span class="s2">"2020-06-25T08:31:50.751663"</span><span class="p">,</span> 
     <span class="nt">"content"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="nt">"lang"</span><span class="p">:</span> <span class="s2">"fr"</span><span class="p">,</span>
-            <span class="nt">"mimeType"</span><span class="p">:</span> <span class="s2">"image/png"</span><span class="p">,</span>
-            <span class="nt">"uuid"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-            <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"https://sites.lumapps.com/serve/AMIfv95xFdNZT4x8ZCwYxVa4Ekr3hPU0ZRXJ_5na3mMJ_IwkfRW0-Vu-jY8DgPncGSq2UcAH-O_BnktwDOduHBccB8IgOCUQkoFv3WIzMH9FEOQVaX5uj7SA0BsdjPFdnqYKcOMRz4KPyBUPq66pXc3OpX3rycTxwQ/"</span><span class="p">,</span>
-            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"image"</span><span class="p">,</span>
-            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">46667</span><span class="p">,</span>
-            <span class="nt">"servingUrl"</span><span class="p">:</span> <span class="s2">"https://sites.lumapps.com/serve/AMIfv95xFdNZT4x8ZCwYxVa4Ekr3hPU0ZRXJ_5na3mMJ_IwkfRW0-Vu-jY8DgPncGSq2UcAH-O_BnktwDOduHBccB8IgOCUQkoFv3WIzMH9FEOQVaX5uj7SA0BsdjPFdnqYKcOMRz4KPyBUPq66pXc3OpX3rycTxwQ/"</span><span class="p">,</span>
-            <span class="nt">"value"</span><span class="p">:</span> <span class="s2">"AMIfv95xFdNZT4x8ZCwYxVa4Ekr3hPU0ZRXJ_5na3mMJ_IwkfRW0-Vu-jY8DgPncGSq2UcAH-O_BnktwDOduHBccB8IgOCUQkoFv3WIzMH9FEOQVaX5uj7SA0BsdjPFdnqYKcOMRz4KPyBUPq66pXc3OpX3rycTxwQ"</span><span class="p">,</span>
-            <span class="nt">"height"</span><span class="p">:</span> <span class="mi">717</span><span class="p">,</span>
+            <span class="nt">"lang"</span><span class="p">:</span> <span class="s2">"fr"</span><span class="p">,</span> 
+            <span class="nt">"mimeType"</span><span class="p">:</span> <span class="s2">"image/png"</span><span class="p">,</span> 
+            <span class="nt">"uuid"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> 
+            <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"https://sites.lumapps.com/serve/AMIfv95xFdNZT4x8ZCwYxVa4Ekr3hPU0ZRXJ_5na3mMJ_IwkfRW0-Vu-jY8DgPncGSq2UcAH-O_BnktwDOduHBccB8IgOCUQkoFv3WIzMH9FEOQVaX5uj7SA0BsdjPFdnqYKcOMRz4KPyBUPq66pXc3OpX3rycTxwQ/"</span><span class="p">,</span> 
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"image"</span><span class="p">,</span> 
+            <span class="nt">"size"</span><span class="p">:</span> <span class="mi">46667</span><span class="p">,</span> 
+            <span class="nt">"servingUrl"</span><span class="p">:</span> <span class="s2">"https://sites.lumapps.com/serve/AMIfv95xFdNZT4x8ZCwYxVa4Ekr3hPU0ZRXJ_5na3mMJ_IwkfRW0-Vu-jY8DgPncGSq2UcAH-O_BnktwDOduHBccB8IgOCUQkoFv3WIzMH9FEOQVaX5uj7SA0BsdjPFdnqYKcOMRz4KPyBUPq66pXc3OpX3rycTxwQ/"</span><span class="p">,</span> 
+            <span class="nt">"value"</span><span class="p">:</span> <span class="s2">"AMIfv95xFdNZT4x8ZCwYxVa4Ekr3hPU0ZRXJ_5na3mMJ_IwkfRW0-Vu-jY8DgPncGSq2UcAH-O_BnktwDOduHBccB8IgOCUQkoFv3WIzMH9FEOQVaX5uj7SA0BsdjPFdnqYKcOMRz4KPyBUPq66pXc3OpX3rycTxwQ"</span><span class="p">,</span> 
+            <span class="nt">"height"</span><span class="p">:</span> <span class="mi">717</span><span class="p">,</span> 
             <span class="err">....</span>
         <span class="p">}</span>
     <span class="p">]</span>
@@ -528,7 +528,7 @@ Once uploaded the api return the uploaded media of the form</p>
 <p>Get the media (<code>document/get</code> or <code>document/list</code>) via API's and extract the key. In that case the key should be in <code>content -&gt; value</code></p>
 </li>
 <li>
-<p>Copy/paste it from the LumApps admin.</p>
+<p>Copy/paste it from the LumApps admin. </p>
 <p>For that go to the media library =&gt; find your media =&gt; click on the three dots =&gt; Obtain a link</p>
 <p>This should give you a link the image, the blob key is containned in that link, between two <code>/</code> and after <code>server/</code></p>
 <p>(eg, https://sites.lumapps.com/serve/<strong>AMIfv96jY01ZxeT4S-Yanb7h5SigIG-ZIVcYK1Th95Z2gOkJet6Trdl2hntG8C_</strong>
@@ -586,13 +586,13 @@ Once uploaded the api return the uploaded media of the form</p>
 </footer>
 </div>
 <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.a68abb33.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/guides/community_posts/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>Posts - LumApps SDK</title>
-<link href="../../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -385,12 +385,12 @@
 </a>
 <h1 id="posts">Posts<a class="headerlink" href="#posts" title="Permanent link">¤</a></h1>
 <h2 id="post-list">Post list<a class="headerlink" href="#post-list" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"contentId"</span><span class="p">:</span> <span class="n">community_id</span><span class="p">,</span>
+    <span class="s2">"contentId"</span><span class="p">:</span> <span class="n">community_id</span><span class="p">,</span> 
     <span class="s2">"lang"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
     <span class="p">}</span>
 
@@ -400,9 +400,9 @@
 </code></pre></div>
 <p>For more details see <a href="https://apiv1.lumapps.com/#operation/Community%20Post/Search">the api documentation</a></p>
 <h2 id="post-get">Post get<a class="headerlink" href="#post-get" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
     <span class="s2">"community/post/get"</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"YOUR_POST_ID"</span>
@@ -427,9 +427,9 @@ You can either construct a new one from scratch:
 <span class="p">}</span>
 </code></pre></div></p>
 <p>or update properties from one you just got using the api.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">post</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span>
     <span class="s2">"community/post/get"</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"YOUR_POST_ID"</span>
@@ -493,13 +493,13 @@ You can either construct a new one from scratch:
 </footer>
 </div>
 <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.a68abb33.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/guides/content/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.4.0" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>Base - LumApps SDK</title>
-<link href="../../assets/stylesheets/main.fe0cca5b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -387,9 +387,9 @@
 <h2 id="content-listing">Content listing<a class="headerlink" href="#content-listing" title="Permanent link">¤</a></h2>
 <p>The <code>lang</code> parameter is mandatory for this call.</p>
 <p>You can add more filters, see <a href="https://api.lumapps.com/docs/output/_schemas/servercontentcontentmessagescontentlistrequest">apidoc</a></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">contents</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/list"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"lang"</span><span class="p">:</span><span class="s2">"en"</span><span class="p">})</span>
 </code></pre></div>
@@ -438,7 +438,7 @@
 <span class="p">}</span>
 </code></pre></div>
 <h2 id="contenttemplate">Content.template<a class="headerlink" href="#contenttemplate" title="Permanent link">¤</a></h2>
-<p>The <code>template</code> property contains the whole page structure.</p>
+<p>The <code>template</code> property contains the whole page structure. </p>
 <p>Widgets are directly placed in this structure.</p>
 <p><div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">"template"</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">"components"</span><span class="p">:</span> <span class="p">[</span>
@@ -468,7 +468,7 @@ You should iterate over all the structure to find the correct widget to update.<
 <div class="highlight"><pre><span></span><code><span class="c1"># First get the content</span>
 <span class="n">content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s1">'content/get'</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="s2">"6448894901878784"</span><span class="p">)</span>
 
-<span class="c1"># Update the thumbnail field by the media blob key</span>
+<span class="c1"># Update the thumbnail field by the media blob key </span>
 <span class="n">new_content</span> <span class="o">=</span> <span class="p">{</span>
   <span class="o">...</span>
   <span class="s2">"thumbnail"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">your_new_blob_key</span><span class="o">&gt;</span>
@@ -496,7 +496,7 @@ You should iterate over all the structure to find the correct widget to update.<
         <span class="nt">"content"</span><span class="p">:</span>
             <span class="p">{</span>
             <span class="nt">"fr"</span><span class="p">:</span> <span class="s2">"&lt;p&gt;Contenu html en français&lt;/p&gt;"</span><span class="p">,</span>
-            <span class="nt">"en"</span><span class="p">:</span> <span class="s2">"&lt;p&gt;Html text in english &lt;/p&gt;"</span>
+            <span class="nt">"en"</span><span class="p">:</span> <span class="s2">"&lt;p&gt;Html text in english &lt;/p&gt;"</span> 
             <span class="p">},</span>
         <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"identifier set in front &gt; style &gt; advance"</span><span class="p">,</span>
         <span class="nt">"class"</span><span class="p">:</span> <span class="s2">"class set in front &gt; style &gt; advance"</span><span class="p">,</span>
@@ -506,10 +506,10 @@ You should iterate over all the structure to find the correct widget to update.<
 <p>The <code>properties&gt;id</code> (or class) could be used to simplify widget access from code and communication with the design team.</p>
 <p><strong>Working on widgets more easily</strong></p>
 <p>To help you work on widget some helpers are available in the lumapps sdk</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
 <span class="kn">from</span> <span class="nn">lumapps.api.helpers</span> <span class="kn">import</span> <span class="n">widgets</span> <span class="k">as</span> <span class="n">widgets_helper</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span> 
 <span class="n">content</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"content/get"</span><span class="p">)</span> <span class="c1"># get the lumapps content</span>
 
 <span class="c1"># return the first found widget with the property widgetType equal to video</span>
@@ -572,13 +572,13 @@ You should iterate over all the structure to find the correct widget to update.<
 </footer>
 </div>
 <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
-<script src="../../assets/javascripts/bundle.b39636ac.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.a68abb33.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
