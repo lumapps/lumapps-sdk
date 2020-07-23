@@ -156,15 +156,21 @@ class DiscoveryCacheDict:
     def __init__(self):
         self._cache = {}
 
-    def get(self, url):
-        cached = self._cache.get(url)
+    def get(self, key, raises=False):
+        if raises:
+            cached = self._cache[key]
+        else:
+            cached = self._cache.get(key)
         if not cached or cached["expiry"] < datetime.now():
             return None
-        return cached["content"]
+        return cached["value"]
 
-    def set(self, url, content):
-        expiry = datetime.now() + CACHE_MAX_AGE
-        self._cache[url] = {"expiry": expiry, "content": content}
+    def set(self, key, value, ex=None):
+        if ex:
+            expiry = datetime.now() + timedelta(seconds=ex)
+        else:
+            expiry = datetime.now() + CACHE_MAX_AGE
+        self._cache[key] = {"expiry": expiry, "value": value}
 
 
 _DiscoveryCacheDict = DiscoveryCacheDict()

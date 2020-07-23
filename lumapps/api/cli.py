@@ -6,7 +6,7 @@ from argparse import SUPPRESS, ArgumentParser, FileType, RawDescriptionHelpForma
 
 from httpx import HTTPError
 
-from lumapps.api import BaseClient, TokenClient
+from lumapps.api import BaseClient, LumAppsClient
 from lumapps.api.errors import BadCallError, get_http_err_content
 from lumapps.api.utils import ConfigStore, list_prune_filters
 
@@ -129,8 +129,13 @@ def main():
         proxy_info = None
     api_info, auth_info, user = load_config(args.api, args.auth, args.user, args.config)
     if args.email:
-        token_client = TokenClient(
-            args.customer_id, auth_info, api_info, no_verify=args.no_verify
+        token_client = LumAppsClient(
+            args.customer_id,
+            None,
+            auth_info=auth_info,
+            api_info=api_info,
+            proxy_info=proxy_info,
+            no_verify=args.no_verify,
         )
         token_getter = token_client.get_token_getter(args.email)
     else:

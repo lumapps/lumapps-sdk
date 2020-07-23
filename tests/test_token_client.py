@@ -8,7 +8,7 @@ def test_token_client_1(mocker):
     )
     cli = TokenClient("11111", token="FOO")
     assert cli.customer_id == "11111"
-    token, exp = cli.get_token_and_expiry("foo@bar.com")
+    token, exp = cli._get_token_and_expiry("foo@bar.com")
     assert token == "foo1"
     assert exp == 12345
 

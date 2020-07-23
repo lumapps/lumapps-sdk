@@ -5,8 +5,8 @@ from io import FileIO
 from json import dumps, loads
 from logging import debug, exception, info, warning
 from re import findall
-from time import sleep
-from typing import List, Optional, Sequence, Tuple
+from time import sleep, time
+from typing import List, Optional, Sequence, Tuple, Callable
 
 from httpx import HTTPError, put
 from slugify import slugify
@@ -18,6 +18,7 @@ from lumapps.api.errors import (
     FolderCreationError,
     MissingMetadataError,
     NonIdpGroupInCommunityError,
+    GetTokenError,
     get_http_err_content,
     none_on_400_ALREADY_ARCHIVED,
     none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
@@ -27,6 +28,7 @@ from lumapps.api.errors import (
     retry_on_http_codes,
 )
 from lumapps.api.helpers import content_is_template, new_lumapps_uuid
+from lumapps.api.utils import DiscoveryCacheDict
 
 to_json = partial(dumps, indent=4)
 RESERVED_SLUGS = frozenset(["news", "admin", "content", "registration"])
@@ -37,30 +39,9 @@ def chunks(lst, n):
         yield lst[i : i + n]
 
 
-class _DictCache:
-    def __init__(self):
-        self._cache = {}
-
-    def get(self, key, raises=False):
-        if raises:
-            return self._cache[key]
-        else:
-            return self._cache.get(key)
-
-    def set(self, key, value, ex=None):
-        self._cache[key] = value
-
-
 class LumAppsClient(BaseClient):
     def __init__(
-        self,
-        customer_id,
-        instance_id,
-        dry_run,
-        *args,
-        langs=None,
-        cache=None,
-        **kwargs,
+        self, customer_id, instance_id, *args, cache=None, dry_run=False, **kwargs,
     ):
         assert customer_id
         self.customer_id = customer_id
@@ -68,11 +49,47 @@ class LumAppsClient(BaseClient):
         if cache:
             self.cache = cache
         else:
-            self.cache = _DictCache()
+            self.cache = DiscoveryCacheDict()
         self.dry_run = dry_run
-        self._langs = langs
+        self._langs = None
         super().__init__(*args, **kwargs)
         self._cached_metadata = {}
+
+    def _get_token_and_expiry(self, email) -> Callable[[], Tuple[str, int]]:
+        resp = self.get_call("user/getToken", customerId=self.customer_id, email=email)
+        return resp["accessToken"], int(resp["expiresAt"])
+
+    def get_token_getter(self, email):
+        assert email
+
+        def f():
+            k = f"{self.customer_id}|TOKEN|{email}"
+            vals = self.cache.get(k)
+            if vals:
+                return vals
+            try:
+                token, expiry = self._get_token_and_expiry(email)
+            except HTTPError as err:
+                if err.response.status_code == 403:
+                    raise GetTokenError(get_http_err_content(err))
+                raise
+            self.cache.set(k, (token, expiry), int(expiry - time() - 180))
+            return token, expiry
+
+        return f
+
+    def get_user_api(self, email, prune=True) -> "LumAppsClient":
+        return LumAppsClient(
+            self.customer_id,
+            self.instance_id,
+            cache=self.cache,
+            dry_run=self.dry_run,
+            token_getter=self.get_token_getter(email),
+            prune=prune,
+            api_info=self.api_info,
+            no_verify=self.no_verify,
+            proxy_info=self.proxy_info,
+        )
 
     @property
     @lru_cache()
