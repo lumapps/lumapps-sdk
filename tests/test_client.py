@@ -5,7 +5,7 @@ from lumapps.api import LumAppsClient
 
 @fixture()
 def cli():
-    c = LumAppsClient("a", "b", "", True, token="FAKE")
+    c = LumAppsClient("a", "b", token="FAKE")
     return c
 
 
