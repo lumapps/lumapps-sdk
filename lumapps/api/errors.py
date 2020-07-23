@@ -56,6 +56,16 @@ class UrlAlreadyExistsError(LumAppsClientError):
         super().__init__("URL_ALREADY_EXISTS", message)
 
 
+class GetTokenError(LumAppsClientError):
+    def __init__(self, message):
+        super().__init__("GET_TOKEN", message)
+
+
+class UserCannotSaveError(LumAppsClientError):
+    def __init__(self, message):
+        super().__init__("USER_CANNOT_SAVE", message)
+
+
 def none_on_http_codes(codes=(404,)):
     def decorator(f):
         @wraps(f)
