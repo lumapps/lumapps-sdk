@@ -102,7 +102,7 @@ setup:  ## Setup the development environment (install dependencies).
 	fi; \
 	poetry install -v
 	@if ! $(CI); then \
-		pre-commit install; \
+		poetry run pre-commit install; \
 	fi; \
 
 
