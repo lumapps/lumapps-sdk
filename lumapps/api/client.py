@@ -6,7 +6,7 @@ from json import dumps, loads
 from logging import debug, exception, info, warning
 from re import findall
 from time import sleep, time
-from typing import Callable, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, Generator, List, Optional, Sequence, Tuple
 
 from httpx import HTTPError, put
 from slugify import slugify
@@ -43,6 +43,16 @@ class LumAppsClient(BaseClient):
     def __init__(
         self, customer_id, instance_id, *args, cache=None, dry_run=False, **kwargs,
     ):
+        """
+            Args:
+                customer_id: The id of the platform you target
+                instance_id: The id of the instance you target
+                args: The args to pass to the BaseClient
+                cache: The cache to use 
+                dry_run: Whether to run in dry_run mode or not. This will
+                    avoid saving things when callings save endpoints
+                kwargs: The kwargs to pass to the BaseClient
+        """
         assert customer_id
         self.customer_id = customer_id
         self.instance_id = instance_id
@@ -55,11 +65,11 @@ class LumAppsClient(BaseClient):
         super().__init__(*args, **kwargs)
         self._cached_metadata = {}
 
-    def _get_token_and_expiry(self, email) -> Callable[[], Tuple[str, int]]:
+    def _get_token_and_expiry(self, email: str) -> Callable[[], Tuple[str, int]]:
         resp = self.get_call("user/getToken", customerId=self.customer_id, email=email)
         return resp["accessToken"], int(resp["expiresAt"])
 
-    def get_token_getter(self, email):
+    def get_token_getter(self, email: str):
         assert email
 
         def f():
@@ -78,7 +88,7 @@ class LumAppsClient(BaseClient):
 
         return f
 
-    def get_user_api(self, email, prune=True) -> "LumAppsClient":
+    def get_user_api(self, email: str, prune: bool = True) -> "LumAppsClient":
         return LumAppsClient(
             self.customer_id,
             self.instance_id,
@@ -126,7 +136,21 @@ class LumAppsClient(BaseClient):
         """
         return self.get_call("misc/urlinfo", url=url)
 
-    def get_available_instance_slug(self, desired_slug):
+    def get_available_instance_slug(self, desired_slug: str) -> str:
+        """ Find an available instance slug according to 
+            the given slug and the current token customer.
+            If the exact slug is not avaialble -i at the end until we
+            found an available one or i reachs 300.
+
+            Args:
+                desired_slug: The desired slug
+
+            Returns:
+                The first available slug found
+
+            Raises:
+                Exception: Reached 300 try
+        """
         post_fix = None
         while True:
             c = self.get_instance(slug=desired_slug, fields="id")
@@ -142,7 +166,22 @@ class LumAppsClient(BaseClient):
             if post_fix > 100:
                 raise Exception("300 limit as slug postfix")
 
-    def get_available_slug(self, desired_slug):
+    def get_available_slug(self, desired_slug: str) -> str:
+        """
+            Find an available content slug according to 
+            the given slug and the current token customer.
+            If the exact slug is not avaialble -i at the end until we
+            found an available one or i reachs 300.
+             
+            Args:
+                desired_slug: The desired slug
+
+            Returns:
+                The first available slug found
+
+            Raises:
+                Exception: Reached 300 try
+        """
         post_fix = None
         while True:
             if desired_slug in RESERVED_SLUGS:
@@ -161,14 +200,31 @@ class LumAppsClient(BaseClient):
             if post_fix > 300:
                 raise Exception("300 limit as slug postfix")
 
-    def get_available_slugs(self, titles: dict):
+    def get_available_slugs(self, titles: dict) -> List[str]:
         slugs = {lang: slugify(title) for lang, title in titles.items()}
         for lang, slug in slugs.items():
             slugs[lang] = self.get_available_slug(slug)
         return slugs
 
     @none_on_404
-    def get_content(self, content_id, fields=None, action="PAGE_EDIT", cache=False):
+    def get_content(
+        self,
+        content_id: str,
+        fields: str = None,
+        action: str = "PAGE_EDIT",
+        cache: bool = False,
+    ) -> Optional[Dict[str, Any]]:
+        """ Get a content via his id
+
+            Args: 
+                content_id: The id of the content to get
+                fields: The fields projection to apply
+                action: PAGE_EDIT
+                cache: Whether to cache the result or not
+
+            Returns:
+                The retrieved content or None if it was not found
+        """
         if cache:
             c = self.cache.get(f"{self.customer_id}|CONTENT|{content_id}")
             if c:
@@ -181,7 +237,20 @@ class LumAppsClient(BaseClient):
         return self.get_call("content/get", uid=content_id, **params)
 
     @none_on_404
-    def get_content_by_slug(self, slug, fields=None, action="PAGE_EDIT"):
+    def get_content_by_slug(
+        self, slug: str, fields: str = None, action: str = "PAGE_EDIT"
+    ) -> Optional[Dict[str, Any]]:
+        """
+            Get a content via his slug
+
+            Args: 
+                slug: The slug of the content to get
+                fields: The fields projection to apply
+                action: PAGE_EDIT
+
+            Returns:
+                The retrieved content or None if it was not found
+        """
         params = {}
         if action:
             params["action"] = action
@@ -192,13 +261,15 @@ class LumAppsClient(BaseClient):
         )
 
     @lru_cache()
-    def _get_template(self, template_id):
+    def _get_template(self, template_id: str) -> Dict[str, Any]:
         return self.get_call("template/get", uid=template_id)
 
-    def get_template(self, template_id):
+    def get_template(self, template_id: str) -> Dict[str, Any]:
         return deepcopy(self._get_template(template_id))
 
-    def iter_content_templates(self, content_type_id, **kwargs):
+    def iter_content_templates(
+        self, content_type_id: str, **kwargs: dict
+    ) -> Generator[Dict[str, Any], None, None]:
         yield from self.iter_call(
             "template/list",
             instance=self.instance_id,
@@ -206,7 +277,7 @@ class LumAppsClient(BaseClient):
             **kwargs,
         )
 
-    def iter_newsletters(self, **kwargs):
+    def iter_newsletters(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
         yield from self.iter_call(
             "newsletter/list",
             instance=self.instance_id,
@@ -214,7 +285,9 @@ class LumAppsClient(BaseClient):
             **kwargs,
         )
 
-    def add_categories_to_community(self, community: dict, categories: list):
+    def add_categories_to_community(
+        self, community: dict, categories: list
+    ) -> Optional[Dict[str, Any]]:
         c = community
         c.setdefault("tagsDetails", [])
         tags = c["tagsDetails"]
@@ -235,7 +308,9 @@ class LumAppsClient(BaseClient):
                 }
             )
 
-    def get_community_category_ids(self, community: dict, categories: Sequence):
+    def get_community_category_ids(
+        self, community: dict, categories: Sequence
+    ) -> List[Dict[str, Any]]:
         lst = []
         categories = set(categories)
         for tag in community.get("tagsDetails", []):
@@ -243,42 +318,52 @@ class LumAppsClient(BaseClient):
                 lst.append(tag["uid"])
         return lst
 
-    def get_community_template(self, template_id):
+    def get_community_template(self, template_id: str) -> Dict[str, Any]:
         return self.get_call("communitytemplate/get", uid=template_id)
 
-    def iter_community_templates(self, **params):
+    def iter_community_templates(
+        self, **params
+    ) -> Generator[Dict[str, Any], None, None]:
         yield from self.iter_call(
             "communitytemplate/list", instanceId=self.instance_id, **params
         )
 
-    def save_community_template(self, templ):
+    def save_community_template(self, templ: Dict[str, Any]) -> Dict[str, Any]:
         debug(f"Saving community template: {to_json(templ)}")
         if self.dry_run:
             return templ
         return self.get_call("communitytemplate/save", body=templ)
 
     @none_on_404
-    def get_community(self, community_id, fields=None) -> Optional[dict]:
+    def get_community(
+        self, community_id: str, fields: str = None
+    ) -> Optional[Dict[str, Any]]:
         return self.get_call("community/get", uid=community_id, fields=fields)
 
-    def iter_communities(self, **kwargs):
+    def iter_communities(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
         body = {"lang": "", "instanceId": self.instance_id}
         body.update(**kwargs)
         yield from self.iter_call("community/list", body=body)
 
-    def iter_all_posts(self, **iter_posts_kwargs):
+    def iter_all_posts(
+        self, **iter_posts_kwargs: dict
+    ) -> Generator[Dict[str, Any], None, None]:
         for c in self.iter_communities(maxResults=100, fields="items(id)"):
             for p in self.iter_community_posts(c["id"], **iter_posts_kwargs):
                 yield p
 
-    def iter_contents(self, content_type_id=None, **kwargs):
+    def iter_contents(
+        self, content_type_id: str = None, **kwargs
+    ) -> Generator[Dict[str, Any], None, None]:
         body = {"lang": "", "instanceId": self.instance_id, "action": "PAGE_EDIT"}
         if content_type_id:
             body["customContentType"] = content_type_id
         body.update(**kwargs)
         yield from self.iter_call("content/list", body=body)
 
-    def iter_content_lists(self, content_type_id, **kwargs):
+    def iter_content_lists(
+        self, content_type_id: str, **kwargs: dict
+    ) -> Generator[Generator[Dict[str, Any], None, None]]:
         body = {
             "customContentType": content_type_id,
             "customContentTypeTags": [],
@@ -474,7 +559,7 @@ class LumAppsClient(BaseClient):
     def iter_platform_users(self, **kwargs):
         yield from self.iter_call("user/list", **kwargs)
 
-    def save_user(self, user):
+    def save_user(self, user: dict):
         debug(f"Saving user: {to_json(user)}")
         if not self.dry_run:
             return self.get_call("user/save", body=user)

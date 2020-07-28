@@ -12,7 +12,8 @@ nav:
     - Authentication: authentication.md
     - Environment: environment.md
     - Guides:
-      - Api Client: guides/api_client_guide.md
+      - Base Client: guides/base_client_guide.md
+      - LumApps Client: guides/lumapps_api_client_guide.md
       - Content:
           - Base: guides/content.md
           - Template: guides/content_template.md
@@ -30,7 +31,8 @@ nav:
       - Roles: guides/roles.md
       - Widgets: guides/widgets.md
     - Reference:
-      - Api Client: api_client.md
+      - Base Client: base_client.md
+      - LumApps Client: lumapps_api_client.md
       - Widgets: widgets.md
       - Medias: medias.md
     - Contributing: CONTRIBUTING.md

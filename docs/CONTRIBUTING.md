@@ -12,6 +12,14 @@ make setup
 
 You can run `make help` to see all available actions !
 
+### Adding a new dependency
+
+To add a dependency use poetry
+
+```bash
+poetry add <dependency>
+```
+
 ## Dev
 
 ### Code
