@@ -51,6 +51,11 @@ class NonIdpGroupInCommunityError(LumAppsClientError):
         super().__init__("NON_IDP_GROUP_IN_COMMUNITY", message)
 
 
+class FeedsRequiredError(LumAppsClientError):
+    def __init__(self, message):
+        super().__init__("FEEDS_REQUIRED", message)
+
+
 class UrlAlreadyExistsError(LumAppsClientError):
     def __init__(self, message):
         super().__init__("URL_ALREADY_EXISTS", message)
@@ -153,7 +158,7 @@ def none_on_400_ALREADY_ARCHIVED(function):
         except HTTPError as e:
             try:
                 if e.response.status_code == 400:
-                    e_str = e.response.content.decode()
+                    e_str = get_http_err_content(e)
                     if "ALREADY_ARCHIVED" in e_str:
                         return None
             except AttributeError:
@@ -171,7 +176,7 @@ def none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED(function):
         except HTTPError as e:
             try:
                 if e.response.status_code == 400:
-                    e_str = e.response.content.decode()
+                    e_str = get_http_err_content(e)
                     if "SUBSCRIPTION_ALREADY_EXISTS" in e_str:
                         return None
                     if "Already pinned" in e_str:
@@ -183,7 +188,7 @@ def none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED(function):
     return wrapper
 
 
-def raise_url_already_exists(function):
+def raise_known_save_errors(function):
     @wraps(function)
     def wrapper(*args, **kwargs):
         try:
@@ -192,25 +197,38 @@ def raise_url_already_exists(function):
             """
             {
                 "error": {
-                "code": 400,
-                "errors": [
-                {
-                    "domain": "global",
-                    "message": "URL_ALREADY_EXISTS",
-                    "reason": "badRequest"
+                    "code": 400,
+                    "errors": [
+                        {
+                            "domain": "global",
+                            "message": "URL_ALREADY_EXISTS",
+                            "reason": "badRequest"
+                        }
+                    ],
+                    "message": "URL_ALREADY_EXISTS"
                 }
-                ],
-                "message": "URL_ALREADY_EXISTS"
+            }
+            {
+                "error": {
+                    "code": 400,
+                    "errors": [
+                        {
+                            "domain": "global",
+                            "message": "Feeds are required",
+                            "reason": "badRequest"
+                        }
+                    ],
+                    "message": "Feeds are required"
                 }
             }
             """
             try:
-                e_str = e.response.content.decode()
-                if (
-                    e.response.status_code == 400
-                    and "SUBSCRIPTION_ALREADY_EXISTS" in e_str
-                ):
-                    raise UrlAlreadyExistsError(e)
+                if e.response.status_code == 400:
+                    e_str = get_http_err_content(e)
+                    if "URL_ALREADY_EXISTS" in e_str:
+                        raise UrlAlreadyExistsError(e)
+                    if "Feeds are required" in e_str:
+                        raise FeedsRequiredError(e)
             except AttributeError:
                 pass
             raise
