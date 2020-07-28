@@ -24,7 +24,7 @@ from lumapps.api.errors import (
     none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
     none_on_404,
     none_on_http_codes,
-    raise_url_already_exists,
+    raise_known_save_errors,
     retry_on_http_codes,
 )
 from lumapps.api.helpers import content_is_template, new_lumapps_uuid
@@ -819,6 +819,15 @@ class LumAppsClient(BaseClient):
             return tag
         return self.get_call("tag/save", body=tag)
 
+    def iter_global_widgets(self):
+        yield from self.iter_call("widget/list", instance=self.instance_id)
+
+    def save_global_widget(self, widget):
+        debug(f"Saving global widget: {to_json(widget)}")
+        if self.dry_run:
+            return widget
+        return self.get_call("widget/save", body=widget)
+
     def get_media(self, media_id):
         """ prefer get_document above """
         return self.get_call("media/get", uid=media_id)
@@ -1010,7 +1019,7 @@ class LumAppsClient(BaseClient):
         assert content.get("type") == "menu"
         return self.get_call("content/save", body=content, sendNotifications=False)
 
-    @raise_url_already_exists
+    @raise_known_save_errors
     def save_content(self, content, cache=False):
         debug(f"Saving content: {to_json(content)}")
         if self.dry_run:
