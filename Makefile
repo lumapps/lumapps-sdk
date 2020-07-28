@@ -100,6 +100,7 @@ setup:  ## Setup the development environment (install dependencies).
 		  pipx install poetry --force; \
 		fi; \
 	fi; \
+	poetry config virtualenvs.in-project true
 	poetry install -v
 	@if ! $(CI); then \
 		poetry run pre-commit install; \
