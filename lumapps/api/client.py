@@ -6,7 +6,7 @@ from json import dumps, loads
 from logging import debug, exception, info, warning
 from re import findall
 from time import sleep, time
-from typing import List, Optional, Sequence, Tuple, Callable
+from typing import Callable, List, Optional, Sequence, Tuple
 
 from httpx import HTTPError, put
 from slugify import slugify
@@ -16,9 +16,9 @@ from lumapps.api.errors import (
     FileDownloadError,
     FileUploadError,
     FolderCreationError,
+    GetTokenError,
     MissingMetadataError,
     NonIdpGroupInCommunityError,
-    GetTokenError,
     get_http_err_content,
     none_on_400_ALREADY_ARCHIVED,
     none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
