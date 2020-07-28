@@ -389,6 +389,7 @@
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
 <h1 id="content">Content<a class="headerlink" href="#content" title="Permanent link">¤</a></h1>
+<p>to</p>
 <h2 id="content-listing">Content listing<a class="headerlink" href="#content-listing" title="Permanent link">¤</a></h2>
 <p>The <code>lang</code> parameter is mandatory for this call.</p>
 <p>You can add more filters, see <a href="https://api.lumapps.com/docs/output/_schemas/servercontentcontentmessagescontentlistrequest">apidoc</a></p>
@@ -436,12 +437,15 @@
     <span class="s2">"id"</span> <span class="p">:</span><span class="s2">"134567"</span><span class="p">,</span>
     <span class="s2">"type"</span><span class="p">:</span>  <span class="s2">"page"</span><span class="p">,</span>
     <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"LIVE|ARCHIVED"</span><span class="p">,</span>
+    <span class="s2">"canonicalUrl"</span><span class="p">:</span> <span class="s2">"https://..."</span><span class="p">,</span>
     <span class="s2">"thumbnail"</span> <span class="p">:</span> <span class="s2">"media library url"</span><span class="p">,</span>
     <span class="s2">"publicationDate"</span> <span class="p">:</span> <span class="s2">"2018-06-29T09:28:34.346124"</span><span class="p">,</span>
     <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-29T09:28:34.346124"</span><span class="p">,</span>
     <span class="s2">"authorId"</span><span class="p">:</span> <span class="s2">"23142536879786754"</span> <span class="c1"># set at creation time with the connected user</span>
 <span class="p">}</span>
 </code></pre></div>
+<h2 id="contentcanonicalurl">Content.canonicalUrl<a class="headerlink" href="#contentcanonicalurl" title="Permanent link">¤</a></h2>
+<p>The <code>canonicalUrl</code> property containe the links that can be used to access the content</p>
 <h2 id="contenttemplate">Content.template<a class="headerlink" href="#contenttemplate" title="Permanent link">¤</a></h2>
 <p>The <code>template</code> property contains the whole page structure. </p>
 <p>Widgets are directly placed in this structure.</p>
