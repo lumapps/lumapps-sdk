@@ -1,5 +1,8 @@
 # Content
 
+
+to
+
 ## Content listing
 The `lang` parameter is mandatory for this call.
 
@@ -73,12 +76,17 @@ To create content on behalf of other users you have to be connected with this us
     "id" :"134567",
     "type":  "page",
     "status": "LIVE|ARCHIVED",
+    "canonicalUrl": "https://...",
     "thumbnail" : "media library url",
     "publicationDate" : "2018-06-29T09:28:34.346124",
     "updatedAt": "2018-06-29T09:28:34.346124",
     "authorId": "23142536879786754" # set at creation time with the connected user
 }
 ```
+
+## Content.canonicalUrl
+
+The `canonicalUrl` property contains the links that can be used to access the content.
 
 ## Content.template
 
