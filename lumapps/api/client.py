@@ -19,6 +19,7 @@ from lumapps.api.errors import (
     MissingMetadataError,
     NonIdpGroupInCommunityError,
     GetTokenError,
+    LumAppsClientConfError,
     get_http_err_content,
     none_on_400_ALREADY_ARCHIVED,
     none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
@@ -43,7 +44,8 @@ class LumAppsClient(BaseClient):
     def __init__(
         self, customer_id, instance_id, *args, cache=None, dry_run=False, **kwargs,
     ):
-        assert customer_id
+        if not customer_id:
+            raise LumAppsClientConfError("customer_id required")
         self.customer_id = customer_id
         self.instance_id = instance_id
         if cache:
