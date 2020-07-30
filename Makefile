@@ -93,16 +93,17 @@ endif
 .PHONY: setup
 setup:  ## Setup the development environment (install dependencies).
 	@if ! $(CI); then \
+		if ! command -v pipx &>/dev/null; then \
+			pip install pipx; \
+		fi; \
 		if ! command -v poetry &>/dev/null; then \
-		  if ! command -v pipx &>/dev/null; then \
-			  pip install pipx; \
-			fi; \
-		  pipx install poetry --force; \
+		  pipx install poetry; \
 		fi; \
 	fi; \
+	poetry config virtualenvs.in-project true
 	poetry install -v
 	@if ! $(CI); then \
-		pre-commit install; \
+		poetry run pre-commit install; \
 	fi; \
 
 

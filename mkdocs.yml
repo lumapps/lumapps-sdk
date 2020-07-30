@@ -10,6 +10,7 @@ theme:
 nav:
     - Overview: index.md
     - Authentication: authentication.md
+    - Environment: environment.md
     - Guides:
       - Api Client: guides/api_client_guide.md
       - Content:
