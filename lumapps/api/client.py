@@ -32,6 +32,7 @@ from lumapps.api.utils import DiscoveryCacheDict
 
 to_json = partial(dumps, indent=4)
 RESERVED_SLUGS = frozenset(["news", "admin", "content", "registration"])
+ApiClient = BaseClient
 
 
 def chunks(lst, n):
