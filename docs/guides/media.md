@@ -7,8 +7,7 @@
 We provide a helper method to ease the process of uploading a media
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token=<you_token>)
 
 uploaded_media = client.upload_call("path_to_my_file")

@@ -21,8 +21,7 @@ client.get_call("feedtype/list", instance="12345") # one one instance
 ## Create a group
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 group = {
@@ -110,8 +109,7 @@ feed_members = api.get_call("user/list", feeds=['1345'])
 ## update members of a group
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 body = {

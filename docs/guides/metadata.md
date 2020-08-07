@@ -3,8 +3,7 @@
 ## Metadata kind
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 metadata_kind = client.get_call("metadata/list", body={
@@ -36,8 +35,7 @@ print(metadata_kind)
 ## Metadata values
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 metadata_values = client.get_call('metadata', 'list', body={
@@ -131,8 +129,7 @@ Code sample
 ```python
 import time
 
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 # Get metadata list

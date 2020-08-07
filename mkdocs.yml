@@ -13,7 +13,6 @@ nav:
     - Environment: environment.md
     - Guides:
       - Base Client: guides/base_client_guide.md
-      - LumApps Client: guides/lumapps_api_client_guide.md
       - Content:
           - Base: guides/content.md
           - Template: guides/content_template.md
