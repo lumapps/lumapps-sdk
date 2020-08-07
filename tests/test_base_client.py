@@ -5,7 +5,8 @@ from unittest.mock import PropertyMock
 from httpx import HTTPError
 from pytest import fixture, raises
 
-from lumapps.api.base_client import BaseClientfrom lumapps.api.errors import BadCallError, BaseClientError
+from lumapps.api.base_client import BaseClient
+from lumapps.api.errors import BadCallError, BaseClientError
 from lumapps.api.utils import (
     FILTERS,
     _DiscoveryCacheDict,

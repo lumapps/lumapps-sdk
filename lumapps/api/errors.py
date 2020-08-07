@@ -26,6 +26,11 @@ class LumAppsClientError(BaseClientError):
         self.code = code
 
 
+class LumAppsClientConfError(BaseClientError):
+    def __init__(self, message=None):
+        super().__init__(message)
+
+
 class MissingMetadataError(LumAppsClientError):
     def __init__(self, message):
         super().__init__("MISSING_METADATA", message)
