@@ -17,6 +17,7 @@ from lumapps.api.errors import (
     FileUploadError,
     FolderCreationError,
     GetTokenError,
+    LumAppsClientConfError,
     MissingMetadataError,
     NonIdpGroupInCommunityError,
     get_http_err_content,
@@ -55,7 +56,8 @@ class LumAppsClient(BaseClient):
                     avoid saving things when callings save endpoints
                 kwargs: The kwargs to pass to the BaseClient
         """
-        assert customer_id
+        if not customer_id:
+            raise LumAppsClientConfError("customer_id required")
         self.customer_id = customer_id
         self.instance_id = instance_id
         if cache:
