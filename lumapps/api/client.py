@@ -923,12 +923,11 @@ class LumAppsClient(BaseClient):
         )
 
     @none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED
-    def pin_post(self, post_id, title: dict):
+    def pin_post(self, community_id, post_id):
         if self.dry_run:
             return
-        return self.get_call(
-            "community/post/pin", body={"uid": post_id, "title": title}
-        )
+        pl = {"communityId": community_id, "uid": post_id}
+        return self.get_call("community/post/pin", body=pl)
 
     def iter_nav_element_ids(self, lang):
         for content in self.iter_call(
