@@ -4,7 +4,7 @@ As your LumApps platform can be on a specific environment you'll need to give th
 
 By default the ApiClient uses `https://sites.lumapps.com`. 
 
-To use another base url (you can find more informations about those url [here](https://help.lumapps.com/docs/architecture-lumapps-platform-site-architecture)) you have to do:
+To use another base url (you can find more informations about those url [here](https://docs.lumapps.com/docs/home/architecture/archi-lumapps-platform-site-architecture)) you have to do:
 
 ```python
 from lumapps.api.client import ApiClient
