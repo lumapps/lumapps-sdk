@@ -1,4 +1,3 @@
-import warnings
 from contextlib import AbstractContextManager
 from functools import lru_cache
 from json import dumps, loads
@@ -168,11 +167,6 @@ class BaseClient(AbstractContextManager):
                 "No authentication provided (token_getter, auth_info, or token)."
             )
         return s
-
-    @property
-    def session(self) -> Client:
-        warnings.warn("Use client instead", DeprecationWarning, stacklevel=2)
-        return self.client
 
     @property
     def client(self) -> Client:

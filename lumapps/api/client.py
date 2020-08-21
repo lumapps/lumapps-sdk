@@ -543,7 +543,7 @@ class LumAppsClient(BaseClient):
         """ Returns mime type from content-type header"""
         assert url
         try:
-            with self.session.stream("GET", url) as r:
+            with self.client.stream("GET", url) as r:
                 r.raise_for_status()
                 for chunk in r.iter_bytes():
                     if chunk:  # filter out keep-alive new chunks
@@ -620,7 +620,7 @@ class LumAppsClient(BaseClient):
             err_msg = get_http_err_content(http_err)
             warning(f"Error uploading {name}: {err_msg}")
             raise FileUploadError(err_msg)
-        response = self.session.post(
+        response = self.client.post(
             upload_url, files={"upload-file": (name, f, mime_type)}
         )
         if response.status_code != 200:
@@ -670,9 +670,9 @@ class LumAppsClient(BaseClient):
         if self.dry_run:
             return
         # /upload, params ={"success": "/upload"}
-        resp = self.session.get("/upload", params={"success": "/upload"})
+        resp = self.client.get("/upload", params={"success": "/upload"})
         upload_url = resp.json()["uploadUrl"]
-        response = self.session.post(
+        response = self.client.post(
             upload_url, files={"upload-file": (name, f, mime_type)}
         )
         if response.status_code != 200:
