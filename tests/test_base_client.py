@@ -328,7 +328,7 @@ def test_with_proxy_1():
         proxy_info={"scheme": "http", "host": "foo.bar.com", "port": 12345},
     )
     s = c.client
-    assert len(s.proxies) == 2
+    assert len(s._proxies) == 2
 
 
 def test_with_proxy_2():
@@ -343,7 +343,7 @@ def test_with_proxy_2():
         },
     )
     s = c.client
-    assert len(s.proxies) == 2
+    assert len(s._proxies) == 2
 
 
 def test_discovery_doc(mocker):

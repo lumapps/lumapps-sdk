@@ -138,7 +138,7 @@ class BaseClient(AbstractContextManager):
                 proxy = f"{scheme}://{user}:{pwd}@{host}:{port}"
             else:
                 proxy = f"{scheme}://{host}:{port}"
-            kwargs["proxies"] = {"https": proxy, "http": proxy}
+            kwargs["proxies"] = {"https://": proxy, "http://": proxy}
         else:
             kwargs["proxies"] = None
         if not auth and self._token:
