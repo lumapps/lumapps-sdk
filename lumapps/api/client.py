@@ -8,7 +8,7 @@ from re import findall
 from time import sleep, time
 from typing import List, Optional, Sequence, Tuple, Callable
 
-from httpx import HTTPError, put
+from httpx import HTTPStatusError, put
 from slugify import slugify
 
 from lumapps.api.base_client import BaseClient
@@ -71,7 +71,7 @@ class LumAppsClient(BaseClient):
                 return vals
             try:
                 token, expiry = self._get_token_and_expiry(email)
-            except HTTPError as err:
+            except HTTPStatusError as err:
                 if err.response.status_code == 403:
                     raise GetTokenError(get_http_err_content(err))
                 raise
@@ -616,20 +616,19 @@ class LumAppsClient(BaseClient):
             return
         try:
             upload_url = self._get_upload_url(name, folder_id, shared)
-        except HTTPError as http_err:
+        except HTTPStatusError as http_err:
             err_msg = get_http_err_content(http_err)
             warning(f"Error uploading {name}: {err_msg}")
             raise FileUploadError(err_msg)
         response = self.client.post(
             upload_url, files={"upload-file": (name, f, mime_type)}
         )
-        if response.status_code != 200:
-            try:
-                response.raise_for_status()
-            except HTTPError as http_err:
-                err_msg = get_http_err_content(http_err)
-                warning(f"Error uploading {name}: {err_msg}")
-                raise FileUploadError(err_msg)
+        try:
+            response.raise_for_status()
+        except HTTPStatusError as http_err:
+            err_msg = get_http_err_content(http_err)
+            warning(f"Error uploading {name}: {err_msg}")
+            raise FileUploadError(err_msg)
         ret = response.json()
         if ret and ret.get("items"):
             return response.json()["items"][0]  # new "document" upload
@@ -736,7 +735,7 @@ class LumAppsClient(BaseClient):
             folder["parentPath"] += f"/resource={parent_id}"
         try:
             return self.save_folder(folder)
-        except HTTPError as http_err:
+        except HTTPStatusError as http_err:
             err_msg = get_http_err_content(http_err)
             warning(f"Error creating folder {name}: {err_msg}")
             raise FolderCreationError(err_msg)
@@ -1059,7 +1058,7 @@ class LumAppsClient(BaseClient):
             dst = self.get_call(
                 "community/post/save", body=post, sendNotifications=False
             )
-        except HTTPError as e:
+        except HTTPStatusError as e:
             if e.response.status_code == 400 and "CONTENT_NOT_UP_TO_DATE" in str(e):
                 dst = self.get_call(
                     "community/post/save", body=post, sendNotifications=False
@@ -1137,7 +1136,7 @@ class LumAppsClient(BaseClient):
             return community
         try:
             return self.get_call("community/save", body=community)
-        except HTTPError as e:
+        except HTTPStatusError as e:
             if e.response.status_code != 400:
                 raise
             content = get_http_err_content(e)
@@ -1255,7 +1254,7 @@ class LumAppsClient(BaseClient):
                 return self.get_call(
                     "comment/save", body=comment, sendNotifications=False
                 )
-            except HTTPError as err:
+            except HTTPStatusError as err:
                 if err.response.status_code == 400:
                     if "RATE_LIMIT_EXCEEDED" in err._get_reason():
                         warning("RATE_LIMIT_EXCEEDED, sleeping 61 seconds")
@@ -1308,7 +1307,7 @@ class LumAppsClient(BaseClient):
                 try:
                     self.add_users_to_group(feed_id, to_add)
                     break
-                except HTTPError as e:
+                except HTTPStatusError as e:
                     resp = e.response
                     if resp.status_code != 404:
                         exception("error adding users:")
@@ -1374,15 +1373,12 @@ class LumAppsClient(BaseClient):
         for attempt in range(retries + 1):
             try:
                 return self.get_call("feed/save", body=group)
-            except HTTPError as e:
-                try:
-                    if e.response.status_code == 503:
-                        sleep_time = (attempt + 1) * 3
-                        warning(f"503 saving the feed, will retry in {sleep_time}s")
-                        sleep(sleep_time)
-                        continue
-                except AttributeError:
-                    pass
+            except HTTPStatusError as e:
+                if e.response.status_code == 503:
+                    sleep_time = (attempt + 1) * 3
+                    warning(f"503 saving the feed, will retry in {sleep_time}s")
+                    sleep(sleep_time)
+                    continue
                 raise
 
     def add_global_group(self, grouptype_id, name, *, google_group_email=None):

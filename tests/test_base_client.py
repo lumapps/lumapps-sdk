@@ -2,7 +2,7 @@ from json import load, loads
 from typing import Sequence
 from unittest.mock import PropertyMock
 
-from httpx import HTTPError
+from httpx import HTTPStatusError
 from pytest import fixture, raises
 
 from lumapps.api.client import BaseClient
@@ -106,7 +106,7 @@ def test_get_matching_endpoints(cli: BaseClient):
 
 
 def test_call_1(mocker, cli: BaseClient):
-    with raises(HTTPError):
+    with raises(HTTPStatusError):
         cli._call(("user", "get"), {})
 
 
