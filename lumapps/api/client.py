@@ -604,6 +604,26 @@ class LumAppsClient(BaseClient):
         upload_infos = self.get_call("document/uploadUrl/get", body=pl)
         return upload_infos["uploadUrl"]
 
+    def _get_upload_url_google(self, fname, drive_id, folder_id: Optional[str]):
+        if drive_id:
+            parent_path = f"provider=drive/drive={drive_id}"
+        else:
+            parent_path = "provider=drive"
+        if folder_id:
+            parent_path += f"/resource={folder_id}"
+        pl = {
+            "fileName": fname,
+            "lang": self.first_lang,
+            "parentPath": parent_path,
+            "shared": False,
+            "success": "/upload",
+        }
+        debug(f"Getting upload URL: {to_json(pl)}")
+        if self.dry_run:
+            return None
+        upload_infos = self.get_call("document/uploadUrl/get", body=pl)
+        return upload_infos["uploadUrl"]
+
     def upload_personal_file(self, name, f: FileIO, folder_id, mime_type):
         return self.upload_file(name, f, folder_id, mime_type, False)
 
@@ -638,8 +658,35 @@ class LumAppsClient(BaseClient):
             )
 
     def upload_file_to_sp(self, name, fh: FileIO, sp_drive_id, folder_id, fsize):
-        info(f"Uploading file {name}")
+        info(f"Uploading file {name} to SharePoint")
         upload_url = self._get_upload_url_sp(name, sp_drive_id, folder_id)
+        if self.dry_run:
+            return
+        pos = 0
+        while True:
+            chunk = fh.read(50_000_000)
+            chunk_size = len(chunk)
+            headers = {
+                "Content-Length": str(fsize),
+                "Content-Range": f"bytes {pos}-{pos + chunk_size - 1}/{fsize}",
+            }
+            try:
+                resp = put(upload_url, data=chunk, headers=headers)
+            except Exception as e:
+                raise FileUploadError(e)
+            if resp.status_code in (200, 201):
+                return loads(resp.content.decode())
+            if not (200 <= resp.status_code < 300):
+                json_resp = resp.json()
+                if json_resp:
+                    raise FileUploadError(f"http code {resp.status_code}")
+                else:
+                    raise FileUploadError(f"http code {resp.status_code}\n{json_resp}")
+            pos += chunk_size
+
+    def upload_file_to_google(self, name, fh: FileIO, drive_id, folder_id, fsize):
+        info(f"Uploading file {name} to Google Drive")
+        upload_url = self._get_upload_url_google(name, drive_id, folder_id)
         if self.dry_run:
             return
         pos = 0

@@ -126,6 +126,7 @@ def test_cast_params():
     cast_params(name_parts, params, endpoints)
     assert params["includeInstanceSiblings"] is False
 
+
 def test_store_config():
     api_file = {}
     auth_file = {}
