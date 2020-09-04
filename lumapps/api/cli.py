@@ -4,7 +4,7 @@ import logging
 import sys
 from argparse import SUPPRESS, ArgumentParser, FileType, RawDescriptionHelpFormatter
 
-from httpx import HTTPError
+from httpx import HTTPStatusError, RequestError
 
 from lumapps.api import BaseClient, LumAppsClient
 from lumapps.api.errors import BadCallError, get_http_err_content
@@ -177,14 +177,14 @@ def main():
     cast_params(name_parts, params, api.endpoints)
     try:
         response = api.get_call(*name_parts, **params)
-    except HTTPError as err:
+    except (BadCallError, RequestError) as err:
+        sys.exit(err)
+    except HTTPStatusError as err:
         err_reason = get_http_err_content(err)
         if err_reason:
             sys.exit(err_reason)
         else:
             sys.exit(err)
-    except BadCallError as err:
-        sys.exit(err)
     print(json.dumps(response, indent=4, sort_keys=True))
 
 

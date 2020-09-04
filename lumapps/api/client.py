@@ -8,7 +8,7 @@ from re import findall
 from time import sleep, time
 from typing import List, Optional, Sequence, Tuple, Callable
 
-from httpx import HTTPError, put
+from httpx import HTTPStatusError, put
 from slugify import slugify
 
 from lumapps.api.base_client import BaseClient
@@ -71,7 +71,7 @@ class LumAppsClient(BaseClient):
                 return vals
             try:
                 token, expiry = self._get_token_and_expiry(email)
-            except HTTPError as err:
+            except HTTPStatusError as err:
                 if err.response.status_code == 403:
                     raise GetTokenError(get_http_err_content(err))
                 raise
@@ -543,7 +543,7 @@ class LumAppsClient(BaseClient):
         """ Returns mime type from content-type header"""
         assert url
         try:
-            with self.session.stream("GET", url) as r:
+            with self.client.stream("GET", url) as r:
                 r.raise_for_status()
                 for chunk in r.iter_bytes():
                     if chunk:  # filter out keep-alive new chunks
@@ -604,6 +604,26 @@ class LumAppsClient(BaseClient):
         upload_infos = self.get_call("document/uploadUrl/get", body=pl)
         return upload_infos["uploadUrl"]
 
+    def _get_upload_url_google(self, fname, drive_id, folder_id: Optional[str]):
+        if drive_id:
+            parent_path = f"provider=drive/drive={drive_id}"
+        else:
+            parent_path = "provider=drive"
+        if folder_id:
+            parent_path += f"/resource={folder_id}"
+        pl = {
+            "fileName": fname,
+            "lang": self.first_lang,
+            "parentPath": parent_path,
+            "shared": False,
+            "success": "/upload",
+        }
+        debug(f"Getting upload URL: {to_json(pl)}")
+        if self.dry_run:
+            return None
+        upload_infos = self.get_call("document/uploadUrl/get", body=pl)
+        return upload_infos["uploadUrl"]
+
     def upload_personal_file(self, name, f: FileIO, folder_id, mime_type):
         return self.upload_file(name, f, folder_id, mime_type, False)
 
@@ -616,20 +636,19 @@ class LumAppsClient(BaseClient):
             return
         try:
             upload_url = self._get_upload_url(name, folder_id, shared)
-        except HTTPError as http_err:
+        except HTTPStatusError as http_err:
             err_msg = get_http_err_content(http_err)
             warning(f"Error uploading {name}: {err_msg}")
             raise FileUploadError(err_msg)
-        response = self.session.post(
+        response = self.client.post(
             upload_url, files={"upload-file": (name, f, mime_type)}
         )
-        if response.status_code != 200:
-            try:
-                response.raise_for_status()
-            except HTTPError as http_err:
-                err_msg = get_http_err_content(http_err)
-                warning(f"Error uploading {name}: {err_msg}")
-                raise FileUploadError(err_msg)
+        try:
+            response.raise_for_status()
+        except HTTPStatusError as http_err:
+            err_msg = get_http_err_content(http_err)
+            warning(f"Error uploading {name}: {err_msg}")
+            raise FileUploadError(err_msg)
         ret = response.json()
         if ret and ret.get("items"):
             return response.json()["items"][0]  # new "document" upload
@@ -639,7 +658,7 @@ class LumAppsClient(BaseClient):
             )
 
     def upload_file_to_sp(self, name, fh: FileIO, sp_drive_id, folder_id, fsize):
-        info(f"Uploading file {name}")
+        info(f"Uploading file {name} to SharePoint")
         upload_url = self._get_upload_url_sp(name, sp_drive_id, folder_id)
         if self.dry_run:
             return
@@ -665,14 +684,44 @@ class LumAppsClient(BaseClient):
                     raise FileUploadError(f"http code {resp.status_code}\n{json_resp}")
             pos += chunk_size
 
+    def upload_file_to_google(self, name, fh: FileIO, drive_id, folder_id, fsize):
+        info(f"Uploading file {name} to Google Drive")
+        upload_url = self._get_upload_url_google(name, drive_id, folder_id)
+        # https://www.googleapis.com/upload/drive/v2/files/1...2L?uploadType=resumable&supportsAllDrives=true&upload_id=AB...EQ
+        file_id = findall(r'https://.*/files/(.*)\?', upload_url)[0]
+        if self.dry_run:
+            return
+        pos = 0
+        while True:
+            chunk = fh.read(50_000_000)
+            chunk_size = len(chunk)
+            headers = {
+                "Content-Length": str(fsize),
+                "Content-Range": f"bytes {pos}-{pos + chunk_size - 1}/{fsize}",
+            }
+            try:
+                resp = put(upload_url, data=chunk, headers=headers)
+            except Exception as e:
+                self.delete_document(f"provider=drive/resource={file_id}")
+                raise FileUploadError(e)
+            if resp.status_code in (200, 201):
+                return loads(resp.content.decode())
+            if not (200 <= resp.status_code < 300):
+                json_resp = resp.json()
+                if json_resp:
+                    raise FileUploadError(f"http code {resp.status_code}")
+                else:
+                    raise FileUploadError(f"http code {resp.status_code}\n{json_resp}")
+            pos += chunk_size
+
     def upload_file_raw(self, name, f: FileIO, mime_type):
         info(f"Uploading file {name}")
         if self.dry_run:
             return
         # /upload, params ={"success": "/upload"}
-        resp = self.session.get("/upload", params={"success": "/upload"})
+        resp = self.client.get("/upload", params={"success": "/upload"})
         upload_url = resp.json()["uploadUrl"]
-        response = self.session.post(
+        response = self.client.post(
             upload_url, files={"upload-file": (name, f, mime_type)}
         )
         if response.status_code != 200:
@@ -736,7 +785,7 @@ class LumAppsClient(BaseClient):
             folder["parentPath"] += f"/resource={parent_id}"
         try:
             return self.save_folder(folder)
-        except HTTPError as http_err:
+        except HTTPStatusError as http_err:
             err_msg = get_http_err_content(http_err)
             warning(f"Error creating folder {name}: {err_msg}")
             raise FolderCreationError(err_msg)
@@ -752,6 +801,15 @@ class LumAppsClient(BaseClient):
         if self.dry_run:
             return document
         return self.get_call("document/update", body=document)
+
+    def delete_document(self, doc_path):
+        debug(f"Deleting document: {doc_path}")
+        if self.dry_run:
+            return
+        body = {
+            'docPath': doc_path
+        }
+        return self.get_call("document/trash", body=body)
 
     def iter_files(self, lang=None, **kwargs):
         yield from self.iter_documents(
@@ -1059,7 +1117,7 @@ class LumAppsClient(BaseClient):
             dst = self.get_call(
                 "community/post/save", body=post, sendNotifications=False
             )
-        except HTTPError as e:
+        except HTTPStatusError as e:
             if e.response.status_code == 400 and "CONTENT_NOT_UP_TO_DATE" in str(e):
                 dst = self.get_call(
                     "community/post/save", body=post, sendNotifications=False
@@ -1137,7 +1195,7 @@ class LumAppsClient(BaseClient):
             return community
         try:
             return self.get_call("community/save", body=community)
-        except HTTPError as e:
+        except HTTPStatusError as e:
             if e.response.status_code != 400:
                 raise
             content = get_http_err_content(e)
@@ -1255,7 +1313,7 @@ class LumAppsClient(BaseClient):
                 return self.get_call(
                     "comment/save", body=comment, sendNotifications=False
                 )
-            except HTTPError as err:
+            except HTTPStatusError as err:
                 if err.response.status_code == 400:
                     if "RATE_LIMIT_EXCEEDED" in err._get_reason():
                         warning("RATE_LIMIT_EXCEEDED, sleeping 61 seconds")
@@ -1308,7 +1366,7 @@ class LumAppsClient(BaseClient):
                 try:
                     self.add_users_to_group(feed_id, to_add)
                     break
-                except HTTPError as e:
+                except HTTPStatusError as e:
                     resp = e.response
                     if resp.status_code != 404:
                         exception("error adding users:")
@@ -1374,15 +1432,12 @@ class LumAppsClient(BaseClient):
         for attempt in range(retries + 1):
             try:
                 return self.get_call("feed/save", body=group)
-            except HTTPError as e:
-                try:
-                    if e.response.status_code == 503:
-                        sleep_time = (attempt + 1) * 3
-                        warning(f"503 saving the feed, will retry in {sleep_time}s")
-                        sleep(sleep_time)
-                        continue
-                except AttributeError:
-                    pass
+            except HTTPStatusError as e:
+                if e.response.status_code == 503:
+                    sleep_time = (attempt + 1) * 3
+                    warning(f"503 saving the feed, will retry in {sleep_time}s")
+                    sleep(sleep_time)
+                    continue
                 raise
 
     def add_global_group(self, grouptype_id, name, *, google_group_email=None):
