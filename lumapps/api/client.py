@@ -46,7 +46,13 @@ ApiClient = BaseClient
 
 class LumAppsClient(BaseClient):
     def __init__(
-        self, customer_id, instance_id, *args, cache=None, dry_run=False, **kwargs,
+        self,
+        customer_id: str,
+        instance_id: Optional[str],
+        *args,
+        cache: Optional[Any] = None,
+        dry_run: bool = False,
+        **kwargs,
     ):
         """ Create a LumAppsClient associated to a particular LumApps platform and site
 
