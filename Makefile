@@ -73,7 +73,7 @@ endif
 	-@if ! $(CI) && ! $(TESTING); then \
 		poetry run failprint -t "Bumping version" -- poetry version $(v); \
 		poetry run failprint -t "Staging files" -- git add pyproject.toml CHANGELOG.md; \
-		poetry run failprint -t "Committing changes" -- git commit -m "chore: Prepare release $(v)"; \
+		poetry run failprint -t "Committing changes" -- git commit -m "chore: Prepare release $(v)" --no-verify; \
 		poetry run failprint -t "Tagging commit" -- git tag v$(v); \
 	fi
 	poetry run failprint -t "Building dist/wheel" -- poetry build

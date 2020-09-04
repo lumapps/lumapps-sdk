@@ -41,6 +41,9 @@ def chunks(lst, n):
         yield lst[i : i + n]
 
 
+ApiClient = BaseClient
+
+
 class LumAppsClient(BaseClient):
     def __init__(
         self, customer_id, instance_id, *args, cache=None, dry_run=False, **kwargs,
@@ -771,7 +774,7 @@ class LumAppsClient(BaseClient):
 
     def upload_personal_file(
         self, name: str, f: FileIO, folder_id: str, mime_type: str
-    ) -> Optional[Dict[str, Any]]:>>>>>>> Add-LumApps-client2
+    ) -> Optional[Dict[str, Any]]:
         return self.upload_file(name, f, folder_id, mime_type, False)
 
     def upload_instance_file(
@@ -808,9 +811,9 @@ class LumAppsClient(BaseClient):
                 f"No items returned after file upload, got: {to_json(ret)}"
             )
 
-  def upload_file_to_sp(
+    def upload_file_to_sp(
         self, name: str, fh: FileIO, sp_drive_id: str, folder_id: str, fsize: int
-    ) -> Optional[Dict[str, Any]]:        
+    ) -> Optional[Dict[str, Any]]:
         info(f"Uploading file {name} to SharePoint")
         upload_url = self._get_upload_url_sp(name, sp_drive_id, folder_id)
         if self.dry_run:
@@ -841,7 +844,7 @@ class LumAppsClient(BaseClient):
         info(f"Uploading file {name} to Google Drive")
         upload_url = self._get_upload_url_google(name, drive_id, folder_id)
         # https://www.googleapis.com/upload/drive/v2/files/1...2L?uploadType=resumable&supportsAllDrives=true&upload_id=AB...EQ
-        file_id = findall(r'https://.*/files/(.*)\?', upload_url)[0]
+        file_id = findall(r"https://.*/files/(.*)\?", upload_url)[0]
         if self.dry_run:
             return
         pos = 0
@@ -965,9 +968,7 @@ class LumAppsClient(BaseClient):
         debug(f"Deleting document: {doc_path}")
         if self.dry_run:
             return
-        body = {
-            'docPath': doc_path
-        }
+        body = {"docPath": doc_path}
         return self.get_call("document/trash", body=body)
 
     def iter_files(
@@ -1149,7 +1150,7 @@ class LumAppsClient(BaseClient):
         )
 
     @none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED
-    def pin_post(self, community_id: str, post_id: str) ->  Optional[Dict[str, Any]]:
+    def pin_post(self, community_id: str, post_id: str) -> Optional[Dict[str, Any]]:
         if self.dry_run:
             return
         pl = {"communityId": community_id, "uid": post_id}
