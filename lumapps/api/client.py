@@ -12,6 +12,14 @@ from httpx import HTTPStatusError, put
 from slugify import slugify
 
 from lumapps.api.base_client import BaseClient
+from lumapps.api.decorators import (
+    none_on_400_ALREADY_ARCHIVED,
+    none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
+    none_on_404,
+    none_on_http_codes,
+    raise_known_save_errors,
+    retry_on_http_codes,
+)
 from lumapps.api.errors import (
     FileDownloadError,
     FileUploadError,
@@ -21,12 +29,6 @@ from lumapps.api.errors import (
     MissingMetadataError,
     NonIdpGroupInCommunityError,
     get_http_err_content,
-    none_on_400_ALREADY_ARCHIVED,
-    none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
-    none_on_404,
-    none_on_http_codes,
-    raise_known_save_errors,
-    retry_on_http_codes,
 )
 from lumapps.api.helpers import content_is_template, new_lumapps_uuid
 from lumapps.api.utils import DiscoveryCacheDict
@@ -41,10 +43,10 @@ def chunks(lst, n):
         yield lst[i : i + n]
 
 
-ApiClient = BaseClient
+ApiClient = BaseClient  # pragma: no cover
 
 
-class LumAppsClient(BaseClient):
+class LumAppsClient(BaseClient):  # pragma: no cover
     def __init__(
         self,
         customer_id: str,

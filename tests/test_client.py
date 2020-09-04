@@ -1,6 +1,14 @@
 from pytest import fixture
 
 from lumapps.api import LumAppsClient
+from lumapps.api.client import chunks
+
+
+def test_chunks():
+    liste = [2, 2, 3, 3]
+    ck = chunks(liste, 2)
+    assert next(ck) == [2, 2]
+    assert next(ck) == [3, 3]
 
 
 @fixture()

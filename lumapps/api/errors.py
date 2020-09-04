@@ -1,7 +1,3 @@
-from functools import wraps
-from logging import debug
-from typing import Sequence
-
 from httpx import HTTPStatusError
 
 
@@ -12,209 +8,65 @@ def get_http_err_content(e: HTTPStatusError) -> str:
         return ""
 
 
-class BaseClientError(Exception):
+class BaseClientError(Exception):  # pragma: no cover
     """ Base error of the BaseClient """
 
 
-class BadCallError(BaseClientError):
+class BadCallError(BaseClientError):  # pragma: no cover
     """ Retrocompatiblity """
 
 
-class LumAppsClientError(BaseClientError):
+class LumAppsClientError(BaseClientError):  # pragma: no cover
     def __init__(self, code, message=None):
         super().__init__(message)
         self.code = code
 
 
-class LumAppsClientConfError(BaseClientError):
+class LumAppsClientConfError(BaseClientError):  # pragma: no cover
     def __init__(self, message=None):
         super().__init__(message)
 
 
-class MissingMetadataError(LumAppsClientError):
+class MissingMetadataError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("MISSING_METADATA", message)
 
 
-class FileUploadError(LumAppsClientError):
+class FileUploadError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("FILE_UPLOAD", message)
 
 
-class FolderCreationError(LumAppsClientError):
+class FolderCreationError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("FILE_UPLOAD", message)
 
 
-class FileDownloadError(LumAppsClientError):
+class FileDownloadError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("FILE_DOWNLOAD", message)
 
 
-class NonIdpGroupInCommunityError(LumAppsClientError):
+class NonIdpGroupInCommunityError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("NON_IDP_GROUP_IN_COMMUNITY", message)
 
 
-class FeedsRequiredError(LumAppsClientError):
+class FeedsRequiredError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("FEEDS_REQUIRED", message)
 
 
-class UrlAlreadyExistsError(LumAppsClientError):
+class UrlAlreadyExistsError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("URL_ALREADY_EXISTS", message)
 
 
-class GetTokenError(LumAppsClientError):
+class GetTokenError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("GET_TOKEN", message)
 
 
-class UserCannotSaveError(LumAppsClientError):
+class UserCannotSaveError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("USER_CANNOT_SAVE", message)
-
-
-def none_on_http_codes(codes=(404,)):
-    def decorator(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-            try:
-                return f(*args, **kwargs)
-            except HTTPStatusError as e:
-                if e.response.status_code in codes:
-                    return None
-                raise
-
-        return wrapper
-
-    return decorator
-
-
-def retry_on_http_codes(codes: Sequence = (), max_attempts=3):
-    def decorator(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-            attempts = 0
-            while True:
-                attempts += 1
-                try:
-                    return f(*args, **kwargs)
-                except HTTPStatusError as e:
-                    if attempts >= max_attempts:
-                        debug(f"Max attempts {max_attempts} reached")
-                        raise
-                    code = e.response.status_code
-                    if code in codes:
-                        debug(f"{attempts}/{max_attempts} failed: HTTP {code}")
-                        continue
-                    raise
-
-        return wrapper
-
-    return decorator
-
-
-def none_on_404(function):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        try:
-            return function(*args, **kwargs)
-        except HTTPStatusError as e:
-            if e.response.status_code == 404:
-                return None
-            raise
-
-    return wrapper
-
-
-def false_on_404(function):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        try:
-            function(*args, **kwargs)
-            return True
-        except HTTPStatusError as e:
-            if e.response.status_code == 404:
-                return False
-            raise
-
-    return wrapper
-
-
-def none_on_400_ALREADY_ARCHIVED(function):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        try:
-            return function(*args, **kwargs)
-        except HTTPStatusError as e:
-            if e.response.status_code == 400:
-                e_str = get_http_err_content(e)
-                if "ALREADY_ARCHIVED" in e_str:
-                    return None
-            raise
-
-    return wrapper
-
-
-def none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED(function):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        try:
-            return function(*args, **kwargs)
-        except HTTPStatusError as e:
-            if e.response.status_code == 400:
-                e_str = get_http_err_content(e)
-                if "SUBSCRIPTION_ALREADY_EXISTS" in e_str:
-                    return None
-                if "Already pinned" in e_str:
-                    return None
-            raise
-
-    return wrapper
-
-
-def raise_known_save_errors(function):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        try:
-            return function(*args, **kwargs)
-        except HTTPStatusError as e:
-            """
-            {
-                "error": {
-                    "code": 400,
-                    "errors": [
-                        {
-                            "domain": "global",
-                            "message": "URL_ALREADY_EXISTS",
-                            "reason": "badRequest"
-                        }
-                    ],
-                    "message": "URL_ALREADY_EXISTS"
-                }
-            }
-            {
-                "error": {
-                    "code": 400,
-                    "errors": [
-                        {
-                            "domain": "global",
-                            "message": "Feeds are required",
-                            "reason": "badRequest"
-                        }
-                    ],
-                    "message": "Feeds are required"
-                }
-            }
-            """
-            if e.response.status_code == 400:
-                e_str = get_http_err_content(e)
-                if "URL_ALREADY_EXISTS" in e_str:
-                    raise UrlAlreadyExistsError(e)
-                if "Feeds are required" in e_str:
-                    raise FeedsRequiredError(e)
-            raise
-
-    return wrapper

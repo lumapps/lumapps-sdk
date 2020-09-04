@@ -39,6 +39,7 @@ black = "^19.10b0"
 isort = { version = "^4.3", extras = ["pyproject"] }
 safety = "^1.9.0"
 pytest-cov = "^2.9.0"
+respx = "^0.12.1"
 
 [tool.black]
 line-length = 88
