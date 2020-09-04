@@ -6,10 +6,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="LumApps sdk documentation" name="description"/>
-<link href="https://lumapps.github.io/lumapps-sdk/guides/api_client_guide/" rel="canonical"/>
+<link href="https://lumapps.github.io/lumapps-sdk/guides/base_client_guide/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
 <meta content="mkdocs-1.1.2, mkdocs-material-5.5.12" name="generator"/>
-<title>Api Client - LumApps SDK</title>
+<title>Base Client - LumApps SDK</title>
 <link href="../../assets/stylesheets/main.4dd2dd8d.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
@@ -20,7 +20,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#api-client">
+<a class="md-skip" href="#base-client">
           Skip to content
         </a>
 </div>
@@ -41,7 +41,7 @@
           </span>
 <span class="md-header-nav__topic md-ellipsis">
             
-              Api Client
+              Base Client
             
           </span>
 </div>
@@ -140,11 +140,11 @@
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
-        Api Client
+        Base Client
         <span class="md-nav__icon md-icon"></span>
 </label>
-<a class="md-nav__link md-nav__link--active" href="./" title="Api Client">
-      Api Client
+<a class="md-nav__link md-nav__link--active" href="./" title="Base Client">
+      Base Client
     </a>
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">
@@ -301,8 +301,13 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../api_client/" title="Api Client">
-      Api Client
+<a class="md-nav__link" href="../../base_client/" title="Base Client">
+      Base Client
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../lumapps_api_client/" title="LumApps Client">
+      LumApps Client
     </a>
 </li>
 <li class="md-nav__item">
@@ -369,11 +374,11 @@
 </div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
-<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/guides/api_client_guide.md" title="Edit this page">
+<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/guides/base_client_guide.md" title="Edit this page">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
-<h1 id="api-client">Api client<a class="headerlink" href="#api-client" title="Permanent link">¤</a></h1>
-<p>The client exposed by the lumapps-sdk allows you to interact with the lumapps apis more easily, to do so you have 2 mains methods defined in it.</p>
+<h1 id="base-client">Base Client<a class="headerlink" href="#base-client" title="Permanent link">¤</a></h1>
+<p>The base client exposed by the lumapps-sdk allows you to interact with the lumapps apis more easily, to do so you have 2 mains methods defined in it.</p>
 <h2 id="get_call-method">get_call method<a class="headerlink" href="#get_call-method" title="Permanent link">¤</a></h2>
 <p>The <code>get_call</code> method allows you to call a particular endpoint and get result. This is the main way to call the LumApps apis.</p>
 <p>If you call a <code>list</code> endpoint (eg, user/list), this method will fetch all the pages an returns you all the results at once.</p>
@@ -383,8 +388,7 @@
 <h2 id="adding-query-parameters">Adding query parameters<a class="headerlink" href="#adding-query-parameters" title="Permanent link">¤</a></h2>
 <p>To specify <em>query parameters</em> allong with the call you have to add them as <strong>kwargs</strong> of the <code>get_call</code> (or <code>iter_call</code>) method</p>
 <p>For instance if you want to get a particular user identified by his email you'll do:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
-
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.base_client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">email</span> <span class="o">=</span> <span class="s2">"&lt;the_user_email&gt;"</span>
@@ -393,8 +397,7 @@
 <h2 id="adding-request-body-parameters">Adding request body parameters<a class="headerlink" href="#adding-request-body-parameters" title="Permanent link">¤</a></h2>
 <p>To specify <em>body parameters</em> allong with the call you have to add them as a dict passed in the <strong>body</strong> parameters of the <code>get_call</code> method</p>
 <p>For instance if you want to create a particular user:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
-
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.base_client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>

@@ -138,8 +138,8 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../api_client_guide/" title="Api Client">
-      Api Client
+<a class="md-nav__link" href="../base_client_guide/" title="Base Client">
+      Base Client
     </a>
 </li>
 <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -306,8 +306,13 @@
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../api_client/" title="Api Client">
-      Api Client
+<a class="md-nav__link" href="../../base_client/" title="Base Client">
+      Base Client
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../lumapps_api_client/" title="LumApps Client">
+      LumApps Client
     </a>
 </li>
 <li class="md-nav__item">
@@ -394,8 +399,7 @@ https://your_instance/content/edit/6677628373958656?isTemplate=true</p>
 <p>This example as 2 rows with each one containing 2 columns.</p>
 <h2 id="second-step-get-the-template-in-python">Second step - Get the template in python<a class="headerlink" href="#second-step-get-the-template-in-python" title="Permanent link">¤</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">lumapps.api.client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
-
+<span class="kn">from</span> <span class="nn">lumapps.api.base_client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"</span><span class="si">{your_token}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">template_id</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{your_template_id}</span><span class="s2">"</span>

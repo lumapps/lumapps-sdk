@@ -12,7 +12,7 @@
      <lastmod>2020-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://lumapps.github.io/lumapps-sdk/guides/api_client_guide/</loc>
+     <loc>https://lumapps.github.io/lumapps-sdk/guides/base_client_guide/</loc>
      <lastmod>2020-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -68,7 +68,11 @@
      <lastmod>2020-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://lumapps.github.io/lumapps-sdk/api_client/</loc>
+     <loc>https://lumapps.github.io/lumapps-sdk/base_client/</loc>
+     <lastmod>2020-09-04</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lumapps.github.io/lumapps-sdk/lumapps_api_client/</loc>
      <lastmod>2020-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
