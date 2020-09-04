@@ -4,10 +4,10 @@ import logging
 import sys
 from argparse import SUPPRESS, ArgumentParser, FileType, RawDescriptionHelpFormatter
 
-from httpx import HTTPError
+from httpx import HTTPStatusError, RequestError
 
-from lumapps.api import ApiClient, TokenClient
-from lumapps.api.errors import ApiCallError, get_http_err_content
+from lumapps.api import BaseClient, LumAppsClient
+from lumapps.api.errors import BadCallError, get_http_err_content
 from lumapps.api.utils import ConfigStore, list_prune_filters
 
 LIST_CONFIGS = "***LIST_CONFIGS***"
@@ -129,13 +129,18 @@ def main():
         proxy_info = None
     api_info, auth_info, user = load_config(args.api, args.auth, args.user, args.config)
     if args.email:
-        token_client = TokenClient(
-            args.customer_id, auth_info, api_info, no_verify=args.no_verify
+        token_client = LumAppsClient(
+            args.customer_id,
+            None,
+            auth_info=auth_info,
+            api_info=api_info,
+            proxy_info=proxy_info,
+            no_verify=args.no_verify,
         )
         token_getter = token_client.get_token_getter(args.email)
     else:
         token_getter = None
-    api = ApiClient(
+    api = BaseClient(
         auth_info,
         api_info,
         user=user,
@@ -172,14 +177,14 @@ def main():
     cast_params(name_parts, params, api.endpoints)
     try:
         response = api.get_call(*name_parts, **params)
-    except HTTPError as err:
+    except (BadCallError, RequestError) as err:
+        sys.exit(err)
+    except HTTPStatusError as err:
         err_reason = get_http_err_content(err)
         if err_reason:
             sys.exit(err_reason)
         else:
             sys.exit(err)
-    except ApiCallError as err:
-        sys.exit(err)
     print(json.dumps(response, indent=4, sort_keys=True))
 
 

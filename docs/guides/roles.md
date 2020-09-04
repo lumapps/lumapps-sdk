@@ -5,9 +5,8 @@ You can easly create, modify, delete or list roles on your instance with the sdk
 ## __List roles__
 
 ```python
-from lumapps.api.client import ApiClient
-
-client = ApiClient(token="<your_token>")
+from lumapps.api.base_client import BaseClient
+client = BaseClient(token="<your_token>")
 
 roles = client.get_call("role/list", instance=site_id)
  ```
@@ -17,9 +16,8 @@ roles = client.get_call("role/list", instance=site_id)
  To create a role you need to create an object like the following one
 
  ```python
- from lumapps.api.client import ApiClient
-
-client = ApiClient(token="<your_token>")
+ from lumapps.api.base_client import BaseClient
+client = BaseClient(token="<your_token>")
 
 my_role = {
   "authorizations": authorizations,
@@ -90,9 +88,8 @@ To update a role the recommanded way is the following:
 3.  re-save it.
 
 ```python
- from lumapps.api.client import ApiClient
-
-client = ApiClient(token="<your_token>")
+ from lumapps.api.base_client import BaseClient
+client = BaseClient(token="<your_token>")
 
 # Get the role
 role = client.get_call("role/get", uid=role_uid)

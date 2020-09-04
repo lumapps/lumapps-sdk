@@ -8,18 +8,18 @@ def find_widget(
     container: Dict[str, Any], **params: Dict[str, Any]
 ) -> Optional[Dict[str, Any]]:
     """ Find and return the first widget in the container that respect the filters
-        
+
         Args:
-            container: The container of the widgets, that could be a content, community, 
+            container: The container of the widgets, that could be a content, community,
                 the components of a content or the template of a content
-        
+
         Kwargs:
             params: params to filter on (eg, widgetType='video' will find athe first video widget in the given container)
-        
+
         Returns:
             The first found widget
     """  # noqa
-    for w, _ in iter_widgets(container, **params):
+    for w, _ in iter_widgets_and_containers(container, **params):
         return w
     return None
 
@@ -28,28 +28,28 @@ def find_all_widgets(
     container: Dict[str, Any], **params: Dict[str, Any]
 ) -> List[Dict[str, Any]]:
     """ Find and return all widgets in the container that respect the filters
-        
+
         Args:
-            container: The container of the widgets, that could be a content, community, 
+            container: The container of the widgets, that could be a content, community,
                 the components of a content or the template of a content
-        
+
         Kwargs:
             params: params to filter on (eg, widgetType='video' will find athe first video widget in the given container)
 
         Returns:
             The list of all found widgets
     """  # noqa
-    return list(w for w, _ in iter_widgets(container, **params))
+    return list(w for w, _ in iter_widgets_and_containers(container, **params))
 
 
 def find_widget_and_container(container, **params):
-    for w, c in iter_widgets(container, **params):
+    for w, c in iter_widgets_and_containers(container, **params):
         return w, c
     return None, None
 
 
 def find_all_widgets_and_containers(container, **params):
-    return list(((w, c) for w, c in iter_widgets(container, **params)))
+    return list(((w, c) for w, c in iter_widgets_and_containers(container, **params)))
 
 
 def content_is_community(content):
@@ -67,7 +67,7 @@ def get_components(content):
         return content.get("template").get("components", [])
 
 
-def iter_widgets(container, **params):
+def iter_widgets_and_containers(container, **params):
     def widget_matches(w):
         match = True
         for k, v in params.items():
@@ -76,7 +76,7 @@ def iter_widgets(container, **params):
 
     if content_is_community(container):
         for templ in container.get("templates", []):
-            for o2, container2 in iter_widgets(templ, **params):
+            for o2, container2 in iter_widgets_and_containers(templ, **params):
                 yield o2, container2
         return
     elif isinstance(container, dict):
@@ -87,7 +87,7 @@ def iter_widgets(container, **params):
                 continue
             yield o, container
             continue
-        for o2, container2 in iter_widgets(
+        for o2, container2 in iter_widgets_and_containers(
             o.get("components", o.get("cells", [])), **params
         ):
             yield o2, container2

@@ -12,6 +12,14 @@ make setup
 
 You can run `make help` to see all available actions !
 
+### Adding a new dependency
+
+To add a dependency use poetry
+
+```bash
+poetry add <dependency>
+```
+
 ## Dev
 
 ### Code
@@ -57,4 +65,10 @@ To deploy to pypi, bump the version and tags the version simply **on the master 
 
 ```bash 
 make release v=x.x.x
+```
+
+For beta releases (without tagging and doc release), do:
+
+```bash
+make pypi-release-beta v=x.x.x
 ```

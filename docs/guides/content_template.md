@@ -21,18 +21,17 @@ This example as 2 rows with each one containing 2 columns.
 
 ```python
 import copy
-from lumapps.api.client import ApiClient
-
-client = ApiClient(token="{your_token}")
+from lumapps.api.base_client import BaseClient
+client = BaseClient(token="{your_token}")
 
 template_id = "{your_template_id}"
 template = client.get_call("template/get", uid=template_id)
 
 # We copy it to keep the original as is and maybe use it later to fill it with different content
-template_copy = copy.deepcopy(template) 
+template_copy = copy.deepcopy(template)
 ```
 
-Now you have the template. 
+Now you have the template.
 
 A template is a big json object that can be seen as:
 
@@ -108,7 +107,7 @@ first_row_second_column[2]['properties']['contents']
 
 
 
-So now let change something in the template 
+So now let change something in the template
 
 
 ```python
@@ -121,12 +120,12 @@ So, now we can replace this content and so we'll have a template object filled w
 
 The last step is to save the actual content, so we have to create the basic object for a content and add to it the filled template
 
-The only annoying step before is to get the ids of the feeds we restrict this content to. This is required by the API. 
+The only annoying step before is to get the ids of the feeds we restrict this content to. This is required by the API.
 
 [In]:
 ```python
 instance = "{your_instance_id}"
-customer = "{your_customer_id}" 
+customer = "{your_customer_id}"
 
 group_name="ALL"
 grp_id=client.get_call("feed/search", body={"query": group_name, "instance": instance})[0]['id']

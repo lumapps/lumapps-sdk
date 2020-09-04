@@ -13,15 +13,9 @@ check-code-quality:  ## Check the code quality.
 
 .PHONY: check-dependencies
 check-dependencies:  ## Check for vulnerabilities in dependencies.
-	@SAFETY=safety; \
-	if ! $(CI); then \
-		if ! command -v $$SAFETY &>/dev/null; then \
-			SAFETY="pipx run safety"; \
-		fi; \
-	fi; \
 	poetry run pip freeze 2>/dev/null | \
 		grep -iv 'mkdocstrings' | \
-		poetry run failprint --no-pty -t "Checking dependencies" -- $$SAFETY check --stdin --full-report
+		poetry run failprint --no-pty -t "Checking dependencies" -- safety check --stdin --full-report
 
 .PHONY: check-docs
 check-docs:  ## Check if the documentation builds correctly.
@@ -79,7 +73,7 @@ endif
 	-@if ! $(CI) && ! $(TESTING); then \
 		poetry run failprint -t "Bumping version" -- poetry version $(v); \
 		poetry run failprint -t "Staging files" -- git add pyproject.toml CHANGELOG.md; \
-		poetry run failprint -t "Committing changes" -- git commit -m "chore: Prepare release $(v)"; \
+		poetry run failprint -t "Committing changes" -- git commit -m "chore: Prepare release $(v)" --no-verify; \
 		poetry run failprint -t "Tagging commit" -- git tag v$(v); \
 	fi
 	poetry run failprint -t "Building dist/wheel" -- poetry build

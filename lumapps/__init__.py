@@ -1,1 +1,1 @@
-from lumapps.api import ApiClient, FileContent  # noqa
+from lumapps.api import BaseClient, FileContent, LumAppsClient  # noqa

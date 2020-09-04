@@ -2,8 +2,8 @@ from json import load
 
 from pytest import fixture, raises
 
-from lumapps.api.client import ApiClient
-from lumapps.api.errors import ApiClientError
+from lumapps.api.base_client import BaseClient
+from lumapps.api.errors import BaseClientError
 from lumapps.api.helpers.medias import (
     _upload_new_media_file_of_given_lang,
     add_media_file_for_lang,
@@ -13,11 +13,11 @@ from lumapps.api.utils import get_discovery_cache
 
 
 @fixture
-def cli() -> ApiClient:
+def cli() -> BaseClient:
     with open("tests/test_data/lumapps_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
-    c = ApiClient(token="foobar")
+    c = BaseClient(token="foobar")
     return c
 
 
@@ -29,7 +29,7 @@ class MockResponse:
         return self.resp
 
 
-def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
+def test_upload_new_media_file_of_given_lang(mocker, cli: BaseClient):
     post_resp = {
         "blobKey": "fakeblobkey",
         "url": "https://fakeurl.com",
@@ -48,7 +48,7 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
         mocker.patch("httpx.post", mock_post)
 
     _prep_mocker()
-    with raises(ApiClientError):
+    with raises(BaseClientError):
         _upload_new_media_file_of_given_lang(
             cli, None, "fake", "fake", lang="en", prepare_for_lumapps=False
         )
@@ -83,7 +83,7 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: ApiClient):
     # assert "upload" not in uploaded_file
     # assert uploaded_file["value"] == "fakeblobkey"
 
-def test_upload_new_media_file_of_given_lang_2(mocker, cli: ApiClient):
+def test_upload_new_media_file_of_given_lang_2(mocker, cli: BaseClient):
     post_resp = {
         "blobKey": "fakeblobkey",
         "url": "https://fakeurl.com",
@@ -100,7 +100,7 @@ def test_upload_new_media_file_of_given_lang_2(mocker, cli: ApiClient):
 
         mocker.patch("httpx.get", mock_get)
         mocker.patch("httpx.post", mock_post)
-    
+
     _prep_mocker()
     data = open("tests/test_data/content_1.json", "rb").read()
     uploaded_file = _upload_new_media_file_of_given_lang(
@@ -109,13 +109,13 @@ def test_upload_new_media_file_of_given_lang_2(mocker, cli: ApiClient):
     assert "upload" not in uploaded_file
     assert uploaded_file["value"] == "fakeblobkey"
 
-def test_create_new_media(mocker, cli: ApiClient):
+def test_create_new_media(mocker, cli: BaseClient):
 
-    with raises(ApiClientError):
+    with raises(BaseClientError):
         create_new_media(cli, None, None, None, None, None)
 
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call",
+        "lumapps.api.client.BaseClient.get_call",
         return_value={"uploadUrl": "http://fake.com"},
     )
     # Test valid response
@@ -136,7 +136,7 @@ def test_create_new_media(mocker, cli: ApiClient):
     assert not res
 
 
-def test_add_media_file_for_lang(mocker, cli: ApiClient):
+def test_add_media_file_for_lang(mocker, cli: BaseClient):
 
     mocker.patch(
         "lumapps.api.helpers.medias._upload_new_media_file_of_given_lang",
@@ -150,7 +150,7 @@ def test_add_media_file_for_lang(mocker, cli: ApiClient):
         return_value={"content": "rien"},
     )
     mocker.patch(
-        "lumapps.api.client.ApiClient.get_call", return_value={"content": "rien"},
+        "lumapps.api.client.BaseClient.get_call", return_value={"content": "rien"},
     )
     res = add_media_file_for_lang(cli, {"content": []}, None, None, None)
     assert res == {"content": "rien"}

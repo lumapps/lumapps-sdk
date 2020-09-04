@@ -7,6 +7,7 @@ from lumapps.api.helpers.widgets import (  # noqa
     find_one_with_key_value,
     find_widget,
     find_widget_and_container,
+    iter_widgets_and_containers,
     iter_with_key,
     iter_with_key_value,
     new_lumapps_uuid,

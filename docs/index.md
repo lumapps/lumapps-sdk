@@ -47,10 +47,10 @@ pip install lumapps-sdk
 2. Authenticate
 
     ```python
-    from lumapps.api import ApiClient
-    
+    from lumapps.api import BaseClient
+
     token = "MY TOKEN"
-    client = ApiClient(token=token)
+    client = BaseClient(token=token)
     ```
 
 3. Make your first API call
