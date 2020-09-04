@@ -2,7 +2,7 @@ from json import load
 
 from pytest import fixture, raises
 
-from lumapps.api.client import BaseClient
+from lumapps.api.base_client import BaseClient
 from lumapps.api.errors import BaseClientError
 from lumapps.api.helpers.medias import (
     _upload_new_media_file_of_given_lang,

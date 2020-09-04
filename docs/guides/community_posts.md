@@ -4,8 +4,7 @@
 ## Post list
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 body = {
@@ -24,8 +23,7 @@ For more details see [the api documentation](https://apiv1.lumapps.com/#operatio
 ## Post get
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 post = client.get_call(
@@ -58,8 +56,7 @@ post = {
 or update properties from one you just got using the api.
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 post = client.get_call(

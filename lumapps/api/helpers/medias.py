@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional, Union
 
 import httpx
 
-from lumapps.api.client import BaseClient
+from lumapps.api.base_client import BaseClient
 from lumapps.api.errors import BaseClientError
 
 

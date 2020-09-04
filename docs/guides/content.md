@@ -9,8 +9,7 @@ The `lang` parameter is mandatory for this call.
 You can add more filters, see [apidoc](https://api.lumapps.com/docs/output/_schemas/servercontentcontentmessagescontentlistrequest)
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
 contents = client.get_call("content/list", body={"lang":"en"})
@@ -181,8 +180,7 @@ The `properties>id` (or class) could be used to simplify widget access from code
 To help you work on widget some helpers are available in the lumapps sdk
 
 ```python
-from lumapps.api.client import BaseClient
-from lumapps.api.helpers import widgets as widgets_helper
+from lumapps.api.base_client import BaseClientfrom lumapps.api.helpers import widgets as widgets_helper
 
 client = BaseClient(token="<your_token>")
 content = client.get_call("content/get") # get the lumapps content

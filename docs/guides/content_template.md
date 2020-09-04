@@ -21,8 +21,7 @@ This example as 2 rows with each one containing 2 columns.
 
 ```python
 import copy
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="{your_token}")
 
 template_id = "{your_template_id}"

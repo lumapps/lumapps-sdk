@@ -12,8 +12,7 @@ Be sure to target the right lumapps environment, by default the sdk use site.lum
 If your env is different (eg, sites-ms.lumapps.com) you can precise it like so:
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 api_info = {
     "base_url": "https://sites-ms.lumapps.com"
 }
@@ -25,8 +24,7 @@ client = BaseClient(token="<your_token>", api_info=api_info)
 To authenticate with a regular, short lived token, instanciate the sdk like so:
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 ```
 
@@ -38,8 +36,7 @@ The sdk BaseClient offers two methods to help with that `get_new_client_as` and 
 
 
 ```python
-from lumapps.api.client import BaseClient
-
+from lumapps.api.base_client import BaseClient
 my_sa = {...}
 my_platform_id="<your_plaform_id>"
 user_to_authenticate_on_behalf_of = "<user_email>"
