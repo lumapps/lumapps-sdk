@@ -45,7 +45,7 @@ To upload a media you will need to get an upload and then upload the media itsel
     Now that you have an **uploadUrl** you will use it to send you file in a POST request (Make sure that you include you bearer token in the Authorization headers). This request in a regular multipart upload,
 
     ```python
-    response = self.session.post(
+    response = self.client.post(
             upload_url, files={"upload-file": (name, file, mime_type)}
         )
     ```

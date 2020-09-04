@@ -2,10 +2,10 @@ from functools import wraps
 from logging import debug
 from typing import Sequence
 
-from httpx import HTTPError
+from httpx import HTTPStatusError
 
 
-def get_http_err_content(e: HTTPError) -> str:
+def get_http_err_content(e: HTTPStatusError) -> str:
     try:
         return e.response.content.decode()  # type: ignore
     except AttributeError:
@@ -82,12 +82,9 @@ def none_on_http_codes(codes=(404,)):
         def wrapper(*args, **kwargs):
             try:
                 return f(*args, **kwargs)
-            except HTTPError as e:
-                try:
-                    if e.response.status_code in codes:
-                        return None
-                except AttributeError:
-                    pass
+            except HTTPStatusError as e:
+                if e.response.status_code in codes:
+                    return None
                 raise
 
         return wrapper
@@ -104,17 +101,14 @@ def retry_on_http_codes(codes: Sequence = (), max_attempts=3):
                 attempts += 1
                 try:
                     return f(*args, **kwargs)
-                except HTTPError as e:
+                except HTTPStatusError as e:
                     if attempts >= max_attempts:
                         debug(f"Max attempts {max_attempts} reached")
                         raise
-                    try:
-                        code = e.response.status_code
-                        if code in codes:
-                            debug(f"{attempts}/{max_attempts} failed: HTTP {code}")
-                            continue
-                    except AttributeError:
-                        pass
+                    code = e.response.status_code
+                    if code in codes:
+                        debug(f"{attempts}/{max_attempts} failed: HTTP {code}")
+                        continue
                     raise
 
         return wrapper
@@ -127,12 +121,9 @@ def none_on_404(function):
     def wrapper(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except HTTPError as e:
-            try:
-                if e.response.status_code == 404:
-                    return None
-            except AttributeError:
-                pass
+        except HTTPStatusError as e:
+            if e.response.status_code == 404:
+                return None
             raise
 
     return wrapper
@@ -144,12 +135,9 @@ def false_on_404(function):
         try:
             function(*args, **kwargs)
             return True
-        except HTTPError as e:
-            try:
-                if e.response.status_code == 404:
-                    return False
-            except AttributeError:
-                pass
+        except HTTPStatusError as e:
+            if e.response.status_code == 404:
+                return False
             raise
 
     return wrapper
@@ -160,14 +148,11 @@ def none_on_400_ALREADY_ARCHIVED(function):
     def wrapper(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except HTTPError as e:
-            try:
-                if e.response.status_code == 400:
-                    e_str = get_http_err_content(e)
-                    if "ALREADY_ARCHIVED" in e_str:
-                        return None
-            except AttributeError:
-                pass
+        except HTTPStatusError as e:
+            if e.response.status_code == 400:
+                e_str = get_http_err_content(e)
+                if "ALREADY_ARCHIVED" in e_str:
+                    return None
             raise
 
     return wrapper
@@ -178,16 +163,13 @@ def none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED(function):
     def wrapper(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except HTTPError as e:
-            try:
-                if e.response.status_code == 400:
-                    e_str = get_http_err_content(e)
-                    if "SUBSCRIPTION_ALREADY_EXISTS" in e_str:
-                        return None
-                    if "Already pinned" in e_str:
-                        return None
-            except AttributeError:
-                pass
+        except HTTPStatusError as e:
+            if e.response.status_code == 400:
+                e_str = get_http_err_content(e)
+                if "SUBSCRIPTION_ALREADY_EXISTS" in e_str:
+                    return None
+                if "Already pinned" in e_str:
+                    return None
             raise
 
     return wrapper
@@ -198,7 +180,7 @@ def raise_known_save_errors(function):
     def wrapper(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except HTTPError as e:
+        except HTTPStatusError as e:
             """
             {
                 "error": {
@@ -227,15 +209,12 @@ def raise_known_save_errors(function):
                 }
             }
             """
-            try:
-                if e.response.status_code == 400:
-                    e_str = get_http_err_content(e)
-                    if "URL_ALREADY_EXISTS" in e_str:
-                        raise UrlAlreadyExistsError(e)
-                    if "Feeds are required" in e_str:
-                        raise FeedsRequiredError(e)
-            except AttributeError:
-                pass
+            if e.response.status_code == 400:
+                e_str = get_http_err_content(e)
+                if "URL_ALREADY_EXISTS" in e_str:
+                    raise UrlAlreadyExistsError(e)
+                if "Feeds are required" in e_str:
+                    raise FeedsRequiredError(e)
             raise
 
     return wrapper
