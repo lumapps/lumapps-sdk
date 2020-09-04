@@ -687,6 +687,8 @@ class LumAppsClient(BaseClient):
     def upload_file_to_google(self, name, fh: FileIO, drive_id, folder_id, fsize):
         info(f"Uploading file {name} to Google Drive")
         upload_url = self._get_upload_url_google(name, drive_id, folder_id)
+        # https://www.googleapis.com/upload/drive/v2/files/1...2L?uploadType=resumable&supportsAllDrives=true&upload_id=AB...EQ
+        file_id = findall(r'https://.*/files/(.*)\?', upload_url)[0]
         if self.dry_run:
             return
         pos = 0
@@ -700,6 +702,7 @@ class LumAppsClient(BaseClient):
             try:
                 resp = put(upload_url, data=chunk, headers=headers)
             except Exception as e:
+                self.delete_document(f"provider=drive/resource={file_id}")
                 raise FileUploadError(e)
             if resp.status_code in (200, 201):
                 return loads(resp.content.decode())
@@ -798,6 +801,15 @@ class LumAppsClient(BaseClient):
         if self.dry_run:
             return document
         return self.get_call("document/update", body=document)
+
+    def delete_document(self, doc_path):
+        debug(f"Deleting document: {doc_path}")
+        if self.dry_run:
+            return
+        body = {
+            'docPath': doc_path
+        }
+        return self.get_call("document/trash", body=body)
 
     def iter_files(self, lang=None, **kwargs):
         yield from self.iter_documents(
