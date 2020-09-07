@@ -187,7 +187,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             the given slug and the current token customer.
             If the exact slug is not avaialble -i at the end until we
             found an available one or i reachs 300.
- 
+
             Args:
                 desired_slug: The desired slug
 
@@ -597,7 +597,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     def iter_users(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
         """ Iterate overs the platform users \n
             https://apiv1.lumapps.com/#operation/User/List
-            
+
             Args:
                 **kwargs: args to add to the request (see api documentation)
 
@@ -857,10 +857,10 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             return
         pos = 0
         while True:
-            chunk = fh.read(50_000_000)
+            chunk = fh.read(52_428_800)  # 256 * 1024 * 200
             chunk_size = len(chunk)
             headers = {
-                "Content-Length": str(fsize),
+                "Content-Length": str(chunk_size),
                 "Content-Range": f"bytes {pos}-{pos + chunk_size - 1}/{fsize}",
             }
             try:
@@ -870,7 +870,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
                 raise FileUploadError(e)
             if resp.status_code in (200, 201):
                 return loads(resp.content.decode())
-            if not (200 <= resp.status_code < 300):
+            if not (200 <= resp.status_code < 300) and resp.status_code != 308:
                 json_resp = resp.json()
                 if json_resp:
                     raise FileUploadError(f"http code {resp.status_code}")
@@ -1266,7 +1266,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             Args:
                 content: The content to save
                 cache: Whether to cache the saved content based on his id
-              
+
             Returns:
                 The saved content
         """
@@ -1612,7 +1612,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
 
             Args:
                 type_id: The id of the group type (feedType or category) to filter on
-            
+
             Returns:
                 The groups in that group type
         """
