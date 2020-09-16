@@ -9,7 +9,7 @@
 </p>
 
 
-LumApps SDK is a set of tools to manipulate the [LumApps API](https://api.lumapps.com/docs/start)
+LumApps SDK is a set of tools to manipulate the [LumApps API](https://apiv1.lumapps.com/)
 
 This includes:
 
@@ -33,7 +33,7 @@ pip install lumapps-sdk
     The fastest one to implement is the following:
 
     Get your token by logging to your LumApps account.
-    Go to [https://sites.lumapps.com](https://sites.lumapps.com) and authenticate.
+    Go to [https://sites.lumapps.com](https://sites.lumapps.com) (or your onw lumapps site) and authenticate.
     Once connected, open the javascript console of your browser and run:
 
     ```javascript
@@ -48,7 +48,7 @@ pip install lumapps-sdk
 
     ```python
     from lumapps.api import ApiClient
-    
+
     token = "MY TOKEN"
     client = ApiClient(token=token)
     ```

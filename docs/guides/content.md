@@ -1,8 +1,5 @@
 # Content
 
-
-to
-
 ## Content listing
 The `lang` parameter is mandatory for this call.
 
@@ -90,7 +87,7 @@ The `canonicalUrl` property contains the links that can be used to access the co
 
 ## Content.template
 
-The `template` property contains the whole page structure. 
+The `template` property contains the whole page structure.
 
 Widgets are directly placed in this structure.
 
@@ -121,7 +118,7 @@ You should iterate over all the structure to find the correct widget to update.
 
 A content can have a thumbnail, it's a picture associated with it and shows when listed in a content-list widget for instance.
 
-When adding a thumbnail to a content you need to provide the blob key of the uploaded image in the `thumbnail` attribute. To upload and obtain that blobkey [see here](media.md).
+When adding a thumbnail to a content you need to provide the blob key of the uploaded image in the `thumbnail` attribute. To upload and obtain that blob key [see here](media.md).
 
 
 ### Update an existing thumbnail
@@ -130,7 +127,7 @@ When adding a thumbnail to a content you need to provide the blob key of the upl
 # First get the content
 content = api.get_call('content/get', uid="6448894901878784")
 
-# Update the thumbnail field by the media blob key 
+# Update the thumbnail field by the media blob key
 new_content = {
   ...
   "thumbnail": <your_new_blob_key>
@@ -166,7 +163,7 @@ Ex for an HTML widget:
         "content":
             {
             "fr": "<p>Contenu html en français</p>",
-            "en": "<p>Html text in english </p>" 
+            "en": "<p>Html text in english </p>"
             },
         "id": "identifier set in front > style > advance",
         "class": "class set in front > style > advance",
@@ -184,7 +181,7 @@ To help you work on widget some helpers are available in the lumapps sdk
 from lumapps.api.client import ApiClient
 from lumapps.api.helpers import widgets as widgets_helper
 
-client = ApiClient(token="<your_token>") 
+client = ApiClient(token="<your_token>")
 content = client.get_call("content/get") # get the lumapps content
 
 # return the first found widget with the property widgetType equal to video
@@ -197,8 +194,8 @@ all_video_widgets = widgets_helper.find_all_widgets(content, widgetType="video")
 widget_with_uuid_test = widgets_helper.find_widget(content, uuid="test")
 ```
 
-See [Widgets](https://github.com/lumapps/lumapps-sdk/wiki/Widgets) for specific configurations.
+See [Widgets](widgets.md) for specific configurations.
 
-See [Global Widgets](https://github.com/lumapps/lumapps-sdk/wiki/Global-Widget) for widgets defined at the instance level.
+See [Global Widgets](widgets.md#global-widgets) for widgets defined at the instance level.
 
 

@@ -51,6 +51,7 @@ comment = {
 or update properties from one you just got using the api.
 
 ```python
+
 from lumapps.api.client import ApiClient
 
 client = ApiClient(token="<your_token>")
@@ -64,5 +65,6 @@ comment["title"] = {"fr": "New title"}
 comment = client.get_call(
     "comment/save", body=comment
 )
+```
 
 For more details see [the api documentation](https://apiv1.lumapps.com)
