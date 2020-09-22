@@ -6,6 +6,16 @@ repos:
         entry: make format
         pass_filenames: false
         language: system
+    -   id: test
+        name: test
+        entry: make test
+        pass_filenames: false
+        language: system
+    -   id: check
+        name: check
+        entry: make check
+        pass_filenames: false
+        language: system
 
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
@@ -17,3 +27,10 @@ repos:
     -   id: check-added-large-files
     -   id: detect-private-key
     -   id: check-merge-conflict
+
+-   repo: https://github.com/lumapps/commit-message-validator
+    rev: master
+    hooks:
+      - id: commit-message-validator
+        stages: [commit-msg]
+        args: [--allow-temp]
