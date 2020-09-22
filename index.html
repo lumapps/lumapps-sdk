@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/" rel="canonical"/>
 <link href="assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.5.12" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.5.13" name="generator"/>
 <title>LumApps SDK</title>
-<link href="assets/stylesheets/main.4dd2dd8d.min.css" rel="stylesheet"/>
+<link href="assets/stylesheets/main.077507d7.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -424,7 +424,7 @@ The fastest one to implement is the following:</p>
 Go to <a href="https://sites.lumapps.com">https://sites.lumapps.com</a> and authenticate.
 Once connected, open the javascript console of your browser and run:</p>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">);</span>
-<span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"a"</span> <span class="o">?</span> <span class="nx">instance</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">:</span> <span class="nx">instance</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"a"</span> <span class="o">?</span> <span class="nx">instance</span><span class="p">[</span><span class="mf">3</span><span class="p">]</span> <span class="o">:</span> <span class="nx">instance</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span>
 <span class="nx">fetch</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="o">+</span><span class="s2">"/service/init?customerHost="</span><span class="o">+</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="o">+</span><span class="s2">"&amp;instanceSlug="</span><span class="o">+</span><span class="nx">instance</span><span class="o">+</span><span class="s2">"&amp;    slug="</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="p">=&gt;{</span><span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">json</span><span class="p">()}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">token</span><span class="p">)})</span>
 </code></pre></div>
 <p>This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps</p>
@@ -489,8 +489,8 @@ Once connected, open the javascript console of your browser and run:</p>
 </div>
 </footer>
 </div>
-<script src="assets/javascripts/vendor.3636a4ec.min.js"></script>
-<script src="assets/javascripts/bundle.e9fe3281.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="assets/javascripts/vendor.2d1db4bd.min.js"></script>
+<script src="assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: ".",
