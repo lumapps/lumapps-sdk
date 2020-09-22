@@ -1,8 +1,6 @@
 # Content
 
 
-to
-
 ## Content listing
 The `lang` parameter is mandatory for this call.
 
