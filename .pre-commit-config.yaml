@@ -6,28 +6,31 @@ repos:
         entry: make format
         pass_filenames: false
         language: system
+        stages: [commit]
     -   id: test
         name: test
         entry: make test
         pass_filenames: false
         language: system
+        stages: [commit]
     -   id: check
         name: check
         entry: make check
         pass_filenames: false
         language: system
+        stages: [commit]
 
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.1.0  # Use the ref you want to point at
-    stages:
-    - commit
-    - push
+    rev: v2.1.0
     hooks:
     -   id: check-added-large-files
+        stages: [commit]
     -   id: detect-private-key
+        stages: [commit]
     -   id: check-merge-conflict
-
+        stages: [commit]
+        
 -   repo: https://github.com/lumapps/commit-message-validator
     rev: master
     hooks:

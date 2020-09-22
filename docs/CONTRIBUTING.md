@@ -66,3 +66,9 @@ To deploy to pypi, bump the version and tags the version simply **on the master 
 ```bash 
 make release v=x.x.x
 ```
+
+For beta releases (without tagging and doc release), do:
+
+```bash
+make pypi-release-beta v=x.x.x
+```

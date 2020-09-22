@@ -98,6 +98,7 @@ setup:  ## Setup the development environment (install dependencies).
 	poetry install -v
 	@if ! $(CI); then \
 		poetry run pre-commit install; \
+		poetry run pre-commit install --hook-type commit-msg; \
 	fi; \
 
 
