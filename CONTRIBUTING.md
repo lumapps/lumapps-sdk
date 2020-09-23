@@ -34,6 +34,12 @@ make check
 make test
 ```
 
+## Commits format
+
+Commits format is enforced according to the tool https://github.com/lumapps/commit-message-validator
+
+A pre-commit hook as well as an action will check that for you and PR need to respect that format to be merged.
+
 ### Documentation
 
 Additionnaly to edit the documentation you can add/modify markdown files in the docs folder.
@@ -52,23 +58,4 @@ make doc-deploy
 
 ## Deploy to pypi
 
-
-**Only for admins** 
-
-To test build run
-
-```
-TESTING="true" make release v=x.x.x 
-```
-
-To deploy to pypi, bump the version and tags the version simply **on the master branch** do
-
-```bash 
-make release v=x.x.x
-```
-
-For beta releases (without tagging and doc release), do:
-
-```bash
-make pypi-release-beta v=x.x.x
-```
+When a tagged is pushed the ci will create a release draft and then another workflow will be trigger that will deploy to pypi the version tagged and also deploy the documentation
