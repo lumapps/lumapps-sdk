@@ -30,7 +30,7 @@ repos:
         stages: [commit]
     -   id: check-merge-conflict
         stages: [commit]
-        
+ 
 -   repo: https://github.com/lumapps/commit-message-validator
     rev: master
     hooks:
