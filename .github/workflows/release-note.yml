@@ -4,7 +4,7 @@ name: Create release note
 on:
   push:
     tags:
-      - '[0-9]+-[0-9]+-[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build:
@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
           
       - name: Generate changelog
         id: generate_changelog
