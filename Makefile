@@ -80,7 +80,6 @@ endif
 	-@if ! $(CI) && ! $(TESTING); then \
 		poetry run failprint -t "Pushing commits" -- git push; \
 		poetry run failprint -t "Pushing tags" -- git push --tags; \
-		poetry publish; \
 		poetry run failprint -t "Deploying docs" -- poetry run mkdocs gh-deploy; \
 	fi
 

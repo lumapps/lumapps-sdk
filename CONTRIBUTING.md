@@ -56,6 +56,23 @@ make doc-deploy
 ```
 
 
-## Deploy to pypi
+## Deploy a new version (admins)
 
-When a tagged is pushed the ci will create a release draft and then another workflow will be trigger that will deploy to pypi the version tagged and also deploy the documentation
+
+### Regular release
+
+Bump, create tag for the version and deploy the doc by running
+
+```
+make release v=<x.x.x>
+```
+
+After that the CI will make a release and release note based on commits and deploy the version to pypi.
+
+### Beta release
+
+Doing a beta release is a bit different, we do not do release and tag for the time being.
+
+```
+make pypi-release-beta v=<x.x.x>
+```
