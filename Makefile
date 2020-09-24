@@ -65,23 +65,6 @@ format:  ## Run formatting tools on the code.
 	@poetry run failprint -t "Formatting code" -- black $(PY_SRC)
 	@poetry run failprint -t "Ordering imports" -- isort -y -rc $(PY_SRC)
 
-.PHONY: release
-release:  ## Create a new release (commit, tag, push, build, publish, deploy docs).
-ifndef v
-	$(error Pass the new version with 'make release v=0.0.0')
-endif
-	-@if ! $(CI) && ! $(TESTING); then \
-		poetry run failprint -t "Bumping version" -- poetry version $(v); \
-		poetry run failprint -t "Staging files" -- git add pyproject.toml CHANGELOG.md; \
-		poetry run failprint -t "Committing changes" -- git commit -m "chore: Prepare release $(v)" --no-verify; \
-		poetry run failprint -t "Tagging commit" -- git tag v$(v); \
-	fi
-	poetry run failprint -t "Building dist/wheel" -- poetry build
-	-@if ! $(CI) && ! $(TESTING); then \
-		poetry run failprint -t "Pushing commits" -- git push; \
-		poetry run failprint -t "Pushing tags" -- git push --tags; \
-		poetry run failprint -t "Deploying docs" -- poetry run mkdocs gh-deploy; \
-	fi
 
 .PHONY: setup
 setup:  ## Setup the development environment (install dependencies).
@@ -107,13 +90,3 @@ test:  ## Run the test suite and report coverage. 2>/dev/null
 	@poetry run coverage html --rcfile=config/coverage.ini
 
 
-.PHONY: pypi-release-beta
-pypi-release-beta:  # release to pypi without taging github
-ifndef v
-	$(error Pass the new version with 'make release v=0.0.0')
-endif
-	@poetry run failprint -t "Bumping version" -- poetry version $(v)
-	@poetry run failprint -t "Building dist/wheel" -- poetry build
-	-@if ! $(CI) && ! $(TESTING); then \
-		poetry publish; \
-	fi

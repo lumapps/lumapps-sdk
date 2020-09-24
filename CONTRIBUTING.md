@@ -49,7 +49,7 @@ You can preview the doc by running
 make docs-serve
 ```
 
-Then to deploy the doc you cna run
+Then to deploy the doc you can run
 
 ```bash
 make doc-deploy
@@ -61,18 +61,15 @@ make doc-deploy
 
 ### Regular release
 
-Bump, create tag for the version and deploy the doc by running
+Bump the version X.Y.Z, make a PR to master.
 
-```
-make release v=<x.x.x>
-```
+Once merged create and push the tag X.Y.Z on master. 
 
-After that the CI will make a release and release note based on commits and deploy the version to pypi.
+This will create a draft release. Once you publish it (action to do by hand),
+the corresponding CI will release the corresponding package version on pypi.
 
 ### Beta release
 
-Doing a beta release is a bit different, we do not do release and tag for the time being.
+Doing a beta release is a bit different, we do not use tag for the time being.
 
-```
-make pypi-release-beta v=<x.x.x>
-```
+Simply publish a pre-release on github with the correct tag (eg, 1.1.3b1) and this will trigger the publication on pypi
