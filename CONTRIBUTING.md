@@ -61,15 +61,13 @@ make doc-deploy
 
 ### Regular release
 
-Bump the version X.Y.Z, make a PR to master.
-
-Once merged create and push the tag X.Y.Z on master. 
+Simply create and push the tag X.Y.Z on master. 
 
 This will create a draft release. Once you publish it (action to do by hand),
-the corresponding CI will release the corresponding package version on pypi.
+the corresponding CI will release the corresponding package version on pypi, bump the version and publish the doc.
 
 ### Beta release
 
-Doing a beta release is a bit different, we do not use tag for the time being.
+Doing a beta release is a bit different, we do not use tag automation for the time being.
 
 Simply publish a pre-release on github with the correct tag (eg, 1.1.3b1) and this will trigger the publication on pypi

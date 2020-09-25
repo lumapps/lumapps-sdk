@@ -33,5 +33,5 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
-          draft: false
+          draft: true
           prerelease: false
