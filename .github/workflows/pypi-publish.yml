@@ -3,6 +3,8 @@ name: Pypi publish 📦
 on:
   release:
     types: [published]
+    branches:
+      - master
 
 jobs:
 
@@ -31,7 +33,12 @@ jobs:
           key: pypi-${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             pypi-${{ runner.os }}-poetry-
-              
+
+      - name: Config git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project false
@@ -44,4 +51,25 @@ jobs:
       - name: 📦 Build Python package and publish to PyPI 📦
         if: startsWith(github.ref, 'refs/tags/')
         run: |
+          poetry version ${{ github.event.release.tag_name }}
           poetry publish --build -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+
+      - name: Add and commit changes
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          git add poetry.toml
+          git commit -m "chore(release): release version ${{ github.event.release.tag_name }}"
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build doc
+        run: make docs
+
+      - name: Publish doc
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

@@ -5,6 +5,8 @@ on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - master
 
 jobs:
   build:
@@ -18,7 +20,7 @@ jobs:
           
       - name: Generate changelog
         id: generate_changelog
-        uses: lumapps/changelog-generator@master
+        uses: sebastien-boulle/changelog-generator@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,5 +33,5 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
-          draft: true
+          draft: false
           prerelease: false
