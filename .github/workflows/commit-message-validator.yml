@@ -16,3 +16,5 @@ jobs:
         uses: lumapps/commit-message-validator@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_VALIDATOR_NO_JIRA: true
+          COMMIT_VALIDATOR_ALLOW_TEMP: true
