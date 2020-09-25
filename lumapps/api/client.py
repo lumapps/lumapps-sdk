@@ -835,7 +835,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
                 "Content-Range": f"bytes {pos}-{pos + chunk_size - 1}/{fsize}",
             }
             try:
-                resp = put(upload_url, data=chunk, headers=headers)
+                resp = put(upload_url, data=chunk, headers=headers, timeout=120)
             except Exception as e:
                 raise FileUploadError(e)
             if resp.status_code in (200, 201):
@@ -864,7 +864,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
                 "Content-Range": f"bytes {pos}-{pos + chunk_size - 1}/{fsize}",
             }
             try:
-                resp = put(upload_url, data=chunk, headers=headers)
+                resp = put(upload_url, data=chunk, headers=headers, timeout=120)
             except Exception as e:
                 self.delete_document(f"provider=drive/resource={file_id}")
                 raise FileUploadError(e)
