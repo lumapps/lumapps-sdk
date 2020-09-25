@@ -1,6 +1,6 @@
 import httpx
-import respx
 import pytest
+from pytest_httpx import HTTPXMock
 
 from lumapps.api.decorators import (
     none_on_http_codes,
@@ -26,23 +26,22 @@ def fake_request_with_400_decorator():
     return res
 
 
-@respx.mock
-def test_none_on_http_codes_1():
-    request = respx.get(fake_url, status_code=400)
+def test_none_on_http_codes_1(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400)
     res = fake_request_with_400_decorator()
-
-    assert request.called
+ 
+    assert httpx_mock.get_requests()
     assert res is None
 
 
-@respx.mock
-def test_none_on_http_codes_2():
-    request = respx.get(fake_url, status_code=401)
+def test_none_on_http_codes_2(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=401)
+
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_400_decorator()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
 ## Retry on https codes
 
@@ -53,17 +52,17 @@ def fake_request_retry_on_http_codes():
     res.raise_for_status()
     return res
 
-@respx.mock
-def test_retry_on_http_codes():
-    request = respx.get(fake_url, status_code=404)
+def test_retry_on_http_codes(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=404)
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_retry_on_http_codes()
 
-    assert request.called
-    assert request.call_count == max_attempts
+    requests = httpx_mock.get_requests()
+    assert requests
+    assert len(requests) == max_attempts
 
-## False on 404
+# False on 404
 
 @false_on_404
 def fake_request_with_false_on_404_deco():
@@ -72,13 +71,13 @@ def fake_request_with_false_on_404_deco():
     return res
 
 
-@respx.mock
-def test_false_on_404():
-    request = respx.get(fake_url, status_code=404)
+def test_false_on_404(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=404)
+
 
     res = fake_request_with_false_on_404_deco()
 
-    assert request.called
+    assert httpx_mock.get_requests()
     assert res is False
 
 ## None on 404
@@ -90,23 +89,22 @@ def fake_request_with_none_on_404_deco():
     return res
 
 
-@respx.mock
-def test_none_on_404_1():
-    request = respx.get(fake_url, status_code=404)
+
+def test_none_on_404_1(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=404)
 
     res = fake_request_with_none_on_404_deco()
 
-    assert request.called
+    assert httpx_mock.get_requests()
     assert res is None
 
-@respx.mock
-def test_none_on_404_2():
-    request = respx.get(fake_url, status_code=403)
+def test_none_on_404_2(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=403)
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_404_deco()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
 ## None on code and message
 
@@ -117,32 +115,29 @@ def fake_request_with_none_on_code_and_message():
     return res
 
 
-@respx.mock
-def test_none_on_code_and_message_1():
-    request = respx.get(fake_url, status_code=403, content=b"message")
+def test_none_on_code_and_message_1(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=403, data=b"message")
 
     res = fake_request_with_none_on_code_and_message()
 
-    assert request.called
+    assert httpx_mock.get_requests()
     assert res is None
 
-@respx.mock
-def test_none_on_code_and_message_2():
-    request = respx.get(fake_url, status_code=402, content=b"message")
+def test_none_on_code_and_message_2(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=402, data=b"message")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_code_and_message()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
-@respx.mock
-def test_none_on_code_and_message83():
-    request = respx.get(fake_url, status_code=403, content=b"pas essage")
+def test_none_on_code_and_message_3(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=403, data=b"pas le mot dedans")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_code_and_message()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
 ## none on 400 already archived
 
@@ -153,23 +148,21 @@ def fake_request_with_none_on_400_ALREADY_ARCHIVED():
     return res
 
 
-@respx.mock
-def test_none_on_400_ALREADY_ARCHIVED_1():
-    request = respx.get(fake_url, status_code=400, content=b"ALREADY_ARCHIVED")
+def test_none_on_400_ALREADY_ARCHIVED_1(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400, data=b"ALREADY_ARCHIVED")
 
     res = fake_request_with_none_on_400_ALREADY_ARCHIVED()
 
-    assert request.called
+    assert httpx_mock.get_requests()
     assert res is None
 
-@respx.mock
-def test_none_on_400_ALREADY_ARCHIVED_2():
-    request = respx.get(fake_url, status_code=401, content=b"ALREADY_ARCHIVED")
+def test_none_on_400_ALREADY_ARCHIVED_2(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=401, data=b"ALREADY_ARCHIVED")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_400_ALREADY_ARCHIVED()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
 ## none on 400 subscription already exists or pinned
 
@@ -180,35 +173,30 @@ def fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED():
     return res
 
 
-@respx.mock
-def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_1():
-    request = respx.get(
-        fake_url, status_code=400, content=b"SUBSCRIPTION_ALREADY_EXISTS"
-    )
+def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_1(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400, data=b"SUBSCRIPTION_ALREADY_EXISTS")
 
     res = fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED()
 
-    assert request.called
+    assert httpx_mock.get_requests()
     assert res is None
 
 
-@respx.mock
-def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_2():
-    request = respx.get(fake_url, status_code=400, content=b"Already pinned")
+def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_2(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400, data=b"Already pinned")
 
     res = fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED()
 
-    assert request.called
+    assert httpx_mock.get_requests()
     assert res is None
 
-@respx.mock
-def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_3():
-    request = respx.get(fake_url, status_code=401, content=b"Already pinned")
+def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_3(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=401, data=b"Already pinned")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
 
 ## raise known save errors
@@ -220,21 +208,19 @@ def fake_request_with_raise_known_save_errors():
     return res
 
 
-@respx.mock
-def test_raise_known_save_errors_1():
-    request = respx.get(fake_url, status_code=400, content=b"URL_ALREADY_EXISTS")
+def test_raise_known_save_errors_1(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400, data=b"URL_ALREADY_EXISTS")
 
     with pytest.raises(UrlAlreadyExistsError):
         fake_request_with_raise_known_save_errors()
 
-    assert request.called
+    assert httpx_mock.get_requests()
 
 
-@respx.mock
-def test_raise_known_save_errors_2():
-    request = respx.get(fake_url, status_code=400, content=b"Feeds are required")
+def test_raise_known_save_errors_2(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400, data=b"Feeds are required")
 
     with pytest.raises(FeedsRequiredError):
         fake_request_with_raise_known_save_errors()
 
-    assert request.called
+    assert httpx_mock.get_requests()
