@@ -359,7 +359,12 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     def iter_communities(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
         body = {"lang": "", "instanceId": self.instance_id}
         body.update(**kwargs)
-        yield from self.iter_call("community/list", body=body)
+        try:
+            yield from self.iter_call("community/list", body=body)
+        except HTTPStatusError as e:
+            if e.response.status_code == 400 and "FEATURE_NOT_ENABLED" in str(e):
+                return
+            raise
 
     def iter_all_posts(
         self, **iter_posts_kwargs: dict
