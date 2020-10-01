@@ -36,4 +36,4 @@ repos:
     hooks:
       - id: commit-message-validator
         stages: [commit-msg]
-        args: [--allow-temp]
+        args: [--allow-temp, --no-jira]
