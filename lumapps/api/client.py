@@ -359,7 +359,12 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     def iter_communities(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
         body = {"lang": "", "instanceId": self.instance_id}
         body.update(**kwargs)
-        yield from self.iter_call("community/list", body=body)
+        try:
+            yield from self.iter_call("community/list", body=body)
+        except HTTPStatusError as e:
+            if e.response.status_code == 400 and "FEATURE_NOT_ENABLED" in str(e):
+                return
+            raise
 
     def iter_all_posts(
         self, **iter_posts_kwargs: dict
@@ -1664,11 +1669,13 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         info(f"Saving group: {to_json(group)}")
         if self.dry_run:
             return group
-        for attempt in range(retries + 1):
+        attempt = 0
+        while True:
+            attempt += 1
             try:
                 return self.get_call("feed/save", body=group)
             except HTTPStatusError as e:
-                if e.response.status_code == 503:
+                if e.response.status_code == 503 and attempt < 1 + retries:
                     sleep_time = (attempt + 1) * 3
                     warning(f"503 saving the feed, will retry in {sleep_time}s")
                     sleep(sleep_time)
