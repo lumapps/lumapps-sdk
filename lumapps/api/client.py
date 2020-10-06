@@ -1462,10 +1462,8 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             "metadata/list", instance=inst_id, parent=parent_id, familyId=parent_id
         )
         for metadata in metadatas:
-            md_name = metadata["name"].get(self.first_lang)
-            if not md_name:
-                md_name = list(metadata["name"].values())[0]
-            if md_name.lower() == name.lower():
+            md_names = list(v.lower() for v in metadata['name'].values())
+            if name.lower() in md_names:
                 if metadata.get("parent") == parent_id:
                     return metadata
         if not create:
