@@ -57,7 +57,7 @@ jobs:
       - name: Add and commit changes
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          git add poetry.toml
+          git add pyproject.toml
           git commit -m "chore(release): release version ${{ github.event.release.tag_name }}"
       
       - name: Push changes
