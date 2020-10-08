@@ -739,8 +739,8 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         pl = {
             "fileName": fname,
             "lang": self.first_lang,
-            "parentPath": pth,
-            "shared": False if secure else shared,
+            "parentPath": parent_path,
+            "shared": shared,
             "success": "/upload",
         }
         debug(f"Getting upload URL: {to_json(pl)}")
