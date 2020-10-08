@@ -2,10 +2,11 @@
 from copy import deepcopy
 from functools import lru_cache, partial
 from io import FileIO
-from json import dumps, loads
+from json import dumps
 from logging import debug, exception, info, warning
 from re import findall
 from time import sleep, time
+from random import randint
 from typing import Any, Dict, Generator, List, Optional, Sequence, Tuple
 
 from httpx import HTTPStatusError, put
@@ -738,8 +739,8 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         pl = {
             "fileName": fname,
             "lang": self.first_lang,
-            "parentPath": parent_path,
-            "shared": shared,
+            "parentPath": pth,
+            "shared": False if secure else shared,
             "success": "/upload",
         }
         debug(f"Getting upload URL: {to_json(pl)}")
@@ -747,6 +748,28 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             return None
         upload_infos = self.get_call("document/uploadUrl/get", body=pl)
         return upload_infos["uploadUrl"]
+
+    def _get_secure_upload_url(self, fname: str, community_id: str) -> Optional[dict]:
+        """ {
+            "fileName": "orange.jpeg",
+            "lang": "en",
+            "parentPath": "provider=haussmann_media/resource=6206720470641024/drive=6206720470641024",
+            "shared": false,
+            "success": "/upload"
+        } """
+        pth = f"provider=haussmann_media/resource={community_id}/drive={community_id}"
+        pl = {
+            "fileName": fname,
+            "lang": self.first_lang,
+            "parentPath": pth,
+            "shared": False,
+            "success": "/upload",
+        }
+        debug(f"Getting upload URL: {to_json(pl)}")
+        if self.dry_run:
+            return None
+        upload_infos = self.get_call("document/uploadUrl/get", body=pl)
+        return upload_infos
 
     def _get_upload_url_sp(self, fname, drive_id, folder_id: Optional[str]):
         parent_path = f"provider=onedrive/drive={drive_id}"
@@ -784,6 +807,52 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             return None
         upload_infos = self.get_call("document/uploadUrl/get", body=pl)
         return upload_infos["uploadUrl"]
+
+    def upload_secure_file(
+        self, name: str, f: FileIO, community_id: str
+    ) -> Optional[Dict[str, Any]]:
+        info(f"Uploading file {name}")
+        if self.dry_run:
+            return
+        upload_url_info = self._get_secure_upload_url(name, community_id)
+        if not upload_url_info:
+            return
+        doc_id = upload_url_info["mediaId"]
+        upload_url = upload_url_info["uploadUrl"]
+        pos = 0
+        while True:
+            # chunk = fh.read(209_715_200)  # 256 * 1024 * 800
+            chunk = fh.read(2_621_440)  # 256 * 1024 * 10  # for testing
+            chunk_size = len(chunk)
+            headers = {
+                "Content-Length": str(chunk_size),
+                "Content-Range": f"bytes {pos}-{pos + chunk_size - 1}/{fsize}",
+            }
+            try:
+                resp = put(upload_url, data=chunk, headers=headers, timeout=120)
+            except Exception as e:
+                raise FileUploadError(e)
+            if resp.status_code in (200, 201):
+                break
+            if not (200 <= resp.status_code < 300) and resp.status_code != 308:
+                json_resp = resp.json()
+                if json_resp:
+                    raise FileUploadError(f"http code {resp.status_code}")
+                else:
+                    raise FileUploadError(f"http code {resp.status_code}\n{json_resp}")
+            pos += chunk_size
+        # poll document/get until 200
+        attempt_count = 0
+        while True:
+            doc = self.get_secure_document(community_id, doc_id)
+            if doc:
+                return doc
+            attempt_count += 1
+            if attempt_count > 15:
+                raise FileUploadError(
+                    f"Unable to get LumApps doc for secured file {doc_id}"
+                )
+            sleep(0.3)
 
     def upload_personal_file(
         self, name: str, f: FileIO, folder_id: str, mime_type: str
@@ -844,7 +913,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             except Exception as e:
                 raise FileUploadError(e)
             if resp.status_code in (200, 201):
-                return loads(resp.content.decode())
+                return resp.json()
             if not (200 <= resp.status_code < 300):
                 json_resp = resp.json()
                 if json_resp:
@@ -874,7 +943,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
                 self.delete_document(f"provider=drive/resource={file_id}")
                 raise FileUploadError(e)
             if resp.status_code in (200, 201):
-                return loads(resp.content.decode())
+                return resp.json()
             if not (200 <= resp.status_code < 300) and resp.status_code != 308:
                 json_resp = resp.json()
                 if json_resp:
@@ -897,8 +966,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         )
         if response.status_code != 200:
             if response.status_code == 400:
-                s = response.content.decode("utf-8")
-                err = loads(s)
+                err = response.json()
                 err_msg = err.get("error", {}).get("message", "")
             else:
                 err_msg = response.content.decode("utf-8")
@@ -930,9 +998,6 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         self, name: str, shared: bool, author: Optional[str] = None
     ) -> Dict[str, Any]:
         lang = self.first_lang
-        from random import randint
-        from time import sleep
-
         sleep(randint(0, 5))
         for folder in self.iter_folders(
             lang, search_text=name, shared=shared, author=author
@@ -1045,6 +1110,16 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         provider=local/site=5519565001981952/resource=5127875810951168
         """
         pl = {"docPath": f"provider=local/site={self.instance_id}/resource={id_}"}
+        return self.get_call("document/get", body=pl)
+
+    @none_on_http_codes({404, 400})
+    def get_secure_document(
+        self, community_id: str, id_: str
+    ) -> Optional[Dict[str, Any]]:
+        """
+        provider=haussmann_media/drive=6206720481641024/resource=225833424774490695777422317245086427269
+        """
+        pl = {"docPath": f"provider=haussmann_media/drive={community_id}/resource={id_}"}
         return self.get_call("document/get", body=pl)
 
     def iter_media_tags(self) -> Generator[Dict[str, Any], None, None]:
@@ -1591,7 +1666,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
                     if resp.status_code != 404:
                         exception("error adding users:")
                         raise
-                    msg = loads(resp.content.decode())["error"]["errors"][0]["message"]
+                    msg = resp.json()["error"]["errors"][0]["message"]
                     # 'User not found: foo.bar@acme.org'
                     member = msg.split(": ")[1]
                     warning(f"Failed to add missing {member} to group {feed_id}")
