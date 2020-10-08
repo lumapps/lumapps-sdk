@@ -809,7 +809,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         return upload_infos["uploadUrl"]
 
     def upload_secure_file(
-        self, name: str, f: FileIO, community_id: str
+        self, name: str, fh: FileIO, community_id: str, fsize: int
     ) -> Optional[Dict[str, Any]]:
         info(f"Uploading file {name}")
         if self.dry_run:
