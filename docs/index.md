@@ -78,6 +78,6 @@ Please refer to our [contributing guidelines](CONTRIBUTING.md).
 ## Copyright and license
 
 
-LumApps SDK is released under the [MIT license](LICENSE.md).
+LumApps SDK is released under the [MIT license](LICENSE.md). 
 
 
