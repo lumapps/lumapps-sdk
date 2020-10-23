@@ -116,12 +116,12 @@ The sdk BaseClient offers two methods to help with that `get_new_client_as` and 
 
 ```python
 from lumapps.api.base_client import BaseClient
-my_sa = {...}
+my_service_account = {...}
 my_platform_id="<your_plaform_id>"
 user_to_authenticate_on_behalf_of = "<user_email>"
 
 client = BaseClient(
-    auth_info=my_sa)
+    auth_info=my_service_account)
     .get_new_client_as(
         user_email=user_to_authenticate_on_behalf_of,
         customer=platform_id
