@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "3dad9a5d-70fc-45f5-867e-63e61d59cb60",
+		"name": "LumApps getToken and request",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1 - Lib install",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1982b6f9-003d-4481-927a-c3a80d86d870",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {",
+							"    pm.response.to.have.status(200)",
+							"    pm.globals.set(\"pmlib_code\", responseBody)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1e82e38d-618a-46b9-aaf5-c50276123d78",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://joolfe.github.io/postman-util-lib/dist/bundle.js",
+					"protocol": "https",
+					"host": [
+						"joolfe",
+						"github",
+						"io"
+					],
+					"path": [
+						"postman-util-lib",
+						"dist",
+						"bundle.js"
+					]
+				},
+				"description": "Load the postman-util-lib from github.io and load into postman global variable."
+			},
+			"response": []
+		},
+		{
+			"name": "2 - preGetToken",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "26c108b9-646d-457a-b440-acaebed28cc8",
+						"exec": [
+							"// JWT generation script adapted from",
+							"// https://gist.github.com/corbanb/db03150abbe899285d6a86cc480f674d",
+							"",
+							"eval(pm.globals.get('pmlib_code'))",
+							"",
+							"",
+							"// Generate a PKCE challenge",
+							"const challenge  = pmlib.pkceChallenge()",
+							"",
+							"",
+							"",
+							"var iss = pm.variables.get('sa_email')",
+							"var private_key = pm.variables.get('sa_private_key')",
+							"",
+							"console.log(\"Using iss: \" + iss)",
+							"console.log(\"Using private_key: \" + private_key)",
+							"",
+							"// Set headers for JWT",
+							"var header = {",
+							"\t'typ': 'JWT',",
+							"\t'alg': 'RS256'",
+							"};",
+							"",
+							"// Prepare timestamp in seconds",
+							"var currentTimestamp = Math.floor(Date.now() / 1000)",
+							"var expTime = currentTimestamp + 30",
+							"var data = {",
+							"    'aud': 'https://www.googleapis.com/oauth2/v4/token',",
+							"\t'iss': iss,",
+							"\t'iat': currentTimestamp,",
+							"\t'exp': expTime, // expiry time is 30 seconds from time of creation",
+							"\t'scope': 'https://www.googleapis.com/auth/userinfo.email'",
+							"}",
+							"",
+							"// encode header",
+							"var stringifiedHeader = JSON.stringify(header)",
+							"var encodedHeader = pmlib.rs.stob64u(stringifiedHeader)",
+							"",
+							"// encode data",
+							"var stringifiedData = JSON.stringify(data)",
+							"var encodedData = pmlib.rs.stob64u(stringifiedData)",
+							"",
+							"// sign token",
+							"const signedToken = pmlib.jwtSign(private_key, data)",
+							"",
+							"pm.environment.set('jwt_signed', signedToken)",
+							"console.log('Signed and encoded JWT',  signedToken)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b83f9989-76c5-4f23-bd1a-d3ce5ca56aab",
+						"exec": [
+							"const responseData = JSON.parse(responseBody)",
+							"const googleAccessToken = responseData.access_token ",
+							"",
+							"console.log(\"Set google_access_token\", googleAccessToken)",
+							"pm.collectionVariables.set(\"google_access_token\", googleAccessToken)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+							"type": "text"
+						},
+						{
+							"key": "assertion",
+							"value": "{{jwt_signed}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.googleapis.com/oauth2/v4/token",
+					"protocol": "https",
+					"host": [
+						"www",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"v4",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3 - getToken",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0bf74f1f-edd2-48ab-9526-87cff748bc70",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{google_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{lumapps_env_base_url}}/_ah/api/lumsites/v1/user/getToken?email=aurelien@test.lumapps.com&customerId=4664706704080896",
+					"host": [
+						"{{lumapps_env_base_url}}"
+					],
+					"path": [
+						"_ah",
+						"api",
+						"lumsites",
+						"v1",
+						"user",
+						"getToken"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "aurelien@test.lumapps.com"
+						},
+						{
+							"key": "customerId",
+							"value": "4664706704080896"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4 - getContent",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{lumapps_bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sites.lumapps.com/_ah/api/lumsites/v1/content/get?slug=salesforce-integration&instance=5414442267049984",
+					"protocol": "https",
+					"host": [
+						"sites",
+						"lumapps",
+						"com"
+					],
+					"path": [
+						"_ah",
+						"api",
+						"lumsites",
+						"v1",
+						"content",
+						"get"
+					],
+					"query": [
+						{
+							"key": "slug",
+							"value": "salesforce-integration"
+						},
+						{
+							"key": "instance",
+							"value": "5414442267049984"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8c3f4fa9-c5ef-4160-92c3-b1b66c535159",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e9708fb6-4e6f-44d6-80de-972b708052f4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "91a0c298-a855-47d4-a33e-5f7bcf487b93",
+			"key": "sa_private_key",
+			"value": ""
+		},
+		{
+			"id": "8f55b187-eace-4f42-a399-04aa37b122dd",
+			"key": "sa_email",
+			"value": ""
+		},
+		{
+			"id": "76ec99e4-6b62-4781-baef-8aee2a45c256",
+			"key": "google_access_token",
+			"value": "no_token"
+		},
+		{
+			"id": "fb4dbc7d-babd-48dd-a3d4-792bdd49723c",
+			"key": "lumapps_bearer_token",
+			"value": ""
+		},
+		{
+			"id": "b0077715-94a7-4971-a378-92f25c71e365",
+			"key": "lumapps_env_base_url",
+			"value": "https://sites.lumapps.com"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
