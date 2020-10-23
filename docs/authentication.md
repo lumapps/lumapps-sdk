@@ -64,7 +64,6 @@ The flow is as follow:
     </li>
     <li>
         Use the returned LumApps access token to authenticate your subsequent requests to LumApps Api's.
-
         <br/>
         For instance you can call the user/get endpoint:
         <div>
