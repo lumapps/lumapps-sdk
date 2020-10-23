@@ -43,13 +43,13 @@ The flow is as follow:
     <li>
         With your service account get a google access token
         <div style="margin: 8px;">
-        To know how to get this token with curl and you service account follow <a href="https://gist.github.com/ryu1kn/c76aed0af8728f659730d9c26c9ee0ed"> this tutorial</a>
+        To know how to get this token with curl and you service account follow <a href="https://gist.github.com/ryu1kn/c76aed0af8728f659730d9c26c9ee0ed" target="_blank"> this tutorial</a>
         <br/>
-        For an extended documentation on that process you can follow the <a href="https://developers.google.com/identity/protocols/oauth2/service-account"> google documentation</a>
+        For an extended documentation on that process you can follow the <a href="https://developers.google.com/identity/protocols/oauth2/service-account" target="_blank"> google documentation</a>
         </div>
     </li>
     <li>
-        Use this token as the bearer token to call the <a href="https://apiv1.lumapps.com/#operation/User/Gettoken"> user/get endpoint</a>
+        Use this token as the bearer token to call the <a href="https://apiv1.lumapps.com/#operation/User/Gettoken" target="_blank"> user/get endpoint</a>
         <br/>
         <div>
         <pre>
@@ -87,11 +87,11 @@ The flow is as follow:
 <summary>An example with Postman</summary>
 <p>
 
-The flow is the same as with curl but to do it with postman there are some specificities and that's why we provide a <a href="../static/get_token_postman_collection.json" >collection that illustrate it</a>.
+The flow is the same as with curl but to do it with postman there are some specificities and that's why we provide a <a href="../static/get_token_postman_collection.json" target="_blank">collection that illustrate it</a>.
 
 <br/>
 
-This collection uses <a href="https://learning.postman.com/docs/sending-requests/variables" >postman variables</a> and you have to set some to use it:
+This collection uses <a href="https://learning.postman.com/docs/sending-requests/variables" target="_blank">postman variables</a> and you have to set some to use it:
 
 <br/>
 <ul>
