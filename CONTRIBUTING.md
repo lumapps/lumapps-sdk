@@ -54,6 +54,13 @@ Each commit message consists of a header, a body and a footer. The header has a 
 
 This allows the message to be easier to read on github as well as in various git tools.
 
+Example:
+```
+feat(toto-service): provide toto for all
+
+Before we had to do another thing. There was this and this problem.
+Now, by using "toto", it's simpler and the problems are managed.
+```
 
 **Type**
 
@@ -67,13 +74,6 @@ Must be one of the following:
 * test: Adding missing tests or correcting existing tests
 * chore: Changes to the build process or auxiliary tools and libraries such as distribution generation
 
-Example:
-```
-feat(toto-service): provide toto for all
-
-Before we had to do another thing. There was this and this problem.
-Now, by using "toto", it's simpler and the problems are managed.
-```
 
 > More: For more informations about the commit format see [here](https://github.com/lumapps/commit-message-validator#commit-message-format)
 
