@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/CONTRIBUTING/" rel="canonical"/>
 <link href="../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.5.13" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.5.14" name="generator"/>
 <title>Contributing - LumApps SDK</title>
-<link href="../assets/stylesheets/main.077507d7.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/main.d3202873.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -331,17 +331,36 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#documentation">
-    Documentation
+<a class="md-nav__link" href="#commits-format">
+    Commits format
   </a>
 </li>
 </ul>
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#deploy-to-pypi">
-    Deploy to pypi
+<a class="md-nav__link" href="#documentation">
+    Documentation
   </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deploy-a-new-version-admins">
+    Deploy a new version (admins)
+  </a>
+<nav aria-label="Deploy a new version (admins)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#regular-release">
+    Regular release
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#beta-release">
+    Beta release
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -391,17 +410,36 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#documentation">
-    Documentation
+<a class="md-nav__link" href="#commits-format">
+    Commits format
   </a>
 </li>
 </ul>
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#deploy-to-pypi">
-    Deploy to pypi
+<a class="md-nav__link" href="#documentation">
+    Documentation
   </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deploy-a-new-version-admins">
+    Deploy a new version (admins)
+  </a>
+<nav aria-label="Deploy a new version (admins)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#regular-release">
+    Regular release
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#beta-release">
+    Beta release
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -415,7 +453,7 @@
 </a>
 <h1 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">¤</a></h1>
 <p>Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.</p>
-<h2 id="environment-setup">Environment setup<a class="headerlink" href="#environment-setup" title="Permanent link">¤</a></h2>
+<h2 id="environment-setup"><strong>Environment setup</strong><a class="headerlink" href="#environment-setup" title="Permanent link">¤</a></h2>
 <p>First install dependencies and setup pre-commits hooks</p>
 <div class="highlight"><pre><span></span><code>make setup
 </code></pre></div>
@@ -424,33 +462,70 @@
 <p>To add a dependency use poetry</p>
 <div class="highlight"><pre><span></span><code>poetry add &lt;dependency&gt;
 </code></pre></div>
-<h2 id="dev">Dev<a class="headerlink" href="#dev" title="Permanent link">¤</a></h2>
-<h3 id="code">Code<a class="headerlink" href="#code" title="Permanent link">¤</a></h3>
+<h2 id="dev"><strong>Dev</strong><a class="headerlink" href="#dev" title="Permanent link">¤</a></h2>
+<h3 id="code"><strong>Code</strong><a class="headerlink" href="#code" title="Permanent link">¤</a></h3>
 <p>First open an issue to discuss the matter before coding.
 When your idea has been approved, create a new branch <code>git checkout -b &lt;new_branch_name&gt;</code> and open a Pull Request.</p>
 <p>Before commiting you can run tests and type checks via the commands</p>
 <div class="highlight"><pre><span></span><code>make check
 make <span class="nb">test</span>
 </code></pre></div>
-<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h3>
+<h3 id="commits-format"><strong>Commits format</strong><a class="headerlink" href="#commits-format" title="Permanent link">¤</a></h3>
+<p>Commits format is enforced according to the tool https://github.com/lumapps/commit-message-validator</p>
+<p>Each commit message consists of a header, a body and a footer. The header has a special format that includes a type, a scope and a subject:</p>
+<div class="highlight"><pre><span></span><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+&lt;BLANK LINE&gt;
+&lt;body&gt;
+&lt;BLANK LINE&gt;
+&lt;footer&gt;
+</code></pre></div>
+<ul>
+<li>The first line of the commit message (the "Subject") cannot be longer than 70 characters.</li>
+<li>Any other line of the commit message cannot be longer 100 characters!</li>
+<li>The body and footer are optional, but depends on the type, information can be mandatory.</li>
+</ul>
+<p>This allows the message to be easier to read on github as well as in various git tools.</p>
+<p><strong>Type</strong></p>
+<p>Must be one of the following:</p>
+<ul>
+<li>feat: A new feature</li>
+<li>fix: A bug fix</li>
+<li>docs: Documentation only changes</li>
+<li>lint: Changes that do not affect the meaning of the code (white-space, formatting, missing semicolons, etc)</li>
+<li>refactor: A code change that neither fixes a bug or adds a feature</li>
+<li>test: Adding missing tests or correcting existing tests</li>
+<li>chore: Changes to the build process or auxiliary tools and libraries such as distribution generation</li>
+</ul>
+<p>Example:
+<div class="highlight"><pre><span></span><code>feat(toto-service): provide toto for all
+
+Before we had to do another thing. There was this and this problem.
+Now, by using "toto", it's simpler and the problems are managed.
+</code></pre></div></p>
+<blockquote>
+<p>More: For more informations about the commit format see <a href="https://github.com/lumapps/commit-message-validator#commit-message-format">here</a></p>
+<p>Note: A pre-commit hook as well as an action will check that for you and PR need to respect that format to be merged.</p>
+</blockquote>
+<h2 id="documentation"><strong>Documentation</strong><a class="headerlink" href="#documentation" title="Permanent link">¤</a></h2>
 <p>Additionnaly to edit the documentation you can add/modify markdown files in the docs folder.
 You can preview the doc by running </p>
 <div class="highlight"><pre><span></span><code>make docs-serve
 </code></pre></div>
-<p>Then to deploy the doc you cna run</p>
+<p>Then to deploy the doc you can run</p>
 <div class="highlight"><pre><span></span><code>make doc-deploy
 </code></pre></div>
-<h2 id="deploy-to-pypi">Deploy to pypi<a class="headerlink" href="#deploy-to-pypi" title="Permanent link">¤</a></h2>
-<p><strong>Only for admins</strong> </p>
-<p>To test build run</p>
-<div class="highlight"><pre><span></span><code>TESTING="true" make release v=x.x.x 
+<h2 id="deploy-a-new-version-admins"><strong>Deploy a new version (admins)</strong><a class="headerlink" href="#deploy-a-new-version-admins" title="Permanent link">¤</a></h2>
+<h3 id="regular-release"><strong>Regular release</strong><a class="headerlink" href="#regular-release" title="Permanent link">¤</a></h3>
+<p>Simply create and push the tag X.Y.Z on master. </p>
+<div class="highlight"><pre><span></span><code>git tag X.Y.Z
+git push origin master X.Y.Z
 </code></pre></div>
-<p>To deploy to pypi, bump the version and tags the version simply <strong>on the master branch</strong> do</p>
-<div class="highlight"><pre><span></span><code>make release <span class="nv">v</span><span class="o">=</span>x.x.x
-</code></pre></div>
-<p>For beta releases (without tagging and doc release), do:</p>
-<div class="highlight"><pre><span></span><code>make pypi-release-beta <span class="nv">v</span><span class="o">=</span>x.x.x
-</code></pre></div>
+<p>This will create a draft release, you'll then need to publish it.</p>
+<p><img alt="" src="../static/publish-release.gif"/></p>
+<p>Finally the CI will release the corresponding package version on Pypi, bump the version and publish the doc for you.</p>
+<h3 id="beta-release"><strong>Beta release</strong><a class="headerlink" href="#beta-release" title="Permanent link">¤</a></h3>
+<p>Doing a beta release is a bit different, we do not use tag automation for the time being.</p>
+<p>Simply publish a pre-release on github with the correct tag (eg, 1.1.3b1) and this will trigger the publication on Pypi</p>
 </article>
 </div>
 </div>

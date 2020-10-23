@@ -8,9 +8,9 @@
 <meta content="LumApps sdk documentation" name="description"/>
 <link href="https://lumapps.github.io/lumapps-sdk/lumapps_api_client/" rel="canonical"/>
 <link href="../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.5.13" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.5.14" name="generator"/>
 <title>LumApps Client - LumApps SDK</title>
-<link href="../assets/stylesheets/main.077507d7.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/main.d3202873.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -1291,12 +1291,7 @@ This will be used to filter the retrieved contents</p>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>371
-372
-373
-374
-375
-376
+<pre><span></span>376
 377
 378
 379
@@ -1308,7 +1303,12 @@ This will be used to filter the retrieved contents</p>
 385
 386
 387
-388</pre>
+388
+389
+390
+391
+392
+393</pre>
 </div>
 </td>
 <td class="code">
@@ -1398,12 +1398,7 @@ save_content<span class="p">(</span><span class="bp">self</span><span class="p">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>1260
-1261
-1262
-1263
-1264
-1265
+<pre><span></span>1265
 1266
 1267
 1268
@@ -1418,7 +1413,12 @@ save_content<span class="p">(</span><span class="bp">self</span><span class="p">
 1277
 1278
 1279
-1280</pre>
+1280
+1281
+1282
+1283
+1284
+1285</pre>
 </div>
 </td>
 <td class="code">
@@ -1512,12 +1512,7 @@ get_user<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>654
-655
-656
-657
-658
-659
+<pre><span></span>659
 660
 661
 662
@@ -1529,7 +1524,12 @@ get_user<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 668
 669
 670
-671</pre>
+671
+672
+673
+674
+675
+676</pre>
 </div>
 </td>
 <td class="code">
@@ -1612,19 +1612,19 @@ iter_users<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>597
-598
-599
-600
-601
-602
+<pre><span></span>602
 603
 604
 605
 606
 607
 608
-609</pre>
+609
+610
+611
+612
+613
+614</pre>
 </div>
 </td>
 <td class="code">
@@ -1701,19 +1701,19 @@ save_user<span class="p">(</span><span class="bp">self</span><span class="p">,</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>616
-617
-618
-619
-620
-621
+<pre><span></span>621
 622
 623
 624
 625
 626
 627
-628</pre>
+628
+629
+630
+631
+632
+633</pre>
 </div>
 </td>
 <td class="code">
@@ -1799,17 +1799,17 @@ get_group<span class="p">(</span><span class="bp">self</span><span class="p">,</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>1373
-1374
-1375
-1376
-1377
-1378
+<pre><span></span>1378
 1379
 1380
 1381
 1382
-1383</pre>
+1383
+1384
+1385
+1386
+1387
+1388</pre>
 </div>
 </td>
 <td class="code">
@@ -1884,18 +1884,18 @@ iter_groups<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>1610
-1611
-1612
-1613
-1614
-1615
-1616
+<pre><span></span>1616
 1617
 1618
 1619
 1620
-1621</pre>
+1621
+1622
+1623
+1624
+1625
+1626
+1627</pre>
 </div>
 </td>
 <td class="code">
@@ -1979,13 +1979,7 @@ save_group<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>1654
-1655
-1656
-1657
-1658
-1659
-1660
+<pre><span></span>1660
 1661
 1662
 1663
@@ -2001,7 +1995,15 @@ save_group<span class="p">(</span><span class="bp">self</span><span class="p">,<
 1673
 1674
 1675
-1676</pre>
+1676
+1677
+1678
+1679
+1680
+1681
+1682
+1683
+1684</pre>
 </div>
 </td>
 <td class="code">
@@ -2019,11 +2021,13 @@ save_group<span class="p">(</span><span class="bp">self</span><span class="p">,<
     <span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saving group: </span><span class="si">{</span><span class="n">to_json</span><span class="p">(</span><span class="n">group</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">group</span>
-    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"feed/save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">HTTPStatusError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">503</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">503</span> <span class="ow">and</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">retries</span><span class="p">:</span>
                 <span class="n">sleep_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>
                 <span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"503 saving the feed, will retry in </span><span class="si">{</span><span class="n">sleep_time</span><span class="si">}</span><span class="s2">s"</span><span class="p">)</span>
                 <span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
