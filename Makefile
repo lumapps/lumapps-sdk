@@ -42,7 +42,6 @@ clean:  ## Delete temporary files.
 docs-cp:
 	cp README.md docs/index.md
 	cp LICENSE.md docs/
-	cp CONTRIBUTING.md docs/
 
 .PHONY: docs
 docs: docs-cp ## Build the documentation locally.
