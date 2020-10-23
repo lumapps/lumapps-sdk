@@ -485,6 +485,12 @@ make <span class="nb">test</span>
 <li>The body and footer are optional, but depends on the type, information can be mandatory.</li>
 </ul>
 <p>This allows the message to be easier to read on github as well as in various git tools.</p>
+<p>Example:
+<div class="highlight"><pre><span></span><code>feat(toto-service): provide toto for all
+
+Before we had to do another thing. There was this and this problem.
+Now, by using "toto", it's simpler and the problems are managed.
+</code></pre></div></p>
 <p><strong>Type</strong></p>
 <p>Must be one of the following:</p>
 <ul>
@@ -496,12 +502,6 @@ make <span class="nb">test</span>
 <li>test: Adding missing tests or correcting existing tests</li>
 <li>chore: Changes to the build process or auxiliary tools and libraries such as distribution generation</li>
 </ul>
-<p>Example:
-<div class="highlight"><pre><span></span><code>feat(toto-service): provide toto for all
-
-Before we had to do another thing. There was this and this problem.
-Now, by using "toto", it's simpler and the problems are managed.
-</code></pre></div></p>
 <blockquote>
 <p>More: For more informations about the commit format see <a href="https://github.com/lumapps/commit-message-validator#commit-message-format">here</a></p>
 <p>Note: A pre-commit hook as well as an action will check that for you and PR need to respect that format to be merged.</p>
