@@ -1,7 +1,8 @@
 import time
+from dataclasses import dataclass
 from functools import wraps
 from logging import debug
-from typing import Sequence
+from typing import Sequence, Tuple, Type
 
 from httpx import HTTPStatusError
 
@@ -12,7 +13,20 @@ from lumapps.api.errors import (
 )
 
 
-def retry(exceptions, total_tries=4, initial_wait=0.5, backoff_factor=2):
+@dataclass
+class RetryConfig:
+    exceptions: Tuple[Type[Exception]]  # Exceptions tuple
+    total_tries: int
+    initial_wait: float
+    backoff_factor: int
+
+
+base_retry_config = RetryConfig(
+    exceptions=(HTTPStatusError,), total_tries=3, initial_wait=0.5, backoff_factor=2
+)
+
+
+def retry(retry_config: RetryConfig):
     """
     calling the decorated function applying an exponential backoff.
     Args:
@@ -27,18 +41,19 @@ def retry(exceptions, total_tries=4, initial_wait=0.5, backoff_factor=2):
     def retry_decorator(f):
         @wraps(f)
         def func_with_retries(*args, **kwargs):
-            _tries, _delay = total_tries + 1, initial_wait
+            _tries, _delay = retry_config.total_tries + 1, retry_config.initial_wait
             while _tries > 1:
                 try:
-                    debug(f"{total_tries + 2 - _tries}. try:")
+                    debug(f"{retry_config.total_tries + 2 - _tries}. try:")
                     return f(*args, **kwargs)
-                except exceptions as e:
+                except retry_config.exceptions as e:
                     _tries -= 1
                     print_args = args if args else "no args"
                     if _tries == 1:
                         msg = str(
                             f"Function: {f.__name__}\n"
-                            f"Failed despite best efforts after {total_tries} tries.\n"
+                            f"""Failed despite best efforts after 
+                            {retry_config.total_tries} tries.\n"""
                             f"args: {print_args}, kwargs: {kwargs}"
                         )
                         debug(msg)
@@ -51,7 +66,7 @@ def retry(exceptions, total_tries=4, initial_wait=0.5, backoff_factor=2):
                     )
                     debug(msg)
                     time.sleep(_delay)
-                    _delay *= backoff_factor
+                    _delay *= retry_config.backoff_factor
 
         return func_with_retries
 

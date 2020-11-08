@@ -21,7 +21,7 @@ from httpx import Client
 
 # from authlib.integrations.requests_client import OAuth2Session, AssertionSession
 from lumapps.api.authlib_helpers import AssertionClient, OAuth2Client
-from lumapps.api.decorators import retry
+from lumapps.api.decorators import RetryConfig, base_retry_config, retry
 from lumapps.api.errors import BadCallError, BaseClientError
 from lumapps.api.utils import (
     FILTERS,
@@ -51,7 +51,7 @@ class BaseClient(AbstractContextManager):
         prune: bool = False,
         no_verify: bool = False,
         proxy_info: Optional[Dict[str, Any]] = None,
-        retry_nb: int = 2,
+        retry_config: RetryConfig = base_retry_config,
     ):
         """
             Args:
@@ -65,7 +65,8 @@ class BaseClient(AbstractContextManager):
                 prune: Whether or not to use FILTERS to prune LumApps API responses.
                 no_verify: Disables SSL verification.
                 proxy_info: When specified, a JSON dict with proxy parameters.
-                retry_nb: Number of time to retry when call fail.
+                retry_config: Config for retrying on any call. Defaults to retry 
+                    on HttpsStatusError with 3 retries and a backoff of 2.
         """
 
         self._token_expiry = 0
@@ -96,7 +97,7 @@ class BaseClient(AbstractContextManager):
         self.user = user
         self.token = token
         self.cursor = None
-        self.retry_nb = retry_nb
+        self.retry_config = retry_config
 
     def __exit__(self, *exc):
         self.close()
@@ -358,7 +359,7 @@ class BaseClient(AbstractContextManager):
         return verb, path, params
 
     def _call(self, name_parts: Sequence[str], params: dict, json=None):
-        @retry(Exception, self.retry_nb)  # Hack to retry on Exception
+        @retry(self.retry_config)  # Hack to retry on Exception
         def __call(self, name_parts: Sequence[str], params: dict, json=None):
             """ Construct the call """
             verb, path, params = self._get_verb_path_params(name_parts, params)
