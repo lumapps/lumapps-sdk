@@ -21,6 +21,7 @@ from httpx import Client
 
 # from authlib.integrations.requests_client import OAuth2Session, AssertionSession
 from lumapps.api.authlib_helpers import AssertionClient, OAuth2Client
+from lumapps.api.decorators import retry
 from lumapps.api.errors import BadCallError, BaseClientError
 from lumapps.api.utils import (
     FILTERS,
@@ -50,6 +51,7 @@ class BaseClient(AbstractContextManager):
         prune: bool = False,
         no_verify: bool = False,
         proxy_info: Optional[Dict[str, Any]] = None,
+        retry_nb: int = 2,
     ):
         """
             Args:
@@ -63,7 +65,9 @@ class BaseClient(AbstractContextManager):
                 prune: Whether or not to use FILTERS to prune LumApps API responses.
                 no_verify: Disables SSL verification.
                 proxy_info: When specified, a JSON dict with proxy parameters.
+                retry_nb: Number of time to retry when call fail.
         """
+
         self._token_expiry = 0
         self.no_verify = no_verify
         self.proxy_info = proxy_info
@@ -92,6 +96,7 @@ class BaseClient(AbstractContextManager):
         self.user = user
         self.token = token
         self.cursor = None
+        self.retry_nb = retry_nb
 
     def __exit__(self, *exc):
         self.close()
@@ -353,13 +358,17 @@ class BaseClient(AbstractContextManager):
         return verb, path, params
 
     def _call(self, name_parts: Sequence[str], params: dict, json=None):
-        """ Construct the call """
-        verb, path, params = self._get_verb_path_params(name_parts, params)
-        resp = self.client.request(verb, path, params=params, json=json)
-        resp.raise_for_status()
-        if not resp.content:
-            return None
-        return resp.json()
+        @retry(Exception, self.retry_nb)  # Hack to retry on Exception
+        def __call(self, name_parts: Sequence[str], params: dict, json=None):
+            """ Construct the call """
+            verb, path, params = self._get_verb_path_params(name_parts, params)
+            resp = self.client.request(verb, path, params=params, json=json)
+            resp.raise_for_status()
+            if not resp.content:
+                return None
+            return resp.json()
+
+        return __call(self, name_parts, params, json)
 
     @staticmethod
     def _pop_body(params: dict):
