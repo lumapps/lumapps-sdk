@@ -1,8 +1,7 @@
 import time
-from dataclasses import dataclass
 from functools import wraps
 from logging import debug
-from typing import Sequence, Tuple, Type
+from typing import NamedTuple, Sequence, Tuple, Type
 
 from httpx import HTTPStatusError
 
@@ -13,8 +12,7 @@ from lumapps.api.errors import (
 )
 
 
-@dataclass
-class RetryConfig:
+class RetryConfig(NamedTuple):  # NamedTuple because we support python3.6+
     exceptions: Tuple[Type[Exception]]  # Exceptions tuple
     total_tries: int
     initial_wait: float

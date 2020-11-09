@@ -3,6 +3,9 @@ import pytest
 from pytest_httpx import HTTPXMock
 
 from lumapps.api.decorators import (
+    retry,
+    RetryConfig, 
+    base_retry_config, 
     none_on_http_codes,
     retry_on_http_codes,
     none_on_404,
@@ -224,3 +227,41 @@ def test_raise_known_save_errors_2(httpx_mock: HTTPXMock):
         fake_request_with_raise_known_save_errors()
 
     assert httpx_mock.get_requests()
+
+@retry(base_retry_config)
+def fake_request_with_base_retry():
+    res = httpx.get(fake_url)
+    res.raise_for_status()
+    return res
+
+def test_retry_with_base_config(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400)
+
+    with pytest.raises(Exception):
+        fake_request_with_base_retry()
+    
+    requests_made = httpx_mock.get_requests()
+    assert requests_made and len(requests_made) == base_retry_config.total_tries
+
+config = RetryConfig(
+    (Exception,),
+    2,
+    0.5,
+    2
+)
+@retry(config)
+def fake_request_with_base_retry():
+    res = httpx.get(fake_url)
+    res.raise_for_status()
+    return res
+
+def test_retry_with_base_config(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(status_code=400)
+
+    with pytest.raises(Exception):
+        fake_request_with_base_retry()
+    
+    requests_made = httpx_mock.get_requests()
+    assert requests_made and len(requests_made) == 2
+    
+
