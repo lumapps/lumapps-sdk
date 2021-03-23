@@ -52,17 +52,17 @@ class BaseClient(AbstractContextManager):
         proxy_info: Optional[Dict[str, Any]] = None,
     ):
         """
-            Args:
-                auth_info: When specified, a service account or a web auth JSON dict.
-                api_info: When specified, a JSON dict containing the description of your
-                    api. Defaults to LumApps API.
-                user: Email of user on behalf of whom to authenticate using domain-wide
-                    delegation.
-                token: A bearer access token.
-                token_getter: A bearer access token getter function.
-                prune: Whether or not to use FILTERS to prune LumApps API responses.
-                no_verify: Disables SSL verification.
-                proxy_info: When specified, a JSON dict with proxy parameters.
+        Args:
+            auth_info: When specified, a service account or a web auth JSON dict.
+            api_info: When specified, a JSON dict containing the description of your
+                api. Defaults to LumApps API.
+            user: Email of user on behalf of whom to authenticate using domain-wide
+                delegation.
+            token: A bearer access token.
+            token_getter: A bearer access token getter function.
+            prune: Whether or not to use FILTERS to prune LumApps API responses.
+            no_verify: Disables SSL verification.
+            proxy_info: When specified, a JSON dict with proxy parameters.
         """
         self._token_expiry = 0
         self.no_verify = no_verify
@@ -200,8 +200,7 @@ class BaseClient(AbstractContextManager):
         self.token, self._token_expiry = self.token_getter()
 
     def _prune(self, name_parts, content):
-        """Prune the api response.
-        """
+        """Prune the api response."""
         if not self.prune:
             return content
         for ep_filter in FILTERS:
@@ -234,15 +233,15 @@ class BaseClient(AbstractContextManager):
     def get_new_client_as(
         self, user_email: str, customer_id: Optional[str] = None
     ) -> "BaseClient":
-        """ Get a new BaseClient using an authorized client account by obtaining a
-            token using the user/getToken endpoint.
+        """Get a new BaseClient using an authorized client account by obtaining a
+        token using the user/getToken endpoint.
 
-            Args:
-                user_email (str): User you want to authenticate on behalf of
-                customer_id (str): Id of the LumApps customer the user belong to
+        Args:
+            user_email (str): User you want to authenticate on behalf of
+            customer_id (str): Id of the LumApps customer the user belong to
 
-            Returns:
-                BaseClient: A new instance of the BaseClient correctly authenticated.
+        Returns:
+            BaseClient: A new instance of the BaseClient correctly authenticated.
         """
         client = BaseClient(
             auth_info=self._auth_info,
@@ -398,21 +397,21 @@ class BaseClient(AbstractContextManager):
     ) -> Union[Dict[str, Any], List[Dict[str, Any]], None]:
         """Generic function to call a lumapps endpoint
 
-            Args:
-                *name_parts: Endpoint, eg user/get or "user", "get"
-                **params: Parameters of the call
+        Args:
+            *name_parts: Endpoint, eg user/get or "user", "get"
+            **params: Parameters of the call
 
-            Returns:
-                Object or objects returned by the endpoint call.
+        Returns:
+            Object or objects returned by the endpoint call.
 
-            Example:
-                List feedtypes in LumApps:
-                -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+        Example:
+            List feedtypes in LumApps:
+            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-                With this endpoint:
+            With this endpoint:
 
-                    >>> feedtypes = get_call("feedtype/list")
-                    >>> print(feedtypes)
+                >>> feedtypes = get_call("feedtype/list")
+                >>> print(feedtypes)
         """
         name_parts = _parse_endpoint_parts(name_parts)
         items: List[dict] = []
@@ -459,22 +458,22 @@ class BaseClient(AbstractContextManager):
         None,
     ]:
         """
-            Args:
-                *name_parts: Endpoint, eg user/get or "user", "get"
-                **params: Parameters of the call
+        Args:
+            *name_parts: Endpoint, eg user/get or "user", "get"
+            **params: Parameters of the call
 
-            Yields:
-                Objects returned by the endpoint call
+        Yields:
+            Objects returned by the endpoint call
 
 
-            Example:
-                List feedtypes in LumApps:
-                -> GET https://.../_ah/api/lumsites/v1/feedtype/list
+        Example:
+            List feedtypes in LumApps:
+            -> GET https://.../_ah/api/lumsites/v1/feedtype/list
 
-                With this endpoint:
+            With this endpoint:
 
-                    >>> feedtypes = iter_call("feedtype/list")
-                    >>> for feedtype in feedtypes: print(feedtype)
+                >>> feedtypes = iter_call("feedtype/list")
+                >>> for feedtype in feedtypes: print(feedtype)
         """
         name_parts = _parse_endpoint_parts(name_parts)
         self.cursor = cursor = params.pop("cursor", None)

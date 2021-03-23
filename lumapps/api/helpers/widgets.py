@@ -7,17 +7,17 @@ from uuid import uuid4
 def find_widget(
     container: Dict[str, Any], **params: Dict[str, Any]
 ) -> Optional[Dict[str, Any]]:
-    """ Find and return the first widget in the container that respect the filters
+    """Find and return the first widget in the container that respect the filters
 
-        Args:
-            container: The container of the widgets, that could be a content, community,
-                the components of a content or the template of a content
+    Args:
+        container: The container of the widgets, that could be a content, community,
+            the components of a content or the template of a content
 
-        Kwargs:
-            params: params to filter on (eg, widgetType='video' will find athe first video widget in the given container)
+    Kwargs:
+        params: params to filter on (eg, widgetType='video' will find athe first video widget in the given container)
 
-        Returns:
-            The first found widget
+    Returns:
+        The first found widget
     """  # noqa
     for w, _ in iter_widgets_and_containers(container, **params):
         return w
@@ -27,17 +27,17 @@ def find_widget(
 def find_all_widgets(
     container: Dict[str, Any], **params: Dict[str, Any]
 ) -> List[Dict[str, Any]]:
-    """ Find and return all widgets in the container that respect the filters
+    """Find and return all widgets in the container that respect the filters
 
-        Args:
-            container: The container of the widgets, that could be a content, community,
-                the components of a content or the template of a content
+    Args:
+        container: The container of the widgets, that could be a content, community,
+            the components of a content or the template of a content
 
-        Kwargs:
-            params: params to filter on (eg, widgetType='video' will find athe first video widget in the given container)
+    Kwargs:
+        params: params to filter on (eg, widgetType='video' will find athe first video widget in the given container)
 
-        Returns:
-            The list of all found widgets
+    Returns:
+        The list of all found widgets
     """  # noqa
     return list(w for w, _ in iter_widgets_and_containers(container, **params))
 
