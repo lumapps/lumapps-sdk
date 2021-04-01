@@ -14,7 +14,7 @@ client = BaseClient(token="<your_token>")
 
 # prepare the request parameters
 body = {
-    "instanceId": xxx,
+    "instanceId": "xxx",
     "lang": "en", # adapt
     "type": ["user_directory"],
     "excludeType": ["community", "custom", "custom_list", "image_gallery", "menu", "news", "news_list", "page", "post"],
