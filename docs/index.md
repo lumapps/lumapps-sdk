@@ -9,7 +9,7 @@
 </p>
 
 
-LumApps SDK is a set of tools to manipulate the [LumApps API](https://api.lumapps.com/docs/start)
+LumApps SDK is a set of tools to manipulate the [LumApps API](https://apiv1.lumapps.com/)
 
 This includes:
 
@@ -47,9 +47,9 @@ pip install lumapps-sdk
 2. Authenticate
 
     ```python
-    from lumapps.api import BaseClient
+    from lumapps.api.client import BaseClient
 
-    token = "MY TOKEN"
+    token = "MY TOKEN"  # "Bearer xxxxxxx"
     client = BaseClient(token=token)
     ```
 
