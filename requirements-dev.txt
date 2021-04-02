@@ -1,0 +1,34 @@
+# Build
+setuptools
+wheel
+twine
+build
+
+# Tests
+respx
+coverage
+pytest
+pytest-mock
+pytest-cov
+pytest-httpx==0.10.1
+
+# Doc
+mkdocs-material
+mkdocstrings
+jinja2
+
+# Dev tools
+pre-commit
+pre-commit-hooks
+
+# Code quality
+pylint
+mypy
+flake8
+black
+
+# Miscellaneous
+git-changelog
+failprint
+bandit
+isort

@@ -59,7 +59,7 @@ pip install lumapps-sdk
 
     ```python
     user_email = "YOUR EMAIL"
-    usr = api.get_call("user/get", email=user_email)
+    usr = client.get_call("user/get", email=user_email)
     print("Hello {}".format(usr["fullName"]))
     ```
 

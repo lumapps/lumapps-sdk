@@ -1,29 +1,35 @@
+SHELL:=/bin/bash
+
 .DEFAULT_GOAL := help
 
 PY_SRC := lumapps/
 CI ?= false
 TESTING ?= false
 
+VENV_BIN=./.venv/bin
+pip:=$(VENV_BIN)/pip
+
+.PHONY: help
+help:  ## Print this help.
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
+
 .PHONY: check
-check: check-docs check-code-quality check-types check-dependencies  ## Check it all!
+check: check-docs check-code-quality check-types  ## Check it all!
 
 .PHONY: check-code-quality
 check-code-quality:  ## Check the code quality.
-	@poetry run failprint -t "Checking code quality" -- flake8 --config=config/flake8.ini $(PY_SRC)
-
-.PHONY: check-dependencies
-check-dependencies:  ## Check for vulnerabilities in dependencies.
-	poetry run pip freeze 2>/dev/null | \
-		grep -iv 'mkdocstrings' | \
-		poetry run failprint --no-pty -t "Checking dependencies" -- safety check --stdin --full-report
+	source $(VENV_BIN)/activate && \
+	failprint -t "Checking code quality" -- flake8 --config=config/flake8.ini $(PY_SRC)
 
 .PHONY: check-docs
 check-docs:  ## Check if the documentation builds correctly.
-	@poetry run failprint -t "Building documentation" -- mkdocs build -s
+	source $(VENV_BIN)/activate && \
+	failprint -t "Building documentation" -- mkdocs build -s
 
 .PHONY: check-types
 check-types:  ## Check that the code is correctly typed.
-	@poetry run failprint -t "Type-checking" -- mypy --config-file config/mypy.ini $(PY_SRC)
+	source $(VENV_BIN)/activate && \
+	failprint -t "Type-checking" -- mypy --config-file config/mypy.ini $(PY_SRC)
 
 .PHONY: clean
 clean:  ## Delete temporary files.
@@ -45,47 +51,60 @@ docs-cp:
 
 .PHONY: docs
 docs: docs-cp ## Build the documentation locally.
-	@poetry run mkdocs build
+	source $(VENV_BIN)/activate && \
+	mkdocs build
 
 .PHONY: docs-serve
 docs-serve: docs-cp ## Serve the documentation (localhost:8000).
-	@poetry run mkdocs serve
+	source $(VENV_BIN)/activate && \
+	mkdocs serve
 
 .PHONY: docs-deploy
 docs-deploy: docs-cp ## Deploy the documentation on GitHub pages.
-	@poetry run mkdocs gh-deploy
+	source $(VENV_BIN)/activate && \
+	mkdocs gh-deploy
 
-.PHONY: help
-help:  ## Print this help.
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
+
 
 .PHONY: format
 format:  ## Run formatting tools on the code.
-	@poetry run failprint -t "Formatting code" -- black $(PY_SRC)
-	@poetry run failprint -t "Ordering imports" -- isort -y -rc $(PY_SRC)
+	source $(VENV_BIN)/activate && \
+	failprint -t "Formatting code" -- black $(PY_SRC)
 
 
 .PHONY: setup
 setup:  ## Setup the development environment (install dependencies).
-	@if ! $(CI); then \
-		if ! command -v pipx &>/dev/null; then \
-			pip install pipx; \
-		fi; \
-		if ! command -v poetry &>/dev/null; then \
-		  pipx install poetry; \
-		fi; \
-	fi; \
-	poetry config virtualenvs.in-project true
-	poetry install -v
-	@if ! $(CI); then \
-		poetry run pre-commit install; \
-		poetry run pre-commit install --hook-type commit-msg; \
+	rm -rf .venv
+	python3.8 -m venv .venv
+	$(pip) install -U pip
+	$(pip) install -r requirements.txt
+	$(pip) install -r requirements-dev.txt
+	@if !$(CI); then \
+		source $(VENV_BIN)/activate && \
+		pre-commit install && \
+		pre-commit install --hook-type commit-msg; \
 	fi; \
 
 
 .PHONY: test
 test:  ## Run the test suite and report coverage. 2>/dev/null
-	@poetry run pytest -c config/pytest.ini
-	@poetry run coverage html --rcfile=config/coverage.ini
+	source $(VENV_BIN)/activate && \
+	pytest -c config/pytest.ini
+	coverage html --rcfile=config/coverage.ini
 
+# Pypi https://packaging.python.org/tutorials/packaging-projects/
 
+.PHONY: build
+build:  ## B Build the wheel and tar.gz package in the dist folder
+	source $(VENV_BIN)/activate && \
+	python3 -m build 
+
+.PHONY: publish-test
+publish-test: build  
+	source $(VENV_BIN)/activate && \
+	twine upload --repository testpypi dist/*
+
+.PHONY: publish
+publish: build  ## Publish the built (dist folder) package on pypi
+	source $(VENV_BIN)/activate && \
+	twine upload dist/*

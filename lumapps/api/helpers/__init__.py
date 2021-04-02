@@ -1,4 +1,4 @@
-from lumapps.api.helpers.widgets import (  # noqa
+from lumapps.api.helpers.widgets import (
     content_is_community,
     content_is_template,
     copy_with_new_lumapps_uuids,
@@ -15,3 +15,21 @@ from lumapps.api.helpers.widgets import (  # noqa
     replace_matching_key_val,
     set_new_lumapps_uuids,
 )
+
+__all__ = [
+    "content_is_community",
+    "content_is_template",
+    "copy_with_new_lumapps_uuids",
+    "find_all_widgets",
+    "find_all_widgets_and_containers",
+    "find_one_with_key_value",
+    "find_widget",
+    "find_widget_and_container",
+    "iter_widgets_and_containers",
+    "iter_with_key",
+    "iter_with_key_value",
+    "new_lumapps_uuid",
+    "replace_key_val",
+    "replace_matching_key_val",
+    "set_new_lumapps_uuids",
+]
