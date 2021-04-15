@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lumapps-sdk"
-version = "1.1.3b2"
+version = "1.1.3b5"
 description = ""
 authors = ["Aurélien Dentan <aurelien@lumapps.com>", "Ludovic Vaugeois <ludovic.vaugeois@lumapps.com>"]
 license = "MIT License"
@@ -16,7 +16,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.6.4"
-Authlib = "^0.14.3"
+Authlib = "<=0.15.3"
 python-slugify = "^4.0.1"
 httpx = "^0.15.*"
 
