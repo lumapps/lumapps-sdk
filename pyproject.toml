@@ -19,6 +19,8 @@ python = "^3.6.4"
 Authlib = "<=0.15.3"
 python-slugify = "^4.0.1"
 httpx = "^0.15.*"
+requests-cache = "^0.6.3"
+PyJWT = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.3"
