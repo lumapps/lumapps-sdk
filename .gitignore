@@ -17,10 +17,12 @@ test-results/
 .idea/
 .vscode/
 ./venv/
+http_cache.sqlite
 
 # virtualenv
 env/
 venv/
+
 
 # doc
 site
