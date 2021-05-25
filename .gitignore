@@ -16,6 +16,7 @@ test-results/
 # IDEs
 .idea/
 .vscode/
+./venv/
 
 # virtualenv
 env/
