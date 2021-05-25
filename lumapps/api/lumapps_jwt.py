@@ -36,25 +36,27 @@ class LumappsJWT(object):
     """
 
     def __init__(self, lumapps_url="https://sites.lumapps.com"):
-        jwks_url = None
+        self.jwks_url = None
+        self.lumapps_url = lumapps_url
+        self._key = None
+
+        self.get_jwks()
+        
+    
+    def get_jwks(self):
         for key in JWKS_URL.keys():
-            if key in lumapps_url:
+            if key in self.lumapps_url:
                 jwks_url = JWKS_URL[key]
 
             if not jwks_url:
                 jwks_url = "https://login.lumapps.com/v1/jwks"
 
             try:
-                session = CachedSession()
-                r = session.get(jwks_url)
+                r = httpx.get(jwks_url)
                 if r.status_code == 200:
                     self._key = r.json()
-                else:
-                    default_keys = session.get(lumapps_url)
-                    self._key = default_keys.json()
             except Exception:
-                default_keys = httpx.get(lumapps_url)
-                self._key = default_keys
+                raise
 
     def decode(self, token: str):
         public_keys = {}

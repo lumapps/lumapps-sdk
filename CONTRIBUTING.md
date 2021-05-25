@@ -10,6 +10,12 @@ First install dependencies and setup pre-commits hooks
 make setup
 ```
 
+Then to go in the poetry virtual env do
+
+```
+poetry shell
+```
+
 You can run `make help` to see all available actions !
 
 ### Adding a new dependency
