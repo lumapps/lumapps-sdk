@@ -8,20 +8,61 @@ You can add more filters, see [apidoc](https://api.lumapps.com/docs/output/_sche
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+client = BaseClient(token="<your_token>", api_info="<api_info">)
 
 contents = client.get_call("content/list", body={"lang":"en"})
 ```
 
 ## Content details
 
-This call is designed for content view
+Get detail of a content
 
 ```python
-content = client.get_call("content/get", uid="5386179638984704")
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_content(content_id="<your_content_id>")
 ```
 
 NB: `content.uid` = `content.id`
+
+## Get slug and type of a content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_content_slug_abd_type(content_id="<content_id>")
+```
+
+## Get content by slug
+Get content by slug
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_content_by_slug(slug="<string_of_a_slug>")
+```
+
+## Get content url path
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_content_url_path(content_id="<content_id>")
+```
+
+## Iter contents
+Iter contents by argument
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_contents(content_type_id="<your_content_type_id>")
+```
 
 ## Content update
 
@@ -33,8 +74,61 @@ content = client.get_call("content/get", uid="5386179638984704", action="PAGE_ED
 
 Note: the version number is used to lock the resource. You have to put the last version number of a content in `version` to be allowed to update a content, else a bad request: "CONTENT_NOT_UP_TO_DATE" will be returned.
 
-# Content creation
+## Follow content
 
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.follow_content(content_id="<your_content_id>")
+```
+
+## Like a content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.like_content(content_id="<your_content_id>")
+```
+
+## Iter users that reacted to an content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_users_that_reacted(content_kind="<your_content_kind>", content_id="<your_content_id>")
+```
+
+## Iter nav element ids
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_nav_element_ids(lang="<language>")
+```
+
+## Get content menu
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_menu(lang="<language>")
+```
+
+## Save content menu
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_menu(lang="<language>", menu_items="<list(dict)>")
+```
+
+# Content creation
 
 The simplest way to create content is to use an existing template. This template will define all design configurations.
 
@@ -64,6 +158,61 @@ To create content on behalf of other users you have to be connected with this us
 
 
 ---
+
+## Delete content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.delete_content(content_id="<your_content_id>")
+```
+
+## Unarchive content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.unarchive_content(content="<dict(your_content)>")
+```
+
+## Archive content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.archive_content(content="<dict(your_content)>")
+```
+
+## Save menu content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.save_menu_content(content="<dict(your_content)>")
+```
+
+## Save content 
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.save_content(content="<dict(your_content)>")
+```
+
+## Set homepage
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.set_homepage(content_id="<content_id>")
+```
+
 # Objects explanation
 
 ## Content

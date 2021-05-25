@@ -14,6 +14,34 @@ comments = api.get_call(
 
 For more details see [api.lumapps.com](https://apiv1.lumapps.com/#operation/Comment/List)
 
+
+## Iter root comments of a content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_root_comments(content_id="<your_content_id>")
+```
+
+## Iter replies of a content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_replies(content_id="<your_content_id>")
+```
+
+## Iter comments of a content
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_commets(content_id="<your_content_id>")
+```
+
 ## Comment get
 
 ```python
@@ -64,3 +92,31 @@ comment = client.get_call(
 )
 
 For more details see [the api documentation](https://apiv1.lumapps.com)
+```
+
+## Mark comment as relevant
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.mark_comment_as_relevant(comment_id="<your_comment_id>")
+```
+
+## Hide comment
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.hide_comment(comment="<dict(your_comment)>")
+```
+
+## Like comment
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.like_comment(comment="<dict(your_comment)>")
+```

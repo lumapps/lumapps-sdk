@@ -118,3 +118,21 @@ To obtain an existing blob key you have 2 main solutions
     **x17K0wqFms2cLOCIYPSreUsDsTQPyjVVZGh-IOJxaxLmmz6IxnWw1W0HapKyrwAfJsmNQsLwg6wNnbOrLZdeJdsMgGt_GYiDSb0pr**
     **uLlkBn5toPLNK1Cd5gykYLu4UBEdgsvyksHOcwYxf6rUwSJGGD3vkL_C0tz_3If5vIPwo42nEAvIwU2Vx7WeI__cK9Tq2CooTSTn**
     **L37iMKBsPxuGNXYLVLEApbHGJBNtoKiT_tswmKsL8Ub3_TBrtSZIOhnjajucQCZDWDK0Gsx4R6K7zT7NcQtwA**/tricot2.jpg)
+
+## Get media
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_media(media_id="<yoru_media_id>")
+```
+
+## Save media
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.save_media(media="<dict(media)>")
+```

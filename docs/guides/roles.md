@@ -99,3 +99,22 @@ role["name"] = "New role name"
 
 # Save the updated role
 client.get_call("role/save", body=role)
+```
+
+## Iter roles
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_roles()
+```
+
+## Save role
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.save_role(role=your_role:dict)
+```

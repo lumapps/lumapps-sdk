@@ -129,6 +129,84 @@ body = {
 client.get_call("feed/subscribers/save", body=body)
 ```
 
+## Get all group id
 
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
+result = client.get_all_group_id()
+```
+
+## Get public group id
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_public_group_id()
+```
+
+## Get group
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_group(group_id="<group_id>")
+```
+
+## Add users to group
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.add_users_to_group(feed_id="<feed_id>", user_emails=your_user_emails_list:list)
+```
+
+## Add users to group skip missing
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.add_users_to_group_skip_missing(feed_id="<feed_id>", user_emails=your_user_emails_list:list)
+```
+
+## Iter groups
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_groups(type_id="<type_id>")
+```
+
+## Add global group
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.add_global_group(grouptype_id="<your_group_type_id>", name="<name>")
+```
+
+## Add local group
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.add_local_group(grouptype_id="<your_group_type_id>", name="<name>")
+```
+
+## Sync group
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.sync_group(group_id="<your_group_id>")
+```
 

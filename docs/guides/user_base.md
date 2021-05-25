@@ -37,6 +37,38 @@ email = "<the_user_email>"
 user = client.get_call("user/get", email=email)
 ```
 
+## Get an user's url path
+
+```python
+from lumapps.api.client import LumAppsClient
+
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_user_url_path(user_email="<the_user_email>")
+```
+
+## Iter users
+
+You can add more filters, see [apidoc](https://apiv1.lumapps.com/#operation/User/List)
+
+```python
+from lumapps.api.client import LumAppsClient
+
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_users(isHidden=True)
+```
+
+## Iter platform users
+
+```python
+from lumapps.api.client import LumAppsClient
+
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_platform_users(isHidden=True)
+```
+
 ## Get the authenticated user
 
 To get the user authenticated by the token you provided to the BaseClient you can do:
@@ -69,7 +101,7 @@ To update an existing user the best pratice is to get it, modify it and then sav
 from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
-# Get tge user
+# Get the user
 email = "<user_email>"
 user = client.get_call("user/get", email=email)
 
@@ -80,7 +112,7 @@ user["firstName"] = "Jacques"
 saved_user = client.get_call("user/save", body=user)
 ```
 
-## Deactivate a user
+## Deactivate an user
 
 To deactivate a user you need to set his status to `disabled`
 
@@ -88,7 +120,7 @@ To deactivate a user you need to set his status to `disabled`
 from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
-# Get tge user
+# Get the user
 email = "<user_email>"
 user = client.get_call("user/get", email=email)
 
@@ -98,3 +130,4 @@ user["status"] = "disabled"
 # save it
 saved_user = client.get_call("user/save", body=user)
 ```
+

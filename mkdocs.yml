@@ -13,23 +13,36 @@ nav:
     - Environment: environment.md
     - Guides:
       - Base Client: guides/base_client_guide.md
-      - Lumapps jwt: guides/lumapps_jwt.md
+      - LumApps JWT: guides/lumapps_jwt.md
       - Content:
           - Base: guides/content.md
+          - Content Type: guides/content_type.md
           - Template: guides/content_template.md
       - Community:
           - Community: guides/community.md
+          - Community Template: guides/community_template.md
           - Posts: guides/community_posts.md
       - Comments: guides/comments.md
-      - Groups: guides/groups.md
-      - Media: guides/media.md
+      - Document: guides/document.md
+      - Directory: 
+          - Directory: guides/directory.md
+          - Directory Entry: guides/directory_entry.md
+      - Group: 
+          - Group: guides/groups.md
+          - Group Type: guides/group_types.md
+      - Media: 
+          - Media: guides/media.md
+          - Media Tag: guides/media_tags.md
+      - Newsletter: guides/newsletter.md
       - Metadata: guides/metadata.md
       - Notifications: guides/notifications.md
+      - Tutorial: guides/tutorial.md
       - Users: 
         - Basics: guides/user_base.md
         - User Profile: guides/user_profile.md
       - Roles: guides/roles.md
       - Widgets: guides/widgets.md
+      - Workspace: guides/workspace.md
     - Reference:
       - Base Client: base_client.md
       - LumApps Client: lumapps_api_client.md

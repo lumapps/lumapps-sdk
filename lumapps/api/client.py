@@ -392,18 +392,6 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         body.update(**kwargs)
         yield from self.iter_call("content/list", body=body)
 
-    def iter_content_lists(
-        self, content_type_id: str, **kwargs: dict
-    ) -> Generator[Dict[str, Any], None, None]:
-        body = {
-            "customContentType": content_type_id,
-            "customContentTypeTags": [],
-            "instanceId": self.instance_id,
-            "lang": self.first_lang,
-            "type": "custom_list",
-        }
-        yield from self.iter_call("content/list", body=body, **kwargs)
-
     def get_news_content_type(self) -> Dict[str, Any]:
         for ct in self.iter_content_types():
             if ct["functionalInnerId"] == "news":

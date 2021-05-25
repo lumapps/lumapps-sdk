@@ -4,6 +4,18 @@ This notebook aims to explain roughtly how to manipulate a template from LumApps
 
 The use case could be to use get a given template, fill it with your content and save it as a new content on your site.
 
+## Iter content templates
+Iter content template with arguemnts
+
+You can add more filters, see [apidoc](https://apiv1.lumapps.com/#operation/Template/Get)
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">)
+
+result = client.iter_content_templates(content_type_id="<your_content_type_id>")
+```
+
 ## First step - get the template id
 
 After your created your content get's is content id.

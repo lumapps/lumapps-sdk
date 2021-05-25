@@ -73,3 +73,57 @@ post = api.get_call(
 ```
 
 For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/save)
+
+## Iter community posts
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_community_posts(community_id="<your_community_id>")
+```
+
+## Iter posts 
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.iter_posts(community_id="<your_community_id>")
+```
+
+## Pin post 
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.pin_post(community_id="<your_community_id>", post_id="<post_id>")
+```
+
+## Delete post 
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.delete_post(post_id="<post_id>")
+```
+
+## Save post 
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.save_post(post=post:dict)
+```
+
+## Get post 
+
+```python
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
+
+result = client.get_post(post_id="<your_post_id>")
+```
