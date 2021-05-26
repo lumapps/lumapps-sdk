@@ -1,9 +1,10 @@
 import json
+from typing import Any, Dict
 
 import httpx
 import jwt
-from requests_cache import CachedSession
 
+from lumapps.api.decorators import retry_on_http_status_error
 from lumapps.api.errors import (
     LumAppsJWTClaimsError,
     LumAppsJwtCustomError,
@@ -40,25 +41,34 @@ class LumappsJWT(object):
         self.lumapps_url = lumapps_url
         self._key = None
 
-        self.get_jwks()
-        
-    
-    def get_jwks(self):
+        self.get_public_keys()
+
+    @retry_on_http_status_error()
+    def get_public_keys(self):
+        """
+            Get the public keys used by lumapps in order to be able to
+            to decode the token later on
+        """
+
+        jwks_url = "https://login.lumapps.com/v1/jwks"
+
         for key in JWKS_URL.keys():
             if key in self.lumapps_url:
                 jwks_url = JWKS_URL[key]
+                break
 
-            if not jwks_url:
-                jwks_url = "https://login.lumapps.com/v1/jwks"
+        r = httpx.get(jwks_url)
+        if r.status_code == httpx.codes.OK:
+            self._key = r.json()
 
-            try:
-                r = httpx.get(jwks_url)
-                if r.status_code == 200:
-                    self._key = r.json()
-            except Exception:
-                raise
-
-    def decode(self, token: str):
+    def decode(self, token: str) -> Dict[str, Any]:
+        """
+            Args:
+                token: The jwt token to decode
+            
+            Returns:
+                the decoded token
+        """
         public_keys = {}
         unverified_header = jwt.get_unverified_header(token)
         for jwk in self._key["keys"]:
@@ -82,4 +92,4 @@ class LumappsJWT(object):
                         )
                     except Exception as e:
                         raise LumAppsJwtCustomError(e)
-                raise LumAppsJwtHeaderError("Unable to find appropriate key.")
+        raise LumAppsJwtHeaderError("Unable to find appropriate key.")

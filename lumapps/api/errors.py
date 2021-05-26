@@ -76,6 +76,11 @@ class LumAppsError(Exception):  # pragma: no cover
     pass
 
 
+##
+#  Jwt Errors
+##
+
+
 class LumAppsJWTError(LumAppsError):  # pragma: no cover
     pass
 
