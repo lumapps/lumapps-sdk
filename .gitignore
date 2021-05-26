@@ -16,10 +16,13 @@ test-results/
 # IDEs
 .idea/
 .vscode/
+./venv/
+http_cache.sqlite
 
 # virtualenv
 env/
 venv/
+
 
 # doc
 site

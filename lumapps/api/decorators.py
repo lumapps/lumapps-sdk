@@ -27,6 +27,28 @@ def none_on_http_codes(codes=(404,)):
     return decorator
 
 
+def retry_on_http_status_error(max_attempts=3):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            attempts = 0
+            while True:
+                attempts += 1
+                try:
+                    return f(*args, **kwargs)
+                except HTTPStatusError as e:
+                    if attempts >= max_attempts:
+                        debug(f"Max attempts {max_attempts} reached")
+                        raise
+                    code = e.response.status_code
+                    debug(f"{attempts}/{max_attempts} failed: HTTP {code}")
+                    continue
+
+        return wrapper
+
+    return decorator
+
+
 def retry_on_http_codes(codes: Sequence = (), max_attempts=3):
     def decorator(f):
         @wraps(f)

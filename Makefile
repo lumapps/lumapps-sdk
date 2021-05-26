@@ -5,17 +5,12 @@ CI ?= false
 TESTING ?= false
 
 .PHONY: check
-check: check-docs check-code-quality check-types check-dependencies  ## Check it all!
+check: check-docs check-code-quality check-types  ## Check it all!
 
 .PHONY: check-code-quality
 check-code-quality:  ## Check the code quality.
 	@poetry run failprint -t "Checking code quality" -- flake8 --config=config/flake8.ini $(PY_SRC)
 
-.PHONY: check-dependencies
-check-dependencies:  ## Check for vulnerabilities in dependencies.
-	poetry run pip freeze 2>/dev/null | \
-		grep -iv 'mkdocstrings' | \
-		poetry run failprint --no-pty -t "Checking dependencies" -- safety check --stdin --full-report
 
 .PHONY: check-docs
 check-docs:  ## Check if the documentation builds correctly.

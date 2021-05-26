@@ -70,3 +70,40 @@ class GetTokenError(LumAppsClientError):  # pragma: no cover
 class UserCannotSaveError(LumAppsClientError):  # pragma: no cover
     def __init__(self, message):
         super().__init__("USER_CANNOT_SAVE", message)
+
+
+class LumAppsError(Exception):  # pragma: no cover
+    pass
+
+
+##
+#  Jwt Errors
+##
+
+
+class LumAppsJWTError(LumAppsError):  # pragma: no cover
+    pass
+
+
+class LumAppsJWTClaimsError(LumAppsJWTError):  # pragma: no cover
+    pass
+
+
+class LumAppsJwtTokenExpiredError(LumAppsJWTError):  # pragma: no cover
+    def __init__(self, message):
+        super().__init__("TOKEN_EXPIRED", message)
+
+
+class LumAppsJwtInvalidClaimError(LumAppsJWTError):  # pragma: no cover
+    def __init__(self, message):
+        super().__init__("INVALID_CLAIMS", message)
+
+
+class LumAppsJwtCustomError(LumAppsJWTError):  # pragma: no cover
+    def __init__(self, message):
+        super().__init__("CUSTOM_ERROR", message)
+
+
+class LumAppsJwtHeaderError(LumAppsJWTError):  # pragma: no cover
+    def __init__(self, message):
+        super().__init__("INVALID_HEADER", message)
