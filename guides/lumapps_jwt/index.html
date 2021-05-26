@@ -6,10 +6,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="LumApps sdk documentation" name="description"/>
-<link href="https://lumapps.github.io/lumapps-sdk/guides/roles/" rel="canonical"/>
+<link href="https://lumapps.github.io/lumapps-sdk/guides/lumapps_jwt/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="icon"/>
 <meta content="mkdocs-1.1.2, mkdocs-material-7.1.5" name="generator"/>
-<title>Roles - LumApps SDK</title>
+<title>Lumapps jwt - LumApps SDK</title>
 <link href="../../assets/stylesheets/main.bde7dde4.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ef6f36e2.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -22,7 +22,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#role">
+<a class="md-skip" href="#lumapps-jwt">
           Skip to content
         </a>
 </div>
@@ -46,7 +46,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Roles
+              Lumapps jwt
             
           </span>
 </div>
@@ -148,8 +148,9 @@
         Base Client
       </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../lumapps_jwt/">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<a class="md-nav__link md-nav__link--active" href="./">
         Lumapps jwt
       </a>
 </li>
@@ -253,47 +254,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--active">
-<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
-<label class="md-nav__link md-nav__link--active" for="__toc">
-          Roles
-          <span class="md-nav__icon md-icon"></span>
-</label>
-<a class="md-nav__link md-nav__link--active" href="./">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../roles/">
         Roles
       </a>
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#list-roles">
-    List roles
-  </a>
-<nav aria-label="List roles" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#authorizations">
-    Authorizations
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#actions">
-    Actions
-  </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#update-a-role">
-    Update a role
-  </a>
-</li>
-</ul>
-</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../widgets/">
@@ -357,137 +321,36 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#list-roles">
-    List roles
-  </a>
-<nav aria-label="List roles" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#authorizations">
-    Authorizations
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#actions">
-    Actions
-  </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#update-a-role">
-    Update a role
-  </a>
-</li>
-</ul>
 </nav>
 </div>
 </div>
 </div>
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
-<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/guides/roles.md" title="Edit this page">
+<a class="md-content__button md-icon" href="https://github.com/lumapps/lumapps-sdk/edit/master/docs/guides/lumapps_jwt.md" title="Edit this page">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
-<h1 id="role">Role<a class="headerlink" href="#role" title="Permanent link">¤</a></h1>
-<p>You can easly create, modify, delete or list roles on your instance with the sdk.</p>
-<h2 id="list-roles"><strong>List roles</strong><a class="headerlink" href="#list-roles" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.base_client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
+<h1 id="lumapps-jwt">LumApps jwt<a class="headerlink" href="#lumapps-jwt" title="Permanent link">¤</a></h1>
+<p>If you need to verify the jwt token provided by lumapps the LumApps SDK provide an helper class for that purpose.</p>
+<p>It simply decodes the token for you, raise error if there is any problem and return the jwt payload.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lumapps.api.lumapps_jwt</span> <span class="kn">import</span> <span class="n">LumappsJWT</span>
+<span class="kn">from</span> <span class="nn">lumapps.api.errors</span> <span class="kn">import</span> <span class="n">LumappsJWT</span>
 
-<span class="n">roles</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"role/list"</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">site_id</span><span class="p">)</span>
- <span class="err">```</span>
+<span class="n">jwt_checker</span> <span class="o">=</span> <span class="n">LumappsJWT</span><span class="p">()</span>
+<span class="n">token</span> <span class="o">=</span> <span class="s2">"&lt;your_token&gt;"</span>
 
- <span class="c1">## __Create a specific role__</span>
-
- <span class="n">To</span> <span class="n">create</span> <span class="n">a</span> <span class="n">role</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="nb">object</span> <span class="n">like</span> <span class="n">the</span> <span class="n">following</span> <span class="n">one</span>
-
- <span class="err">```</span><span class="n">python</span>
- <span class="kn">from</span> <span class="nn">lumapps.api.base_client</span> <span class="kn">import</span> <span class="n">BaseClient</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">BaseClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">"&lt;your_token&gt;"</span><span class="p">)</span>
-
-<span class="n">my_role</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"authorizations"</span><span class="p">:</span> <span class="n">authorizations</span><span class="p">,</span>
-  <span class="s2">"description"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"fr"</span><span class="p">:</span> <span class="s2">"Ma description en francais"</span><span class="p">},</span>
-  <span class="s2">"instance"</span><span class="p">:</span> <span class="n">site_id</span><span class="p">,</span>
-  <span class="s2">"feeds"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"518815757015446"</span><span class="p">],</span>
-  <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"My custom role"</span>
-<span class="p">}</span>
-
-<span class="n">client</span><span class="o">.</span><span class="n">get_call</span><span class="p">(</span><span class="s2">"role/save"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">my_role</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">decoded_token</span> <span class="o">=</span> <span class="n">jwt_checker</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="n">expect</span> <span class="n">LumAppsJwtTokenExpiredError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The token expired ..."</span><span class="p">)</span>
 </code></pre></div>
-<p>Here we have:</p>
-<ul>
-<li>authorization: The authorization associated to that role (<a href="#Authorizations">See below</a>)</li>
-<li>description: A description of the role (can be translated in multiple languages)</li>
-<li>instance: The instance id of the instance where to create that role</li>
-<li>feeds: The ids of the groups that have the rights on that role. <strong>At least one</strong> is required.</li>
-<li>name: The name of the role</li>
-</ul>
-<h3 id="authorizations"><strong>Authorizations</strong><a class="headerlink" href="#authorizations" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code><span class="n">authorization_1</span> <span class="o">=</span>  <span class="p">{</span>
-  <span class="s2">"actions"</span><span class="p">:</span> <span class="n">actions</span><span class="p">,</span>
-  <span class="s2">"feeds"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"518815757015496"</span><span class="p">],</span>
-  <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"51881575701549"</span><span class="p">]</span>
-<span class="p">}</span>
-<span class="n">authorizations</span> <span class="o">=</span> <span class="p">[</span><span class="n">authorization_1</span><span class="p">]</span>
-</code></pre></div>
-<ul>
-<li>actions:  A list of actions (<a href="#Actions">See below</a>)</li>
-<li>feeds: A list of ids of the groups targeted by the given actions</li>
-<li>metadata: A list if ids of the metadatas associated to the givena actions.</li>
-</ul>
-<h3 id="actions"><strong>Actions</strong><a class="headerlink" href="#actions" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code> <span class="n">action_1</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"EDIT"</span><span class="p">,</span>
-  <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"PAGE"</span>
-<span class="p">}</span>
-
-<span class="n">action_2</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"READ"</span><span class="p">,</span>
-    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"PAGE"</span>
-<span class="p">}</span>
-
-<span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">action_1</span><span class="p">,</span> <span class="n">action_2</span><span class="p">]</span>
-</code></pre></div>
-<ul>
-<li>type: The type of action. The accepted types are listed below
-    <div class="highlight"><pre><span></span><code><span class="n">FEED</span> <span class="n">GROUP</span> <span class="n">GLOBAL</span> <span class="n">USER</span> <span class="n">NEWS</span> <span class="n">NEWSLETTER</span> <span class="n">COMMUNITY</span> <span class="n">CUSTOM</span> <span class="n">ANALYTICS</span> <span class="n">GAMIFICATION</span> <span class="n">DIRECTORY_ENTRY</span> <span class="n">STYLE</span> <span class="n">MEDIA</span> <span class="n">DIRECTORY</span> <span class="n">POST</span> <span class="n">CUSTOM_CONTENT</span> <span class="n">TUTORIAL</span> <span class="n">TARGET</span> <span class="n">RESELLER</span> <span class="n">MENU</span> <span class="n">INSTANCE</span> <span class="n">ROLE</span> <span class="n">TEMPLATE</span> <span class="n">PAGE</span> <span class="n">METADATA</span>
-</code></pre></div></li>
-<li>name: The name of the action. The accepted names are listed below
-    <div class="highlight"><pre><span></span><code><span class="n">READ</span> <span class="n">DROP</span> <span class="n">PUBLISH</span> <span class="n">ADMIN</span> <span class="n">EDIT</span> <span class="n">ARCHIVE</span> <span class="n">DELETE</span>
-</code></pre></div></li>
-</ul>
-<h2 id="update-a-role"><strong>Update a role</strong><a class="headerlink" href="#update-a-role" title="Permanent link">¤</a></h2>
-<p>To update a role the recommanded way is the following:</p>
-<ol>
-<li>get it</li>
-<li>change/add the informations you want</li>
-<li>re-save it.</li>
-</ol>
-<p>```python
- from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")</your_token></p>
-<h1 id="get-the-role">Get the role<a class="headerlink" href="#get-the-role" title="Permanent link">¤</a></h1>
-<p>role = client.get_call("role/get", uid=role_uid)</p>
-<h1 id="update-it">Update it ...<a class="headerlink" href="#update-it" title="Permanent link">¤</a></h1>
-<p>role["name"] = "New role name"</p>
-<h1 id="save-the-updated-role">Save the updated role<a class="headerlink" href="#save-the-updated-role" title="Permanent link">¤</a></h1>
-<p>client.get_call("role/save", body=role)</p>
 </article>
 </div>
 </div>
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a class="md-footer__link md-footer__link--prev" href="../user_profile/" rel="prev">
+<a class="md-footer__link md-footer__link--prev" href="../base_client_guide/" rel="prev">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </div>
@@ -496,17 +359,17 @@ client = BaseClient(token="<your_token>")</your_token></p>
 <span class="md-footer__direction">
                 Previous
               </span>
-              User Profile
+              Base Client
             </div>
 </div>
 </a>
-<a class="md-footer__link md-footer__link--next" href="../widgets/" rel="next">
+<a class="md-footer__link md-footer__link--next" href="../content/" rel="next">
 <div class="md-footer__title">
 <div class="md-ellipsis">
 <span class="md-footer__direction">
                 Next
               </span>
-              Widgets
+              Base
             </div>
 </div>
 <div class="md-footer__button md-icon">
