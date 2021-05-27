@@ -1,3 +1,4 @@
+from lumapps.api.errors import LumAppsClientError
 from pytest import fixture
 
 from lumapps.api import LumAppsClient
