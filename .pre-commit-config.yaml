@@ -22,7 +22,7 @@ repos:
 
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.1.0
+    rev: v4.0.1
     hooks:
     -   id: check-added-large-files
         stages: [commit]
@@ -32,7 +32,7 @@ repos:
         stages: [commit]
  
 -   repo: https://github.com/lumapps/commit-message-validator
-    rev: master
+    rev: 1.1.0
     hooks:
       - id: commit-message-validator
         stages: [commit-msg]
