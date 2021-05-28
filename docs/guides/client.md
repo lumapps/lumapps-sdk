@@ -1,4 +1,4 @@
-# Client
+# LumappsClient
 
 ## List content by type
 
@@ -23,5 +23,18 @@ from lumapps.api.client import LumappsClient
 
 client = BaseClient(token="<your_token>")
 content_type = LumappsClient(client).iter_content_types({"name": "<content type name>"})
+
+```
+
+## Iter users 
+
+To iterate over platform users
+
+```python
+from lumapps.api.base_client import BaseClient
+from lumapps.api.client import LumappsClient
+
+client = BaseClient(token="<your_token>")
+users = LumappsClient(client).iter_users(status="enabled")
 
 ```
