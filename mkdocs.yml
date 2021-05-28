@@ -17,6 +17,8 @@ nav:
       - Content:
           - Base: guides/content.md
           - Template: guides/content_template.md
+      - Client:
+          - Base: guides/client.md
       - Community:
           - Community: guides/community.md
           - Posts: guides/community_posts.md
