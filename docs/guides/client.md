@@ -47,3 +47,4 @@ from lumapps.api.client import LumappsClient
 client = BaseClient(token="<your_token>")
 user = LumappsClient(client).get_users(id_or_email="1234@fakemail.com")
 ```
+
