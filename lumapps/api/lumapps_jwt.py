@@ -1,5 +1,6 @@
 import json
 from typing import Any, Dict
+from urllib.parse import urlparse
 
 import httpx
 import jwt
@@ -15,8 +16,19 @@ from lumapps.api.errors import (
 
 JWKS_URL = {
     "dot-lumapps-staging.appspot.com": "https://login.stag.lumapps.com/v1/jwks",
-    "sites-staging.lumapps.com": "https://login.stag.lumapps.com/v1/jwks",
+    "dot-lumapps-analytics.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-ba.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-cms.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-core.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-sa.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-search.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-social.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-dev.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-sandbox.appspot.com": "https://login-sandbox.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-beta.appspot.com": "https://login.beta.lumapps.com/v1/jwks",
+    "dot-lumapps-beta.eu.appspot.com": "https://login.beta.lumapps.com/v1/jwks",
     "sites-analytics.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
+    "sites-staging.lumapps.com": "https://login.stag.lumapps.com/v1/jwks",
     "sites-ba.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
     "sites-cms.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
     "sites-core.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
@@ -52,8 +64,9 @@ class LumappsJWT(object):
 
         jwks_url = "https://login.lumapps.com/v1/jwks"
 
+        url_validator = urlparse(self.lumapps_url)
         for key in JWKS_URL.keys():
-            if key in self.lumapps_url:
+            if key == url_validator.netloc and url_validator.scheme is not None:
                 jwks_url = JWKS_URL[key]
                 break
 

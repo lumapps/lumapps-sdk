@@ -5,11 +5,10 @@
 To iterate and list the contents by arguments.
 
 ```python
-from lumapps.api.base_client import BaseClient
 from lumapps.api.client import LumappsClient
 
-client = BaseClient(token="<your_token>")
-content_list = LumappsClient(client).iter_content_lists(content_type_id=content_type_id)
+api_info = {"base_url": "<your_lumapps_base_url>"}
+content_list = LumappsClient(client).iter_content_lists(token=<"your_token">, api_info= api_info, customer_id=<"platform_id">, instance_id=<"instance_id">, content_type_id=content_type_id)
 ```
 
 ## Iter content types
@@ -17,11 +16,10 @@ content_list = LumappsClient(client).iter_content_lists(content_type_id=content_
 To iter the content types by arguments.
 
 ```python
-from lumapps.api.base_client import BaseClient
 from lumapps.api.client import LumappsClient
 
-client = BaseClient(token="<your_token>")
-content_type = LumappsClient(client).iter_content_types({"name": "<content type name>"})
+api_info = {"base_url": "<your_lumapps_base_url>"}
+content_type = LumappsClient(client).iter_content_types(token=<"your_token">, api_info= api_info, customer_id=<"platform_id">, instance_id=<"instance_id">, {"name": "<content type name>"})
 ```
 
 ## Iter users 
@@ -29,11 +27,10 @@ content_type = LumappsClient(client).iter_content_types({"name": "<content type 
 To iterate over platform users.
 
 ```python
-from lumapps.api.base_client import BaseClient
 from lumapps.api.client import LumappsClient
 
-client = BaseClient(token="<your_token>")
-users = LumappsClient(client).iter_users(status="enabled")
+api_info = {"base_url": "<your_lumapps_base_url>"}
+users = LumappsClient(client).iter_users(token=<"your_token">, api_info= api_info, customer_id=<"platform_id">, instance_id=<"instance_id">,status="enabled")
 ```
 
 ## Get user
@@ -41,10 +38,9 @@ users = LumappsClient(client).iter_users(status="enabled")
 Get a user from its id or email
 
 ```python
-from lumapps.api.base_client import BaseClient
 from lumapps.api.client import LumappsClient
 
-client = BaseClient(token="<your_token>")
-user = LumappsClient(client).get_users(id_or_email="1234@fakemail.com")
+api_info = {"base_url": "<your_lumapps_base_url>"}
+user = LumappsClient(client).get_users(token=<"your_token">, api_info= api_info, customer_id=<"platform_id">, instance_id=<"instance_id">,id_or_email="1234@fakemail.com")
 ```
 
