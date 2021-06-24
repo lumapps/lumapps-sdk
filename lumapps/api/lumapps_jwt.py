@@ -66,7 +66,7 @@ class LumappsJWT(object):
 
         url_validator = urlparse(self.lumapps_url)
         for key in JWKS_URL.keys():
-            if key == url_validator.netloc and url_validator.scheme is not None:
+            if key in url_validator.netloc and url_validator.scheme is not None:
                 jwks_url = JWKS_URL[key]
                 break
 
