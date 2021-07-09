@@ -8,8 +8,9 @@ To get all users at once you can use the `get_call` method provided by the BaseC
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
 
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 users = client.get_call("user/list")
 ```
 
@@ -19,8 +20,9 @@ For instance, if you want to list the users of your platform but filter only the
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
 
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 users = client.get_call("user/list", status="enabled")
 ```
 Alternatively you can fetch these users page by page using the `iter_call` method.
@@ -31,7 +33,9 @@ To get a particular user you can do:
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 
 email = "<the_user_email>"
 user = client.get_call("user/get", email=email)
@@ -75,8 +79,9 @@ To get the user authenticated by the token you provided to the BaseClient you ca
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
 
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 me = client.get_call("user/get")
 ```
 
@@ -84,7 +89,9 @@ me = client.get_call("user/get")
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 
 body = {
     "email": "test@test.com",
@@ -99,7 +106,9 @@ To update an existing user the best pratice is to get it, modify it and then sav
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 
 # Get the user
 email = "<user_email>"
@@ -118,7 +127,9 @@ To deactivate a user you need to set his status to `disabled`
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+
+api_info = {"base_url": "<your_lumapps_base_url>"}
+client = BaseClient(token="<your_token>", api_info=api_info)
 
 # Get the user
 email = "<user_email>"
