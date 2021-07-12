@@ -1,22 +1,23 @@
 Group in LumApps are named `Feeds` in the api and object definition.
-
-## List
 Groups can be defined at platform or instance level.
+
+## List groups
 
 Get the list of group
 ```python
 client.get_call("feed/list") # platform and instances
 
-client.get_call("feed/list", instance="1234") # one instance
+client.get_call("feed/list", instance="<your_instance>") # one instance
 ```
+
+## List gorups by group type
 
 Groups have a `type`, get details with
 ```python
 client.get_call("feedtype/list") # platform only
 
-client.get_call("feedtype/list", instance="12345") # one one instance
+client.get_call("feedtype/list", instance="<your_instance>") # one one instance
 ```
-
 
 ## Create a group
 
@@ -31,25 +32,28 @@ group = {
     "type": "12345678", # feed type
     }
 }
-new_group = client.get_call("feed/save", body=group)
+new_group = client.get_call("feed/save", body=group:dict)
 ```
+
 ## Update a group
 
 ```python
-group = client.get_call("feed/get", uid=feedUid)
+group = client.get_call("feed/get", uid="<feedUid>")
 
 # change group name then save
 
-group = client.get_call("feed/save", body=group)
+group = client.get_call("feed/save", body=group:dict)
 
 ```
+
 ## Delete a group
 
 ```python
 # user feed/delete with the feed ui
 
-client.get_call("feed/delete", uid=feedUid)
+client.get_call("feed/delete", uid="<feedUid>")
 ```
+
 ## Create a group synced with a existing google or microsoft group
 
 You first need to know the identity provider configuration:
@@ -89,7 +93,7 @@ feed = {
     "type": "12345678", # feed type
     }
 }
-new_group = api.get_call("feed/save", body=group)
+new_group = api.get_call("feed/save", body=group:dict)
 ```
 
 Notes:
@@ -103,9 +107,10 @@ Notes:
 use the user/list endpoint with the feed id in the `feeds` filter.
 
 ```python
-feed_members = api.get_call("user/list", feeds=['1345'])
+feed_members = api.get_call("user/list", feeds=feed_ids:list)
 
 ```
+
 ## update members of a group
 
 ```python
@@ -126,7 +131,7 @@ body = {
         ]}
 }
 
-client.get_call("feed/subscribers/save", body=body)
+client.get_call("feed/subscribers/save", body=body:dict)
 ```
 
 ## Get all group id
@@ -165,7 +170,7 @@ client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id=
 result = client.add_users_to_group(feed_id="<feed_id>", user_emails=your_user_emails_list:list)
 ```
 
-## Add users to group skip missing
+## Add users to group skip missing users
 
 ```python
 from lumapps.api.client import LumAppsClient

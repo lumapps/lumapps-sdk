@@ -1,7 +1,7 @@
 
 # Posts
 
-## Post list
+## List posts
 
 ```python
 from lumapps.api.base_client import BaseClient
@@ -19,21 +19,18 @@ posts = client.get_call(
 
 For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/Search)
 
-
-## Post get
+## Get post 
 
 ```python
-from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+from lumapps.api.client import LumAppsClient
+client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-post = client.get_call(
-    "community/post/get", uid="YOUR_POST_ID"
-)
+result = client.get_post(post_id="<your_post_id>")
 ```
 
 For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/get)
 
-## Post save
+## Save post
 
 The variable `post` is a json object described [here](https://api.lumapps.com/docs/output/_schemas/post.html).
 You can either construct a new one from scratch:
@@ -74,7 +71,7 @@ post = api.get_call(
 
 For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/save)
 
-## Iter community posts
+## Iter posts by community
 
 ```python
 from lumapps.api.client import LumAppsClient
@@ -117,13 +114,4 @@ from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
 result = client.save_post(post=post:dict)
-```
-
-## Get post 
-
-```python
-from lumapps.api.client import LumAppsClient
-client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
-
-result = client.get_post(post_id="<your_post_id>")
 ```

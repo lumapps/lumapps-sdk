@@ -13,7 +13,7 @@ client = BaseClient(token="<your_token>", api_info="<api_info">)
 contents = client.get_call("content/list", body={"lang":"en"})
 ```
 
-## Content details
+## Get content
 
 Get detail of a content
 
@@ -128,6 +128,7 @@ client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id=
 result = client.get_menu(lang="<language>", menu_items="<list(dict)>")
 ```
 
+
 # Content creation
 
 The simplest way to create content is to use an existing template. This template will define all design configurations.
@@ -212,6 +213,7 @@ client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id=
 
 result = client.set_homepage(content_id="<content_id>")
 ```
+
 
 # Objects explanation
 

@@ -1,7 +1,7 @@
 # Communities
 
 
-## Community list
+## List communities
 
 ```python
 from lumapps.api.base_client import BaseClient
@@ -19,7 +19,7 @@ communities = client.get_call(
 
 For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community/List)
 
-## Community get
+## Get community
 
 ```python
 from lumapps.api.base_client import BaseClient
@@ -38,7 +38,7 @@ For more details see [the api documentation](https://apiv1.lumapps.com/#operatio
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.add_categories_to_community(community="<dict(community)>", categories="<[categories])>")
+result = client.add_categories_to_community(community=community:dict, categories=categories:list>")
 ```
 
 ## Iter communities
@@ -50,22 +50,13 @@ client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id=
 result = client.iter_communities()
 ```
 
-## Get community slug
-
-```python
-from lumapps.api.client import LumAppsClient
-client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
-
-result = client.get_community_slug(community_id="<community_id>")
-```
-
 ## Save community layout
 
 ```python
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.save_community_layout(community="<dict(community)>")
+result = client.save_community_layout(community=community:dict)
 ```
 
 ## Get community slug
@@ -101,5 +92,5 @@ result = client.get_community_by_slug(slug="<slug>")
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.save_community(community="<dict(community)>")
+result = client.save_community(community=community:dict)
 ```

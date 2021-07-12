@@ -177,7 +177,7 @@ result = client.iter_metadata(family_id="<family_id>", parent_id="<parent_id>")
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.get_or_add_metadata(new_md=your_new_metadata: dict)
+result = client.get_or_add_metadata(new_md=your_metadata:dict)
 ```
 
 ## Get metadata by name
@@ -204,5 +204,5 @@ result = client.get_metadata_by_name(name="<name>", parent_id="<parent_id>")
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.save_metadata(metadata=metadata:dict)
+result = client.save_metadata(metadata=your_metadata:dict)
 ```

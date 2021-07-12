@@ -8,7 +8,7 @@ You can easly create, modify, delete or list roles on your instance with the sdk
 from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
-roles = client.get_call("role/list", instance=site_id)
+roles = client.get_call("role/list", instance="<instance_id>")
  ```
 
  ## __Create a specific role__
@@ -27,7 +27,7 @@ my_role = {
   "name": "My custom role"
 }
 
-client.get_call("role/save", body=my_role)
+client.get_call("role/save", body=my_role:dict)
 ```
 
 Here we have:
@@ -92,13 +92,13 @@ To update a role the recommanded way is the following:
 client = BaseClient(token="<your_token>")
 
 # Get the role
-role = client.get_call("role/get", uid=role_uid)
+role = client.get_call("role/get", uid="<role_uid>")
 
 # Update it ...
 role["name"] = "New role name"
 
 # Save the updated role
-client.get_call("role/save", body=role)
+client.get_call("role/save", body=role:dict)
 ```
 
 ## Iter roles

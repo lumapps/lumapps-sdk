@@ -18,10 +18,10 @@ from lumapps.api.helpers.widgets import find_all_widgets
 client = BaseClient(token="<your_token>")
 
 # Get the content containing the widgets
-content = client.get_call("content/get", uid="fake_id")
+content = client.get_call("content/get", uid="<content_id>")
 
 # Find all widgets having the property widgetType="video"
-video_widgets = find_all_widgets(content, widgetType="video")
+video_widgets = find_all_widgets(content, widgetType="<video>")
 ```
 
 You can also use that to modify some widgets. For instance let say we want to modify a widget that we know has an `uuid` of *454673774*, we would do as follow
@@ -33,14 +33,14 @@ from lumapps.api.helpers.widgets import find_all_widgets
 client = BaseClient(token="<your_token>")
 
 # Get the content containing the widgets
-content = client.get_call("content/get", uid="fake_id")
+content = client.get_call("content/get", uid="<content_id>")
 
 # Find the widget that has the uuid 454673774
-widget = find_widget(content, uuid="454673774")
+widget = find_widget(content, uuid="<widget_uid>")
 
 widget["popertie"] = "new value"
 
-client.get_call("content/save", body=content)
+client.get_call("content/save", body=content:dict)
 ```
 
 ## Global widgets
@@ -58,7 +58,7 @@ Api `widget/list`, provide `instance` id
 
 ```python
 
-response = api.get_call("widget/list", instance=INSTANCE_ID)
+response = api.get_call("widget/list", instance="<instance_id>")
 
 # example
 [
@@ -107,7 +107,7 @@ Api `widget/get`, provide `widget` uid
 
 
 ```python
-response = api.get_call('widget/get', uid="6448894901878784")
+response = api.get_call('widget/get', uid="<widget_uid>")
 
 # example
 
@@ -162,5 +162,5 @@ widget = api.get_call('widget/get', uid="6448894901878784")
 widget['properties']['content']['en'] = "<p>updated content</p>"
 
 # save
-saved_widget = api.get_call('widget/save', body=widget)
+saved_widget = api.get_call('widget/save', body=widget:dict)
 ```
