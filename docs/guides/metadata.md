@@ -6,7 +6,7 @@
 from lumapps.api.base_client import BaseClient
 client = BaseClient(token="<your_token>")
 
-metadata_kind = client.get_call("metadata/list", body={
+metadata_kind = client.get_call("metadata/list", instance="<your_instance_id>", body={
     "emptyParent": "true",
     "lang": "fr",
 })
