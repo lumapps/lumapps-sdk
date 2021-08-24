@@ -13,8 +13,8 @@ LumApps SDK is a set of tools to manipulate the [LumApps API](https://api.lumapp
 
 This includes:
 
-- A BaseClient that support all the routes of the API (located in folder lumapps)
-- A LumAppsClient that provides multiple methods to use API at ease
+- A BaseClient that supports all the routes of the API (located in folder lumapps)
+- A LumAppsClient that supports multiple methods to use API at ease
 - A set of helper classes to easily manipulate LumApps elements as Python Objects and classes (folder lumapps/helpers)
 
 

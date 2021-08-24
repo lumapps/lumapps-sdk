@@ -15,7 +15,7 @@ contents = client.get_call("content/list", body={"lang":"en"})
 
 ## Get content
 
-Get detail of a content
+Get details of a content
 
 ```python
 from lumapps.api.client import LumAppsClient
@@ -32,7 +32,7 @@ NB: `content.uid` = `content.id`
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.get_content_slug_abd_type(content_id="<content_id>")
+result = client.get_content_slug_and_type(content_id="<content_id>")
 ```
 
 ## Get content by slug

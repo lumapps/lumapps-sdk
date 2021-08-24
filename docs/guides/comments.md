@@ -37,7 +37,7 @@ result = client.iter_replies(content_id="<your_content_id>")
 from lumapps.api.client import LumAppsClient
 client = LumAppsClient(token="<your_token>", api_info="<api_info">, customer_id="<customer_id>", instance_id="<instance_id>")
 
-result = client.iter_commets(content_id="<your_content_id>")
+result = client.iter_comments(content_id="<your_content_id>")
 ```
 
 ## Comment get
