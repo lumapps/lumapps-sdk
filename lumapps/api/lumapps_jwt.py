@@ -14,6 +14,17 @@ from lumapps.api.errors import (
 )
 
 JWKS_URL = {
+    "dot-lumapps-analytics.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-ba.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-cms.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-core.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-sa.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-search.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-social.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-dev.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-sandbox.appspot.com": "https://login-sandbox.dev.lumapps.com/v1/jwks",
+    "dot-lumapps-beta.appspot.com": "https://login.beta.lumapps.com/v1/jwks",
+    "dot-lumapps-beta.eu.appspot.com": "https://login.beta.lumapps.com/v1/jwks",
     "dot-lumapps-staging.appspot.com": "https://login.stag.lumapps.com/v1/jwks",
     "sites-staging.lumapps.com": "https://login.stag.lumapps.com/v1/jwks",
     "sites-analytics.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
