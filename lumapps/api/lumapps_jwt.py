@@ -37,6 +37,7 @@ JWKS_URL = {
     "sites-dev.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
     "sites-sandbox.lumapps.com": "https://login-sandbox.dev.lumapps.com/v1/jwks",
     "sites-beta.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
+    "preview.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
     "sites-beta.eu.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
 }
 
