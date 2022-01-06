@@ -24,7 +24,10 @@ jobs:
           python-version: 3.7
       
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
+        with:
+          virtualenvs-in-project: false
+          virtualenvs-path: ~/.cache/poetry/virtualenvs
 
       - uses: actions/cache@v1
         name: Cache Poetry deps
@@ -38,11 +41,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-
-      - name: Set Poetry config
-        run: |
-          poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ~/.cache/poetry/virtualenvs
       
       - name: Install Dependencies
         run: poetry install -v --no-interaction
@@ -61,7 +59,7 @@ jobs:
           git commit -m "chore(release): release version ${{ github.event.release.tag_name }}"
       
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@40bf560936a8022e68a3c00e7d2abefaf01305a6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -69,7 +67,7 @@ jobs:
         run: make docs
 
       - name: Publish doc
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@068dc23d9710f1ba62e86896f84735d869951305
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
