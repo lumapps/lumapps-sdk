@@ -22,6 +22,7 @@ http_cache.sqlite
 # virtualenv
 env/
 venv/
+.venv/
 
 
 # doc

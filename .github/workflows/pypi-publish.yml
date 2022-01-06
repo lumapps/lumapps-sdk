@@ -64,7 +64,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build doc
-        run: make docs
+        run: POETRY=poetry make docs
 
       - name: Publish doc
         uses: peaceiris/actions-gh-pages@068dc23d9710f1ba62e86896f84735d869951305

@@ -38,10 +38,10 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Check the code quality
-        run: make check-code-quality
+        run: POETRY=poetry make check-code-quality
 
       - name: Check if the code is correctly typed
-        run: make check-types
+        run: POETRY=poetry make check-types
 
   Tests:
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Run the test suite
-        run: make test
+        run: POETRY=poetry make test
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == 3.7

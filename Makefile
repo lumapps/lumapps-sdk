@@ -1,26 +1,24 @@
 .DEFAULT_GOAL := help
+.PHONY: check check-code-quality check-docs check-types clean docs-cp docs docs-serve docs-deploy help format setup test
 
 PY_SRC := lumapps/
 CI ?= false
 TESTING ?= false
+PYTHON ?= python3.7
+PIP = .venv/bin/pip
+POETRY ?= .venv/bin/poetry
 
-.PHONY: check
 check: check-docs check-code-quality check-types  ## Check it all!
 
-.PHONY: check-code-quality
 check-code-quality:  ## Check the code quality.
-	@poetry run failprint -t "Checking code quality" -- flake8 --config=config/flake8.ini $(PY_SRC)
+	@$(POETRY) run failprint -t "Checking code quality" -- flake8 --config=config/flake8.ini $(PY_SRC)
 
-
-.PHONY: check-docs
 check-docs:  ## Check if the documentation builds correctly.
-	@poetry run failprint -t "Building documentation" -- mkdocs build -s
+	@$(POETRY) run failprint -t "Building documentation" -- mkdocs build -s
 
-.PHONY: check-types
 check-types:  ## Check that the code is correctly typed.
-	@poetry run failprint -t "Type-checking" -- mypy --config-file config/mypy.ini $(PY_SRC)
+	@$(POETRY) run failprint -t "Type-checking" -- mypy --config-file config/mypy.ini $(PY_SRC)
 
-.PHONY: clean
 clean:  ## Delete temporary files.
 	@rm -rf build 2>/dev/null
 	@rm -rf .coverage* 2>/dev/null
@@ -33,54 +31,37 @@ clean:  ## Delete temporary files.
 	@rm -rf tests/__pycache__ 2>/dev/null
 	@find . -name "*.rej" -delete 2>/dev/null
 
-.PHONY: docs-cp
 docs-cp:
 	cp README.md docs/index.md
 	cp LICENSE.md docs/
 
-.PHONY: docs
 docs: docs-cp ## Build the documentation locally.
-	@poetry run mkdocs build
+	@$(POETRY) run mkdocs build
 
-.PHONY: docs-serve
 docs-serve: docs-cp ## Serve the documentation (localhost:8000).
-	@poetry run mkdocs serve
+	@$(POETRY) run mkdocs serve
 
-.PHONY: docs-deploy
 docs-deploy: docs-cp ## Deploy the documentation on GitHub pages.
-	@poetry run mkdocs gh-deploy
+	@$(POETRY) run mkdocs gh-deploy
 
-.PHONY: help
 help:  ## Print this help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
-.PHONY: format
 format:  ## Run formatting tools on the code.
-	@poetry run failprint -t "Formatting code" -- black $(PY_SRC)
-	@poetry run failprint -t "Ordering imports" -- isort -y -rc $(PY_SRC)
+	@$(POETRY) run failprint -t "Formatting code" -- black $(PY_SRC)
+	@$(POETRY) run failprint -t "Ordering imports" -- isort -y -rc $(PY_SRC)
 
+setup: .venv  ## Setup the development environment (install dependencies).
+	$(POETRY) config virtualenvs.in-project true
+	$(POETRY) install -v
+	$(POETRY) run pre-commit install
+	$(POETRY) run pre-commit install --hook-type commit-msg
 
-.PHONY: setup
-setup:  ## Setup the development environment (install dependencies).
-	@if ! $(CI); then \
-		if ! command -v pipx &>/dev/null; then \
-			pip install pipx; \
-		fi; \
-		if ! command -v poetry &>/dev/null; then \
-		  pipx install poetry; \
-		fi; \
-	fi; \
-	poetry config virtualenvs.in-project true
-	poetry install -v
-	@if ! $(CI); then \
-		poetry run pre-commit install; \
-		poetry run pre-commit install --hook-type commit-msg; \
-	fi; \
-
-
-.PHONY: test
 test:  ## Run the test suite and report coverage. 2>/dev/null
-	@poetry run pytest -c config/pytest.ini
-	@poetry run coverage html --rcfile=config/coverage.ini
+	@$(POETRY) run pytest -c config/pytest.ini
+	@$(POETRY) run coverage html --rcfile=config/coverage.ini
 
-
+.venv:  ## Install the virtual env directory
+	$(PYTHON) -m venv .venv
+	$(PIP) install --quiet --upgrade pip
+	$(PIP) install poetry
