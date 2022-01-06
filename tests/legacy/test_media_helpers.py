@@ -14,7 +14,7 @@ from lumapps.api.utils import get_discovery_cache
 
 @fixture
 def cli() -> BaseClient:
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
     c = BaseClient(token="foobar")
@@ -55,7 +55,7 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: BaseClient):
 
     uploaded_file = _upload_new_media_file_of_given_lang(
         cli,
-        "tests/test_data/content_1.json",
+        "tests/legacy/test_data/content_1.json",
         "fake",
         "fake",
         lang="en",
@@ -66,7 +66,7 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: BaseClient):
     _prep_mocker()
     uploaded_file = _upload_new_media_file_of_given_lang(
         cli,
-        "tests/test_data/content_1.json",
+        "tests/legacy/test_data/content_1.json",
         "fake",
         "fake",
         lang="en",
@@ -76,7 +76,7 @@ def test_upload_new_media_file_of_given_lang(mocker, cli: BaseClient):
     assert uploaded_file["value"] == "fakeblobkey"
 
     # _prep_mocker()
-    # data = open("tests/test_data/content_1.json", "rb").read()
+    # data = open("tests/legacy/test_data/content_1.json", "rb").read()
     # uploaded_file = _upload_new_media_file_of_given_lang(
     #     cli, data, "fake", "fake", lang="en", prepare_for_lumapps=False,
     # )
@@ -102,7 +102,7 @@ def test_upload_new_media_file_of_given_lang_2(mocker, cli: BaseClient):
         mocker.patch("httpx.post", mock_post)
 
     _prep_mocker()
-    data = open("tests/test_data/content_1.json", "rb").read()
+    data = open("tests/legacy/test_data/content_1.json", "rb").read()
     uploaded_file = _upload_new_media_file_of_given_lang(
         cli, data, "fake", "fake", lang="en", prepare_for_lumapps=True,
     )

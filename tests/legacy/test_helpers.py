@@ -19,7 +19,7 @@ from lumapps.api.helpers import (
 
 
 def test_find_one_with_key_value():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     to_find = "2c2649f3-87de-46c6-bff3-ca3cbe3a8aa6"
     found = find_one_with_key_value(content, "uuid", to_find)
@@ -27,31 +27,31 @@ def test_find_one_with_key_value():
 
 
 def test_content_is_template():
-    with open("tests/test_data/community_1.json") as fh:
+    with open("tests/legacy/test_data/community_1.json") as fh:
         community = json.load(fh)
     assert content_is_template(community) is False
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     assert content_is_template(content) is False
-    with open("tests/test_data/template_1.json") as fh:
+    with open("tests/legacy/test_data/template_1.json") as fh:
         template = json.load(fh)
     assert content_is_template(template) is True
 
 
 def test_content_is_community():
-    with open("tests/test_data/community_1.json") as fh:
+    with open("tests/legacy/test_data/community_1.json") as fh:
         community = json.load(fh)
     assert content_is_community(community) is True
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     assert content_is_community(content) is False
-    with open("tests/test_data/template_1.json") as fh:
+    with open("tests/legacy/test_data/template_1.json") as fh:
         template = json.load(fh)
     assert content_is_community(template) is False
 
 
 def test_find_all_widgets_in_community():
-    with open("tests/test_data/community_1.json") as fh:
+    with open("tests/legacy/test_data/community_1.json") as fh:
         community = json.load(fh)
     assert community
     widgets = find_all_widgets(community, widgetType="html")
@@ -61,7 +61,7 @@ def test_find_all_widgets_in_community():
 
 
 def test_find_all_widgets_in_content():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     assert content
     widgets = find_all_widgets(content, widgetType="html")
@@ -69,7 +69,7 @@ def test_find_all_widgets_in_content():
 
 
 def test_find_all_widgets_in_template():
-    with open("tests/test_data/template_1.json") as fh:
+    with open("tests/legacy/test_data/template_1.json") as fh:
         template = json.load(fh)
     assert template
     widgets = find_all_widgets(template, widgetType="html")
@@ -77,7 +77,7 @@ def test_find_all_widgets_in_template():
 
 
 def test_find_widget():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     assert content
     widget = find_widget(content, widgetType="foo")
@@ -87,7 +87,7 @@ def test_find_widget():
 
 
 def test_find_widget_and_container():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     assert content
     widget, container = find_widget_and_container(content, widgetType="foo")
@@ -99,7 +99,7 @@ def test_find_widget_and_container():
 
 
 def test_find_all_widgets_and_containers():
-    with open("tests/test_data/community_1.json") as fh:
+    with open("tests/legacy/test_data/community_1.json") as fh:
         content = json.load(fh)
     assert content
     lst = find_all_widgets_and_containers(content, widgetType="foo")
@@ -121,7 +121,7 @@ def test_new_lumapps_uuid():
 
 
 def test_iter_with_key_1():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     with_uuid = list(iter_with_key(content, "uuid"))
     assert len(with_uuid) == 4
@@ -132,21 +132,21 @@ def test_iter_with_key_1():
 
 
 def test_iter_with_key_2():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     matches = list(iter_with_key(content, "instance"))
     assert len(matches) == 3
 
 
 def test_iter_with_key_3():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     matches = list(iter_with_key([content], "instance"))
     assert len(matches) == 3
 
 
 def test_iter_with_key_value_1():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     with_uuid = list(iter_with_key_value(content, "uuid", "foo"))
     assert with_uuid == []
@@ -157,7 +157,7 @@ def test_iter_with_key_value_1():
 
 
 def test_iter_with_key_value_2():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     with_uuid = list(iter_with_key_value([content], "uuid", "foo"))
     assert with_uuid == []
@@ -168,7 +168,7 @@ def test_iter_with_key_value_2():
 
 
 def test_set_new_lumapps_uuids():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     set_new_lumapps_uuids(content)
     with_uuid = list(iter_with_key(content, "uuid"))
@@ -180,7 +180,7 @@ def test_set_new_lumapps_uuids():
 
 
 def test_copy_with_new_lumapps_uuids():
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = json.load(fh)
     content2 = copy_with_new_lumapps_uuids(content)
     assert content != content2
@@ -199,7 +199,7 @@ def test_copy_with_new_lumapps_uuids():
 
 
 def test_replace_key_val():
-    with open("tests/test_data/community_1.json") as fh:
+    with open("tests/legacy/test_data/community_1.json") as fh:
         c = json.load(fh)
     replace_key_val(c, "instance", "2222222222", "foo_bar_123")
     assert c["instance"] == "foo_bar_123"

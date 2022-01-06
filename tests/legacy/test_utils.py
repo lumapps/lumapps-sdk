@@ -81,7 +81,7 @@ def test_parse_endpoint_parts():
 
 
 def test_method_from_discovery_1():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
     name_parts = ["user", "get"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
@@ -91,7 +91,7 @@ def test_method_from_discovery_1():
 
 
 def test_method_from_discovery_2():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
     name_parts = ["document", "uploadUrl", "get"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
@@ -101,7 +101,7 @@ def test_method_from_discovery_2():
 
 
 def test_method_from_discovery_3():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
     name_parts = ["document", "uploadUrl"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)
@@ -109,7 +109,7 @@ def test_method_from_discovery_3():
 
 
 def test_method_from_discovery_5():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         discovery_doc = json.load(fh)
     name_parts = ["document", "foo"]
     extracted = lumapps.api.utils.method_from_discovery(discovery_doc, name_parts)

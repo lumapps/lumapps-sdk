@@ -25,7 +25,7 @@ def reset_env():
 @fixture
 def cli() -> BaseClient:
     c = BaseClient(token="foobar")
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
     return c
@@ -33,7 +33,7 @@ def cli() -> BaseClient:
 
 @fixture
 def cli_drive() -> BaseClient:
-    with open("tests/test_data/drive_v3_discovery.json") as fh:
+    with open("tests/legacy/test_data/drive_v3_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
     c = BaseClient(
@@ -144,7 +144,7 @@ def test_get_verb_path_params(mocker, cli_drive: BaseClient):
 
 
 def test_get_call_1(mocker, cli: BaseClient):
-    with open("tests/test_data/community_1.json") as fh:
+    with open("tests/legacy/test_data/community_1.json") as fh:
         community = load(fh)
     mocker.patch("lumapps.api.client.BaseClient._call", return_value=community)
     community2 = cli.get_call("community/get", uid="foo")
@@ -152,9 +152,9 @@ def test_get_call_1(mocker, cli: BaseClient):
 
 
 def test_get_call_2(mocker, cli: BaseClient):
-    with open("tests/test_data/instance_list_more_1.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
-    with open("tests/test_data/instance_list_more_2.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_2.json") as fh:
         ret2 = load(fh)
 
     def _call(name_parts: Sequence[str], params: dict, json=None):
@@ -171,7 +171,7 @@ def test_get_call_2(mocker, cli: BaseClient):
 
 
 def test_get_call_3(mocker, cli: BaseClient):
-    with open("tests/test_data/list_empty.json") as fh:
+    with open("tests/legacy/test_data/list_empty.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.BaseClient._call", return_value=ret)
     lst = cli.get_call("instance/list")
@@ -179,7 +179,7 @@ def test_get_call_3(mocker, cli: BaseClient):
 
 
 def test_get_call_4(mocker, cli: BaseClient):
-    with open("tests/test_data/list_empty.json") as fh:
+    with open("tests/legacy/test_data/list_empty.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.BaseClient._call", return_value=ret)
     lst = cli.get_call("instance/list", cursor="test")
@@ -196,7 +196,7 @@ def test_get_call_5(mocker, cli: BaseClient):
 
 
 def test_get_call_6(mocker, cli: BaseClient):
-    with open("tests/test_data/instance_list_more_1.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
 
     def _call(name_parts: Sequence[str], params: dict, json=None):
@@ -213,7 +213,7 @@ def test_get_call_6(mocker, cli: BaseClient):
 
 
 def test_iter_call_1(mocker, cli: BaseClient):
-    with open("tests/test_data/instance_list.json") as fh:
+    with open("tests/legacy/test_data/instance_list.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.BaseClient._call", return_value=ret)
 
@@ -222,9 +222,9 @@ def test_iter_call_1(mocker, cli: BaseClient):
 
 
 def test_iter_call_2(mocker, cli: BaseClient):
-    with open("tests/test_data/instance_list_more_1.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
-    with open("tests/test_data/instance_list_more_2.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_2.json") as fh:
         ret2 = load(fh)
 
     def _call(name_parts: Sequence[str], params: dict, json=None):
@@ -239,7 +239,7 @@ def test_iter_call_2(mocker, cli: BaseClient):
 
 
 def test_iter_call_3(mocker, cli: BaseClient):
-    with open("tests/test_data/list_empty.json") as fh:
+    with open("tests/legacy/test_data/list_empty.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.BaseClient._call", return_value=ret)
     lst = [i for i in cli.iter_call("instance/list")]
@@ -247,7 +247,7 @@ def test_iter_call_3(mocker, cli: BaseClient):
 
 
 def test_iter_call_4(mocker, cli: BaseClient):
-    with open("tests/test_data/instance_list.json") as fh:
+    with open("tests/legacy/test_data/instance_list.json") as fh:
         ret = load(fh)
     mocker.patch("lumapps.api.client.BaseClient._call", return_value=ret)
 
@@ -257,9 +257,9 @@ def test_iter_call_4(mocker, cli: BaseClient):
 
 
 def test_iter_call_5(mocker, cli: BaseClient):
-    with open("tests/test_data/instance_list_more_1.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_1.json") as fh:
         ret1 = load(fh)
-    with open("tests/test_data/instance_list_more_2.json") as fh:
+    with open("tests/legacy/test_data/instance_list_more_2.json") as fh:
         ret2 = load(fh)
 
     def _call(name_parts: Sequence[str], params: dict, json=None):
@@ -297,7 +297,7 @@ def test_iter_call_5(mocker, cli: BaseClient):
 
 
 def test_prune(cli: BaseClient):
-    with open("tests/test_data/content_1.json") as fh:
+    with open("tests/legacy/test_data/content_1.json") as fh:
         content = load(fh)
     assert "lastRevision" in content
     cli._prune(("content", "get"), content)
@@ -308,7 +308,7 @@ def test_prune(cli: BaseClient):
 
 
 def test_prune2(cli: BaseClient):
-    with open("tests/test_data/instance_list.json") as fh:
+    with open("tests/legacy/test_data/instance_list.json") as fh:
         lst = load(fh)["items"]
     FILTERS["instance/list"] = ["status"]
     for inst in lst:
@@ -356,7 +356,7 @@ def test_discovery_doc(mocker):
         def json(self):
             return loads(self.text)
 
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         resp = DummyResp(fh.read())
 
     class DummySession:
