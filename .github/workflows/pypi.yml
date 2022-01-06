@@ -16,8 +16,8 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2.3.4
 
-      - name: Setup Python 3.7 🐍
-        uses: actions/setup-python@v2.1.4
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v2
         with:
           python-version: 3.7
 

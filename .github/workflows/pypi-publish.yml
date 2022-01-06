@@ -18,11 +18,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python 3.7 🐍
-        uses: actions/setup-python@v2.1.4
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v2
         with:
           python-version: 3.7
-      
+
       - name: Install Poetry
         uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
         with:

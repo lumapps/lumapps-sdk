@@ -14,10 +14,10 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-      - name: Setup Python 3.6 🐍
-        uses: actions/setup-python@v2.1.4
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v2
         with:
-          python-version: 3.6
+          python-version: 3.7
 
       - name: Install Poetry
         uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
@@ -47,14 +47,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2
 
       - name: Setup Python ${{ matrix.python-version }} 🐍
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
