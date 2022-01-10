@@ -37,12 +37,12 @@ def test_load_config():
     assert user == "ivo@managemybudget.net"
     assert api_info is None
     assert auth_info is None
-    auth_file = "tests/test_data/dummy_auth.json"
+    auth_file = "tests/legacy/test_data/dummy_auth.json"
     api_info, auth_info, user = load_config(
         None, auth_file, "foo@managemybudget.net", None
     )
     assert auth_info["project_id"] == "foo"
-    api_file = "tests/test_data/dummy_api.json"
+    api_file = "tests/legacy/test_data/dummy_api.json"
     api_info, auth_info, user = load_config(
         api_file, auth_file, "foo@managemybudget.net", None
     )
@@ -98,7 +98,7 @@ def test_main_1(capsys, mocker):
     mocker.patch(
         "lumapps.api.cli.parse_args", return_value=parse_args(["--token", "foo"])
     )
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         mocker.patch(
             "lumapps.api.client.BaseClient.discovery_doc",
             new_callable=PropertyMock,
@@ -115,7 +115,7 @@ def test_main_1(capsys, mocker):
 
 
 def test_cast_params():
-    with open("tests/test_data/lumapps_discovery.json") as fh:
+    with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         discovery_doc = load(fh)
     endpoints = get_endpoints(discovery_doc)
     name_parts = ("customcontenttype", "list")

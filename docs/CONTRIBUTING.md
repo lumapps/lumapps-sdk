@@ -10,6 +10,18 @@ First install dependencies and setup pre-commits hooks
 make setup
 ```
 
+To setup using a different version of python, you may use the following:
+
+```bash
+PYTHON=python3.X make setup
+```
+
+Then to go in the poetry virtual env do
+
+```
+source .venv/bin/activate
+```
+
 You can run `make help` to see all available actions !
 
 ### Adding a new dependency

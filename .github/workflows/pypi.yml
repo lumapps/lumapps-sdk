@@ -16,13 +16,16 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2.3.4
 
-      - name: Setup Python 3.7 🐍
-        uses: actions/setup-python@v2.1.4
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v2
         with:
           python-version: 3.7
-      
+
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
+        with:
+          virtualenvs-in-project: false
+          virtualenvs-path: ~/.cache/poetry/virtualenvs
 
       - uses: actions/cache@v1
         name: Cache Poetry deps
@@ -31,16 +34,10 @@ jobs:
           key: pypi-${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             pypi-${{ runner.os }}-poetry-
-              
-      - name: Set Poetry config
-        run: |
-          poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ~/.cache/poetry/virtualenvs
-      
+
       - name: Install Dependencies
         run: poetry install -v
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Check that package build
         run: poetry build
-      

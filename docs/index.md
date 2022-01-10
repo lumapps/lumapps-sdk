@@ -19,13 +19,15 @@ This includes:
 
 ## Installation
 
-
 ```bash
 pip install lumapps-sdk
 ```
 
-## Getting started
+## Requirements
 
+Python >= 3.7
+
+## Getting started
 
 1. Get your token
 
@@ -77,7 +79,4 @@ Please refer to our [contributing guidelines](CONTRIBUTING.md).
 
 ## Copyright and license
 
-
 LumApps SDK is released under the [MIT license](LICENSE.md).
-
-

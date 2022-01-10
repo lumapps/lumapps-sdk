@@ -12,15 +12,18 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2
 
-      - name: Setup Python 3.6 🐍
-        uses: actions/setup-python@v2.1.4
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v2
         with:
-          python-version: 3.6
+          python-version: 3.7
 
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
+        with:
+          virtualenvs-in-project: false
+          virtualenvs-path: ~/.cache/poetry/virtualenvs
 
       - uses: actions/cache@v1
         name: Cache Poetry deps
@@ -30,38 +33,36 @@ jobs:
           restore-keys: |
             lint-${{ runner.os }}-poetry-
 
-      - name: Set Poetry config
-        run: |
-          poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ~/.cache/poetry/virtualenvs
-
       - name: Install Dependencies
         run: poetry install -v
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Check the code quality
-        run: make check-code-quality
+        run: POETRY=poetry make check-code-quality
 
       - name: Check if the code is correctly typed
-        run: make check-types
+        run: POETRY=poetry make check-types
 
   Tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2
 
       - name: Setup Python ${{ matrix.python-version }} 🐍
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
+        with:
+          virtualenvs-in-project: false
+          virtualenvs-path: ~/.cache/poetry/virtualenvs
 
       - uses: actions/cache@v1
         name: Cache Poetry deps
@@ -71,21 +72,16 @@ jobs:
           restore-keys: |
             tests-${{ runner.os }}-${{ matrix.python-version }}-poetry-
 
-      - name: Set Poetry config
-        run: |
-          poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ~/.cache/poetry/virtualenvs
-
       - name: Install Dependencies
         run: poetry install -v
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Run the test suite
-        run: make test
+        run: POETRY=poetry make test
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == 3.7
-        uses: codecov/codecov-action@v1.0.15
+        uses: codecov/codecov-action@f32b3a3741e1053eb607407145bc9619351dc93b
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
