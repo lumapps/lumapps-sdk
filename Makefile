@@ -4,7 +4,7 @@
 PY_SRC := lumapps/
 CI ?= false
 TESTING ?= false
-PYTHON ?= python3.7
+PYTHON ?= python3.8
 PIP = .venv/bin/pip
 POETRY ?= .venv/bin/poetry
 

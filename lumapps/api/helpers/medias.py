@@ -15,23 +15,23 @@ def create_new_media(
     is_shared: bool,
     lang: Optional[str] = "en",
 ) -> Optional[Dict[str, Any]]:
-    """ Upload a file and create a new media in LumApps media library.
+    """Upload a file and create a new media in LumApps media library.
 
-        Args:
-            client: The BaseClient used to make httpx to the LumApps Api.
-            file_data_or_path: The filepath (str) or the data (bytes) to upload.
-            doc_path: The doc path of the media to upload, this will decide where the media will go in your media library
-                            (eg: provider=`<`my_provider`>`/site=`<`my_site_id`>`/resource=`<`my_parent_folder_id`>`)
-            filename: The name of the file to upload. Once uploaded the file will appear with that name.
-            mimetype: The mimeType fo the file to upload.
-            is_shared: Wether the file is shared or not. Non shared files will only be visible by you.
-            lang: The lang of the file to upload (default: "en").
+    Args:
+        client: The BaseClient used to make httpx to the LumApps Api.
+        file_data_or_path: The filepath (str) or the data (bytes) to upload.
+        doc_path: The doc path of the media to upload, this will decide where the media will go in your media library
+                        (eg: provider=`<`my_provider`>`/site=`<`my_site_id`>`/resource=`<`my_parent_folder_id`>`)
+        filename: The name of the file to upload. Once uploaded the file will appear with that name.
+        mimetype: The mimeType fo the file to upload.
+        is_shared: Wether the file is shared or not. Non shared files will only be visible by you.
+        lang: The lang of the file to upload (default: "en").
 
-        Raises:
-            Exception: The data or file path type provided is not supported.
+    Raises:
+        Exception: The data or file path type provided is not supported.
 
-        Returns:
-            Return the uploaded media if successfull, None otherwise.
+    Returns:
+        Return the uploaded media if successfull, None otherwise.
     """  # noqa
 
     if isinstance(file_data_or_path, str):
@@ -77,19 +77,19 @@ def add_media_file_for_lang(
     lang: Optional[str] = "en",
     croppedContent: Optional[bool] = False,
 ) -> Optional[Dict[str, Any]]:
-    """ Add a file to an existing LumApps media.
+    """Add a file to an existing LumApps media.
 
-        Args:
-            client: The BaseClient used to make httpx to the LumApps Api.
-            media: The LumApps media on which the files have to be uploaded.
-            file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
-            filename: The name of the file to upload. Once uploaded the file will appear with that name.
-            mimetype: The mimeType fo the file to upload.
-            lang: The lang of the file to upload (default: "en").
-            croppedContent (bool): Wether to add the file to the croppedContent instead or content (default: False)
+    Args:
+        client: The BaseClient used to make httpx to the LumApps Api.
+        media: The LumApps media on which the files have to be uploaded.
+        file_data_or_path (Union[bytes, str]): The filepath (str) or the data (bytes) to upload.
+        filename: The name of the file to upload. Once uploaded the file will appear with that name.
+        mimetype: The mimeType fo the file to upload.
+        lang: The lang of the file to upload (default: "en").
+        croppedContent (bool): Wether to add the file to the croppedContent instead or content (default: False)
 
-        Returns:
-            The updated media if succesfull, otherwise None.
+    Returns:
+        The updated media if succesfull, otherwise None.
     """  # noqa
 
     # upload the file
@@ -118,25 +118,25 @@ def _upload_new_media_file_of_given_lang(
     lang: Optional[str] = "en",
     prepare_for_lumapps: Optional[bool] = False,
 ):
-    """ Upload a file to lumapps without creating an associated media
+    """Upload a file to lumapps without creating an associated media
 
-        Args:
-            client: The BaseClient used to make httpx to the LumApps Api.
-            file_data_or_path: The filepath or the data to upload.
-            filename: The name of the file to upload. Once uploaded the file will appear with that name.
-            mimetype: The mimeType fo the file to upload.
-            lang: The lang of the file to upload (default: "en").
-            prepare_for_lumapps: prepare the return uploaded file to be usable as a lumapps media object (default: False)
+    Args:
+        client: The BaseClient used to make httpx to the LumApps Api.
+        file_data_or_path: The filepath or the data to upload.
+        filename: The name of the file to upload. Once uploaded the file will appear with that name.
+        mimetype: The mimeType fo the file to upload.
+        lang: The lang of the file to upload (default: "en").
+        prepare_for_lumapps: prepare the return uploaded file to be usable as a lumapps media object (default: False)
 
-        Raises:
-            Exception: The data or file path type provided is not supported.
+    Raises:
+        Exception: The data or file path type provided is not supported.
 
-        Returns:
-            Return the uploaded file if successfull, None otherwise.
+    Returns:
+        Return the uploaded file if successfull, None otherwise.
 
-        Notes:
-            This is intended to be used to add new lang version/croppedContent to
-            a LumApps media.
+    Notes:
+        This is intended to be used to add new lang version/croppedContent to
+        a LumApps media.
     """  # noqa
 
     if isinstance(file_data_or_path, str):
