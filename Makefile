@@ -8,6 +8,8 @@ PYTHON ?= python3.7
 PIP = .venv/bin/pip
 POETRY ?= .venv/bin/poetry
 
+pytest_args?=-xv
+
 check: check-docs check-code-quality check-types  ## Check it all!
 
 check-code-quality:  ## Check the code quality.
@@ -58,7 +60,7 @@ setup: .venv  ## Setup the development environment (install dependencies).
 	$(POETRY) run pre-commit install --hook-type commit-msg
 
 test:  ## Run the test suite and report coverage. 2>/dev/null
-	@$(POETRY) run pytest -c config/pytest.ini
+	@$(POETRY) run pytest ${pytest_args} -c config/pytest.ini
 	@$(POETRY) run coverage html --rcfile=config/coverage.ini
 
 .venv:  ## Install the virtual env directory
