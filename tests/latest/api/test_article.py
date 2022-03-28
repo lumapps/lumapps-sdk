@@ -22,4 +22,4 @@ def test_get_article_not_found(client) -> None:
 
     # Then, when
     with pytest.raises(ApiException):
-        article = api.get_article("3efd23b6-1738-46d2-94a9-000000000000")
+        api.get_article("3efd23b6-1738-46d2-94a9-000000000000")
