@@ -1,5 +1,5 @@
 from lumapps.latest.client import IClient
-from lumapps.latest.entities import Article
+from lumapps.latest.entities.article import Article
 
 from .swagger.contribution_v1 import ContributionV1GW
 

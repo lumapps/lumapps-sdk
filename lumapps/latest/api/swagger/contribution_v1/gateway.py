@@ -1,6 +1,6 @@
 from lumapps.latest.client import IClient, Request
 
-from lumapps.latest.api import ApiException
+from lumapps.latest.api.exceptions import ApiException
 
 from . import models
 from ..serialization import Serialization

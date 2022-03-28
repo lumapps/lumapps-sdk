@@ -4,7 +4,7 @@ import os
 import re
 import tempfile
 
-from lumapps.latest.api import ApiException
+from lumapps.latest.api.exceptions import ApiException
 
 
 class SerializationError(ApiException):

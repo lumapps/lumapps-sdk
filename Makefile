@@ -13,7 +13,7 @@ pytest_args?=-xv
 check: check-docs check-code-quality check-types  ## Check it all!
 
 check-code-quality:  ## Check the code quality.
-	@$(POETRY) run failprint -t "Checking code quality" -- flake8 --config=config/flake8.ini $(PY_SRC)
+	@$(POETRY) run failprint -t "Checking code quality" -- flake8 --config config/flake8.ini $(PY_SRC)
 
 check-docs:  ## Check if the documentation builds correctly.
 	@$(POETRY) run failprint -t "Building documentation" -- mkdocs build -s

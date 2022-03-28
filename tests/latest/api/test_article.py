@@ -1,6 +1,7 @@
 import pytest
-from lumapps.latest.api import ArticleApi, ApiException
-from lumapps.latest.entities import Article
+from lumapps.latest.api.exceptions import ApiException
+from lumapps.latest.api.article import ArticleApi
+from lumapps.latest.entities.article import Article
 
 
 @pytest.mark.vcr()
