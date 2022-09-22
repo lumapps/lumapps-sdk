@@ -40,6 +40,9 @@ JWKS_URL = {
     "preview.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
     "sites-beta.eu.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
     "sites-test.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
+    "beta.api.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
+    "stag.api.lumapps.com": "https://login.stag.lumapps.com/v1/jwks",
+    "dev.api.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
 }
 
 
