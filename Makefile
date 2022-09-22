@@ -16,7 +16,7 @@ check-code-quality:  ## Check the code quality.
 	@$(POETRY) run failprint -t "Checking code quality" -- flake8 --config config/flake8.ini $(PY_SRC)
 
 check-docs:  ## Check if the documentation builds correctly.
-	@$(POETRY) run failprint -t "Building documentation" -- mkdocs build -s
+	@$(POETRY) run failprint -t "Building documentation" -- mkdocs build
 
 check-types:  ## Check that the code is correctly typed.
 	@$(POETRY) run failprint -t "Type-checking" -- mypy --config-file config/mypy.ini $(PY_SRC)
