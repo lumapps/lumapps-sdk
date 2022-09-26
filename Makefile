@@ -13,13 +13,13 @@ pytest_args?=-xv
 check: check-docs check-code-quality check-types  ## Check it all!
 
 check-code-quality:  ## Check the code quality.
-	@$(POETRY) run failprint -t "Checking code quality" -- flake8 --config config/flake8.ini $(PY_SRC)
+	@$(POETRY) run flake8 --config config/flake8.ini $(PY_SRC)
 
 check-docs:  ## Check if the documentation builds correctly.
-	@$(POETRY) run failprint -t "Building documentation" -- mkdocs build -s
+	@$(POETRY) run -- mkdocs build
 
 check-types:  ## Check that the code is correctly typed.
-	@$(POETRY) run failprint -t "Type-checking" -- mypy --config-file config/mypy.ini $(PY_SRC)
+	@$(POETRY) run -- mypy --config-file config/mypy.ini $(PY_SRC)
 
 clean:  ## Delete temporary files.
 	@rm -rf build 2>/dev/null
@@ -50,8 +50,8 @@ help:  ## Print this help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
 format:  ## Run formatting tools on the code.
-	@$(POETRY) run failprint -t "Formatting code" -- black $(PY_SRC)
-	@$(POETRY) run failprint -t "Ordering imports" -- isort -y -rc $(PY_SRC)
+	@$(POETRY) run -- black $(PY_SRC)
+	@$(POETRY) run -- isort -y -rc $(PY_SRC)
 
 setup: .venv  ## Setup the development environment (install dependencies).
 	$(POETRY) config virtualenvs.in-project true

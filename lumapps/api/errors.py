@@ -9,11 +9,11 @@ def get_http_err_content(e: HTTPStatusError) -> str:
 
 
 class BaseClientError(Exception):  # pragma: no cover
-    """ Base error of the BaseClient """
+    """Base error of the BaseClient"""
 
 
 class BadCallError(BaseClientError):  # pragma: no cover
-    """ Retrocompatiblity """
+    """Retrocompatiblity"""
 
 
 class LumAppsClientError(BaseClientError):  # pragma: no cover

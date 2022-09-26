@@ -40,6 +40,9 @@ JWKS_URL = {
     "preview.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
     "sites-beta.eu.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
     "sites-test.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
+    "beta.api.lumapps.com": "https://login.beta.lumapps.com/v1/jwks",
+    "stag.api.lumapps.com": "https://login.stag.lumapps.com/v1/jwks",
+    "dev.api.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
 }
 
 
@@ -59,8 +62,8 @@ class LumappsJWT(object):
     @retry_on_http_status_error()
     def get_public_keys(self):
         """
-            Get the public keys used by lumapps in order to be able to
-            to decode the token later on
+        Get the public keys used by lumapps in order to be able to
+        to decode the token later on
         """
 
         jwks_url = "https://login.lumapps.com/v1/jwks"
@@ -76,11 +79,11 @@ class LumappsJWT(object):
 
     def decode(self, token: str) -> Dict[str, Any]:
         """
-            Args:
-                token: The jwt token to decode
-            
-            Returns:
-                the decoded token
+        Args:
+            token: The jwt token to decode
+
+        Returns:
+            the decoded token
         """
         public_keys = {}
         unverified_header = jwt.get_unverified_header(token)

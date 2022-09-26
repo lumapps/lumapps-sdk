@@ -5,7 +5,6 @@ from .swagger.contribution_v1 import ContributionV1GW
 
 
 class ArticleApi:
-
     def __init__(self, client: IClient) -> None:
         self.gateway = ContributionV1GW(client)
 
