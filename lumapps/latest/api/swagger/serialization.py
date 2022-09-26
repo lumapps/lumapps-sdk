@@ -15,14 +15,14 @@ class Serialization(object):
 
     PRIMITIVE_TYPES = (float, bool, bytes, str, int)
     NATIVE_TYPES_MAPPING = {
-        'int': int,
-        'long': int,
-        'float': float,
-        'str': str,
-        'bool': bool,
-        'date': datetime.date,
-        'datetime': datetime.datetime,
-        'object': object,
+        "int": int,
+        "long": int,
+        "float": float,
+        "str": str,
+        "bool": bool,
+        "date": datetime.date,
+        "datetime": datetime.datetime,
+        "object": object,
     }
 
     def __init__(self, models) -> None:
@@ -47,11 +47,9 @@ class Serialization(object):
         elif isinstance(obj, self.PRIMITIVE_TYPES):
             return obj
         elif isinstance(obj, list):
-            return [self.sanitize_for_serialization(sub_obj)
-                    for sub_obj in obj]
+            return [self.sanitize_for_serialization(sub_obj) for sub_obj in obj]
         elif isinstance(obj, tuple):
-            return tuple(self.sanitize_for_serialization(sub_obj)
-                         for sub_obj in obj)
+            return tuple(self.sanitize_for_serialization(sub_obj) for sub_obj in obj)
         elif isinstance(obj, (datetime.datetime, datetime.date)):
             return obj.isoformat()
 
@@ -63,12 +61,15 @@ class Serialization(object):
             # and attributes which value is not None.
             # Convert attribute name to json key in
             # model definition for request.
-            obj_dict = {obj.attribute_map[attr]: getattr(obj, attr)
-                        for attr, _ in obj.swagger_types.items()
-                        if getattr(obj, attr) is not None}
+            obj_dict = {
+                obj.attribute_map[attr]: getattr(obj, attr)
+                for attr, _ in obj.swagger_types.items()
+                if getattr(obj, attr) is not None
+            }
 
-        return {key: self.sanitize_for_serialization(val)
-                for key, val in obj_dict.items()}
+        return {
+            key: self.sanitize_for_serialization(val) for key, val in obj_dict.items()
+        }
 
     def deserialize(self, data: dict, klass):
         """Deserializes dict, list, str into an object.
@@ -82,15 +83,13 @@ class Serialization(object):
             return None
 
         if type(klass) == str:
-            if klass.startswith('list['):
-                sub_kls = re.match(r'list\[(.*)\]', klass).group(1)
-                return [self.deserialize(sub_data, sub_kls)
-                        for sub_data in data]
+            if klass.startswith("list["):
+                sub_kls = re.match(r"list\[(.*)\]", klass).group(1)
+                return [self.deserialize(sub_data, sub_kls) for sub_data in data]
 
-            if klass.startswith('dict('):
-                sub_kls = re.match(r'dict\(([^,]*), (.*)\)', klass).group(2)
-                return {k: self.deserialize(v, sub_kls)
-                        for k, v in data.items()}
+            if klass.startswith("dict("):
+                sub_kls = re.match(r"dict\(([^,]*), (.*)\)", klass).group(2)
+                return {k: self.deserialize(v, sub_kls) for k, v in data.items()}
 
             # convert str to class
             if klass in self.NATIVE_TYPES_MAPPING:
@@ -119,22 +118,23 @@ class Serialization(object):
         new_params = []
         if collection_formats is None:
             collection_formats = {}
-        for k, v in params.items() if isinstance(params, dict) else params:  # noqa: E501
+        for k, v in (
+            params.items() if isinstance(params, dict) else params
+        ):  # noqa: E501
             if k in collection_formats:
                 collection_format = collection_formats[k]
-                if collection_format == 'multi':
+                if collection_format == "multi":
                     new_params.extend((k, value) for value in v)
                 else:
-                    if collection_format == 'ssv':
-                        delimiter = ' '
-                    elif collection_format == 'tsv':
-                        delimiter = '\t'
-                    elif collection_format == 'pipes':
-                        delimiter = '|'
+                    if collection_format == "ssv":
+                        delimiter = " "
+                    elif collection_format == "tsv":
+                        delimiter = "\t"
+                    elif collection_format == "pipes":
+                        delimiter = "|"
                     else:  # csv is the default
-                        delimiter = ','
-                    new_params.append(
-                        (k, delimiter.join(str(value) for value in v)))
+                        delimiter = ","
+                    new_params.append((k, delimiter.join(str(value) for value in v)))
             else:
                 new_params.append((k, v))
         return new_params
@@ -157,13 +157,14 @@ class Serialization(object):
                     continue
                 file_names = v if type(v) is list else [v]
                 for n in file_names:
-                    with open(n, 'rb') as f:
+                    with open(n, "rb") as f:
                         filename = os.path.basename(f.name)
                         filedata = f.read()
-                        mimetype = (mimetypes.guess_type(filename)[0] or
-                                    'application/octet-stream')
-                        params.append(
-                            tuple([k, tuple([filename, filedata, mimetype])]))
+                        mimetype = (
+                            mimetypes.guess_type(filename)[0]
+                            or "application/octet-stream"
+                        )
+                        params.append(tuple([k, tuple([filename, filedata, mimetype])]))
 
         return params
 
@@ -178,10 +179,10 @@ class Serialization(object):
 
         accepts = [x.lower() for x in accepts]
 
-        if 'application/json' in accepts:
-            return 'application/json'
+        if "application/json" in accepts:
+            return "application/json"
         else:
-            return ', '.join(accepts)
+            return ", ".join(accepts)
 
     def select_header_content_type(self, content_types):
         """Returns `Content-Type` based on an array of content_types provided.
@@ -190,12 +191,12 @@ class Serialization(object):
         :return: Content-Type (e.g. application/json).
         """
         if not content_types:
-            return 'application/json'
+            return "application/json"
 
         content_types = [x.lower() for x in content_types]
 
-        if 'application/json' in content_types or '*/*' in content_types:
-            return 'application/json'
+        if "application/json" in content_types or "*/*" in content_types:
+            return "application/json"
         else:
             return content_types[0]
 
@@ -212,15 +213,15 @@ class Serialization(object):
         for auth in auth_settings:
             auth_setting = self.configuration.auth_settings().get(auth)
             if auth_setting:
-                if not auth_setting['value']:
+                if not auth_setting["value"]:
                     continue
-                elif auth_setting['in'] == 'header':
-                    headers[auth_setting['key']] = auth_setting['value']
-                elif auth_setting['in'] == 'query':
-                    querys.append((auth_setting['key'], auth_setting['value']))
+                elif auth_setting["in"] == "header":
+                    headers[auth_setting["key"]] = auth_setting["value"]
+                elif auth_setting["in"] == "query":
+                    querys.append((auth_setting["key"], auth_setting["value"]))
                 else:
                     raise ValueError(
-                        'Authentication token must be in `query` or `header`'
+                        "Authentication token must be in `query` or `header`"
                     )
 
     def __deserialize_file(self, response):
@@ -238,14 +239,15 @@ class Serialization(object):
 
         content_disposition = response.getheader("Content-Disposition")
         if content_disposition:
-            filename = re.search(r'filename=[\'"]?([^\'"\s]+)[\'"]?',
-                                 content_disposition).group(1)
+            filename = re.search(
+                r'filename=[\'"]?([^\'"\s]+)[\'"]?', content_disposition
+            ).group(1)
             path = os.path.join(os.path.dirname(path), filename)
             response_data = response.data
             with open(path, "wb") as f:
                 if isinstance(response_data, str):
                     # change str to bytes so we can write it
-                    response_data = response_data.encode('utf-8')
+                    response_data = response_data.encode("utf-8")
                     f.write(response_data)
                 else:
                     f.write(response_data)
@@ -281,6 +283,7 @@ class Serialization(object):
         """
         try:
             from dateutil.parser import parse
+
             return parse(string).date()
         except ImportError:
             return string
@@ -297,6 +300,7 @@ class Serialization(object):
         """
         try:
             from dateutil.parser import parse
+
             return parse(string)
         except ImportError:
             return string
@@ -304,7 +308,7 @@ class Serialization(object):
             raise SerializationError(f"Failed to parse `{string}` as datetime object")
 
     def __hasattr(self, object, name):
-            return name in object.__class__.__dict__
+        return name in object.__class__.__dict__
 
     def __deserialize_model(self, data, klass):
         """Deserializes list or dict to model.
@@ -314,27 +318,33 @@ class Serialization(object):
         :return: model object.
         """
 
-        if not klass.swagger_types and not self.__hasattr(klass, 'get_real_child_model'):
+        if not klass.swagger_types and not self.__hasattr(
+            klass, "get_real_child_model"
+        ):
             return data
 
         kwargs = {}
         if klass.swagger_types is not None:
             for attr, attr_type in klass.swagger_types.items():
-                if (data is not None and
-                        klass.attribute_map[attr] in data and
-                        isinstance(data, (list, dict))):
+                if (
+                    data is not None
+                    and klass.attribute_map[attr] in data
+                    and isinstance(data, (list, dict))
+                ):
                     value = data[klass.attribute_map[attr]]
                     kwargs[attr] = self.deserialize(value, attr_type)
 
         instance = klass(**kwargs)
 
-        if (isinstance(instance, dict) and
-                klass.swagger_types is not None and
-                isinstance(data, dict)):
+        if (
+            isinstance(instance, dict)
+            and klass.swagger_types is not None
+            and isinstance(data, dict)
+        ):
             for key, value in data.items():
                 if key not in klass.swagger_types:
                     instance[key] = value
-        if self.__hasattr(instance, 'get_real_child_model'):
+        if self.__hasattr(instance, "get_real_child_model"):
             klass_name = instance.get_real_child_model(data)
             if klass_name:
                 instance = self.deserialize(data, klass_name)
@@ -371,4 +381,3 @@ Serialization usage
         post_params = self.parameters_to_tuples(post_params,
                                                 collection_formats)
 """
-

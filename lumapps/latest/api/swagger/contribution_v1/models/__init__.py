@@ -86,8 +86,12 @@ from .media_preview import MediaPreview
 from .metadata_reference import MetadataReference
 from .multilang_document import MultilangDocument
 from .multilang_object import MultilangObject
-from .one_of_create_event_in_container_request_external_url_label import OneOfCreateEventInContainerRequestExternalUrlLabel
-from .one_of_create_or_update_event_request_external_url_label import OneOfCreateOrUpdateEventRequestExternalUrlLabel
+from .one_of_create_event_in_container_request_external_url_label import (
+    OneOfCreateEventInContainerRequestExternalUrlLabel,
+)
+from .one_of_create_or_update_event_request_external_url_label import (
+    OneOfCreateOrUpdateEventRequestExternalUrlLabel,
+)
 from .one_of_event_external_url_label import OneOfEventExternalUrlLabel
 from .one_of_widget_body import OneOfWidgetBody
 from .organizer_ids import OrganizerIds

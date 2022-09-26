@@ -41,7 +41,8 @@ class ApplicationClient(IClient):
         self.application = application
         self.session = OAuth2Session(
             client=BackendApplicationClient(
-                client_id=application.client_id, scope=None,
+                client_id=application.client_id,
+                scope=None,
             )
         )
         self.organization_url = (

@@ -56,16 +56,16 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         dry_run: bool = False,
         **kwargs,
     ):
-        """ Create a LumAppsClient associated to a particular LumApps platform and site
+        """Create a LumAppsClient associated to a particular LumApps platform and site
 
-            Args:
-                customer_id: The id of the platform you target
-                instance_id: The id of the instance you target
-                args: The args to pass to the BaseClient
-                cache: The cache to use
-                dry_run: Whether to run in dry_run mode or not. This will
-                    avoid saving things when callings save endpoints
-                kwargs: The kwargs to pass to the BaseClient
+        Args:
+            customer_id: The id of the platform you target
+            instance_id: The id of the instance you target
+            args: The args to pass to the BaseClient
+            cache: The cache to use
+            dry_run: Whether to run in dry_run mode or not. This will
+                avoid saving things when callings save endpoints
+            kwargs: The kwargs to pass to the BaseClient
         """
         if not customer_id:
             raise LumAppsClientConfError("customer_id required")
@@ -152,19 +152,19 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         return self.get_call("misc/urlinfo", url=url)  # type: ignore
 
     def get_available_instance_slug(self, desired_slug: str) -> str:
-        """ Find an available instance slug according to
-            the given slug and the current token customer.
-            If the exact slug is not avaialble -i at the end until we
-            found an available one or i reachs 300.
+        """Find an available instance slug according to
+        the given slug and the current token customer.
+        If the exact slug is not avaialble -i at the end until we
+        found an available one or i reachs 300.
 
-            Args:
-                desired_slug: The desired slug
+        Args:
+            desired_slug: The desired slug
 
-            Returns:
-                The first available slug found
+        Returns:
+            The first available slug found
 
-            Raises:
-                Exception: Reached 300 try
+        Raises:
+            Exception: Reached 300 try
         """
         post_fix = None
         while True:
@@ -183,19 +183,19 @@ class LumAppsClient(BaseClient):  # pragma: no cover
 
     def get_available_slug(self, desired_slug: str) -> str:
         """
-            Find an available content slug according to
-            the given slug and the current token customer.
-            If the exact slug is not avaialble -i at the end until we
-            found an available one or i reachs 300.
+        Find an available content slug according to
+        the given slug and the current token customer.
+        If the exact slug is not avaialble -i at the end until we
+        found an available one or i reachs 300.
 
-            Args:
-                desired_slug: The desired slug
+        Args:
+            desired_slug: The desired slug
 
-            Returns:
-                The first available slug found
+        Returns:
+            The first available slug found
 
-            Raises:
-                Exception: Reached 300 try
+        Raises:
+            Exception: Reached 300 try
         """
         post_fix = None
         while True:
@@ -229,16 +229,16 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         action: str = "PAGE_EDIT",
         cache: bool = False,
     ) -> Optional[Dict[str, Any]]:
-        """ Get a content via his id
+        """Get a content via his id
 
-            Args:
-                content_id: The id of the content to get
-                fields: The fields projection to apply
-                action: PAGE_EDIT
-                cache: Whether to cache the result or not
+        Args:
+            content_id: The id of the content to get
+            fields: The fields projection to apply
+            action: PAGE_EDIT
+            cache: Whether to cache the result or not
 
-            Returns:
-                The retrieved content or None if it was not found
+        Returns:
+            The retrieved content or None if it was not found
         """
         if cache:
             c = self.cache.get(f"{self.customer_id}|CONTENT|{content_id}")
@@ -256,15 +256,15 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         self, slug: str, fields: str = None, action: str = "PAGE_EDIT"
     ) -> Optional[Dict[str, Any]]:
         """
-            Get a content via his slug
+        Get a content via his slug
 
-            Args:
-                slug: The slug of the content to get
-                fields: The fields projection to apply
-                action: PAGE_EDIT
+        Args:
+            slug: The slug of the content to get
+            fields: The fields projection to apply
+            action: PAGE_EDIT
 
-            Returns:
-                The retrieved content or None if it was not found
+        Returns:
+            The retrieved content or None if it was not found
         """
         params = {}
         if action:
@@ -376,14 +376,14 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     def iter_contents(
         self, content_type_id: str = None, **kwargs
     ) -> Generator[Dict[str, Any], None, None]:
-        """ Iterate over the contents on the current lumapps site \n
+        """Iterate over the contents on the current lumapps site \n
 
-            https://apiv1.lumapps.com/#operation/Content/List
+        https://apiv1.lumapps.com/#operation/Content/List
 
-            Args:
-                content_type_id: The id of a content type.
-                    This will be used to filter the retrieved contents
-                kwargs: The args to pass to the request (see lumapps api doc)
+        Args:
+            content_type_id: The id of a content type.
+                This will be used to filter the retrieved contents
+            kwargs: The args to pass to the request (see lumapps api doc)
 
         """
         body = {"lang": "", "instanceId": self.instance_id, "action": "PAGE_EDIT"}
@@ -600,14 +600,14 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         return self.get_call("user/settings/save", body=settings)
 
     def iter_users(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
-        """ Iterate overs the platform users \n
-            https://apiv1.lumapps.com/#operation/User/List
+        """Iterate overs the platform users \n
+        https://apiv1.lumapps.com/#operation/User/List
 
-            Args:
-                **kwargs: args to add to the request (see api documentation)
+        Args:
+            **kwargs: args to add to the request (see api documentation)
 
-            Returns:
-                A generator return the platform users
+        Returns:
+            A generator return the platform users
         """
         params = {"instance": self.instance_id}
         params.update(kwargs)
@@ -619,13 +619,13 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         yield from self.iter_call("user/list", **kwargs)
 
     def save_user(self, user: Dict[str, Any]) -> Dict[str, Any]:
-        """ Save a user
+        """Save a user
 
-            Args:
-                user: The user to save
+        Args:
+            user: The user to save
 
-            Returns:
-                The saved user
+        Returns:
+            The saved user
         """
         debug(f"Saving user: {to_json(user)}")
         if self.dry_run:
@@ -658,13 +658,13 @@ class LumAppsClient(BaseClient):  # pragma: no cover
 
     @lru_cache()
     def get_user(self, id_or_email: str) -> Dict[str, Any]:
-        """ Get a user from his id or email
+        """Get a user from his id or email
 
-            Args:
-                id_or_email: The id or email or the user
+        Args:
+            id_or_email: The id or email or the user
 
-            Returns:
-                The retrieved user
+        Returns:
+            The retrieved user
         """
         k = f"{self.customer_id}|USER|{id_or_email}"
         try:
@@ -699,7 +699,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             return self.get_call("role/save", body=role)
 
     def download_file(self, url: str, file_io: FileIO) -> Tuple[str, str]:
-        """ Returns mime type from content-type header"""
+        """Returns mime type from content-type header"""
         assert url
         try:
             with self.client.stream("GET", url) as r:
@@ -722,7 +722,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     def _get_upload_url(
         self, fname: str, folder_id: Optional[str], shared: bool
     ) -> Optional[str]:
-        """ {
+        """{
             "fileName": "orange.jpeg",
             "lang": "en",
             "parentPath":
@@ -731,7 +731,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             "parentPath": "provider=local/site=5763671289102336",
             "shared": true,
             "success": "/upload"
-        } """
+        }"""
         parent_path = f"provider=local/site={self.instance_id}"
         if folder_id:
             parent_path += f"/resource={folder_id}"
@@ -1066,7 +1066,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         return self.get_call("widget/save", body=widget)
 
     def get_media(self, media_id: str) -> Dict[str, Any]:
-        """ prefer get_document above """
+        """prefer get_document above"""
         return self.get_call("media/get", uid=media_id)
 
     def save_media(self, media: Dict[str, Any]) -> Dict[str, Any]:
@@ -1266,14 +1266,14 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     def save_content(
         self, content: Dict[str, Any], cache: bool = False
     ) -> Dict[str, Any]:
-        """ Save a content
+        """Save a content
 
-            Args:
-                content: The content to save
-                cache: Whether to cache the saved content based on his id
+        Args:
+            content: The content to save
+            cache: Whether to cache the saved content based on his id
 
-            Returns:
-                The saved content
+        Returns:
+            The saved content
         """
         debug(f"Saving content: {to_json(content)}")
         if self.dry_run:
@@ -1377,13 +1377,13 @@ class LumAppsClient(BaseClient):  # pragma: no cover
 
     @lru_cache()
     def get_group(self, group_id: str) -> Dict[str, Any]:
-        """ Get a group by his id
+        """Get a group by his id
 
-            Args:
-                group_id: The id of the group
+        Args:
+            group_id: The id of the group
 
-            Returns:
-                The retrieved group
+        Returns:
+            The retrieved group
         """
         return self.get_call("feed/get", uid=group_id)
 
@@ -1614,31 +1614,30 @@ class LumAppsClient(BaseClient):  # pragma: no cover
                 return group_type["id"]
 
     def iter_groups(self, type_id: str) -> Generator[Dict[str, Any], None, None]:
-        """ Iter the groups on the current site
+        """Iter the groups on the current site
 
-            Args:
-                type_id: The id of the group type (feedType or category) to filter on
+        Args:
+            type_id: The id of the group type (feedType or category) to filter on
 
-            Returns:
-                The groups in that group type
+        Returns:
+            The groups in that group type
         """
         return self.iter_call(
             "feed/list", instance=self.instance_id, type=type_id, action="GROUP_EDIT"
         )
 
     def iter_platform_group_types(self) -> Generator[Dict[str, Any], None, None]:
-        """ Iterate over the platform group types
+        """Iterate over the platform group types
 
-            Yield:
-                A group
+        Yield:
+            A group
         """
         for gt in self.iter_call("feedtype/list", customer=self.customer_id):
             if not gt.get("instance"):
                 yield gt
 
     def iter_instance_group_types(self) -> Generator[Dict[str, Any], None, None]:
-        """ Iterate over the site group types
-        """
+        """Iterate over the site group types"""
         for gt in self.iter_call(
             "feedtype/list", customer=self.customer_id, instance=self.instance_id
         ):
@@ -1658,14 +1657,14 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         self.get_call("feed/delete", uid=group_id)
 
     def save_group(self, group: Dict[str, Any], retries: int = 0) -> Dict[str, Any]:
-        """ Save a group
+        """Save a group
 
-            Args:
-                group: The group to save
-                retries: The number of retries on failure to do
+        Args:
+            group: The group to save
+            retries: The number of retries on failure to do
 
-            Returns:
-                The saved group
+        Returns:
+            The saved group
         """
         info(f"Saving group: {to_json(group)}")
         if self.dry_run:

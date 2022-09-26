@@ -1,12 +1,11 @@
+from lumapps.latest.api.exceptions import ApiException
 from lumapps.latest.client import IClient, Request
 
-from lumapps.latest.api.exceptions import ApiException
-
-from . import models
 from ..serialization import Serialization
+from . import models
+
 
 class ContributionV1GW(object):
-
     def __init__(self, client: IClient) -> None:
         self.client = client
 
@@ -20,8 +19,7 @@ class ContributionV1GW(object):
             return Serialization(models).deserialize(response.json, models.Article)
         else:
             raise ApiException(
-                Serialization(models).deserialize(
-                    response.json["errors"][0],
-                    models.Error
-                ).detail,
+                Serialization(models)
+                .deserialize(response.json["errors"][0], models.Error)
+                .detail,
             )
