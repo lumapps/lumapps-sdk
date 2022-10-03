@@ -37,3 +37,9 @@ def test_get_available_slug(mocker, cli: LumAppsClient):
     slug = "first-project-items-are-due-1-goals-and-deliverables-2-project-members-3-due-dates-if-you-need"
     new_slug = cli.get_available_slug(slug)
     assert new_slug == slug + "-10"
+
+
+def test_custom_headers():
+    headers = {"my-header": "on"}
+    cli = LumAppsClient("a", "b", token="FAKE", extra_http_headers=headers)
+    assert "my-header" in cli.client.headers
