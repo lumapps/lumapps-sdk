@@ -58,7 +58,11 @@ class ApplicationClient(IClient):
             request.method,
             f"{self.organization_url}/{request.url.lstrip('/')}",
             params=request.params,
-            headers={**request.headers, "User-Agent": "lumapps-sdk"},
+            headers={
+                **request.headers,
+                "User-Agent": "lumapps-sdk",
+                "x-lumapps-analytics": "off",
+            },
             json=request.json,
         )
         return Response(
