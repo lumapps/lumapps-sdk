@@ -50,6 +50,7 @@ class BaseClient(AbstractContextManager):
         prune: bool = False,
         no_verify: bool = False,
         proxy_info: Optional[Dict[str, Any]] = None,
+        extra_http_headers: Optional[Dict] = None,
     ):
         """
         Args:
@@ -72,7 +73,9 @@ class BaseClient(AbstractContextManager):
         self._token = None
         self._endpoints = None
         self._client = None
-        self._headers: dict = {}
+        self._headers: dict = {"x-lumapps-analytics": "off"}
+        if extra_http_headers:
+            self._headers.update(extra_http_headers)
         if api_info is None:
             api_info = {}
         api_info.setdefault("name", LUMAPPS_NAME)
