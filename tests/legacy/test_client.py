@@ -43,3 +43,17 @@ def test_custom_headers():
     headers = {"my-header": "on"}
     cli = LumAppsClient("a", "b", token="FAKE", extra_http_headers=headers)
     assert "my-header" in cli.client.headers
+
+
+def test_custom_headers_for_new_client(mocker):
+    def dummy_get_call(*args, **kwargs):
+        return {"accessToken": "1"}
+    mocker.patch(
+        "lumapps.api.base_client.BaseClient.get_call",
+        dummy_get_call,
+    )
+
+    headers = {"my-header": "on"}
+    cli = LumAppsClient("a", "b", token="FAKE", extra_http_headers=headers)
+    new_as = cli.get_new_client_as("user_email")
+    assert "my-header" in new_as.client.headers

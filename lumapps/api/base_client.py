@@ -74,8 +74,9 @@ class BaseClient(AbstractContextManager):
         self._endpoints = None
         self._client = None
         self._headers: dict = {"x-lumapps-analytics": "off"}
-        if extra_http_headers:
-            self._headers.update(extra_http_headers)
+        self._extra_http_headers = extra_http_headers
+        if self._extra_http_headers:
+            self._headers.update(self._extra_http_headers)
         if api_info is None:
             api_info = {}
         api_info.setdefault("name", LUMAPPS_NAME)
@@ -231,6 +232,7 @@ class BaseClient(AbstractContextManager):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
+            extra_http_headers=self._extra_http_headers,
         )
 
     def get_new_client_as(
@@ -252,6 +254,7 @@ class BaseClient(AbstractContextManager):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
+            extra_http_headers=self._extra_http_headers,
         )
         token_infos: Any = client.get_call(
             "user/getToken", customerId=customer_id, email=user_email
@@ -264,6 +267,7 @@ class BaseClient(AbstractContextManager):
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
+            extra_http_headers=self._extra_http_headers,
         )
 
     @property
