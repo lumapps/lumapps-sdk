@@ -36,7 +36,7 @@ LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
 LUMAPPS_VERSION = "v1"
 LUMAPPS_NAME = "lumsites"
 LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
-FileContent = Union[IO[str], IO[bytes], str, bytes]
+FileContent = Union[IO[bytes], bytes]
 
 
 class BaseClient(AbstractContextManager):
@@ -386,7 +386,11 @@ class BaseClient(AbstractContextManager):
         path: Any = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]  # type: ignore  # noqa
         path = self._expand_path(path, endpoint, params)
         files = {
-            "data": ("metadata", dumps(metadata), "application/json; charset=UTF-8"),
+            "data": (
+                "metadata",
+                bytes(dumps(metadata), "utf-8"),
+                "application/json; charset=UTF-8",
+            ),
             "file": file_content,
         }
         resp = self.client.request(verb, path, params=params, files=files)
