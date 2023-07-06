@@ -24,6 +24,7 @@ JWKS_URL = {
     "dot-lumapps-dev.appspot.com": "https://login.dev.lumapps.com/v1/jwks",
     "dot-lumapps-sandbox.appspot.com": "https://login-sandbox.dev.lumapps.com/v1/jwks",
     "dot-lumapps-staging.appspot.com": "https://login.stag.lumapps.com/v1/jwks",
+    "lumapps-staging.appspot.com": "https://login.stag.lumapps.com/v1/jwks",
     "sites-staging.lumapps.com": "https://login.stag.lumapps.com/v1/jwks",
     "sites-analytics.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
     "sites-ba.lumapps.com": "https://login.dev.lumapps.com/v1/jwks",
