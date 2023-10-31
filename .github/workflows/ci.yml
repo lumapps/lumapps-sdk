@@ -17,7 +17,7 @@ jobs:
       - name: Setup Python 🐍
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.8
 
       - name: Install Poetry
         uses: snok/install-poetry@5e4414407e59f94f2148bcb253917dfc22dee7d9
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
 
     steps:
       - name: Checkout branch
@@ -80,7 +80,7 @@ jobs:
         run: POETRY=poetry make test
 
       - name: Upload coverage to Codecov
-        if: matrix.python-version == 3.7
+        if: matrix.python-version == 3.8
         uses: codecov/codecov-action@f32b3a3741e1053eb607407145bc9619351dc93b
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

@@ -4,7 +4,7 @@
 PY_SRC := lumapps/
 CI ?= false
 TESTING ?= false
-PYTHON ?= python3.7
+PYTHON ?= python3.8
 PIP = .venv/bin/pip
 POETRY ?= .venv/bin/poetry
 
@@ -65,5 +65,4 @@ test:  ## Run the test suite and report coverage. 2>/dev/null
 
 .venv:  ## Install the virtual env directory
 	$(PYTHON) -m venv .venv
-	$(PIP) install --quiet --upgrade pip
-	$(PIP) install poetry
+	$(PIP) install --quiet --upgrade pip poetry
