@@ -36,7 +36,7 @@ LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
 LUMAPPS_VERSION = "v1"
 LUMAPPS_NAME = "lumsites"
 LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
-FileContent = Union[IO[str], IO[bytes], str, bytes]
+FileContent = Union[IO[bytes], str, bytes]
 
 
 class BaseClient(AbstractContextManager):
