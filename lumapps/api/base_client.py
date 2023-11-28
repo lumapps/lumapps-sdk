@@ -69,7 +69,7 @@ class BaseClient(AbstractContextManager):
         self.no_verify = no_verify
         self.proxy_info = proxy_info
         self.prune = prune
-        self._auth_info = auth_info
+        self._auth_info = auth_info or {}
         self._token = None
         self._endpoints = None
         self._client = None
@@ -90,7 +90,7 @@ class BaseClient(AbstractContextManager):
         prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
         self._api_url = f"{prefix}/{api_name}/{api_ver}"
         self._discovery_url = (
-            f"{self.base_url}{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
+            f"{LUMAPPS_BASE_URL}{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
         )
         self.token_getter = token_getter
         self.user = user
@@ -144,32 +144,40 @@ class BaseClient(AbstractContextManager):
             kwargs["proxies"] = {"https://": proxy, "http://": proxy}
         else:
             kwargs["proxies"] = None
-        if not auth and self._token:
-            s = Client(**kwargs)
-        elif auth and "refresh_token" in auth:
-            s = OAuth2Client(
-                client_id=auth["client_id"],
-                client_secret=auth["client_secret"],
-                scope=self._scope,
-                **kwargs,
-            )
-            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
-        elif auth:  # service account
-            claims = {"scope": self._scope} if self._scope else {}
-            s = AssertionClient(
-                token_endpoint=auth["token_uri"],
-                issuer=auth["client_email"],
-                audience=auth["token_uri"],
-                claims=claims,
-                subject=self.user,
-                key=auth["private_key"],
-                header={"alg": "RS256"},
-                **kwargs,
-            )
-        else:
-            raise BaseClientError(
-                "No authentication provided (token_getter, auth_info, or token)."
-            )
+        # if not auth and self._token:
+        #     s = Client(**kwargs)
+        # elif auth and "refresh_token" in auth:
+        #     s = OAuth2Client(
+        #         client_id=auth["client_id"],
+        #         client_secret=auth["client_secret"],
+        #         scope=self._scope,
+        #         **kwargs,
+        #     )
+        #     s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
+        # elif auth:  # service account
+        #     claims = {"scope": self._scope} if self._scope else {}
+        #     s = AssertionClient(
+        #         token_endpoint=auth["token_uri"],
+        #         issuer=auth["client_email"],
+        #         audience=auth["token_uri"],
+        #         claims=claims,
+        #         subject=self.user,
+        #         key=auth["private_key"],
+        #         header={"alg": "RS256"},
+        #         **kwargs,
+        #     )
+        # else:
+        #     raise BaseClientError(
+        #         "No authentication provided (token_getter, auth_info, or token)."
+        #     )
+        kwargs["token_endpoint"] = f"{self.base_url}/v2/organizations/{auth['customer_id']}/application-token"
+        kwargs["grant_type"] = "client_credentials"
+        kwargs["user_email"] = auth["user_email"]
+        s = OAuth2Client(
+            client_id=auth["client_id"],
+            client_secret=auth["client_secret"],
+            **kwargs,
+        )
         return s
 
     @property
@@ -248,22 +256,11 @@ class BaseClient(AbstractContextManager):
         Returns:
             BaseClient: A new instance of the BaseClient correctly authenticated.
         """
-        client = BaseClient(
-            auth_info=self._auth_info,
-            api_info=self.api_info,
-            no_verify=self.no_verify,
-            proxy_info=self.proxy_info,
-            prune=self.prune,
-            extra_http_headers=self._extra_http_headers,
-        )
-        token_infos: Any = client.get_call(
-            "user/getToken", customerId=customer_id, email=user_email
-        )
-        token = token_infos["accessToken"]
+        auth_info = self._auth_info.copy()
+        auth_info.update({"customer_id": customer_id, "user_email": user_email})
         return BaseClient(
+            auth_info=auth_info,
             api_info=self.api_info,
-            token=token,
-            user=user_email,
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,

@@ -1,7 +1,6 @@
 from authlib.common.urls import url_decode
 from authlib.integrations.base_client import (
     InvalidTokenError,
-    MissingTokenError,
     OAuthError,
 )
 from authlib.integrations.httpx_client.oauth2_client import OAuth2Auth, OAuth2ClientAuth
@@ -122,10 +121,7 @@ class OAuth2Client(_OAuth2Client, Client):
 
     def request(self, method, url, withhold_token=False, auth=None, **kwargs):
         if not withhold_token and auth is None:
-            if not self.token:
-                raise MissingTokenError()
-
-            if self.token.is_expired():
+            if not self.token or self.token.is_expired():
                 self.ensure_active_token()
 
             auth = self.token_auth
@@ -133,15 +129,10 @@ class OAuth2Client(_OAuth2Client, Client):
         return super(OAuth2Client, self).request(method, url, auth=auth, **kwargs)
 
     def ensure_active_token(self):
-        refresh_token = self.token.get("refresh_token")
         url = self.metadata.get("token_endpoint")
-        if refresh_token and url:
-            self.refresh_token(url, refresh_token=refresh_token)
-        elif self.metadata.get("grant_type") == "client_credentials":
-            access_token = self.token["access_token"]
-            token = self.fetch_token(url, grant_type="client_credentials")
-            if self.update_token:
-                self.update_token(token, access_token=access_token)
+        if self.metadata.get("grant_type") == "client_credentials":
+            additional_body = f"user_email={self.metadata['user_email']}"
+            self.fetch_token(url, grant_type="client_credentials", body=additional_body)
         else:
             raise InvalidTokenError()
 
