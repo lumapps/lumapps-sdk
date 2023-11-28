@@ -1,6 +1,6 @@
 from contextlib import AbstractContextManager
 from functools import lru_cache
-from json import dumps, loads
+from json import dumps, load, loads
 from pathlib import Path
 from textwrap import TextWrapper
 from time import time
@@ -170,7 +170,9 @@ class BaseClient(AbstractContextManager):
         #     raise BaseClientError(
         #         "No authentication provided (token_getter, auth_info, or token)."
         #     )
-        kwargs["token_endpoint"] = f"{self.base_url}/v2/organizations/{auth['customer_id']}/application-token"
+        kwargs[
+            "token_endpoint"
+        ] = f"{self.base_url}/v2/organizations/{auth['customer_id']}/application-token"
         kwargs["grant_type"] = "client_credentials"
         kwargs["user_email"] = auth["user_email"]
         s = OAuth2Client(
@@ -191,17 +193,10 @@ class BaseClient(AbstractContextManager):
     @property  # type: ignore
     @lru_cache()
     def discovery_doc(self):
-        url = self._discovery_url
-        d = get_discovery_cache().get(url)
-        if d and isinstance(d, str):
-            return loads(d)
-        elif d and isinstance(d, dict):
-            return d
-        else:
-            resp = self.client.get(url)
-            resp_doc = resp.json()
-            get_discovery_cache().set(url, resp_doc)
-            return resp_doc
+        fname = Path(__file__).parent / "discovery.json"
+        discovery = load(open(fname, "r"))
+        discovery["baseUrl"] = self.base_url
+        return discovery
 
     def _check_access_token(self):
         if not self.token_getter:
