@@ -116,7 +116,7 @@ def fake_request_with_none_on_code_and_message():
 
 
 def test_none_on_code_and_message_1(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=403, data=b"message")
+    httpx_mock.add_response(status_code=403, content=b"message")
 
     res = fake_request_with_none_on_code_and_message()
 
@@ -124,7 +124,7 @@ def test_none_on_code_and_message_1(httpx_mock: HTTPXMock):
     assert res is None
 
 def test_none_on_code_and_message_2(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=402, data=b"message")
+    httpx_mock.add_response(status_code=402, content=b"message")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_code_and_message()
@@ -132,7 +132,7 @@ def test_none_on_code_and_message_2(httpx_mock: HTTPXMock):
     assert httpx_mock.get_requests()
 
 def test_none_on_code_and_message_3(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=403, data=b"pas le mot dedans")
+    httpx_mock.add_response(status_code=403, content=b"pas le mot dedans")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_code_and_message()
@@ -149,7 +149,7 @@ def fake_request_with_none_on_400_ALREADY_ARCHIVED():
 
 
 def test_none_on_400_ALREADY_ARCHIVED_1(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=400, data=b"ALREADY_ARCHIVED")
+    httpx_mock.add_response(status_code=400, content=b"ALREADY_ARCHIVED")
 
     res = fake_request_with_none_on_400_ALREADY_ARCHIVED()
 
@@ -157,7 +157,7 @@ def test_none_on_400_ALREADY_ARCHIVED_1(httpx_mock: HTTPXMock):
     assert res is None
 
 def test_none_on_400_ALREADY_ARCHIVED_2(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=401, data=b"ALREADY_ARCHIVED")
+    httpx_mock.add_response(status_code=401, content=b"ALREADY_ARCHIVED")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_400_ALREADY_ARCHIVED()
@@ -174,7 +174,7 @@ def fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED():
 
 
 def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_1(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=400, data=b"SUBSCRIPTION_ALREADY_EXISTS")
+    httpx_mock.add_response(status_code=400, content=b"SUBSCRIPTION_ALREADY_EXISTS")
 
     res = fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED()
 
@@ -183,7 +183,7 @@ def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_1(httpx_mock: HTTPXMo
 
 
 def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_2(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=400, data=b"Already pinned")
+    httpx_mock.add_response(status_code=400, content=b"Already pinned")
 
     res = fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED()
 
@@ -191,7 +191,7 @@ def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_2(httpx_mock: HTTPXMo
     assert res is None
 
 def test_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED_3(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=401, data=b"Already pinned")
+    httpx_mock.add_response(status_code=401, content=b"Already pinned")
 
     with pytest.raises(httpx.HTTPStatusError):
         fake_request_with_none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED()
@@ -209,7 +209,7 @@ def fake_request_with_raise_known_save_errors():
 
 
 def test_raise_known_save_errors_1(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=400, data=b"URL_ALREADY_EXISTS")
+    httpx_mock.add_response(status_code=400, content=b"URL_ALREADY_EXISTS")
 
     with pytest.raises(UrlAlreadyExistsError):
         fake_request_with_raise_known_save_errors()
@@ -218,7 +218,7 @@ def test_raise_known_save_errors_1(httpx_mock: HTTPXMock):
 
 
 def test_raise_known_save_errors_2(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(status_code=400, data=b"Feeds are required")
+    httpx_mock.add_response(status_code=400, content=b"Feeds are required")
 
     with pytest.raises(FeedsRequiredError):
         fake_request_with_raise_known_save_errors()

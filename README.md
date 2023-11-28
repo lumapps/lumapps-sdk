@@ -5,7 +5,7 @@
     <a href="https://pypi.org/project/lumapps-sdk/"><img alt="Pypi" src="https://img.shields.io/pypi/v/lumapps-sdk"></a>
     <a href="https://codecov.io/gh/lumapps/lumapps-sdk/branch/master"><img alt="Coverage" src="https://codecov.io/gh/lumapps/lumapps-sdk/branch/master/graph/badge.svg"></a>
     <a href="https://github.com/ambv/black"><img alt="Black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-    <a href="#"><img alt="Black" src="https://img.shields.io/badge/python-3.6%7C3.7%7C3.8-blue"></a>
+    <a href="#"><img alt="Black" src="https://img.shields.io/badge/python-3.8%7C3.9-blue"></a>
 </p>
 
 
@@ -25,7 +25,7 @@ pip install lumapps-sdk
 
 ## Requirements
 
-Python >= 3.7
+Python >= 3.8
 
 ## Getting started
 
