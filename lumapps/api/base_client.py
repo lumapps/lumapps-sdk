@@ -89,9 +89,18 @@ class BaseClient(AbstractContextManager):
         api_ver = api_info["version"]
         prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
         self._api_url = f"{prefix}/{api_name}/{api_ver}"
-        self._discovery_url = (
-            f"{self.base_url}{prefix}/discovery/v1/apis/{api_name}/{api_ver}/rest"
-        )
+        print(api_name)
+        if api_name == LUMAPPS_NAME:
+            self._discovery_url = (
+                "https://sites.lumapps.com/_ah/api/"
+                "discovery/v1/apis/lumsites/v1/rest"
+            )
+
+        else:
+            self._discovery_url = (
+                f"{self.base_url}{prefix}/discovery/"
+                f"v1/apis/{api_name}/{api_ver}/rest"
+            )
         self.token_getter = token_getter
         self.user = user
         self.token = token
