@@ -1,13 +1,14 @@
 # Environment
 
-As your LumApps platform can be on a specific environment you'll need to give the ApiClient the correct base url in order for it to work correctly.
+As your LumApps platform can be on a specific environment you'll need to give the BaseClient the correct base url in order for it to work correctly.
 
-By default the ApiClient uses `https://sites.lumapps.com`. 
+This information can be found in the debug dialog in the customer platform (**CTRL + ?** or **CTRL + SHIFT + ?**) in `Haussmann Cell`.
 
-To use another base url (you can find more informations about those url [here](https://docs.lumapps.com/docs/home/architecture/archi-lumapps-platform-site-architecture)) you have to do:
+It should be under the following format: `https://XX-cell-YYY.api.lumapps.com`.
+
 
 ```python
-from lumapps.api.client import ApiClient
+from lumapps.api.client import BaseClient
 
-client = ApiClient(api_info={"base_url": <my_base_url>})
+client = BaseClient({"base_url": <my_base_url>})
 ```

@@ -35,8 +35,7 @@ Python >= 3.8
     The fastest one to implement is the following:
 
     Get your token by logging to your LumApps account.
-    Go to [https://sites.lumapps.com](https://sites.lumapps.com) and authenticate.
-    Once connected, open the javascript console of your browser and run:
+    Once connected on your platform, open the javascript console of your browser and run:
 
     ```javascript
     fetch(window.location.origin+"/service/user/token", {method: "POST"})
