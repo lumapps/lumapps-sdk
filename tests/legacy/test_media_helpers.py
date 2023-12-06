@@ -13,11 +13,11 @@ from lumapps.api.utils import get_discovery_cache
 
 
 @fixture
-def cli() -> BaseClient:
+def cli(api_info) -> BaseClient:
     with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
-    c = BaseClient(token="foobar")
+    c = BaseClient(api_info, token="foobar")
     return c
 
 

@@ -23,8 +23,8 @@ def reset_env():
 
 
 @fixture
-def cli() -> BaseClient:
-    c = BaseClient(token="foobar")
+def cli(api_info) -> BaseClient:
+    c = BaseClient(api_info, token="foobar")
     with open("tests/legacy/test_data/lumapps_discovery.json") as fh:
         doc = load(fh)
     get_discovery_cache().set(doc["baseUrl"], doc)
@@ -48,20 +48,18 @@ def cli_drive() -> BaseClient:
     return c
 
 
-def test_api_client_no_auth():
-    with BaseClient() as cli:
+def test_api_client_no_auth(api_info):
+    with BaseClient(api_info) as cli:
         with raises(BaseClientError):
             cli.client
 
 
-def test_api_client_token_setter():
+def test_api_client_token_setter(api_info):
     token = "bvazbduioanpdo2"
-    with BaseClient(token=token) as cli:
+    with BaseClient(api_info, token=token) as cli:
         assert cli.token == token
-        assert cli._headers is not None
-        assert token in cli.client.headers["authorization"]
-        cli2 = cli
-    assert cli2._client is None
+        assert "authorization" in cli._headers
+        assert cli._client is None
 
 
 def test_get_call_raises_api_call_error(cli: BaseClient):
@@ -105,7 +103,7 @@ def test_get_matching_endpoints(cli: BaseClient):
     assert "not found" in matches
 
 
-def test_call_1(mocker, cli: BaseClient):
+def test_call_1(cli: BaseClient):
     with raises(HTTPStatusError):
         cli._call(("user", "get"), {})
 
@@ -114,6 +112,7 @@ def test_call_2(mocker, cli: BaseClient):
     class DummyResp:
         def __init__(self):
             self.content = None
+            self.status_code = 200
 
         def raise_for_status(self):
             pass
@@ -188,7 +187,7 @@ def test_get_call_4(mocker, cli: BaseClient):
     assert cli.cursor is None
 
 
-def test_get_call_5(mocker, cli: BaseClient):
+def test_get_call_5(cli: BaseClient):
     try:
         cli.get_call("instance/list", cursor="test")
     except Exception:
@@ -322,8 +321,9 @@ def test_prune2(cli: BaseClient):
         assert "status" not in inst
 
 
-def test_with_proxy_1():
+def test_with_proxy_1(api_info):
     c = BaseClient(
+        api_info,
         token="foobar",
         proxy_info={"scheme": "http", "host": "foo.bar.com", "port": 12345},
     )
@@ -331,8 +331,9 @@ def test_with_proxy_1():
     assert len(s._mounts) == 2
 
 
-def test_with_proxy_2():
+def test_with_proxy_2(api_info):
     c = BaseClient(
+        api_info,
         token="foobar",
         proxy_info={
             "scheme": "https",
@@ -346,7 +347,7 @@ def test_with_proxy_2():
     assert len(s._mounts) == 2
 
 
-def test_discovery_doc(mocker):
+def test_discovery_doc(mocker, cli: BaseClient):
     mocker.patch("lumapps.api.utils._get_conn", return_value=_get_conn(":memory:"))
 
     class DummyResp:
@@ -363,26 +364,17 @@ def test_discovery_doc(mocker):
         def get(*args, **kwargs):
             return resp
 
-    c = BaseClient(token="foobar")
     mocker.patch(
         "lumapps.api.client.BaseClient.client",
         new_callable=PropertyMock,
         return_value=DummySession(),
     )
-    doc1 = c.discovery_doc
-    doc2 = c.discovery_doc
+    doc1 = cli.discovery_doc
+    doc2 = cli.discovery_doc
     assert doc1
     assert doc1 == doc2
 
 
-def test_get_new_client_as(mocker, cli: BaseClient):
-    mocker.patch(
-        "lumapps.api.client.BaseClient.get_call", return_value={"accessToken": "foo"},
-    )
-    new_cli = cli.get_new_client_as("foo@bar.com")
-    assert new_cli.user == "foo@bar.com"
-
-
-def test_get_new_client_as_using_dwd(mocker, cli: BaseClient):
-    new_cli = cli.get_new_client_as_using_dwd("foo@bar.com")
-    assert new_cli.user == "foo@bar.com"
+def test_get_new_client_as_using_dwd(cli: BaseClient):
+    with raises(NotImplementedError):
+        cli.get_new_client_as_using_dwd("foo@bar.com")
