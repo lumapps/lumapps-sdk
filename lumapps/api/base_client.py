@@ -1,9 +1,8 @@
 from contextlib import AbstractContextManager
 from functools import lru_cache
-from json import dumps, loads
+from json import JSONDecodeError, dumps, loads
 from pathlib import Path
 from textwrap import TextWrapper
-from time import time
 from typing import (
     IO,
     Any,
@@ -17,11 +16,10 @@ from typing import (
     Union,
 )
 
-from httpx import Client
+from httpx import Client, HTTPStatusError
 
-# from authlib.integrations.requests_client import OAuth2Session, AssertionSession
-from lumapps.api.authlib_helpers import AssertionClient, OAuth2Client
-from lumapps.api.errors import BadCallError, BaseClientError
+from lumapps.api.conf import __version__
+from lumapps.api.errors import BadCallError, BaseClientError, GetTokenError
 from lumapps.api.utils import (
     FILTERS,
     GOOGLE_APIS,
@@ -32,19 +30,57 @@ from lumapps.api.utils import (
     pop_matches,
 )
 
-LUMAPPS_SCOPE = ["https://www.googleapis.com/auth/userinfo.email"]
-LUMAPPS_VERSION = "v1"
+FileContent = Union[IO[bytes], bytes]
+
 LUMAPPS_NAME = "lumsites"
-LUMAPPS_BASE_URL = "https://lumsites.appspot.com"
-FileContent = Union[IO[bytes], str, bytes]
+
+
+def fetch_access_token(
+    client: Client,
+    base_url: str,
+    auth_info: Dict[str, str],
+    customer_id: str,
+    user_email: str,
+) -> Tuple[str, int]:
+    try:
+        response = client.post(
+            f"{base_url}/v2/organizations/{customer_id}/application-token",
+            auth=(auth_info["client_id"], auth_info["client_secret"]),
+            data={"grant_type": "client_credentials", "user_email": user_email},
+        )
+        response.raise_for_status()
+        response_data = response.json()
+        return response_data["access_token"], response_data["expires_in"]
+    except KeyError as err:
+        raise GetTokenError(
+            f"Missing {err} from auth_info. Use BaseClient(auth_info=...)"
+        ) from err
+    except (HTTPStatusError, JSONDecodeError) as err:
+        raise GetTokenError(str(err)) from err
+
+
+def _get_urls(base_url: str, api_info: Dict[str, str]) -> Tuple[str, str]:
+    api_name = api_info.get("name", LUMAPPS_NAME)
+    version = api_info.get("version", "v1")
+    prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
+    api_url = f"{prefix}/{api_name}/{version}"
+
+    if api_name == LUMAPPS_NAME:
+        return (
+            "https://sites.lumapps.com/_ah/api/discovery/v1/apis/lumsites/v1/rest",
+            api_url,
+        )
+    return (
+        f"{base_url}{prefix}/discovery/v1/apis/{api_name}/{version}/rest",
+        api_url,
+    )
 
 
 class BaseClient(AbstractContextManager):
     def __init__(
         self,
+        api_info: Dict[str, Any],
         auth_info: Optional[Dict[str, Any]] = None,
-        api_info: Optional[Dict[str, Any]] = None,
-        user: Optional[str] = None,
         token: Optional[str] = None,
         token_getter: Optional[Callable[[], Tuple[str, int]]] = None,
         prune: bool = False,
@@ -57,52 +93,32 @@ class BaseClient(AbstractContextManager):
             auth_info: When specified, a service account or a web auth JSON dict.
             api_info: When specified, a JSON dict containing the description of your
                 api. Defaults to LumApps API.
-            user: Email of user on behalf of whom to authenticate using domain-wide
-                delegation.
             token: A bearer access token.
             token_getter: A bearer access token getter function.
             prune: Whether or not to use FILTERS to prune LumApps API responses.
             no_verify: Disables SSL verification.
             proxy_info: When specified, a JSON dict with proxy parameters.
         """
-        self._token_expiry = 0
+        if not api_info or "base_url" not in api_info:
+            raise BaseClientError(
+                "Missing api_info in BaseClient. Use BaseClient"
+                '(api_info={"base_url": "https://XX-cell-YYY.api.lumapps.com", ...})'
+            )
         self.no_verify = no_verify
         self.proxy_info = proxy_info
         self.prune = prune
-        self._auth_info = auth_info
+        self._auth_info = auth_info or {}
         self._token = None
         self._endpoints = None
         self._client = None
-        self._headers: dict = {"x-lumapps-analytics": "off"}
-        self._extra_http_headers = extra_http_headers
-        if self._extra_http_headers:
-            self._headers.update(self._extra_http_headers)
-        if api_info is None:
-            api_info = {}
-        api_info.setdefault("name", LUMAPPS_NAME)
-        api_info.setdefault("version", LUMAPPS_VERSION)
-        api_info.setdefault("base_url", LUMAPPS_BASE_URL)
-        api_info.setdefault("scopes", LUMAPPS_SCOPE)
+        self._headers = {
+            "x-lumapps-analytics": "off",
+            "User-Agent": f"lumapps-sdk {__version__}",
+        }
+        self._extra_http_headers = extra_http_headers or {}
         self.api_info = api_info
-        api_name = api_info["name"]
-        self._scope = " ".join(api_info["scopes"])
-        api_ver = api_info["version"]
-        prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
-        self._api_url = f"{prefix}/{api_name}/{api_ver}"
-        print(api_name)
-        if api_name == LUMAPPS_NAME:
-            self._discovery_url = (
-                "https://sites.lumapps.com/_ah/api/"
-                "discovery/v1/apis/lumsites/v1/rest"
-            )
-
-        else:
-            self._discovery_url = (
-                f"{self.base_url}{prefix}/discovery/"
-                f"v1/apis/{api_name}/{api_ver}/rest"
-            )
+        self._discovery_url, self._api_url = _get_urls(self.base_url, self.api_info)
         self.token_getter = token_getter
-        self.user = user
         self.token = token
         self.cursor = None
 
@@ -129,14 +145,10 @@ class BaseClient(AbstractContextManager):
             return
         self._token = v
         self._headers["authorization"] = f"Bearer {self._token}"
-        if self._client:
-            self._client.headers.update(self._headers)
 
     def _create_client(self):
-        auth = self._auth_info
         kwargs = {
             "base_url": self.base_url,
-            "headers": self._headers,
             "verify": not self.no_verify,
             "timeout": 120,
         }
@@ -153,38 +165,14 @@ class BaseClient(AbstractContextManager):
             kwargs["proxies"] = {"https://": proxy, "http://": proxy}
         else:
             kwargs["proxies"] = None
-        if not auth and self._token:
-            s = Client(**kwargs)
-        elif auth and "refresh_token" in auth:
-            s = OAuth2Client(
-                client_id=auth["client_id"],
-                client_secret=auth["client_secret"],
-                scope=self._scope,
-                **kwargs,
-            )
-            s.refresh_token(auth["token_uri"], refresh_token=auth["refresh_token"])
-        elif auth:  # service account
-            claims = {"scope": self._scope} if self._scope else {}
-            s = AssertionClient(
-                token_endpoint=auth["token_uri"],
-                issuer=auth["client_email"],
-                audience=auth["token_uri"],
-                claims=claims,
-                subject=self.user,
-                key=auth["private_key"],
-                header={"alg": "RS256"},
-                **kwargs,
-            )
-        else:
-            raise BaseClientError(
-                "No authentication provided (token_getter, auth_info, or token)."
-            )
-        return s
+
+        if not self._auth_info and not self._token:
+            raise BaseClientError("No authentication provided (auth_info or token).")
+        return Client(**kwargs)
 
     @property
     def client(self) -> Client:
         """Setup the client object."""
-        self._check_access_token()
         if self._client is None:
             self._client = self._create_client()
         return self._client
@@ -203,14 +191,6 @@ class BaseClient(AbstractContextManager):
             resp_doc = resp.json()
             get_discovery_cache().set(url, resp_doc)
             return resp_doc
-
-    def _check_access_token(self):
-        if not self.token_getter:
-            return
-        exp = self._token_expiry
-        if exp and exp > time() + 120:
-            return
-        self.token, self._token_expiry = self.token_getter()
 
     def _prune(self, name_parts, content):
         """Prune the api response."""
@@ -232,23 +212,14 @@ class BaseClient(AbstractContextManager):
                         pop_matches(pth, content)
         return content
 
-    def get_new_client_as_using_dwd(self, user_email: str) -> "BaseClient":
+    def get_new_client_as_using_dwd(self, _user_email: str) -> "BaseClient":
         """Get a new BaseClient using domain-wide delegation"""
-        return BaseClient(
-            auth_info=self._auth_info,
-            api_info=self.api_info,
-            user=user_email,
-            no_verify=self.no_verify,
-            proxy_info=self.proxy_info,
-            prune=self.prune,
-            extra_http_headers=self._extra_http_headers,
+        raise NotImplementedError(
+            "This method is deprecated. Use `get_new_client_as` instead"
         )
 
-    def get_new_client_as(
-        self, user_email: str, customer_id: Optional[str] = None
-    ) -> "BaseClient":
-        """Get a new BaseClient using an authorized client account by obtaining a
-        token using the user/getToken endpoint.
+    def get_new_client_as(self, user_email: str, customer_id: str) -> "BaseClient":
+        """Get a new BaseClient using an authorized client account by obtaining a token.
 
         Args:
             user_email (str): User you want to authenticate on behalf of
@@ -257,25 +228,15 @@ class BaseClient(AbstractContextManager):
         Returns:
             BaseClient: A new instance of the BaseClient correctly authenticated.
         """
-        client = BaseClient(
+        return BaseClient(
             auth_info=self._auth_info,
             api_info=self.api_info,
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
             prune=self.prune,
-            extra_http_headers=self._extra_http_headers,
-        )
-        token_infos: Any = client.get_call(
-            "user/getToken", customerId=customer_id, email=user_email
-        )
-        token = token_infos["accessToken"]
-        return BaseClient(
-            api_info=self.api_info,
-            token=token,
-            user=user_email,
-            no_verify=self.no_verify,
-            proxy_info=self.proxy_info,
-            prune=self.prune,
+            token_getter=lambda: fetch_access_token(
+                self.client, self.base_url, self._auth_info, customer_id, user_email
+            ),
             extra_http_headers=self._extra_http_headers,
         )
 
@@ -369,8 +330,26 @@ class BaseClient(AbstractContextManager):
 
     def _call(self, name_parts: Sequence[str], params: dict, json=None):
         """Construct the call"""
+        if not self.token and self.token_getter:
+            self.token, _ = self.token_getter()
         verb, path, params = self._get_verb_path_params(name_parts, params)
-        resp = self.client.request(verb, path, params=params, json=json)
+        resp = self.client.request(
+            verb,
+            path,
+            params=params,
+            json=json,
+            headers={**self._extra_http_headers, **self._headers},
+        )
+        if resp.status_code == 401 and self.token_getter:
+            # Token expired, fetch new token and retry!
+            self.token, _ = self.token_getter()
+            resp = self.client.request(
+                verb,
+                path,
+                params=params,
+                json=json,
+                headers={**self._extra_http_headers, **self._headers},
+            )
         resp.raise_for_status()
         if not resp.content:
             return None
@@ -395,7 +374,11 @@ class BaseClient(AbstractContextManager):
         path: Any = self.discovery_doc["rootUrl"].rstrip("/") + upload_specs["path"]  # type: ignore  # noqa
         path = self._expand_path(path, endpoint, params)
         files = {
-            "data": ("metadata", dumps(metadata), "application/json; charset=UTF-8"),
+            "data": (
+                "metadata",
+                bytes(dumps(metadata), "utf-8"),
+                "application/json; charset=UTF-8",
+            ),
             "file": file_content,
         }
         resp = self.client.request(verb, path, params=params, files=files)

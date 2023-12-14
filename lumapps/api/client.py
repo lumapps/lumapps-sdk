@@ -5,13 +5,13 @@ from io import FileIO
 from json import dumps, loads
 from logging import debug, exception, info, warning
 from re import findall
-from time import sleep, time
+from time import sleep
 from typing import Any, Dict, Generator, List, Optional, Sequence, Tuple
 
 from httpx import HTTPStatusError, put
 from slugify import slugify
 
-from lumapps.api.base_client import BaseClient
+from lumapps.api.base_client import BaseClient, fetch_access_token
 from lumapps.api.decorators import (
     none_on_400_ALREADY_ARCHIVED,
     none_on_400_SUBSCRIPTION_ALREADY_EXISTS_OR_PINNED,
@@ -24,7 +24,6 @@ from lumapps.api.errors import (
     FileDownloadError,
     FileUploadError,
     FolderCreationError,
-    GetTokenError,
     LumAppsClientConfError,
     MissingMetadataError,
     NonIdpGroupInCommunityError,
@@ -41,9 +40,6 @@ ApiClient = BaseClient
 def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i : i + n]
-
-
-ApiClient = BaseClient  # pragma: no cover
 
 
 class LumAppsClient(BaseClient):  # pragma: no cover
@@ -80,10 +76,6 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         super().__init__(*args, **kwargs)
         self._cached_metadata = {}
 
-    def _get_token_and_expiry(self, email: str) -> Tuple[str, int]:
-        resp = self.get_call("user/getToken", customerId=self.customer_id, email=email)
-        return resp["accessToken"], int(resp["expiresAt"])  # type: ignore
-
     def get_token_getter(self, email: str):
         assert email
 
@@ -92,13 +84,10 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             vals = self.cache.get(k)
             if vals:
                 return vals
-            try:
-                token, expiry = self._get_token_and_expiry(email)
-            except HTTPStatusError as err:
-                if err.response.status_code == 403:
-                    raise GetTokenError(get_http_err_content(err))
-                raise
-            self.cache.set(k, (token, expiry), int(expiry - time() - 180))
+            token, expiry = fetch_access_token(
+                self.client, self.base_url, self._auth_info, self.customer_id, email
+            )
+            self.cache.set(k, (token, expiry), expiry - 10)
             return token, expiry
 
         return f
@@ -112,6 +101,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             token_getter=self.get_token_getter(email),
             prune=prune,
             api_info=self.api_info,
+            auth_info=self._auth_info,
             no_verify=self.no_verify,
             proxy_info=self.proxy_info,
         )

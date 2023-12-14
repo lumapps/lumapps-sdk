@@ -1,2 +1,2 @@
-__version__ = "1.1b8"
+__version__ = "2.0.0"
 __pypi_packagename__ = "lumapps-sdk"
