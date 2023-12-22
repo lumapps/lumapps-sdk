@@ -338,7 +338,7 @@ class BaseClient(AbstractContextManager):
             path,
             params=params,
             json=json,
-            headers={**self._extra_http_headers, **self._headers},
+            headers={**self._headers, **self._extra_http_headers},
         )
         if resp.status_code == 401 and self.token_getter:
             # Token expired, fetch new token and retry!
@@ -348,7 +348,7 @@ class BaseClient(AbstractContextManager):
                 path,
                 params=params,
                 json=json,
-                headers={**self._extra_http_headers, **self._headers},
+                headers={**self._headers, **self._extra_http_headers},
             )
         resp.raise_for_status()
         if not resp.content:
