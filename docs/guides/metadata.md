@@ -3,9 +3,6 @@
 ## Metadata kind
 
 ```python
-from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
-
 metadata_kind = client.get_call("metadata/list", body={
     "emptyParent": "true",
     "lang": "fr",
@@ -35,9 +32,6 @@ print(metadata_kind)
 ## Metadata values
 
 ```python
-from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
-
 metadata_values = client.get_call('metadata', 'list', body={
     "familyId":	"6298100337213440",  # <- /!\
     "parent": "6298100337213440",  # <- /!\
@@ -128,9 +122,6 @@ Code sample
 
 ```python
 import time
-
-from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
 
 # Get metadata list
 metadata_list = client.get_call(

@@ -10,12 +10,18 @@ Be sure to target the right lumapps environment. Refer to the [environment docum
 
 ## Using a regular token
 
-To authenticate with a regular, short lived token, instanciate the sdk like so:
+To authenticate with a regular, short lived accesss token, instantiate the sdk like so:
 
 ```python
 from lumapps.api.base_client import BaseClient
 
-client = BaseClient(api_info, token="<your_token>")
+client = base_client = BaseClient(
+        api_info={"base_url": "https://your-cell.api.lumapps.com"},
+        auth_info={
+            "client_id": "your-client-id",
+            "client_secret": "your-client-secret"
+        }
+    )
 ```
 
 ## Using an application
@@ -33,6 +39,7 @@ my_application = {
 }
 customer_id = "<your_customer_id>"
 user_to_authenticate_on_behalf_of = "<user_email>"
+api_info={"base_url": "https://your-cell.api.lumapps.com"} # e.g. https://go-cell-001.api.lumapps.com
 
 client = BaseClient(
     api_info, auth_info=my_application

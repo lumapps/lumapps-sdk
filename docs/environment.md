@@ -10,5 +10,11 @@ It should be under the following format: `https://XX-cell-YYY.api.lumapps.com`.
 ```python
 from lumapps.api.client import BaseClient
 
-client = BaseClient({"base_url": <my_base_url>})
+client = BaseClient(
+    api_info={"base_url": "https://go-cell-001.api.lumapps.com"},
+    auth_info={
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret"
+    }
+)
 ```
