@@ -15,6 +15,7 @@ from typing import (
     Tuple,
     Union,
 )
+from urllib.parse import urlparse
 
 from httpx import Client, HTTPStatusError
 
@@ -59,15 +60,38 @@ def fetch_access_token(
         raise GetTokenError(str(err)) from err
 
 
-def _get_urls(base_url: str, api_info: Dict[str, str]) -> Tuple[str, str]:
+def _get_discovery_urls(base_url: str, api_info: Dict[str, str]) -> Tuple[str, str]:
     api_name = api_info.get("name", LUMAPPS_NAME)
     version = api_info.get("version", "v1")
     prefix = "" if api_name in GOOGLE_APIS else "/_ah/api"
     api_url = f"{prefix}/{api_name}/{version}"
 
     if api_name == LUMAPPS_NAME:
+        api_host = urlparse(base_url).netloc.split(".")
+        if len(api_host) < 4:
+            raise BaseClientError(f"Invalid base URL: {base_url}")
+        is_beta_cell = api_host[1] == "beta"
+        cell = api_host[0]
+        if is_beta_cell and cell not in (
+            "go-cell-001",
+            "go-cell-003",
+            "ms-cell-001",
+        ):
+            raise BaseClientError(f"Invalid LumApps cell in base URL: {cell}")
+
+        if cell not in (
+            "go-cell-001",
+            "go-cell-002",
+            "go-cell-003",
+            "go-cell-005",
+            "go-cell-600",
+            "ms-cell-001",
+            "ms-cell-002",
+        ):
+            raise BaseClientError(f"Invalid LumApps cell in base URL: {cell}")
         return (
-            "https://sites.lumapps.com/_ah/api/discovery/v1/apis/lumsites/v1/rest",
+            "https://storage.googleapis.com/prod-frontend-static-assets/api-discovery/"
+            f"lumapps-discovery-{'beta-' if is_beta_cell else ''}{cell}.json",
             api_url,
         )
     return (
@@ -117,7 +141,9 @@ class BaseClient(AbstractContextManager):
         }
         self._extra_http_headers = extra_http_headers or {}
         self.api_info = api_info
-        self._discovery_url, self._api_url = _get_urls(self.base_url, self.api_info)
+        self._discovery_url, self._api_url = _get_discovery_urls(
+            self.base_url, self.api_info
+        )
         self.token_getter = token_getter
         self.token = token
         self.cursor = None

@@ -1,11 +1,13 @@
+from typing import Dict, Optional
 from json import load, loads
 from typing import Sequence
 from unittest.mock import PropertyMock
-
+from lumapps.api import __version__
 from httpx import HTTPStatusError
-from pytest import fixture, raises
+from pytest import fixture, raises, mark
 
-from lumapps.api.base_client import BaseClient
+from lumapps.api.base_client import BaseClient, fetch_access_token
+from lumapps.api.client import LumAppsClient
 from lumapps.api.errors import BadCallError, BaseClientError
 from lumapps.api.utils import (
     FILTERS,
@@ -378,3 +380,48 @@ def test_discovery_doc(mocker, cli: BaseClient):
 def test_get_new_client_as_using_dwd(cli: BaseClient):
     with raises(NotImplementedError):
         cli.get_new_client_as_using_dwd("foo@bar.com")
+
+@mark.parametrize("cell, api_info, expected_exception", [
+    ("go-cell-002", {"base_url": "https://go-cell-002.api.lumapps.com/"}, None),
+    ("ms-cell-001", {"base_url": "https://ms-cell-001.api.lumapps.com/"}, None),
+    ("go-cell-003", {"base_url": "https://go-cell-003.beta.api.lumapps.com/"}, None),
+    ("go-cell-004", {"base_url": "https://go-cell-004.api.lumapps.com/"}, BaseClientError),
+    ("go-cell-001", {"base_url": "http://localhost/sdk"}, BaseClientError),
+    ("go-cell-001", {}, BaseClientError),
+])
+def test_create_client(cell: str, api_info: Dict[str, str], expected_exception: Optional[Exception]) -> None:
+    # Given / When
+    if expected_exception:
+        with raises(expected_exception):
+            LumAppsClient(
+                "123",
+                None,
+                api_info=api_info,
+                auth_info={"client_id": "abc", "client_secret": "789"},
+            )
+        return
+    else:
+        client = LumAppsClient(
+            "123",
+            None,
+            api_info=api_info,
+            auth_info={"client_id": "abc", "client_secret": "789"},
+        )
+
+    # Then
+    assert client._headers == {
+        "x-lumapps-analytics": "off",
+        "User-Agent": f"lumapps-sdk {__version__}",
+        "authorization": "Bearer None"
+    }
+    assert client.base_url == api_info["base_url"].rstrip("/")
+    if ".beta." in client.base_url:
+        assert client._discovery_url == (
+            "https://storage.googleapis.com/prod-frontend-static-assets/api-discovery/"
+            f"lumapps-discovery-beta-{cell}.json"
+        )
+    else:
+        assert client._discovery_url == (
+            "https://storage.googleapis.com/prod-frontend-static-assets/api-discovery/"
+            f"lumapps-discovery-{cell}.json"
+        )
