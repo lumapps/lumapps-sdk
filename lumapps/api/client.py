@@ -6,7 +6,7 @@ from json import dumps, loads
 from logging import debug, exception, info, warning
 from re import findall
 from time import sleep
-from typing import Any, Dict, Generator, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, Generator, List, Optional, Sequence, Tuple
 
 from httpx import HTTPStatusError, put
 from slugify import slugify
@@ -47,16 +47,22 @@ class LumAppsClient(BaseClient):  # pragma: no cover
         self,
         customer_id: str,
         instance_id: Optional[str],
-        *args,
+        api_info: Dict[str, Any],
         cache: Optional[Any] = None,
         dry_run: bool = False,
-        **kwargs,
+        auth_info: Optional[Dict[str, Any]] = None,
+        token: Optional[str] = None,
+        token_getter: Optional[Callable[[], Tuple[str, int]]] = None,
+        prune: bool = False,
+        no_verify: bool = False,
+        proxy_info: Optional[Dict[str, Any]] = None,
+        extra_http_headers: Optional[Dict] = None,
     ):
         """Create a LumAppsClient associated to a particular LumApps platform and site
 
         Args:
             customer_id: The id of the platform you target
-            instance_id: The id of the instance you target
+            instance_id: The id of the site you target
             args: The args to pass to the BaseClient
             cache: The cache to use
             dry_run: Whether to run in dry_run mode or not. This will
@@ -73,7 +79,16 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             self.cache = DiscoveryCacheDict()
         self.dry_run = dry_run
         self._langs = None
-        super().__init__(*args, **kwargs)
+        super().__init__(
+            api_info,
+            auth_info=auth_info,
+            token=token,
+            token_getter=token_getter,
+            prune=prune,
+            no_verify=no_verify,
+            proxy_info=proxy_info,
+            extra_http_headers=extra_http_headers,
+        )
         self._cached_metadata = {}
 
     def get_token_getter(self, email: str):

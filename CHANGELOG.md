@@ -2,6 +2,16 @@
 
 Notable changes to this project will be documented in this file.
 
+## 2.0.0 (23 December 2023)
+
+### Added
+
+* Added support for OAuth authentication method
+
+### Modified
+
+* Dropped support for legacy API Key and Service account authentication methods
+
 ## 1.1.2 (4 September 2020)
 
 ### Added

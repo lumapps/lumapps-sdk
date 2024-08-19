@@ -12,10 +12,7 @@ The two interresting helpers are `find_widget` and `find_all_widgets`.
 For instance, if you want all widgets of type video present in content you can process as follow:
 
 ```python
-from lumapps.api.base_client import BaseClient
 from lumapps.api.helpers.widgets import find_all_widgets
-
-client = BaseClient(token="<your_token>")
 
 # Get the content containing the widgets
 content = client.get_call("content/get", uid="fake_id")
@@ -27,10 +24,7 @@ video_widgets = find_all_widgets(content, widgetType="video")
 You can also use that to modify some widgets. For instance let say we want to modify a widget that we know has an `uuid` of *454673774*, we would do as follow
 
 ```python
-from lumapps.api.base_client import BaseClient
 from lumapps.api.helpers.widgets import find_all_widgets
-
-client = BaseClient(token="<your_token>")
 
 # Get the content containing the widgets
 content = client.get_call("content/get", uid="fake_id")

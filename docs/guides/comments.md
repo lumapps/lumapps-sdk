@@ -17,9 +17,6 @@ For more details see [api.lumapps.com](https://apiv1.lumapps.com/#operation/Comm
 ## Comment get
 
 ```python
-from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
-
 comment = client.get_call(
     "comment/get", uid="YOUR_COMMENT_ID"
 )
@@ -50,9 +47,6 @@ comment = {
 or update properties from one you just got using the api.
 
 ```python
-from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
-
 comment = client.get_call(
     "comment/get", uid="YOUR_COMMENT_ID"
 )
@@ -62,5 +56,6 @@ comment["title"] = {"fr": "New title"}
 comment = client.get_call(
     "comment/save", body=comment
 )
+```
 
 For more details see [the api documentation](https://apiv1.lumapps.com)

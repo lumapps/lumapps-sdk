@@ -52,7 +52,15 @@ Python >= 3.8
     from lumapps.api import BaseClient
 
     token = "MY TOKEN"
-    client = BaseClient(token=token)
+    base_client = BaseClient(
+        api_info={"base_url": "https://your-cell.api.lumapps.com"}, # e.g. "https://go-cell-001.api.lumapps.com"
+        auth_info={
+            "client_id": "your-client-id",
+            "client_secret": "your-client-secret"
+        }
+    )
+
+    api = base_client.get_new_client_as("user.email@yourcompany.com", customer_id="your-organization-id")
     ```
 
 3. Make your first API call
@@ -60,8 +68,7 @@ Python >= 3.8
     Let's display the full name of a registered user in lumapps
 
     ```python
-    user_email = "YOUR EMAIL"
-    usr = api.get_call("user/get", email=user_email)
+    usr = api.get_call("user/get", email="user.email@yourcompany.com")
     print("Hello {}".format(usr["fullName"]))
     ```
 
@@ -71,7 +78,7 @@ The SDK documentation is available [here](https://lumapps.github.io/lumapps-sdk/
 
 ## Code convention
 
-Docstring in PEP 484 type annotations format adapted to python 2.7 using comments.
+Docstring in PEP 484 type annotations format adapted to python 3.x using comments.
 
 ## How to get help, contribute, or provide feedback
 

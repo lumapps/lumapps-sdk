@@ -23,10 +23,17 @@ For instance if you want to get a particular user identified by his email you'll
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
 
-email = "<the_user_email>"
-user = client.get_call("user/get", email=email)
+base_client = BaseClient(
+    api_info={"base_url": "https://go-cell-001.api.lumapps.com"},
+    auth_info={
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret"
+    }
+)
+api = base_client.get_new_client_as("user.email@yourcompany.com", customer_id="your-organization-id")
+
+user = client.get_call("user/get", email="the.user.email@company.com")
 ```
 ## Adding request body parameters
 
@@ -36,7 +43,15 @@ For instance if you want to create a particular user:
 
 ```python
 from lumapps.api.base_client import BaseClient
-client = BaseClient(token="<your_token>")
+
+base_client = BaseClient(
+    api_info={"base_url": "https://go-cell-001.api.lumapps.com"},
+    auth_info={
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret"
+    }
+)
+api = base_client.get_new_client_as("user.email@yourcompany.com", customer_id="your-organization-id")
 
 body = {
     "email": "test@test.com",
