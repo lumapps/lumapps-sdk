@@ -1,6 +1,6 @@
 # Lumapps SDK
 
-<p align="center">
+<p style="text-align:center">
     <a href="https://github.com/lumapps/lumapps-sdk/actions?query=workflow%3ACI"><img alt="Action Status" src="https://github.com/lumapps/lumapps-sdk/workflows/CI/badge.svg"></a>
     <a href="https://pypi.org/project/lumapps-sdk/"><img alt="Pypi" src="https://img.shields.io/pypi/v/lumapps-sdk"></a>
     <a href="https://codecov.io/gh/lumapps/lumapps-sdk/branch/master"><img alt="Coverage" src="https://codecov.io/gh/lumapps/lumapps-sdk/branch/master/graph/badge.svg"></a>
@@ -9,7 +9,7 @@
 </p>
 
 
-LumApps SDK is a set of tools to manipulate the [LumApps API](https://api.lumapps.com/docs/start)
+LumApps SDK is a set of tools to manipulate the [LumApps API](https://apiv1.lumapps.com/)
 
 This includes:
 
@@ -29,25 +29,14 @@ Python >= 3.8
 
 ## Getting started
 
-1. Get your token
+1. Set up your OAuth application
 
-    LumApps supports multiple ways of authentication.
-    The fastest one to implement is the following:
-
-    Get your token by logging to your LumApps account.
-    Go to [https://sites.lumapps.com](https://sites.lumapps.com) and authenticate.
-    Once connected, open the javascript console of your browser and run:
-
-    ```javascript
-    fetch(window.location.origin+"/service/user/token", {method: "POST"})
-        .then(data => {return data.json()})
-        .then(res => {console.log(res.token)});
-    ```
-
-    This will generate your personal LumApps token that will be active for 60 minutes, and that we will use in the following steps
+    Before anything else, you need to set up an OAuth application by following the steps in the [LumApps Developer Portal](https://developer.lumapps.com/documentation/oauth.html).
 
 2. Authenticate
 
+    Once your application set up, get a hand on its client ID and secret, then you can write the following
+    to get an access token for a particular user.
     ```python
     from lumapps.api import BaseClient
 
