@@ -4,25 +4,9 @@ The first thing you'll need in order for you to be able to use the LumApps Api i
 
 You can see them [here](https://apiv1.lumapps.com/#tag/Authentication)
 
-The LumApps sdk can help you when using a service account or a regular token, all you have to do is to give the sdk the credentials infos and the subsequent calls made by the tool will be authenticated using those credentials.
+The LumApps SDK requires an OAuth application to be set up on your LumApps platform (see how to do that in the [LumApps Developer Portal](https://developer.lumapps.com/documentation/oauth.html). Once it is done, all you have to do is to give the sdk the credentials infos and the subsequent calls made by the tool will be authenticated using those credentials.
 
-Be sure to target the right lumapps environment. Refer to the [environment documentation](https://lumapps.github.io/lumapps-sdk/environment) first.
-
-## Using a regular token
-
-To authenticate with a regular, short lived accesss token, instantiate the sdk like so:
-
-```python
-from lumapps.api.base_client import BaseClient
-
-client = base_client = BaseClient(
-        api_info={"base_url": "https://your-cell.api.lumapps.com"},
-        auth_info={
-            "client_id": "your-client-id",
-            "client_secret": "your-client-secret"
-        }
-    )
-```
+Be sure to target the right LumApps environment. Refer to the [environment documentation](https://lumapps.github.io/lumapps-sdk/environment) first.
 
 ## Using an application
 

@@ -103,7 +103,7 @@ make docs-serve
 Then to deploy the doc you can run
 
 ```bash
-make doc-deploy
+make docs-deploy
 ```
 
 
