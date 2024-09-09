@@ -40,7 +40,6 @@ Python >= 3.8
     ```python
     from lumapps.api import BaseClient
 
-    token = "MY TOKEN"
     base_client = BaseClient(
         api_info={"base_url": "https://your-cell.api.lumapps.com"}, # e.g. "https://go-cell-001.api.lumapps.com"
         auth_info={
