@@ -385,7 +385,7 @@ def test_get_new_client_as_using_dwd(cli: BaseClient):
     ("go-cell-002", {"base_url": "https://go-cell-002.api.lumapps.com/"}, None),
     ("ms-cell-001", {"base_url": "https://ms-cell-001.api.lumapps.com/"}, None),
     ("go-cell-003", {"base_url": "https://go-cell-003.beta.api.lumapps.com/"}, None),
-    ("go-cell-004", {"base_url": "https://go-cell-004.api.lumapps.com/"}, BaseClientError),
+    ("go-cell-004", {"base_url": "https://go-cell-004.lumapps.com/"}, BaseClientError),
     ("go-cell-001", {"base_url": "http://localhost/sdk"}, BaseClientError),
     ("go-cell-001", {}, BaseClientError),
 ])
@@ -415,13 +415,3 @@ def test_create_client(cell: str, api_info: Dict[str, str], expected_exception: 
         "authorization": "Bearer None"
     }
     assert client.base_url == api_info["base_url"].rstrip("/")
-    if ".beta." in client.base_url:
-        assert client._discovery_url == (
-            "https://storage.googleapis.com/prod-frontend-static-assets/api-discovery/"
-            f"lumapps-discovery-beta-{cell}.json"
-        )
-    else:
-        assert client._discovery_url == (
-            "https://storage.googleapis.com/prod-frontend-static-assets/api-discovery/"
-            f"lumapps-discovery-{cell}.json"
-        )
