@@ -79,6 +79,10 @@ class LumAppsClient(BaseClient):  # pragma: no cover
             self.cache = DiscoveryCacheDict()
         self.dry_run = dry_run
         self._langs = None
+        extra_http_headers = {
+            **({"LumApps-Organization-Id": str(self.customer_id)}),
+            **(extra_http_headers or {}),
+        }
         super().__init__(
             api_info,
             auth_info=auth_info,
