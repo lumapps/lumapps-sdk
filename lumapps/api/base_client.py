@@ -199,11 +199,11 @@ class BaseClient(AbstractContextManager):
 
             discovery_base_url = urlparse(resp_doc["baseUrl"])
             resp_doc["baseUrl"] = discovery_base_url._replace(
-                netloc=self.base_url
+                netloc=urlparse(self.base_url).netloc
             ).geturl()
             discovery_root_url = urlparse(resp_doc["rootUrl"])
             resp_doc["rootUrl"] = discovery_root_url._replace(
-                netloc=self.base_url
+                netloc=urlparse(self.base_url).netloc
             ).geturl()
 
             get_discovery_cache().set(url, resp_doc)
