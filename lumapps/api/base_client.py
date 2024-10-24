@@ -70,28 +70,9 @@ def _get_discovery_urls(base_url: str, api_info: Dict[str, str]) -> Tuple[str, s
         api_host = urlparse(base_url).netloc.split(".")
         if len(api_host) < 4:
             raise BaseClientError(f"Invalid base URL: {base_url}")
-        is_beta_cell = api_host[1] == "beta"
-        cell = api_host[0]
-        if is_beta_cell and cell not in (
-            "go-cell-001",
-            "go-cell-003",
-            "ms-cell-001",
-        ):
-            raise BaseClientError(f"Invalid LumApps cell in base URL: {cell}")
-
-        if cell not in (
-            "go-cell-001",
-            "go-cell-002",
-            "go-cell-003",
-            "go-cell-005",
-            "go-cell-600",
-            "ms-cell-001",
-            "ms-cell-002",
-        ):
-            raise BaseClientError(f"Invalid LumApps cell in base URL: {cell}")
         return (
             "https://storage.googleapis.com/prod-frontend-static-assets/api-discovery/"
-            f"lumapps-discovery-{'beta-' if is_beta_cell else ''}{cell}.json",
+            "lumapps-discovery-go-cell-001.json",
             api_url,
         )
     return (
@@ -215,6 +196,16 @@ class BaseClient(AbstractContextManager):
         else:
             resp = self.client.get(url)
             resp_doc = resp.json()
+
+            discovery_base_url = urlparse(resp_doc["baseUrl"])
+            resp_doc["baseUrl"] = discovery_base_url._replace(
+                netloc=urlparse(self.base_url).netloc
+            ).geturl()
+            discovery_root_url = urlparse(resp_doc["rootUrl"])
+            resp_doc["rootUrl"] = discovery_root_url._replace(
+                netloc=urlparse(self.base_url).netloc
+            ).geturl()
+
             get_discovery_cache().set(url, resp_doc)
             return resp_doc
 
