@@ -387,7 +387,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
     ) -> Generator[Dict[str, Any], None, None]:
         """Iterate over the contents on the current lumapps site \n
 
-        https://apiv1.lumapps.com/#operation/Content/List
+        https://api.lumapps.com/docs/lumapps-public-api/81bb7b1f02f38-list-content
 
         Args:
             content_type_id: The id of a content type.
@@ -610,7 +610,7 @@ class LumAppsClient(BaseClient):  # pragma: no cover
 
     def iter_users(self, **kwargs: dict) -> Generator[Dict[str, Any], None, None]:
         """Iterate overs the platform users \n
-        https://apiv1.lumapps.com/#operation/User/List
+        https://api.lumapps.com/docs/lumapps-public-api/d4e848bc139d6-list-users
 
         Args:
             **kwargs: args to add to the request (see api documentation)
