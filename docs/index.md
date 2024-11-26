@@ -9,7 +9,7 @@
 </p>
 
 
-LumApps SDK is a set of tools to manipulate the [LumApps API](https://apiv1.lumapps.com/)
+LumApps SDK is a set of tools to manipulate the [LumApps API](https://api.lumapps.com/)
 
 This includes:
 

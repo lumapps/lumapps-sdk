@@ -10,7 +10,7 @@ To get all users at once you can use the `get_call` method provided by the BaseC
 users = client.get_call("user/list")
 ```
 
-You can also add additional parameters according to the [documentation](https://apiv1.lumapps.com/#operation/User/List)
+You can also add additional parameters according to the [documentation](https://api.lumapps.com/docs/lumapps-public-api/d4e848bc139d6-list-users)
 
 For instance, if you want to list the users of your platform but filter only the ones that are enabled you will do
 

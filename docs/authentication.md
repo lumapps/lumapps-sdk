@@ -2,7 +2,7 @@
 
 The first thing you'll need in order for you to be able to use the LumApps Api is a valid token.
 
-You can see them [here](https://apiv1.lumapps.com/#tag/Authentication)
+You can see them [here](https://api.lumapps.com/docs/lumapps-public-api/b87d37ae48a0d-authentication)
 
 The LumApps SDK requires an OAuth application to be set up on your LumApps platform (see how to do that in the [LumApps Developer Portal](https://developer.lumapps.com/documentation/oauth.html). Once it is done, all you have to do is to give the sdk the credentials infos and the subsequent calls made by the tool will be authenticated using those credentials.
 

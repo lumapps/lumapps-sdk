@@ -14,8 +14,6 @@ communities = client.get_call(
 )
 ```
 
-For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community/List)
-
 ## Community get
 
 ```python
@@ -24,4 +22,4 @@ community = client.get_call(
 )
 ```
 
-For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community/Get)
+For more details see [the api documentation](https://api.lumapps.com/docs/lumapps-public-api/0cb3a41bb0afa-retrieve-a-community)

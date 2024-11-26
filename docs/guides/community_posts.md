@@ -14,7 +14,7 @@ posts = client.get_call(
 )
 ```
 
-For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/Search)
+For more details see [the api documentation](https://api.lumapps.com/docs/lumapps-public-api/85ebc4227cf2c-search-for-posts)
 
 
 ## Post get
@@ -25,11 +25,11 @@ post = client.get_call(
 )
 ```
 
-For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/get)
+For more details see [the api documentation](https://api.lumapps.com/docs/lumapps-public-api/cfecfd13ab19d-retrieve-a-post)
 
 ## Post save
 
-The variable `post` is a json object described [here](https://api.lumapps.com/docs/output/_schemas/post.html).
+The variable `post` is a json object described [here](https://api.lumapps.com/docs/lumapps-public-api/2f1f03ecf288d-post).
 You can either construct a new one from scratch:
 ```python
 post = {
@@ -63,4 +63,4 @@ post = api.get_call(
 )
 ```
 
-For more details see [the api documentation](https://apiv1.lumapps.com/#operation/Community%20Post/save)
+For more details see [the api documentation](https://api.lumapps.com/docs/lumapps-public-api/256b10f9a7a7d-save-a-commmunity)

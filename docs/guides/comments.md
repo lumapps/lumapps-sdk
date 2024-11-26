@@ -12,7 +12,7 @@ comments = api.get_call(
 )
 ```
 
-For more details see [api.lumapps.com](https://apiv1.lumapps.com/#operation/Comment/List)
+For more details see [api.lumapps.com](https://api.lumapps.com/docs/lumapps-public-api/ccd9fdc5fc626-list-comments)
 
 ## Comment get
 
@@ -22,7 +22,7 @@ comment = client.get_call(
 )
 ```
 
-For more details see [api.lumapps.com](https://apiv1.lumapps.com/#operation/Comment/Get)
+For more details see [api.lumapps.com](https://api.lumapps.com/docs/lumapps-public-api/2704d9935b7b8-retrieve-a-comment)
 
 ## Comment save
 
@@ -58,4 +58,4 @@ comment = client.get_call(
 )
 ```
 
-For more details see [the api documentation](https://apiv1.lumapps.com)
+For more details see [the api documentation](https://api.lumapps.com)
