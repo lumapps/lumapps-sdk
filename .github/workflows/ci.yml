@@ -25,7 +25,7 @@ jobs:
           virtualenvs-in-project: false
           virtualenvs-path: ~/.cache/poetry/virtualenvs
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         name: Cache Poetry deps
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -64,7 +64,7 @@ jobs:
           virtualenvs-in-project: false
           virtualenvs-path: ~/.cache/poetry/virtualenvs
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         name: Cache Poetry deps
         with:
           path: ~/.cache/pypoetry/virtualenvs
